@@ -6,16 +6,24 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    internal class Electrode
-    {   
-        public int X { get; set; }
-        public int Y { get; set; }
-        public Electrode(int x, int y)
+    internal class Electrode(int x, int y, string name = "") : TileEntity(x, y ,name)
+    {
+        readonly int ElectrodeID;
+        readonly int DriverID;
+
+        protected override void GetIDs()
         {
-            this.X = x;
-            this.Y = y;
+            base.GetIDs();
+            IDs = IDs.Append(ElectrodeID).ToArray();
+            IDs = IDs.Append(DriverID).ToArray();
         }
 
+        protected override void GenerateID(params int[] values)
+        {
+            base.GenerateID(values);
+            values[1] = 2; //ElectrodeID
+            values[2] = 3; //DriverID
+        }
     }
 
 }

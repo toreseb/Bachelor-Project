@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Outparser
 {
-    internal class Outpasser
+    static class Outpasser
     {
+        
     }
 }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    internal class Commander
+    internal class Commander(Board board)
     {
+
+        Board board = board;
     }
 }

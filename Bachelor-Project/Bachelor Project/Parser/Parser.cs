@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Parser
 {
-    internal class Parser
+    static class Parser
     {
 
     }

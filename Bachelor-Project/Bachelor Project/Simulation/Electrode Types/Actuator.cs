@@ -7,7 +7,7 @@ using Bachelor_Project.Simulation;
 
 namespace Bachelor_Project
 {
-    internal class Actuator : Electrode
+    internal class Actuator(int x, int y) : Electrode(x, y)
     {
 
     }

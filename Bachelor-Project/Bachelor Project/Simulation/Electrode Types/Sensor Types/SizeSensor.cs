@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Electrode_Types.Sensor_Types
 {
-    internal class SizeSensor : Sensor
+    internal class SizeSensor(int x, int y) : Sensor(x, y)
     {
     }
 }

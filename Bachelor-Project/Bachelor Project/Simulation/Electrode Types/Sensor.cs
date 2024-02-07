@@ -7,7 +7,7 @@ using Bachelor_Project.Simulation;
 
 namespace Bachelor_Project.Electrode_Types
 {
-    internal class Sensor : Electrode
+    internal class Sensor(int x, int y) : Electrode(x, y)
     {
     }
 }

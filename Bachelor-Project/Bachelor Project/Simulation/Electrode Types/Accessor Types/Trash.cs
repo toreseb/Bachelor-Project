@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Electrode_Types.Accessor_Types
 {
-    internal class Trash : Accessor
+    internal class Trash(int x, int y) : Accessor(x, y)
     {
     }
 }

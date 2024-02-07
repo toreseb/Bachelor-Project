@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Electrode_Types.Actuator_Types
 {
-    internal class Heater : Actuator
+    internal class Heater(int x, int y) : Actuator(x, y)
     {
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Electrode_Types
 {
-    internal class Input : Accessor
+    internal class Input(int x, int y) : Accessor(x, y)
     {
     }
 }

@@ -10,25 +10,31 @@ namespace Bachelor_Project.Simulation
     {
         private int width;
         private int height;
-        private Electrode[,] board;
+        private Electrode[,] Electrodes;
         private Droplet[] droplets;
 
         public Board(int width, int height)
         {
             this.width = width;
             this.height = height;
-            board = new Electrode[width, height];
+            Electrodes = new Electrode[width, height];
+            InitElectrodes(Electrodes);
             droplets = [];
         }
 
-        public void SetBoard(Electrode[,] board)
+        private void InitElectrodes(Electrode[,] electrodes)
         {
-            this.board = board;
+
         }
 
-        public Electrode[,] GetBoard()
+        public void SetElectrodes(Electrode[,] electrodes)
         {
-            return board;
+            this.Electrodes = electrodes;
+        }
+
+        public Electrode[,] GetElectrodes()
+        {
+            return Electrodes;
         }
 
         public int GetWidth()

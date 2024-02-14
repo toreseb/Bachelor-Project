@@ -46,5 +46,44 @@ namespace Bachelor_Project.Simulation
         {
             return height;
         }
+
+        public void PrintBoardState()
+        {
+            // Write horizontal lines one by one
+            for (int i = 0; i < height; i++)
+            {
+                Console.WriteLine(BuildPrintLine(i));
+            }
+        }
+
+        public string BuildPrintLine(int h)
+        {
+            String line = string.Empty;
+
+            // Check each electrode in line and add to string - O (empty), Z (contaminated), X (droplet)
+            for (int i = 0; i < width; i++)
+            {
+                if (Electrodes[i, h].GetStatus() == 0)
+                {
+                    String cont = Electrodes[i, h].GetContaminants;
+                    if (cont.Equals(string.Empty))
+                    {
+                        // Tile is completely clear
+                        line += "O";
+                    }
+                    else
+                    {
+                        // Tile has no droplet but is contaminated
+                        line += "Z";
+                    }
+                }
+                else
+                {
+                    // Tile has a droplet
+                    line += "X";
+                }
+                
+            }
+        }
     }
 }

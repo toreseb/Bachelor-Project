@@ -6,19 +6,23 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    internal class Electrode(int x, int y, string name = "") : TileEntity(x, y ,name)
+    internal class Electrode(int x, int y, string name = "") : TileEntity(x, y, 20, 20, name)
     {
-        readonly int ElectrodeID;
-        readonly int DriverID;
-
+        public int ElectrodeID { get; set; }
+        public int DriverID { get; set; }
+        public int Status { get; set; }
         // Contamination of tile in grid, may need changing later.
-        private string contaminants { get; set; }
+        private string[] Contaminants { get; set; } = [];
+
+        public Electrode() : this(0, 0)
+        {
+            this.ElectrodeID = 0;
+        }
 
         protected override void GetIDs()
         {
             base.GetIDs();
-            IDs = IDs.Append(ElectrodeID).ToArray();
-            IDs = IDs.Append(DriverID).ToArray();
+            IDs = [.. IDs, ElectrodeID, DriverID];
         }
 
         protected override void GenerateID(params int[] values)
@@ -28,9 +32,14 @@ namespace Bachelor_Project.Simulation
             values[2] = 3; //DriverID
         }
 
-        public string GetContaminants()
+        public void Contaminate(string contaminator)
         {
-            return contaminants;
+            Contaminants = [.. Contaminants, contaminator];
+        }
+
+        public string[] GetContaminants()
+        {
+            return Contaminants;
         }
 
         public int GetStatus()

@@ -14,7 +14,7 @@ namespace Bachelor_Project.Electrode_Types
         protected override void GetIDs()
         {
             base.GetIDs();
-            IDs = IDs.Append(AccessorID).ToArray();
+            IDs = [.. IDs, AccessorID];
         }
 
         protected override void GenerateID(params int[] values)

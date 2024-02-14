@@ -8,5 +8,9 @@ namespace Bachelor_Project.Electrode_Types
 {
     internal class Input(int x, int y) : Accessor(x, y)
     {
+        public Input():this(0,0)
+        {
+
+        }
     }
 }

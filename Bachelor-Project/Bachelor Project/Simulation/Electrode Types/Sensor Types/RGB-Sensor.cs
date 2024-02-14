@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Electrode_Types.Sensor_Types
 {
-    internal class RGB_Sensor(int x, int y) : Sensor(x, y)
+    internal class RGB_Sensor(int x, int y, int sizeX, int sizeY) : Sensor(x, y, sizeX, sizeY)
     {
     }
 }

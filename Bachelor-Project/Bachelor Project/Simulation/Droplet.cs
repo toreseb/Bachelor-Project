@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    internal class Droplet(int x, int y,string substanceName, string color, string name = "", Board board) : TileEntity(x, y, name)
+    internal class Droplet(int x, int y,string substanceName, string color, string name = "") : TileEntity(x, y, 0, 0, name)
     {
         
         string SubstanceName { get; set; } = substanceName;

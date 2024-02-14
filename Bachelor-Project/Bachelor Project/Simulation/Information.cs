@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bachelor_Project.Simulation
+{
+    internal class Information
+    {
+        public string platform_name { get; set; }
+        public string platform_type { get; set; }
+        public string platform_ID   { get; set; }
+        public int sizeX            { get; set; }
+        public int sizeY            { get; set; }
+
+
+    }
+}

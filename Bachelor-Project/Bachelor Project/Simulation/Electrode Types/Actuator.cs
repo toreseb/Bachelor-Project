@@ -7,14 +7,14 @@ using Bachelor_Project.Simulation;
 
 namespace Bachelor_Project
 {
-    internal class Actuator(int x, int y, string name = "") : Electrode(x, y, name)
+    internal class Actuator(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
     {
         readonly int ActuatorID;
 
         protected override void GetIDs()
         {
             base.GetIDs();
-            IDs = IDs.Append(ActuatorID).ToArray();
+            IDs = [.. IDs, ActuatorID];
         }
 
         protected override void GenerateID(params int[] values)

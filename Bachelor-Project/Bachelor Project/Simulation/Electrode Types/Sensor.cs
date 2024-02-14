@@ -8,14 +8,14 @@ using Bachelor_Project.Simulation;
 namespace Bachelor_Project.Electrode_Types
 {
     
-    internal class Sensor(int x, int y, string name = "") : Electrode(x, y, name)
+    internal class Sensor(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
     {
         readonly int SensorID;
 
         protected override void GetIDs()
         {
             base.GetIDs();
-            IDs = IDs.Append(SensorID).ToArray();
+            IDs = [.. IDs, SensorID];
         }
 
         protected override void GenerateID(params int[] values)

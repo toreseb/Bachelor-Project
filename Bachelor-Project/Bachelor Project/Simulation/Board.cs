@@ -65,7 +65,7 @@ namespace Bachelor_Project.Simulation
             {
                 if (Electrodes[i, h].GetStatus() == 0)
                 {
-                    String cont = Electrodes[i, h].GetContaminants;
+                    String cont = Electrodes[i, h].GetContaminants();
                     if (cont.Equals(string.Empty))
                     {
                         // Tile is completely clear
@@ -84,6 +84,8 @@ namespace Bachelor_Project.Simulation
                 }
                 
             }
+
+            return line;
         }
     }
 }

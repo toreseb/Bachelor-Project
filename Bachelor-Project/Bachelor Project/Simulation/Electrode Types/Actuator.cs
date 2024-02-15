@@ -9,19 +9,13 @@ namespace Bachelor_Project
 {
     internal class Actuator(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
     {
-        readonly int ActuatorID;
+        public int ActuatorID { get; set; }
+        public Boolean Status { get; set; }
+        public Boolean NextStatus { get; set; }
 
-        protected override void GetIDs()
+        public Actuator() : this(0, 0, 1, 1)
         {
-            base.GetIDs();
-            IDs = [.. IDs, ActuatorID];
         }
 
-        protected override void GenerateID(params int[] values)
-        {
-            base.GenerateID(values);
-
-            values[3] = 5; //ActuatorID
-        }
     }
 }

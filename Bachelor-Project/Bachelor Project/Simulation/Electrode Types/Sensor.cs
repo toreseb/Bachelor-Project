@@ -12,18 +12,7 @@ namespace Bachelor_Project.Electrode_Types
     {
         readonly int SensorID;
 
-        protected override void GetIDs()
-        {
-            base.GetIDs();
-            IDs = [.. IDs, SensorID];
-        }
 
-        protected override void GenerateID(params int[] values)
-        {
-            base.GenerateID(values);
-
-            values[3] = 5; //SensorID
-        }
     }
 
     

@@ -22,28 +22,18 @@ namespace Bachelor_Project.Simulation
 
         public TileEntity(int x, int y, int sizeX, int sizeY, string name = "")
         {
-            GetIDs();
-            GenerateID(IDs);
             Name = name;
             PositionX = x;
             PositionY = y;
             SizeX = sizeX;
             SizeY = sizeY;
         }
-
-        protected virtual void GetIDs()
-        {
-            IDs = [.. IDs, ID];
-        }
+ 
 
        public string getName() 
        {             
             return Name;
        }
 
-        protected virtual void GenerateID(params int[] values)
-        {
-            values[0] = 0; //ID
-        }
     }
 }

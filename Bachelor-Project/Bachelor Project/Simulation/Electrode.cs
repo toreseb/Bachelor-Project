@@ -16,20 +16,6 @@ namespace Bachelor_Project.Simulation
 
         public Electrode() : this(0, 0)
         {
-            this.ElectrodeID = 0;
-        }
-
-        protected override void GetIDs()
-        {
-            base.GetIDs();
-            IDs = [.. IDs, ElectrodeID, DriverID];
-        }
-
-        protected override void GenerateID(params int[] values)
-        {
-            base.GenerateID(values);
-            values[1] = 2; //ElectrodeID
-            values[2] = 3; //DriverID
         }
 
         public void Contaminate(string contaminator)

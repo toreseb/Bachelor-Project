@@ -1,8 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Bachelor_Project;
 using Bachelor_Project.Electrode_Types;
+using Bachelor_Project.Electrode_Types.Actuator_Types;
 using Bachelor_Project.Parser;
 using Bachelor_Project.Simulation;
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Text.Json;
 
@@ -25,12 +28,17 @@ class Program
         
 
         string json = File.ReadAllText(inputfiles+"\\"+boarddata);
+        Board B = Board.ImportBoardData(json);
 
-        Board e = JsonSerializer.Deserialize<Board>(json, options);
-        e.Electrodes[12].Contaminate("A");
-        e.PrintBoardState();
+        //Actuator e = JsonSerializer.Deserialize<Actuator>(json, options);
+        //Console.WriteLine(e);
+        B.Electrodes[2,2].Contaminate("A");
+        B.PrintBoardState();
 
 
     }
+
+    
+
 }
 

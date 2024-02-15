@@ -1,5 +1,5 @@
 {
-    "Information": [
+    "information": [
         {
             "platform_name": "4by3example",
             "platform_type": "example",
@@ -8,7 +8,7 @@
             "sizeY": 60
         }
     ],
-    "Electrodes": [
+    "electrodes": [
         {
             "name": "el0",
             "ID": 0,
@@ -142,9 +142,42 @@
             "status": 0
         }
     ],
-    "Actuators": null,
-    "Sensors": null,
-    "Inputs": [
+    "actuators": [
+        {
+            "name": "heat1",
+            "ID": 2,
+            "actuatorID": 30,
+            "type": "heater",
+            "positionX": 270,
+            "positionY": 0,
+            "sizeX": 80,
+            "sizeY": 400,
+            "actualTemperature": 0,
+            "desiredTemperature": 10,
+            "status": false,
+            "nextDesiredTemperature": 0,
+            "nextStatus": false,
+            "corners": null
+        },
+        {
+            "name": "heat2",
+            "ID": 2,
+            "actuatorID": 31,
+            "type": "heater",
+            "positionX": 270,
+            "positionY": 0,
+            "sizeX": 80,
+            "sizeY": 400,
+            "actualTemperature": 0,
+            "desiredTemperature": 10,
+            "status": false,
+            "nextDesiredTemperature": 0,
+            "nextStatus": false,
+            "corners": null
+        }
+    ],
+    "sensors": null,
+    "inputs": [
         {
             "name": "in0",
             "ID": 12,
@@ -153,7 +186,7 @@
             "positionY": 30
         }
     ],
-    "Outputs": [
+    "outputs": [
         {
             "name": "out0",
             "ID": 13,
@@ -162,6 +195,6 @@
             "positionY": 30
         }
     ],
-    "Droplets": null,
+    "droplets": null,
     "unclassified": null
 }

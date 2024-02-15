@@ -67,15 +67,18 @@ namespace Bachelor_Project.Simulation
 
             Information i = jObject["information"][0].ToObject<Information>();
             Electrode[] eList = jObject["electrodes"].ToObject<Electrode[]>();
+            i.electrode_size = eList[0].SizeX;
             int eRow = i.sizeX / eList[0].SizeX; // Number of electrodes in a row
             int eColumn = i.sizeY / eList[0].SizeY; // Number of electrodes in a column
             Electrode[,] eArray = new Electrode[eRow,eColumn];
             for (int j = 0; j < eList.Length; j++)
             {
                 eArray[j % eRow, j / eRow] = eList[j];
+                eArray[j % eRow, j / eRow].ePosX = j % eRow;
+                eArray[j % eRow, j / eRow].ePosY = j / eRow;
             }
 
-            JArray aList = jObject["actuators"] != null ? (JArray)jObject["actuators"] : [] ;
+            JArray aList = jObject["actuators"].Type != JTokenType.Null ? (JArray)jObject["actuators"] : [] ;
             Actuator[] actuators = [];
             foreach (var item in aList)
             {
@@ -89,8 +92,8 @@ namespace Bachelor_Project.Simulation
                         break;
                 }
             }
-            Console.WriteLine(jObject["sensors"]);
-            JArray sList = jObject["sensors"] == null ? (JArray)jObject["sensors"] : [] ;
+            Console.WriteLine(jObject["sensors"].Type != JTokenType.Null);
+            JArray sList = jObject["sensors"].Type != JTokenType.Null ? (JArray)jObject["sensors"] : [] ;
             Sensor[] sensors = [];
             foreach (var item in sList)
             {
@@ -107,10 +110,18 @@ namespace Bachelor_Project.Simulation
                         break;
                 }
             }
-            Input[] iList = jObject["inputs"] == null ? jObject["input"].ToObject<Input[]>():[] ;
-            Output[] oList = jObject["outputs"] == null? jObject["input"].ToObject<Output[]>() : [];
-            Droplet[] droplets = jObject["droplets"] == null ? jObject["input"].ToObject<Droplet[]>() : [];
-            String?[] unclassified = jObject["unclassified"] == null ? jObject["input"].ToObject<string?[]>() : [];
+            Input[] iList = jObject["inputs"].Type != JTokenType.Null ? jObject["inputs"].ToObject<Input[]>():[] ;
+            foreach (var item in iList)
+            {
+                item.point = eArray[item.PositionX/i.electrode_size,item.PositionY/i.electrode_size];
+            }
+            Output[] oList = jObject["outputs"].Type != JTokenType.Null ? jObject["outputs"].ToObject<Output[]>() : [];
+            foreach (var item in oList)
+            {
+                item.point = eArray[item.PositionX / i.electrode_size, item.PositionY / i.electrode_size];
+            }
+            Droplet[] droplets = jObject["droplets"].Type != JTokenType.Null ? jObject["droplets"].ToObject<Droplet[]>() : [];
+            String?[] unclassified = jObject["unclassified"].Type != JTokenType.Null ? jObject["unclassified"].ToObject<string?[]>() : [];
 
             Console.WriteLine(i.sizeX);
             return new Board(i, eArray, actuators, sensors, iList, oList, droplets, unclassified);
@@ -119,7 +130,7 @@ namespace Bachelor_Project.Simulation
         public void PrintBoardState()
         {
             // Write horizontal lines one by one
-            for (int i = 0; i < Information.sizeY/20; i++)
+            for (int i = 0; i < Information.sizeY/Information.electrode_size; i++)
             {
                 Console.WriteLine(BuildPrintLine(i));
             }
@@ -130,11 +141,12 @@ namespace Bachelor_Project.Simulation
             String line = string.Empty;
 
             // Check each electrode in line and add to string - O (empty), Z (contaminated), X (droplet)
-            for (int i = 0; i < Information.sizeX/20; i++)
+            for (int i = 0; i < Information.sizeX/ Information.electrode_size; i++)
             {
-                if (Electrodes[i,h].GetStatus() == 0)
+                Electrode cElectrode = Electrodes[i,h];
+                if (cElectrode.Occupant == null)
                 {
-                    String[] cont = Electrodes[i,h].GetContaminants();
+                    String[] cont = cElectrode.GetContaminants();
                     if (cont.Length == 0)
                     {
                         // Tile is completely clear

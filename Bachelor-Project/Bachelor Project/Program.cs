@@ -5,8 +5,10 @@ using Bachelor_Project.Electrode_Types;
 using Bachelor_Project.Electrode_Types.Actuator_Types;
 using Bachelor_Project.Parser;
 using Bachelor_Project.Simulation;
+using Bachelor_Project.Simulation.Agent_Actions;
 using Newtonsoft.Json.Linq;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Text.Json;
 
 class Program
@@ -29,11 +31,26 @@ class Program
 
         string json = File.ReadAllText(inputfiles+"\\"+boarddata);
         Board B = Board.ImportBoardData(json);
+        Droplet_Actions.Board = B;
 
         //Actuator e = JsonSerializer.Deserialize<Actuator>(json, options);
         //Console.WriteLine(e);
-        B.Electrodes[2,2].Contaminate("A");
+
+        B.Droplets = [.. B.Droplets, new Droplet(B.Input[0], 16, "Water", "WaterDroplet1")];
         B.PrintBoardState();
+        Console.WriteLine();
+        Droplet_Actions.MoveDroplet(B.Droplets[0], Direction.DOWN);
+        B.PrintBoardState();
+        Console.WriteLine();
+        Droplet_Actions.MoveDroplet(B.Droplets[0], Direction.UP);
+        B.PrintBoardState();
+        Console.WriteLine();
+        Droplet_Actions.MoveDroplet(B.Droplets[0], Direction.RIGHT);
+        B.PrintBoardState();
+        Console.WriteLine();
+        Droplet_Actions.MoveDroplet(B.Droplets[0], Direction.DOWN);
+        B.PrintBoardState();
+        Console.WriteLine();
 
 
     }

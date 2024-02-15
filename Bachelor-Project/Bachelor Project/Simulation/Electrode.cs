@@ -11,8 +11,11 @@ namespace Bachelor_Project.Simulation
         public int ElectrodeID { get; set; }
         public int DriverID { get; set; }
         public int Status { get; set; }
+        public int ePosX { get; set; } // Electrode position X
+        public int ePosY { get; set; } // Electrode position Y
         // Contamination of tile in grid, may need changing later.
         private string[] Contaminants { get; set; } = [];
+        public Droplet? Occupant;
 
         public Electrode() : this(0, 0)
         {

@@ -7,9 +7,9 @@ using Bachelor_Project.Simulation;
 
 namespace Bachelor_Project.Electrode_Types
 {
-    internal class Accessor(int x, int y) : Electrode(x, y)
+    internal class Accessor(int x, int y) : Apparature(x, y, 1, 1)
     {
-        
+        public Electrode point;
 
 
     }

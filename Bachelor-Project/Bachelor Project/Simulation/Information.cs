@@ -14,6 +14,8 @@ namespace Bachelor_Project.Simulation
         public int sizeX            { get; set; }
         public int sizeY            { get; set; }
 
+        public int electrode_size { get; set; }
+
 
     }
 }

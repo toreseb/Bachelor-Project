@@ -15,6 +15,8 @@ namespace Bachelor_Project.Simulation
         public int sizeY            { get; set; }
 
         public int electrode_size { get; set; }
+        public int eRow { get; set; } // Electrodes per Row
+        public int eCol { get; set; } // Electrodes per Column
 
 
     }

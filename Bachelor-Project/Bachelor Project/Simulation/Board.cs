@@ -4,6 +4,7 @@ using Bachelor_Project.Electrode_Types.Sensor_Types;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,16 +37,6 @@ namespace Bachelor_Project.Simulation
 
         }
 
-        private void InitElectrodes(Electrode[,] electrodes)
-        {
-
-        }
-
-        public void SetElectrodes(Electrode[,] electrodes)
-        {
-            this.Electrodes = electrodes;
-        }
-
         public Electrode[,] GetElectrodes()
         {
             return Electrodes;
@@ -68,14 +59,14 @@ namespace Bachelor_Project.Simulation
             Information i = jObject["information"][0].ToObject<Information>();
             Electrode[] eList = jObject["electrodes"].ToObject<Electrode[]>();
             i.electrode_size = eList[0].SizeX;
-            int eRow = i.sizeX / eList[0].SizeX; // Number of electrodes in a row
-            int eColumn = i.sizeY / eList[0].SizeY; // Number of electrodes in a column
-            Electrode[,] eArray = new Electrode[eRow,eColumn];
+            i.eRow = i.sizeX / i.electrode_size; // Number of electrodes in a row
+            i.eCol = i.sizeY / i.electrode_size; // Number of electrodes in a column
+            Electrode[,] eArray = new Electrode[i.eRow,i.eCol];
             for (int j = 0; j < eList.Length; j++)
             {
-                eArray[j % eRow, j / eRow] = eList[j];
-                eArray[j % eRow, j / eRow].ePosX = j % eRow;
-                eArray[j % eRow, j / eRow].ePosY = j / eRow;
+                eArray[j % i.eRow, j / i.eRow] = eList[j];
+                eList[j].ePosX = j % i.eRow;
+                eList[j].ePosY = j / i.eRow;
             }
 
             JArray aList = jObject["actuators"].Type != JTokenType.Null ? (JArray)jObject["actuators"] : [] ;
@@ -127,46 +118,136 @@ namespace Bachelor_Project.Simulation
             return new Board(i, eArray, actuators, sensors, iList, oList, droplets, unclassified);
         }
 
-        public void PrintBoardState()
+        public void PrintBoardState() // Row and Col are switched, so the board is printed correctly
         {
-            // Write horizontal lines one by one
-            for (int i = 0; i < Information.sizeY/Information.electrode_size; i++)
+            ArrayList[][] squares = new ArrayList[Information.eCol][];
+            for (int i = 0; i < Information.eCol; i++)
             {
-                Console.WriteLine(BuildPrintLine(i));
+                squares[i] = new ArrayList[Information.eRow];
+                for (int j = 0; j < Information.eRow; j++)
+                {
+                    squares[i][j] = new ArrayList();
+                }
             }
+
+            foreach (var actuator in Actuators)
+            {
+                int startX = actuator.PositionX / Information.electrode_size;
+                int startY = actuator.PositionY / Information.electrode_size;
+
+                int endX = (actuator.PositionX + actuator.SizeX) / Information.electrode_size;
+                int endY = (actuator.PositionY + actuator.SizeY) / Information.electrode_size;
+                int i = endX - startX;
+                while(i >= 0)
+                {
+                    int j = endY - startY;
+                    while(j >= 0)
+                    {
+                        squares[startY + j][startX + i].Add(actuator);
+                        j--;
+                    }
+                    i--;
+                }
+
+            }
+
+            foreach (var sensor in Sensors)
+            {
+                int startX = sensor.PositionX / Information.electrode_size;
+                int startY = sensor.PositionY / Information.electrode_size;
+
+                int endX = (sensor.PositionX + sensor.SizeX) / Information.electrode_size;
+                int endY = (sensor.PositionY + sensor.SizeY) / Information.electrode_size;
+                int i = endX - startX;
+                while (i >= 0)
+                {
+                    int j = endY - startY;
+                    while (j >= 0)
+                    {
+                        squares[startY + j][startX + i].Add(sensor);
+                        j--;
+                    }
+                    i--;
+                }
+            }
+
+            foreach (var input in Input)
+            {
+                squares[input.point.ePosY][input.point.ePosX].Add(input);
+            }
+
+            foreach (var output in Output)
+            {
+                squares[output.point.ePosY][output.point.ePosX].Add(output);
+            }
+            
+            Console.WriteLine("Board State:");
+            Console.WriteLine(new String('-',1+Information.eRow*(3+6)));
+            // Write horizontal lines one by one
+            for (var j = 0; j < squares.Length; j++)
+            {
+                Console.WriteLine(BuildPrintLine(squares[j],j));
+                Console.WriteLine(new String('-', 1 + Information.eRow * (3 + 6)));
+            }
+            
         }
 
-        public string BuildPrintLine(int h)
+        public string BuildPrintLine(ArrayList[] row, int j)
         {
-            String line = string.Empty;
-
-            // Check each electrode in line and add to string - O (empty), Z (contaminated), X (droplet)
-            for (int i = 0; i < Information.sizeX/ Information.electrode_size; i++)
+            String line1 = "| ";
+            String line2 = "| ";
+            String line3 = "| ";
+            int i = 0;
+            foreach (var square in row)
             {
-                Electrode cElectrode = Electrodes[i,h];
-                if (cElectrode.Occupant == null)
+                int used1 = 0;
+                int used2 = 0;
+                int used3 = 0;
+                foreach (var item in square)
                 {
-                    String[] cont = cElectrode.GetContaminants();
-                    if (cont.Length == 0)
+                    
+                    Type t = item.GetType();
+                    if (t.IsSubclassOf(typeof(Actuator)))
                     {
-                        // Tile is completely clear
-                        line += "O";
+                        line1 += ((Actuator)item).Name;
+                        used1 += ((Actuator)item).Name.Length;
                     }
-                    else
+                    else if (t.IsSubclassOf(typeof(Sensor)))
                     {
-                        // Tile has no droplet but is contaminated
-                        line += "Z";
+                        line1 += ((Sensor)item).Name;
+                        used1 += ((Sensor)item).Name.Length;
                     }
+                    else if (t.IsSubclassOf(typeof(Accessor)))
+                    {
+                        line3 += ((Accessor)item).Name;
+                        used3 += ((Accessor)item).Name.Length;
+                    }
+                }
+                
+                
+
+                if (Electrodes[i,j].Occupant != null)
+                {
+                    line2 += Electrodes[i,j].Occupant.Name;
+                    used2 += Electrodes[i,j].Occupant.Name.Length;
+                }else if (Electrodes[i,j].GetContaminants().Length != 0)
+                {
+                    line2 += "Z";
+                    used2 += 1;
                 }
                 else
                 {
-                    // Tile has a droplet
-                    line += "X";
+                    line2 += Electrodes[i, j].Name;
+                    used2 += Electrodes[i, j].Name.Length;
                 }
-                
+                line1 += new String(' ', 6 - used1) + " | ";
+                line2 += new String(' ', 6 - used2) + " | ";
+                line3 += new String(' ', 6-used3) + " | ";
+                i++;
             }
+            string totalline = line1 + "\n" + line2 + "\n" + line3;
 
-            return line;
+            return totalline;
         }
     }
 }

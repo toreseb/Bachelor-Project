@@ -10,7 +10,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 {
     internal static class Droplet_Actions
     {
-        public static Board Board { get; set; }
         public static void InputDroplet(Droplet d, Input i, int size)
         {
             inputPart(d, i);
@@ -35,22 +34,23 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Electrode? newE = null;
             foreach (Electrode e in d.Occupy)
             {
+
                 switch (dir)
                 {
                     case Direction.UP:
-                        newE = Board.Electrodes[e.ePosX, e.ePosY - 1];
+                        newE = Program.C.board.Electrodes[e.ePosX, e.ePosY - 1];
                         
                         break;
                     case Direction.RIGHT:
-                        newE = Board.Electrodes[e.ePosX + 1, e.ePosY];
+                        newE = Program.C.board.Electrodes[e.ePosX + 1, e.ePosY];
                         
                         break;
                     case Direction.DOWN:
-                        newE = Board.Electrodes[e.ePosX, e.ePosY + 1];
+                        newE = Program.C.board.Electrodes[e.ePosX, e.ePosY + 1];
                         
                         break;
                     case Direction.LEFT:
-                        newE = Board.Electrodes[e.ePosX - 1, e.ePosY];
+                        newE = Program.C.board.Electrodes[e.ePosX - 1, e.ePosY];
                         
                         break;
                 }

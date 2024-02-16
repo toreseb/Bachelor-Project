@@ -16,3 +16,21 @@ C:\GitHub\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\re
 C:\GitHub\Bachelor-Project\Bachelor-Project\Bachelor Project\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\GitHub\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.csproj.AssemblyReference.cache
 C:\GitHub\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.csproj.CopyComplete
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\bin\Debug\net8.0\Bachelor Project.exe
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\bin\Debug\net8.0\Bachelor Project.deps.json
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\bin\Debug\net8.0\Bachelor Project.runtimeconfig.json
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\bin\Debug\net8.0\Bachelor Project.dll
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\bin\Debug\net8.0\Bachelor Project.pdb
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.csproj.AssemblyReference.cache
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.AssemblyInfoInputs.cache
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.AssemblyInfo.cs
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.csproj.CoreCompileInputs.cache
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.sourcelink.json
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.csproj.CopyComplete
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.dll
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\refint\Bachelor Project.dll
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.pdb
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.genruntimeconfig.cache
+C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\ref\Bachelor Project.dll

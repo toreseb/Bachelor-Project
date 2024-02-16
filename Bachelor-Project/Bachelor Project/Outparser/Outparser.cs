@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Outparser
 {
-    static class Outpasser
+    static class Outparser
     {
         public static void ElectrodeOn(Simulation.Electrode e)
         {

@@ -165,5 +165,65 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
         }
 
+        // Used to check if new droplet position upholds boarder
+        public static bool CheckBorder(Droplet d, ArrayList temp)
+        {
+            bool legalMove = true;
+            foreach (Electrode e in temp)
+            {
+                // Check neighbors all the way around electrode for occupancy
+                // If same droplet, fine. If blank, fine. If other droplet, not fine.
+
+                int xCheck = e.ePosX;
+                int yCheck = e.ePosY;
+                for(int i = 1; i <= 8;i++)
+                {
+                    switch(i)
+                    {
+                        case 1:
+                            xCheck--;
+                            yCheck--;
+                            break;
+                        case 2:
+                            xCheck++;
+                            break;
+                        case 3:
+                            xCheck++;
+                            break;
+                        case 4:
+                            xCheck -= 2;
+                            yCheck++;
+                            break;
+                        case 5:
+                            xCheck += 2;
+                            break;
+                        case 6:
+                            xCheck -= 2;
+                            yCheck++;
+                            break;
+                        case 7:
+                            xCheck++;
+                            break;
+                        case 8:
+                            xCheck++;
+                            break;
+                    }
+
+                    if (!(xCheck < 0 || xCheck > Board.GetWidth() || yCheck < 0 || yCheck > Board.GetHeight()))
+                    {
+                        Droplet? occupant = Board.Electrodes[xCheck, yCheck].Occupant;
+                        if (!(occupant.Equals(d) || occupant == null))
+                        {
+                            legalMove = false;
+                            goto destination;
+                        }
+                    }
+                    
+                }
+            }
+            destination:
+            return legalMove;
+        }
+
     }
 }

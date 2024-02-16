@@ -214,9 +214,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                             break;
                     }
 
-                    if (!(xCheck < 0 || xCheck > Board.GetWidth() || yCheck < 0 || yCheck > Board.GetHeight()))
+                    if (!(xCheck < 0 || xCheck > Program.C.board.GetWidth() || yCheck < 0 || yCheck > Program.C.board.GetHeight()))
                     {
-                        Droplet? occupant = Board.Electrodes[xCheck, yCheck].Occupant;
+                        Droplet? occupant = Program.C.board.Electrodes[xCheck, yCheck].Occupant;
                         if (!(occupant.Equals(d) || occupant == null))
                         {
                             legalMove = false;

@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Bj7ciUHMVIzjsRaGpR0cdOHIvPUkZ7abBkPk25fwRkkQHxRfKb4sINy7cx6z7D9vWt5VnlVCHLzxKjBxEJa2Dw==",
+  "dgSpecHash": "6w3C8TkRNgi6vWJaHlJmBf/KE7RDKVnS/aB4y0PrZqP7hjuaviMf7AAq3hISGkdhNjGn3UcVql0HVqSr/BtOaQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\helen\\OneDrive\\Skrivebord\\Uni\\6. Semester\\Bachelorprojekt\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\Bachelor Project.csproj",
+  "projectFilePath": "C:\\GitHub\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\Bachelor Project.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\helen\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\Tores\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }

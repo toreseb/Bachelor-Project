@@ -1,4 +1,5 @@
 ﻿using Bachelor_Project.Electrode_Types;
+using Bachelor_Project.Outparser;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 {
     internal static class Droplet_Actions
     {
+        private static readonly int mixAmount = 5;
         public static void InputDroplet(Droplet d, Input i, int size)
         {
             inputPart(d, i);
@@ -30,35 +32,136 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static void MoveDroplet(Droplet d, Direction dir)
         {
+            bool legalMove = true;
             ArrayList temp = new ArrayList();
             Electrode? newE = null;
             foreach (Electrode e in d.Occupy)
             {
-
+                int xChange = 0;
+                int yChange = 0;
                 switch (dir)
                 {
                     case Direction.UP:
-                        newE = Program.C.board.Electrodes[e.ePosX, e.ePosY - 1];
+                        yChange = -1;
                         
                         break;
                     case Direction.RIGHT:
-                        newE = Program.C.board.Electrodes[e.ePosX + 1, e.ePosY];
+                        xChange = 1;
                         
                         break;
                     case Direction.DOWN:
-                        newE = Program.C.board.Electrodes[e.ePosX, e.ePosY + 1];
+                        yChange = 1;
                         
                         break;
                     case Direction.LEFT:
-                        newE = Program.C.board.Electrodes[e.ePosX - 1, e.ePosY];
+                        xChange = -1;
                         
                         break;
                 }
-                temp.Add(newE);
-                newE.Occupant = d;
-                e.Occupant = null;
+
+                if (e.ePosX + xChange < Program.C.board.GetWidth() && e.ePosX + xChange >= 0 && e.ePosY + yChange < Program.C.board.GetHeight() && e.ePosY + yChange >= 0)
+                {
+                    newE = Program.C.board.Electrodes[e.ePosX + xChange, e.ePosY + yChange];
+                    temp.Add(newE);
+                    newE.Occupant = d;
+                }
+                else
+                {
+                    legalMove = false;
+                }
             }
-            d.Occupy = temp;
+
+            if (legalMove)
+            {
+                // Turn on all new electrodes first
+                foreach (Electrode e in temp)
+                {
+                    Outparser.Outparser.ElectrodeOn(e);
+                }
+
+                // Turn off all old electrodes second (which are not also new)
+                foreach (Electrode e in d.Occupy)
+                {
+                    bool contains = false;
+                    foreach (Electrode ee in temp)
+                    {
+                        if (e == ee) contains = true; break;
+                    }
+                    if (!contains) Outparser.Outparser.ElectrodeOff(e);
+
+                    e.Occupant = null;
+
+                }
+
+                d.Occupy = temp;
+            }
+        }
+
+        // Droplets needing mixing are assumed to have been merged into one drop.
+        // Does not take contaminants into account yet.
+        public static void Mix(Droplet d)
+        {
+            bool up = true; bool down = true; bool left = true; bool right = true;
+            // Check if there is room to boogie
+            // Only checks board bounderies
+            foreach (Electrode e in d.Occupy)
+            {
+                // Check board bounderies
+                if (e.ePosX < 1) left = false;
+                if (!(e.ePosX < Board.GetWidth() - 1)) right = false;
+                if (e.ePosY < 1) up = false;
+                if (!(e.ePosY < Board.GetHeight() - 1)) down = false;
+
+                // Check for other droplets in zone (+ boarder)
+
+
+                // Check for contamination
+            }
+
+            if (up)
+            {
+                if (left)
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d,Direction.UP);
+                        MoveDroplet(d,Direction.LEFT);
+                        MoveDroplet(d,Direction.DOWN);
+                        MoveDroplet(d,Direction.RIGHT);
+                    }
+                }else if (right)
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d,Direction.RIGHT);
+                        MoveDroplet(d,Direction.UP);
+                        MoveDroplet(d,Direction.LEFT);
+                        MoveDroplet(d,Direction.DOWN);
+                    }
+                }
+            }else if (down)
+            {
+                if (left)
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d,Direction.LEFT);
+                        MoveDroplet(d,Direction.DOWN);
+                        MoveDroplet(d,Direction.RIGHT);
+                        MoveDroplet(d,Direction.UP);
+                    }
+                }
+                else if (right)
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d,Direction.DOWN);
+                        MoveDroplet(d,Direction.RIGHT);
+                        MoveDroplet(d,Direction.UP);
+                        MoveDroplet(d,Direction.LEFT);
+                    }
+                }
+            }
         }
 
     }

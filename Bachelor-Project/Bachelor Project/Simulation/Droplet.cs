@@ -40,7 +40,6 @@ namespace Bachelor_Project.Simulation
         {
             return ((int)Volume/12)+1;
         }
-
         
     }
 }

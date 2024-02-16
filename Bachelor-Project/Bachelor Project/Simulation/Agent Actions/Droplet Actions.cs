@@ -12,6 +12,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     internal static class Droplet_Actions
     {
         public static Board Board { get; set; }
+        private static readonly int mixAmount = 5;
         public static void InputDroplet(Droplet d, Input i, int size)
         {
             inputPart(d, i);
@@ -94,6 +95,73 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
 
                 d.Occupy = temp;
+            }
+        }
+
+        // Droplets needing mixing are assumed to have been merged into one drop.
+        // Does not take contaminants into account yet.
+        public static void Mix(Droplet d)
+        {
+            bool up = true; bool down = true; bool left = true; bool right = true;
+            // Check if there is room to boogie
+            // Only checks board bounderies
+            foreach (Electrode e in d.Occupy)
+            {
+                // Check board bounderies
+                if (e.ePosX < 1) left = false;
+                if (!(e.ePosX < Board.GetWidth() - 1)) right = false;
+                if (e.ePosY < 1) up = false;
+                if (!(e.ePosY < Board.GetHeight() - 1)) down = false;
+
+                // Check for other droplets in zone (+ boarder)
+
+
+                // Check for contamination
+            }
+
+            if (up)
+            {
+                if (left)
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d,Direction.UP);
+                        MoveDroplet(d,Direction.LEFT);
+                        MoveDroplet(d,Direction.DOWN);
+                        MoveDroplet(d,Direction.RIGHT);
+                    }
+                }else if (right)
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d,Direction.RIGHT);
+                        MoveDroplet(d,Direction.UP);
+                        MoveDroplet(d,Direction.LEFT);
+                        MoveDroplet(d,Direction.DOWN);
+                    }
+                }
+            }else if (down)
+            {
+                if (left)
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d,Direction.LEFT);
+                        MoveDroplet(d,Direction.DOWN);
+                        MoveDroplet(d,Direction.RIGHT);
+                        MoveDroplet(d,Direction.UP);
+                    }
+                }
+                else if (right)
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d,Direction.DOWN);
+                        MoveDroplet(d,Direction.RIGHT);
+                        MoveDroplet(d,Direction.UP);
+                        MoveDroplet(d,Direction.LEFT);
+                    }
+                }
             }
         }
 

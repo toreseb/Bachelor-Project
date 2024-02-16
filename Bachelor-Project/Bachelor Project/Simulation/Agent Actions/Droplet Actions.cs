@@ -1,4 +1,5 @@
 ﻿using Bachelor_Project.Electrode_Types;
+using Bachelor_Project.Outparser;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,34 +32,69 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static void MoveDroplet(Droplet d, Direction dir)
         {
+            bool legalMove = true;
             ArrayList temp = new ArrayList();
             Electrode? newE = null;
             foreach (Electrode e in d.Occupy)
             {
+                int xChange = 0;
+                int yChange = 0;
                 switch (dir)
                 {
                     case Direction.UP:
-                        newE = Board.Electrodes[e.ePosX, e.ePosY - 1];
+                        yChange = -1;
                         
                         break;
                     case Direction.RIGHT:
-                        newE = Board.Electrodes[e.ePosX + 1, e.ePosY];
+                        xChange = 1;
                         
                         break;
                     case Direction.DOWN:
-                        newE = Board.Electrodes[e.ePosX, e.ePosY + 1];
+                        yChange = 1;
                         
                         break;
                     case Direction.LEFT:
-                        newE = Board.Electrodes[e.ePosX - 1, e.ePosY];
+                        xChange = -1;
                         
                         break;
                 }
-                temp.Add(newE);
-                newE.Occupant = d;
-                e.Occupant = null;
+
+                if (e.ePosX + xChange < Board.GetWidth() && e.ePosX + xChange >= 0 && e.ePosY + yChange < Board.GetHeight() && e.ePosY + yChange >= 0)
+                {
+                    newE = Board.Electrodes[e.ePosX + xChange, e.ePosY + yChange];
+                    temp.Add(newE);
+                    newE.Occupant = d;
+                }
+                else
+                {
+                    legalMove = false;
+                }
             }
-            d.Occupy = temp;
+
+            if (legalMove)
+            {
+                // Turn on all new electrodes first
+                foreach (Electrode e in temp)
+                {
+                    Outparser.Outparser.ElectrodeOn(e);
+                }
+
+                // Turn off all old electrodes second (which are not also new)
+                foreach (Electrode e in d.Occupy)
+                {
+                    bool contains = false;
+                    foreach (Electrode ee in temp)
+                    {
+                        if (e == ee) contains = true; break;
+                    }
+                    if (!contains) Outparser.Outparser.ElectrodeOff(e);
+
+                    e.Occupant = null;
+
+                }
+
+                d.Occupy = temp;
+            }
         }
 
     }

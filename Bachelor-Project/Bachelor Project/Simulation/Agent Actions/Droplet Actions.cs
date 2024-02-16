@@ -1,5 +1,4 @@
 ﻿using Bachelor_Project.Electrode_Types;
-using Bachelor_Project.Outparser;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +25,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         private static void inputPart(Droplet d, Input i)
         {
+            Outparser.Outparser.ElectrodeOn(i.point);
             d.Occupy.Add(i.point);
             i.point.Occupant = d;
         }
@@ -76,7 +76,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 // Turn on all new electrodes first
                 foreach (Electrode e in temp)
                 {
-                    Outparser.Outparser.ElectrodeOn(e);
+                    if (e.Status == 0)
+                    {
+                        Outparser.Outparser.ElectrodeOn(e);
+                    }
                 }
 
                 // Turn off all old electrodes second (which are not also new)
@@ -85,11 +88,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     bool contains = false;
                     foreach (Electrode ee in temp)
                     {
-                        if (e == ee) contains = true; break;
+                        if (e.Equals(ee)) { contains = true; break; }
                     }
-                    if (!contains) Outparser.Outparser.ElectrodeOff(e);
+                    if (!contains) {
+                        Outparser.Outparser.ElectrodeOff(e);
+                        e.Occupant = null;
+                    }
 
-                    e.Occupant = null;
+                    
 
                 }
 
@@ -108,9 +114,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 // Check board bounderies
                 if (e.ePosX < 1) left = false;
-                if (!(e.ePosX < Board.GetWidth() - 1)) right = false;
+                if (!(e.ePosX < Program.C.board.GetWidth() - 1)) right = false;
                 if (e.ePosY < 1) up = false;
-                if (!(e.ePosY < Board.GetHeight() - 1)) down = false;
+                if (!(e.ePosY < Program.C.board.GetHeight() - 1)) down = false;
 
                 // Check for other droplets in zone (+ boarder)
 

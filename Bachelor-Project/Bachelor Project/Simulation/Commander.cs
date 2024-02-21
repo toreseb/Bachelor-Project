@@ -35,16 +35,16 @@ namespace Bachelor_Project.Simulation
             board.Droplets = [.. board.Droplets, new Droplet(board.Input[0], 16, "Water", "Wat1")];
             board.PrintBoardState();
             Console.WriteLine();
-            Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.DOWN);
+            Droplet_Actions.MoveDroplet((Droplet)board.Droplets[0], Direction.DOWN);
             board.PrintBoardState();
             Console.WriteLine();
-            Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.UP);
+            Droplet_Actions.MoveDroplet((Droplet)board.Droplets[0], Direction.UP);
             board.PrintBoardState();
             Console.WriteLine();
-            Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.RIGHT);
+            Droplet_Actions.MoveDroplet((Droplet)board.Droplets[0], Direction.RIGHT);
             board.PrintBoardState();
             Console.WriteLine();
-            Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.DOWN);
+            Droplet_Actions.MoveDroplet((Droplet)board.Droplets[0], Direction.DOWN);
             board.PrintBoardState();
             Console.WriteLine();
         }
@@ -52,6 +52,12 @@ namespace Bachelor_Project.Simulation
         Board GetBoard()
         {
             return board;
+        }
+
+        public void DeleteDroplet(Droplet droplet)
+        {
+            droplet.Stop();
+            board.Droplets.Remove(droplet);
         }
     }
 }

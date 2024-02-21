@@ -20,11 +20,11 @@ namespace Bachelor_Project.Simulation
         public Sensor[] Sensors         { get; set; }
         public Input[] Input    { get; set; }
         public Output[] Output { get; set; }
-        public Droplet[] Droplets       { get; set; }
+        public ArrayList Droplets      { get; set; }
         public Information Information{ get; set; }
         public String?[] Unclassified   { get; set; }
         
-        public Board(Information information, Electrode[,] electrodes, Actuator[] actuators, Sensor[] sensors, Input[] input, Output[] output, Droplet[] droplets, String?[] unclassified)
+        public Board(Information information, Electrode[,] electrodes, Actuator[] actuators, Sensor[] sensors, Input[] input, Output[] output, ArrayList droplets, String?[] unclassified)
         {
             this.Information = information;
             this.Electrodes = electrodes;
@@ -111,7 +111,7 @@ namespace Bachelor_Project.Simulation
             {
                 item.point = eArray[item.PositionX / i.electrode_size, item.PositionY / i.electrode_size];
             }
-            Droplet[] droplets = jObject["droplets"].Type != JTokenType.Null ? jObject["droplets"].ToObject<Droplet[]>() : [];
+            ArrayList droplets = jObject["droplets"].Type != JTokenType.Null ? jObject["droplets"].ToObject<ArrayList>() : [];
             String?[] unclassified = jObject["unclassified"].Type != JTokenType.Null ? jObject["unclassified"].ToObject<string?[]>() : [];
 
             Console.WriteLine(i.sizeX);

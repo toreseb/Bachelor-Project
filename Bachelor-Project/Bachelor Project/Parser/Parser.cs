@@ -1,5 +1,8 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Tree;
+using Microsoft.VisualBasic.FileIO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,73 +12,83 @@ namespace Bachelor_Project.Parser
 {
     static class Parser
     {
-        static TextFieldParser parser;
+        static ArrayList[] Commands = []; 
 
-        public static void ParseFile(string path)
+        public static ArrayList[] ParseFile(string path)
         {
-            parser = new TextFieldParser(path);
-            parser.TextFieldType = FieldType.Delimited;
-            parser.SetDelimiters(",");
-            while (!parser.EndOfData)
-            {
-                string[] fields = parser.ReadFields();
-                string[] usefields = [];
-                foreach (string field in fields)
-                {
-                    usefields = [.. usefields, field.Trim().ToLower()];
-                }
-                
-                Decode(usefields);
-            }
+            String data = File.ReadAllText(path);
+            ICharStream stream = CharStreams.fromString(data);
+            ITokenSource lexer = new ProgramLexer(stream);
+            ITokenStream tokens = new CommonTokenStream(lexer);
+            ProgramParser parser = new ProgramParser(tokens);
+            IParseTree tree = parser.program();
+            ProgramPrinter printer = new ProgramPrinter();
+            ParseTreeWalker.Default.Walk(printer, tree);
+
+            return Commands;
+
         }
 
-        private static void Decode(string[] fields)
+        public static void Decode(ProgramParser.CommandContext context)
         {
-            switch (fields[0])
+            string output;
+            int i;
+            ArrayList Command = [];
+            switch (context.GetChild(0).GetText())
             {
                 case "input": //input , droplet name
-                    Console.WriteLine($"input droplet name: {fields[1]}");
+                    Console.WriteLine($"input droplet named: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()}");
+                    Commands = [..Commands, new ArrayList() { "input", context.GetChild<ProgramParser.DropletnameContext>(0).GetText() }];
                     break;
                 case "output": //output , droplet name
-                    Console.WriteLine($"output droplet name: {fields[1]}");
+                    Console.WriteLine($"output droplet named: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()}");
+                    Commands = [..Commands, new ArrayList() { "output", context.GetChild<ProgramParser.DropletnameContext>(0).GetText() }];
                     break;
                 case "waste": //waste , droplet name
-                    Console.WriteLine($"waste droplet name: {fields[1]}");
+                    Console.WriteLine($"waste droplet named: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()}");
+                    Commands = [..Commands, new ArrayList() { "waste", context.GetChild<ProgramParser.DropletnameContext>(0).GetText() }];
                     break;
-                
-                case "merge": //merge , droplet1 , droplet2 , new droplet name
-                    Console.WriteLine($"merge droplet {fields[1]} with {fields[2]} making droplet with name: {fields[3]}");
-                    break;
-                case "multi-merge": //multi-merge , droplets , new droplet name
-                    int amount = fields.Length - 1;
-                    string output = "merge droplets ";
-                    foreach (string field in fields[1..(amount)])
+                case "merge": //multi-merge , droplets , new droplet name
+                    Command.Add("merge");
+                    Command.Add(context.GetChild<ProgramParser.DropletnameContext>(0).GetText());
+                    output = $"merge to make droplet {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} by merging ";
+                    i = 1;
+                    while (context.GetChild<ProgramParser.DropletnameContext>(i) != null)
                     {
-                        output = string.Concat(output,field+", ").ToString();
+                        output = string.Concat(output, context.GetChild<ProgramParser.DropletnameContext>(i).GetText() + " ").ToString();
+                        Command.Add(context.GetChild<ProgramParser.DropletnameContext>(i).GetText());
+                        i++;
                     }
-                    output = string.Concat(output, "making droplet with name: " + fields[amount]).ToString();
-                    Console.WriteLine(output.ToString());
+                    Console.WriteLine(output);
+                    Commands = [..Commands, new ArrayList(Command)];
+                    Command.Clear();
                     break;
                 case "split": //split , droplet name , new droplet1 name , new droplet2 name
-                    Console.WriteLine($"split droplet {fields[1]} into droplets {fields[2]} and {fields[3]}");
-                    break;
-                case "multi-split": //multi-split , droplet name , droplets
-                    amount = fields.Length;
-                    output = "split droplet " + fields[1] + " into droplets ";
-                    foreach (string field in fields[2..(amount)])
+                    Command.Add("split");
+                    Command.Add(context.GetChild<ProgramParser.DropletnameContext>(0).GetText());
+                    output = $"split droplet {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} to make ";
+                    i = 1;
+                    while (context.GetChild<ProgramParser.DropletnameContext>(i) != null)
                     {
-                        output = string.Concat(output,field+", ").ToString();
+                        output = string.Concat(output, context.GetChild<ProgramParser.DropletnameContext>(i).GetText() + " ").ToString();
+                        Command.Add(context.GetChild<ProgramParser.DropletnameContext>(i).GetText());
+                        i++;
                     }
-                    Console.WriteLine(output.ToString());
+                    Console.WriteLine(output);
+                    Commands = [..Commands, new ArrayList(Command)];
+                    Command.Clear();
                     break;
                 case "mix": //mix , droplet , pattern
-                    Console.WriteLine($"mix droplet {fields[1]} in {fields[2]} pattern");
+                    Console.WriteLine($"mix {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} in the {context.GetChild<ProgramParser.ShapeContext>(0).GetText()} pattern");
+                    Commands = [..Commands, new ArrayList() { "mix", context.GetChild<ProgramParser.DropletnameContext>(0).GetText(), context.GetChild<ProgramParser.ShapeContext>(0).GetText() }];
                     break;
                 case "temp": //temp , droplet , temperature
-                    Console.WriteLine($"set temperature of droplet {fields[1]} to {fields[2]}");
+                    Console.WriteLine($"set temperature of {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} to {context.GetChild<ProgramParser.NumberContext>(0).INT()}");
+                    Commands = [..Commands, new ArrayList() { "temp", context.GetChild<ProgramParser.DropletnameContext>(0).GetText(), context.GetChild<ProgramParser.NumberContext>(0).INT() }];
                     break;
                 case "sense": //sense , droplet , sensor
-                    Console.WriteLine($"sense droplet {fields[1]} with {fields[2]} sensor");
+                    Console.WriteLine($"sense {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} with {context.GetChild<ProgramParser.SensorContext>(0).GetText()} sensor");
+                    Commands = [..Commands, new ArrayList() { "sense", context.GetChild<ProgramParser.DropletnameContext>(0).GetText(), context.GetChild<ProgramParser.SensorContext>(0).GetText() }];
                     break;
                 default:
                     break;

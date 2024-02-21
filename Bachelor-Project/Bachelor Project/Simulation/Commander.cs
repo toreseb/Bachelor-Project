@@ -1,5 +1,6 @@
 ﻿using Bachelor_Project.Simulation.Agent_Actions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,10 +17,10 @@ namespace Bachelor_Project.Simulation
             PropertyNameCaseInsensitive = true,
         };
 
-        public string[] commands;
+        public ArrayList[] commands;
         public Board board;
 
-        public Commander(string[] commands, string boarddata)
+        public Commander(ArrayList[] commands, string boarddata)
         {
             this.commands = commands;
             string json = File.ReadAllText(boarddata);
@@ -47,6 +48,7 @@ namespace Bachelor_Project.Simulation
             Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.DOWN);
             board.PrintBoardState();
             Console.WriteLine();
+            
         }
 
         Board GetBoard()

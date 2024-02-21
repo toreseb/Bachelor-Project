@@ -34,3 +34,4 @@ C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Proj
 C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.pdb
 C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\Bachelor Project.genruntimeconfig.cache
 C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\obj\Debug\net8.0\ref\Bachelor Project.dll
+C:\GitHub\Bachelor-Project\Bachelor-Project\Bachelor Project\bin\Debug\net8.0\Antlr4.Runtime.Standard.dll

@@ -1,0 +1,4 @@
+input droplet1;
+input droplet2;
+merge droplet3 droplet1 droplet2;
+temp droplet3 25;

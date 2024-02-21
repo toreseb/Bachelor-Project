@@ -23,11 +23,12 @@ static class Program
         string inputfiles = "C:\\GitHub\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\Input Files";
 
         string programcode = "Program.txt";
+        string testprogramcode = "testProgram.txt";
         string boarddata = "BoardData.json";
         string testdata = "test.json";
 
-        Parser.ParseFile(inputfiles + "\\" + programcode);
-        C = new Commander([], inputfiles + "\\" + boarddata);
+        ArrayList[] Commands = Parser.ParseFile(inputfiles + "\\" + testprogramcode);
+        C = new Commander(Commands, inputfiles + "\\" + boarddata);
         C.Start();
 
     }

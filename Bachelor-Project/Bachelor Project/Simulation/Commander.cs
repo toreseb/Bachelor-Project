@@ -17,12 +17,12 @@ namespace Bachelor_Project.Simulation
             PropertyNameCaseInsensitive = true,
         };
 
-        public ArrayList[] commands;
+        (ArrayList[] commands, List<String> dropletnames, List<String> droplettypes) data;
         public Board board;
 
-        public Commander(ArrayList[] commands, string boarddata)
+        public Commander((ArrayList[] commands, List<String> dropletnames, List<String> droplettypes) data, string boarddata)
         {
-            this.commands = commands;
+            this.data = data;
             string json = File.ReadAllText(boarddata);
             board = Board.ImportBoardData(json);
         }
@@ -32,6 +32,8 @@ namespace Bachelor_Project.Simulation
 
             //Actuator e = JsonSerializer.Deserialize<Actuator>(json, options);
             //Console.WriteLine(e);
+
+
 
             board.Droplets = [.. board.Droplets, new Droplet(board.Input[0], 16, "Water", "Wat1")];
             board.PrintBoardState();

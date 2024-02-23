@@ -1,4 +1,5 @@
-input droplet1;
-input droplet2;
-merge droplet3 droplet1 droplet2;
+input droplet1 blood in0;
+input droplet2 water in0;
+merge droplet3 bloodwater droplet1 droplet2;
 temp droplet3 25;
+mix droplet mixedbloodwater square;

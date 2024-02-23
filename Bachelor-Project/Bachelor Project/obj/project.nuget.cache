@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "uSktbRExyFsP7vhq16g48wRKzPTbQreZJ02aQFwPPtGofDW2s1i3KvN+vL/ablHXjDUkxZ205SartfHCvx7rUA==",
+  "dgSpecHash": "gV+ORRHiWmbl29s8ekirnp35qrXhcv6E+OtWsQhrO4jdiCZEPDz1sr1pubZRL8D91m4LgvzhWmvG2N+rtExX3Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\helen\\OneDrive\\Skrivebord\\Uni\\6. Semester\\Bachelorprojekt\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\Bachelor Project.csproj",
+  "projectFilePath": "C:\\GitHub\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\Bachelor Project.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\helen\\.nuget\\packages\\antlr4.runtime.standard\\4.13.1\\antlr4.runtime.standard.4.13.1.nupkg.sha512",
-    "C:\\Users\\helen\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\Tores\\.nuget\\packages\\antlr4.runtime.standard\\4.13.1\\antlr4.runtime.standard.4.13.1.nupkg.sha512",
+    "C:\\Users\\Tores\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }

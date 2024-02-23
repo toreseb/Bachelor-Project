@@ -31,7 +31,7 @@ static class Program
         string boarddata = "BoardData.json";
         string testdata = "test.json";
 
-        ArrayList[] Commands = Parser.ParseFile(inputfiles + "\\" + testprogramcode);
+        ArrayList [] Commands = Parser.ParseFile(inputfiles + "\\" + testprogramcode);
         C = new Commander(Commands, inputfiles + "\\" + boarddata);
         C.Start();
 

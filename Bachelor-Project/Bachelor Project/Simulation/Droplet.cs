@@ -24,7 +24,7 @@ namespace Bachelor_Project.Simulation
 
         public int Size { get; set; }
         public float Volume { get; set; }
-        public ArrayList Occupy { get; set; } = [];
+        public List<Electrode> Occupy { get; set; } = [];
 
         // Used for threading
         private CancellationTokenSource cancellationTokenSource;
@@ -39,6 +39,7 @@ namespace Bachelor_Project.Simulation
             Color = GetColor(Substance_Name);
             Size = getSize(volume);
             Droplet_Actions.InputDroplet(this, input, Size);
+            
 
             cancellationTokenSource = new CancellationTokenSource();
 

@@ -33,7 +33,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void MoveDroplet(Droplet d, Direction dir)
         {
             bool legalMove = true;
-            ArrayList temp = new ArrayList();
+            List<Electrode> temp = new List<Electrode>();
             Electrode? newE = null;
             foreach (Electrode e in d.Occupy)
             {

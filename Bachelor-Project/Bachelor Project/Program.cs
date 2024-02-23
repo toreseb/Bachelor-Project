@@ -10,6 +10,7 @@ using Bachelor_Project.Simulation.Agent_Actions;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Reflection;
 using System.Text.Json;
 
 static class Program
@@ -20,7 +21,10 @@ static class Program
     static void Main(string[] args)
     {
 
-        string inputfiles = "C:\\GitHub\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\Input Files";
+        string inputfiles = Directory.GetCurrentDirectory() + "\\..\\..\\..\\Input Files";
+        Console.WriteLine(inputfiles);
+        
+
 
         string programcode = "Program.txt";
         string testprogramcode = "testProgram.txt";

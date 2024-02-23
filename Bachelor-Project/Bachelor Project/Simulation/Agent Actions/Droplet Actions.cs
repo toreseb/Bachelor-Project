@@ -124,6 +124,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 // Check for contamination
             }
 
+            // Make good movement
             if (up)
             {
                 if (left)

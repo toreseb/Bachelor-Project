@@ -52,6 +52,16 @@ namespace Bachelor_Project.Simulation
             return Information.sizeY;
         }
 
+        public int GetXElectrodes()
+        {
+            return Information.eRow;
+        }
+
+        public int GetYElectrodes()
+        {
+            return Information.eCol;
+        }
+
         static public Board ImportBoardData(string json)
         {
             JObject jObject = JObject.Parse(json);

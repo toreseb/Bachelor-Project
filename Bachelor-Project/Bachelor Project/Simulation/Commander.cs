@@ -33,7 +33,7 @@ namespace Bachelor_Project.Simulation
             //Actuator e = JsonSerializer.Deserialize<Actuator>(json, options);
             //Console.WriteLine(e);
 
-            board.Droplets = [.. board.Droplets, new Droplet(board.Input[0], 16, "Water", "Wat1")];
+            /*board.Droplets = [.. board.Droplets, new Droplet(board.Input[0], 16, "Water", "Wat1")];
             board.PrintBoardState();
             Console.WriteLine();
             Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.DOWN);
@@ -47,8 +47,32 @@ namespace Bachelor_Project.Simulation
             Console.WriteLine();
             Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.DOWN);
             board.PrintBoardState();
+            Console.WriteLine();*/
+
+            board.Droplets = [.. board.Droplets, new Droplet(board.Input[0], 24, "Water", "Wat1")];
+            board.PrintBoardState();
             Console.WriteLine();
-            
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.DOWN);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.RIGHT);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.RIGHT);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.UP);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.DOWN);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekReversal(board.Droplets[0].Occupy);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.LEFT);
+            board.PrintBoardState();
+            Console.WriteLine();
         }
 
         Board GetBoard()

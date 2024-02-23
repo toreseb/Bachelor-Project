@@ -63,7 +63,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     newE = Program.C.board.Electrodes[e.ePosX + xChange, e.ePosY + yChange];
                     temp.Add(newE);
-                    newE.Occupant = d;
                 }
                 else
                 {
@@ -79,6 +78,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     if (e.Status == 0)
                     {
                         Outparser.Outparser.ElectrodeOn(e);
+                        e.Occupant = d;
                     }
                 }
 
@@ -174,6 +174,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         // Used to check if new droplet position upholds boarder
         public static bool CheckBorder(Droplet d, List<Electrode> temp)
         {
+            // For snek, just put in head instead of all positions
             bool legalMove = true;
             foreach (Electrode e in temp)
             {
@@ -215,10 +216,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                             break;
                     }
 
-                    if (!(xCheck < 0 || xCheck > Program.C.board.GetWidth() || yCheck < 0 || yCheck > Program.C.board.GetHeight()))
+                    if (!(xCheck < 0 || xCheck >= Program.C.board.GetXElectrodes() || yCheck < 0 || yCheck >= Program.C.board.GetYElectrodes()))
                     {
                         Droplet? occupant = Program.C.board.Electrodes[xCheck, yCheck].Occupant;
-                        if (!(occupant.Equals(d) || occupant == null))
+                        if (!(occupant == null || occupant.Equals(d)))
                         {
                             legalMove = false;
                             goto destination;
@@ -231,5 +232,89 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return legalMove;
         }
 
+        public static bool SnekCheck(Electrode newHead)
+        {
+            if (newHead.Occupant == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        // Non-protected snake move forward 1
+        // Assumes that the list of occupied electrodes are in the form of a snake.
+        public static void SnekMove(Droplet d, Direction dir)
+        {
+            List<Electrode> newOcc = new List<Electrode>();
+            List<Electrode> newHead = new List<Electrode>(); // Needs to be a list containing one electrode for a snekcheck.
+            Electrode head = d.Occupy.FirstOrDefault();
+
+            try
+            {
+                switch (dir)
+                {
+                    case Direction.UP:
+                        newHead.Add(Program.C.board.Electrodes[head.ePosX, head.ePosY - 1]);
+                        break;
+                    case Direction.LEFT:
+                        newHead.Add(Program.C.board.Electrodes[head.ePosX - 1, head.ePosY]);
+                        break;
+                    case Direction.DOWN:
+                        newHead.Add(Program.C.board.Electrodes[head.ePosX, head.ePosY + 1]);
+                        break;
+                    case Direction.RIGHT:
+                        newHead.Add(Program.C.board.Electrodes[head.ePosX + 1, head.ePosY]);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Movement out of bounds");
+                return;
+            }
+            
+
+            // Do a snekcheck
+            // If move is legal, do the thing
+            if (CheckBorder(d, newHead) && SnekCheck(newHead[0]))
+            {
+                Console.WriteLine("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
+                Console.WriteLine("Old head: " + head.ePosX + " " + head.ePosY);
+                newOcc = newHead;
+                Outparser.Outparser.ElectrodeOn(newHead[0]);
+                newHead[0].Occupant = d;
+                newOcc = newOcc.Concat(d.Occupy).ToList();
+                Outparser.Outparser.ElectrodeOff(newOcc[newOcc.Count - 1]);
+                newOcc[newOcc.Count - 1].Occupant = null;
+                newOcc.RemoveAt(newOcc.Count - 1);
+                d.Occupy = newOcc;
+                Console.WriteLine("Droplet moved");
+            }
+            else
+            {
+                Console.WriteLine("Droplet not moved");
+            }
+        }
+
+
+        // Switch head and tail of snake
+        public static void SnekReversal(List<Electrode> occu)
+        {
+            occu.Reverse();
+        }
+
+
+        // Uncoil snake
+
+
+
+        // Coil snake
+
+
+        // Fix snake - If snake is broken, remake it.
     }
 }

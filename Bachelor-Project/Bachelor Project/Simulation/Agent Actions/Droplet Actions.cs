@@ -172,7 +172,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
         // Used to check if new droplet position upholds boarder
-        public static bool CheckBorder(Droplet d, ArrayList temp)
+        public static bool CheckBorder(Droplet d, List<Electrode> temp)
         {
             bool legalMove = true;
             foreach (Electrode e in temp)

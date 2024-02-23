@@ -120,13 +120,13 @@ namespace Bachelor_Project.Simulation
 
         public void PrintBoardState() // Row and Col are switched, so the board is printed correctly
         {
-            ArrayList[][] squares = new ArrayList[Information.eCol][];
+            List<TileEntity>[][] squares = new List<TileEntity>[Information.eCol][];
             for (int i = 0; i < Information.eCol; i++)
             {
-                squares[i] = new ArrayList[Information.eRow];
+                squares[i] = new List<TileEntity>[Information.eRow];
                 for (int j = 0; j < Information.eRow; j++)
                 {
-                    squares[i][j] = new ArrayList();
+                    squares[i][j] = new List<TileEntity>();
                 }
             }
 
@@ -192,7 +192,7 @@ namespace Bachelor_Project.Simulation
             
         }
 
-        public string BuildPrintLine(ArrayList[] row, int j)
+        public string BuildPrintLine(List<TileEntity>[] row, int j)
         {
             String line1 = "| ";
             String line2 = "| ";

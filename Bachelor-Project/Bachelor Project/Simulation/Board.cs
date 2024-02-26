@@ -16,15 +16,15 @@ namespace Bachelor_Project.Simulation
     internal class Board
     {
         public Electrode[,] Electrodes  { get; set; }     
-        public Actuator[] Actuators     { get; set; }
-        public Sensor[] Sensors         { get; set; }
-        public Input[] Input    { get; set; }
-        public Output[] Output { get; set; }
-        public Droplet[] Droplets       { get; set; }
+        public Dictionary<String,Actuator> Actuators     { get; set; }
+        public Dictionary<String,Sensor> Sensors         { get; set; }
+        public Dictionary<String,Input> Input    { get; set; }
+        public Dictionary<String, Output> Output { get; set; }
+        public Dictionary<String, Droplet> Droplets       { get; set; }
         public Information Information{ get; set; }
         public String?[] Unclassified   { get; set; }
         
-        public Board(Information information, Electrode[,] electrodes, Actuator[] actuators, Sensor[] sensors, Input[] input, Output[] output, Droplet[] droplets, String?[] unclassified)
+        public Board(Information information, Electrode[,] electrodes, Dictionary<String, Actuator> actuators, Dictionary<String, Sensor> sensors, Dictionary<String, Input> input, Dictionary<String, Output> output, Dictionary<String, Droplet> droplets, String?[] unclassified)
         {
             this.Information = information;
             this.Electrodes = electrodes;
@@ -56,66 +56,112 @@ namespace Bachelor_Project.Simulation
         {
             JObject jObject = JObject.Parse(json);
 
-            Information i = jObject["information"][0].ToObject<Information>();
+            Information inf = jObject["information"][0].ToObject<Information>();
             Electrode[] eList = jObject["electrodes"].ToObject<Electrode[]>();
-            i.electrode_size = eList[0].SizeX;
-            i.eRow = i.sizeX / i.electrode_size; // Number of electrodes in a row
-            i.eCol = i.sizeY / i.electrode_size; // Number of electrodes in a column
-            Electrode[,] eArray = new Electrode[i.eRow,i.eCol];
+            inf.electrode_size = eList[0].SizeX;
+            inf.eRow = inf.sizeX / inf.electrode_size; // Number of electrodes in a row
+            inf.eCol = inf.sizeY / inf.electrode_size; // Number of electrodes in a column
+            Electrode[,] eArray = new Electrode[inf.eRow,inf.eCol];
             for (int j = 0; j < eList.Length; j++)
             {
-                eArray[j % i.eRow, j / i.eRow] = eList[j];
-                eList[j].ePosX = j % i.eRow;
-                eList[j].ePosY = j / i.eRow;
+                eArray[j % inf.eRow, j / inf.eRow] = eList[j];
+                eList[j].ePosX = j % inf.eRow;
+                eList[j].ePosY = j / inf.eRow;
             }
 
             JArray aList = jObject["actuators"].Type != JTokenType.Null ? (JArray)jObject["actuators"] : [] ;
-            Actuator[] actuators = [];
+            Dictionary<String, Actuator> actuators = [];
+            
             foreach (var item in aList)
+
             {
                 switch (item["type"].ToString())
                 {
                     case "heater":
-                        actuators = [..actuators, item.ToObject<Heater>()];
+                        actuators.Add(item["name"].ToString(), item.ToObject<Heater>());
                         break;
                     default:
                         Console.WriteLine("Actuator type not recognized");
                         break;
+                    }
+                int startX = (int)item["positionX"] / inf.electrode_size;
+                int startY = (int)item["positionY"] / inf.electrode_size;
+
+                int endX = ((int)item["positionX"] + (int)item["sizeX"]) / inf.electrode_size;
+                int endY = ((int)item["positionX"] + (int)item["sizeY"]) / inf.electrode_size;
+                int i = endX - startX;
+                while (i >= 0)
+                {
+                    int j = endY - startY;
+                    while (j >= 0)
+                    {
+                        actuators[item["name"].ToString()].pointers.Add(eArray[startY + j, startX + i]);
+                        j--;
+                    }
+                    i--;
                 }
+
+                
+                
             }
             Console.WriteLine(jObject["sensors"].Type != JTokenType.Null);
             JArray sList = jObject["sensors"].Type != JTokenType.Null ? (JArray)jObject["sensors"] : [] ;
-            Sensor[] sensors = [];
+            Dictionary<String,Sensor> sensors = [];
             foreach (var item in sList)
             {
                 switch (item.Type.ToString())
                 {
                     case "RGB_color":
-                        sensors = [..sensors,item.ToObject<RGB_Sensor>()];
+                        sensors.Add(item["name"].ToString(),item.ToObject<RGB_Sensor>());
                         break;
                     case "size":
-                        sensors = [..sensors,item.ToObject<SizeSensor>()];
+                        sensors.Add(item["name"].ToString(), item.ToObject<SizeSensor>());
                         break;
                     default:
                         Console.WriteLine("Sensor type not recognized");
                         break;
                 }
+                int startX = (int)item["positionX"] / inf.electrode_size;
+                int startY = (int)item["positionY"] / inf.electrode_size;
+
+                int endX = ((int)item["positionX"] + (int)item["sizeX"]) / inf.electrode_size;
+                int endY = ((int)item["positionX"] + (int)item["sizeY"]) / inf.electrode_size;
+                int i = endX - startX;
+                while (i >= 0)
+                {
+                    int j = endY - startY;
+                    while (j >= 0)
+                    {
+                        sensors[item["name"].ToString()].pointers.Add(eArray[startY + j, startX + i]);
+                        j--;
+                    }
+                    i--;
+                }
             }
             Input[] iList = jObject["inputs"].Type != JTokenType.Null ? jObject["inputs"].ToObject<Input[]>():[] ;
+            Dictionary<String, Input> iDict = [];
             foreach (var item in iList)
             {
-                item.point = eArray[item.PositionX/i.electrode_size,item.PositionY/i.electrode_size];
+                iDict.Add(item.Name, item);
+                item.point = eArray[item.PositionX/inf.electrode_size,item.PositionY/inf.electrode_size];
             }
             Output[] oList = jObject["outputs"].Type != JTokenType.Null ? jObject["outputs"].ToObject<Output[]>() : [];
+            Dictionary<String, Output> oDict = [];
             foreach (var item in oList)
             {
-                item.point = eArray[item.PositionX / i.electrode_size, item.PositionY / i.electrode_size];
+                oDict.Add(item.Name, item);
+                item.point = eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size];
             }
             Droplet[] droplets = jObject["droplets"].Type != JTokenType.Null ? jObject["droplets"].ToObject<Droplet[]>() : [];
+            Dictionary<String, Droplet> dDict = [];
+            foreach (var item in droplets)
+            {
+                dDict.Add(item.Name, item);
+            }
             String?[] unclassified = jObject["unclassified"].Type != JTokenType.Null ? jObject["unclassified"].ToObject<string?[]>() : [];
 
-            Console.WriteLine(i.sizeX);
-            return new Board(i, eArray, actuators, sensors, iList, oList, droplets, unclassified);
+            Console.WriteLine(inf.sizeX);
+            return new Board(inf, eArray, actuators, sensors, iDict, oDict, dDict, unclassified);
         }
 
         public void PrintBoardState() // Row and Col are switched, so the board is printed correctly
@@ -129,58 +175,14 @@ namespace Bachelor_Project.Simulation
                     squares[i][j] = new List<TileEntity>();
                 }
             }
-
-            foreach (var actuator in Actuators)
-            {
-                int startX = actuator.PositionX / Information.electrode_size;
-                int startY = actuator.PositionY / Information.electrode_size;
-
-                int endX = (actuator.PositionX + actuator.SizeX) / Information.electrode_size;
-                int endY = (actuator.PositionY + actuator.SizeY) / Information.electrode_size;
-                int i = endX - startX;
-                while(i >= 0)
-                {
-                    int j = endY - startY;
-                    while(j >= 0)
-                    {
-                        squares[startY + j][startX + i].Add(actuator);
-                        j--;
-                    }
-                    i--;
-                }
-
-            }
-
-            foreach (var sensor in Sensors)
-            {
-                int startX = sensor.PositionX / Information.electrode_size;
-                int startY = sensor.PositionY / Information.electrode_size;
-
-                int endX = (sensor.PositionX + sensor.SizeX) / Information.electrode_size;
-                int endY = (sensor.PositionY + sensor.SizeY) / Information.electrode_size;
-                int i = endX - startX;
-                while (i >= 0)
-                {
-                    int j = endY - startY;
-                    while (j >= 0)
-                    {
-                        squares[startY + j][startX + i].Add(sensor);
-                        j--;
-                    }
-                    i--;
-                }
-            }
-
-            foreach (var input in Input)
-            {
-                squares[input.point.ePosY][input.point.ePosX].Add(input);
-            }
-
-            foreach (var output in Output)
-            {
-                squares[output.point.ePosY][output.point.ePosX].Add(output);
-            }
+            Actuators.Values.ToList().ForEach(x => x.pointers.ToList().ForEach(y => squares[y.ePosY][y.ePosX].Add(x)));
             
+            Sensors.Values.ToList().ForEach(x => x.pointers.ToList().ForEach(y => squares[y.ePosY][y.ePosX].Add(x)));
+
+            Input.Values.ToList().ForEach(x => squares[x.point.ePosY][x.point.ePosX].Add(x));
+
+            Output.Values.ToList().ForEach(x => squares[x.point.ePosY][x.point.ePosX].Add(x));
+
             Console.WriteLine("Board State:");
             Console.WriteLine(new String('-',1+Information.eRow*(3+6)));
             // Write horizontal lines one by one

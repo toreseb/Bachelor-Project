@@ -35,19 +35,19 @@ namespace Bachelor_Project.Simulation
 
 
 
-            board.Droplets = [.. board.Droplets, new Droplet(board.Input[0], 16, "Water", "Wat1")];
+            board.Droplets.Add("Wat1", new Droplet(board.Input["in0"], 16, "Water", "Wat1"));
             board.PrintBoardState();
             Console.WriteLine();
-            Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.DOWN);
+            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.DOWN);
             board.PrintBoardState();
             Console.WriteLine();
-            Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.UP);
+            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.UP);
             board.PrintBoardState();
             Console.WriteLine();
-            Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
             board.PrintBoardState();
             Console.WriteLine();
-            Droplet_Actions.MoveDroplet(board.Droplets[0], Direction.DOWN);
+            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.DOWN);
             board.PrintBoardState();
             Console.WriteLine();
             

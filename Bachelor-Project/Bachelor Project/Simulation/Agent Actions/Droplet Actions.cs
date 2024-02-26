@@ -11,9 +11,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     internal static class Droplet_Actions
     {
         private static readonly int mixAmount = 5;
-        public static void InputDroplet(Droplet d, Input i, int size)
+        public static void InputDroplet(Droplet d, Input i, int volume)
         {
+            d.SetSizes(volume);
+            d.PositionX = i.point.ePosX;
+            d.PositionY = i.point.ePosY;
             inputPart(d, i);
+            int size = d.Size;
             size -= 1;
             while (size > 0)
             {
@@ -59,7 +63,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         break;
                 }
 
-                if (e.ePosX + xChange < Program.C.board.GetWidth() && e.ePosX + xChange >= 0 && e.ePosY + yChange < Program.C.board.GetHeight() && e.ePosY + yChange >= 0)
+                if (e.ePosX + xChange < Program.C.board.GetXElectrodes() && e.ePosX + xChange >= 0 && e.ePosY + yChange < Program.C.board.GetYElectrodes() && e.ePosY + yChange >= 0)
                 {
                     newE = Program.C.board.Electrodes[e.ePosX + xChange, e.ePosY + yChange];
                     temp.Add(newE);

@@ -201,11 +201,13 @@ namespace Bachelor_Project.Simulation
                 Console.WriteLine(BuildPrintLine(squares[j],j));
                 Console.WriteLine(new String('-', 1 + Information.eRow * (3 + 6)));
             }
+            Console.WriteLine();
             
         }
 
         public string BuildPrintLine(List<TileEntity>[] row, int j)
         {
+            int squarewidth = 6;
             String line1 = "| ";
             String line2 = "| ";
             String line3 = "| ";
@@ -217,22 +219,25 @@ namespace Bachelor_Project.Simulation
                 int used3 = 0;
                 foreach (var item in square)
                 {
-                    
-                    Type t = item.GetType();
-                    if (t.IsSubclassOf(typeof(Actuator)))
+                    string name;
+                    if (item.Name.Length > 6)
                     {
-                        line1 += ((Actuator)item).Name;
-                        used1 += ((Actuator)item).Name.Length;
+                        name = item.Name[..6];
                     }
-                    else if (t.IsSubclassOf(typeof(Sensor)))
+                    else
                     {
-                        line1 += ((Sensor)item).Name;
-                        used1 += ((Sensor)item).Name.Length;
+                        name = item.Name;
+                    }
+                    Type t = item.GetType();
+                    if (t.IsSubclassOf(typeof(Actuator)) || t.IsSubclassOf(typeof(Sensor)))
+                    {
+                        line1 += name;
+                        used1 += name.Length;
                     }
                     else if (t.IsSubclassOf(typeof(Accessor)))
                     {
-                        line3 += ((Accessor)item).Name;
-                        used3 += ((Accessor)item).Name.Length;
+                        line3 += name;
+                        used3 += name.Length;
                     }
                 }
                 
@@ -240,8 +245,17 @@ namespace Bachelor_Project.Simulation
 
                 if (Electrodes[i,j].Occupant != null)
                 {
-                    line2 += Electrodes[i,j].Occupant.Name;
-                    used2 += Electrodes[i,j].Occupant.Name.Length;
+                    string name;
+                    if (Electrodes[i, j].Occupant.Name.Length > 6)
+                    {
+                        name = Electrodes[i, j].Occupant.Name[..6];
+                    }
+                    else
+                    {
+                        name = Electrodes[i, j].Occupant.Name;
+                    }
+                    line2 += name;
+                    used2 += name.Length;
                 }else if (Electrodes[i,j].GetContaminants().Length != 0)
                 {
                     line2 += "Z";
@@ -249,12 +263,21 @@ namespace Bachelor_Project.Simulation
                 }
                 else
                 {
-                    line2 += Electrodes[i, j].Name;
-                    used2 += Electrodes[i, j].Name.Length;
+                    string name;
+                    if (Electrodes[i, j].Name.Length > 6)
+                    {
+                        name = Electrodes[i, j].Name[..6];
+                    }
+                    else
+                    {
+                        name = Electrodes[i, j].Name;
+                    }
+                    line2 += name;
+                    used2 += name.Length;
                 }
-                line1 += new String(' ', 6 - used1) + " | ";
-                line2 += new String(' ', 6 - used2) + " | ";
-                line3 += new String(' ', 6-used3) + " | ";
+                line1 += new String(' ', squarewidth - used1) + " | ";
+                line2 += new String(' ', squarewidth - used2) + " | ";
+                line3 += new String(' ', squarewidth-used3) + " | ";
                 i++;
             }
             string totalline = line1 + "\n" + line2 + "\n" + line3;

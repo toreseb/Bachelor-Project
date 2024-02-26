@@ -37,8 +37,8 @@ public partial class ProgramParser : Parser {
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, INPUT=7, OUTPUT=8, WASTE=9, 
-		MERGE=10, SPLIT=11, MIX=12, TEMP=13, SENSE=14, NEWLINE=15, STRING=16, 
-		INT=17;
+		CONTAMINATE=10, MERGE=11, SPLIT=12, MIX=13, TEMP=14, SENSE=15, NEWLINE=16, 
+		STRING=17, INT=18;
 	public const int
 		RULE_program = 0, RULE_dropletname = 1, RULE_droplettype = 2, RULE_input = 3, 
 		RULE_output = 4, RULE_number = 5, RULE_shape = 6, RULE_sensor = 7, RULE_command = 8;
@@ -49,11 +49,13 @@ public partial class ProgramParser : Parser {
 
 	private static readonly string[] _LiteralNames = {
 		null, "';'", "'square'", "'circle'", "'size'", "'rgb'", "' '", "'input'", 
-		"'output'", "'waste'", "'merge'", "'split'", "'mix'", "'temp'", "'sense'"
+		"'output'", "'waste'", "'contam'", "'merge'", "'split'", "'mix'", "'temp'", 
+		"'sense'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, null, null, null, null, null, null, "INPUT", "OUTPUT", "WASTE", 
-		"MERGE", "SPLIT", "MIX", "TEMP", "SENSE", "NEWLINE", "STRING", "INT"
+		"CONTAMINATE", "MERGE", "SPLIT", "MIX", "TEMP", "SENSE", "NEWLINE", "STRING", 
+		"INT"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -148,7 +150,7 @@ public partial class ProgramParser : Parser {
 				State = 25;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 32640L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 65408L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -471,17 +473,24 @@ public partial class ProgramParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public DropletnameContext dropletname(int i) {
 			return GetRuleContext<DropletnameContext>(i);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public DroplettypeContext droplettype() {
-			return GetRuleContext<DroplettypeContext>(0);
+		[System.Diagnostics.DebuggerNonUserCode] public DroplettypeContext[] droplettype() {
+			return GetRuleContexts<DroplettypeContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public DroplettypeContext droplettype(int i) {
+			return GetRuleContext<DroplettypeContext>(i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public InputContext input() {
 			return GetRuleContext<InputContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public NumberContext number() {
+			return GetRuleContext<NumberContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OUTPUT() { return GetToken(ProgramParser.OUTPUT, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public OutputContext output() {
 			return GetRuleContext<OutputContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WASTE() { return GetToken(ProgramParser.WASTE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode CONTAMINATE() { return GetToken(ProgramParser.CONTAMINATE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MERGE() { return GetToken(ProgramParser.MERGE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SPLIT() { return GetToken(ProgramParser.SPLIT, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MIX() { return GetToken(ProgramParser.MIX, 0); }
@@ -489,9 +498,6 @@ public partial class ProgramParser : Parser {
 			return GetRuleContext<ShapeContext>(0);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode TEMP() { return GetToken(ProgramParser.TEMP, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public NumberContext number() {
-			return GetRuleContext<NumberContext>(0);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SENSE() { return GetToken(ProgramParser.SENSE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public SensorContext sensor() {
 			return GetRuleContext<SensorContext>(0);
@@ -519,7 +525,7 @@ public partial class ProgramParser : Parser {
 		EnterRule(_localctx, 16, RULE_command);
 		int _la;
 		try {
-			State = 116;
+			State = 128;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case INPUT:
@@ -539,78 +545,78 @@ public partial class ProgramParser : Parser {
 				Match(T__5);
 				State = 47;
 				input();
+				State = 48;
+				Match(T__5);
+				State = 49;
+				number();
 				}
 				break;
 			case OUTPUT:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 49;
-				Match(OUTPUT);
-				State = 50;
-				Match(T__5);
 				State = 51;
-				dropletname();
+				Match(OUTPUT);
 				State = 52;
 				Match(T__5);
 				State = 53;
+				dropletname();
+				State = 54;
+				Match(T__5);
+				State = 55;
 				output();
 				}
 				break;
 			case WASTE:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 55;
-				Match(WASTE);
-				State = 56;
-				Match(T__5);
 				State = 57;
+				Match(WASTE);
+				State = 58;
+				Match(T__5);
+				State = 59;
 				dropletname();
 				}
 				break;
-			case MERGE:
+			case CONTAMINATE:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 58;
-				Match(MERGE);
-				State = 59;
-				Match(T__5);
 				State = 60;
-				dropletname();
+				Match(CONTAMINATE);
 				State = 61;
 				Match(T__5);
 				State = 62;
 				droplettype();
-				State = 63;
-				Match(T__5);
-				State = 64;
-				dropletname();
-				State = 65;
-				Match(T__5);
-				State = 66;
-				dropletname();
-				State = 71;
+				State = 67;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==T__5) {
 					{
 					{
-					State = 67;
+					State = 63;
 					Match(T__5);
-					State = 68;
-					dropletname();
+					State = 64;
+					droplettype();
 					}
 					}
-					State = 73;
+					State = 69;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
 				}
 				break;
-			case SPLIT:
+			case MERGE:
 				EnterOuterAlt(_localctx, 5);
 				{
+				State = 70;
+				Match(MERGE);
+				State = 71;
+				Match(T__5);
+				State = 72;
+				dropletname();
+				State = 73;
+				Match(T__5);
 				State = 74;
-				Match(SPLIT);
+				droplettype();
 				State = 75;
 				Match(T__5);
 				State = 76;
@@ -619,94 +625,125 @@ public partial class ProgramParser : Parser {
 				Match(T__5);
 				State = 78;
 				dropletname();
-				State = 79;
-				Match(T__5);
-				State = 80;
-				dropletname();
-				State = 85;
+				State = 83;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==T__5) {
 					{
 					{
-					State = 81;
+					State = 79;
 					Match(T__5);
-					State = 82;
+					State = 80;
 					dropletname();
 					}
 					}
-					State = 87;
+					State = 85;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
 				}
 				break;
-			case MIX:
+			case SPLIT:
 				EnterOuterAlt(_localctx, 6);
 				{
+				State = 86;
+				Match(SPLIT);
+				State = 87;
+				Match(T__5);
 				State = 88;
-				Match(MIX);
+				dropletname();
 				State = 89;
 				Match(T__5);
 				State = 90;
 				dropletname();
 				State = 91;
 				Match(T__5);
-				State = 95;
+				State = 92;
+				dropletname();
+				State = 97;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				while (_la==T__5) {
+					{
+					{
+					State = 93;
+					Match(T__5);
+					State = 94;
+					dropletname();
+					}
+					}
+					State = 99;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+				}
+				}
+				break;
+			case MIX:
+				EnterOuterAlt(_localctx, 7);
+				{
+				State = 100;
+				Match(MIX);
+				State = 101;
+				Match(T__5);
+				State = 102;
+				dropletname();
+				State = 103;
+				Match(T__5);
+				State = 107;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==STRING) {
 					{
-					State = 92;
+					State = 104;
 					droplettype();
-					State = 93;
+					State = 105;
 					Match(T__5);
 					}
 				}
 
-				State = 97;
+				State = 109;
 				shape();
 				}
 				break;
 			case TEMP:
-				EnterOuterAlt(_localctx, 7);
+				EnterOuterAlt(_localctx, 8);
 				{
-				State = 99;
+				State = 111;
 				Match(TEMP);
-				State = 100;
+				State = 112;
 				Match(T__5);
-				State = 101;
+				State = 113;
 				dropletname();
-				State = 102;
+				State = 114;
 				Match(T__5);
-				State = 106;
+				State = 118;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==STRING) {
 					{
-					State = 103;
+					State = 115;
 					droplettype();
-					State = 104;
+					State = 116;
 					Match(T__5);
 					}
 				}
 
-				State = 108;
+				State = 120;
 				number();
 				}
 				break;
 			case SENSE:
-				EnterOuterAlt(_localctx, 8);
+				EnterOuterAlt(_localctx, 9);
 				{
-				State = 110;
+				State = 122;
 				Match(SENSE);
-				State = 111;
+				State = 123;
 				Match(T__5);
-				State = 112;
+				State = 124;
 				dropletname();
-				State = 113;
+				State = 125;
 				Match(T__5);
-				State = 114;
+				State = 126;
 				sensor();
 				}
 				break;
@@ -726,40 +763,44 @@ public partial class ProgramParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,17,119,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,18,131,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,1,0,1,0,1,0,3,0,22,8,0,4,0,24,8,0,11,0,12,0,25,1,1,1,1,1,2,
 		1,2,1,3,1,3,1,4,1,4,1,5,1,5,1,6,1,6,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,
 		8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,
-		1,8,1,8,1,8,1,8,5,8,70,8,8,10,8,12,8,73,9,8,1,8,1,8,1,8,1,8,1,8,1,8,1,
-		8,1,8,1,8,5,8,84,8,8,10,8,12,8,87,9,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,
-		96,8,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,107,8,8,1,8,1,8,1,8,1,8,
-		1,8,1,8,1,8,1,8,3,8,117,8,8,1,8,0,0,9,0,2,4,6,8,10,12,14,16,0,2,1,0,2,
-		3,1,0,4,5,122,0,23,1,0,0,0,2,27,1,0,0,0,4,29,1,0,0,0,6,31,1,0,0,0,8,33,
-		1,0,0,0,10,35,1,0,0,0,12,37,1,0,0,0,14,39,1,0,0,0,16,116,1,0,0,0,18,19,
-		3,16,8,0,19,21,5,1,0,0,20,22,5,15,0,0,21,20,1,0,0,0,21,22,1,0,0,0,22,24,
-		1,0,0,0,23,18,1,0,0,0,24,25,1,0,0,0,25,23,1,0,0,0,25,26,1,0,0,0,26,1,1,
-		0,0,0,27,28,5,16,0,0,28,3,1,0,0,0,29,30,5,16,0,0,30,5,1,0,0,0,31,32,5,
-		16,0,0,32,7,1,0,0,0,33,34,5,16,0,0,34,9,1,0,0,0,35,36,5,17,0,0,36,11,1,
-		0,0,0,37,38,7,0,0,0,38,13,1,0,0,0,39,40,7,1,0,0,40,15,1,0,0,0,41,42,5,
-		7,0,0,42,43,5,6,0,0,43,44,3,2,1,0,44,45,5,6,0,0,45,46,3,4,2,0,46,47,5,
-		6,0,0,47,48,3,6,3,0,48,117,1,0,0,0,49,50,5,8,0,0,50,51,5,6,0,0,51,52,3,
-		2,1,0,52,53,5,6,0,0,53,54,3,8,4,0,54,117,1,0,0,0,55,56,5,9,0,0,56,57,5,
-		6,0,0,57,117,3,2,1,0,58,59,5,10,0,0,59,60,5,6,0,0,60,61,3,2,1,0,61,62,
-		5,6,0,0,62,63,3,4,2,0,63,64,5,6,0,0,64,65,3,2,1,0,65,66,5,6,0,0,66,71,
-		3,2,1,0,67,68,5,6,0,0,68,70,3,2,1,0,69,67,1,0,0,0,70,73,1,0,0,0,71,69,
-		1,0,0,0,71,72,1,0,0,0,72,117,1,0,0,0,73,71,1,0,0,0,74,75,5,11,0,0,75,76,
-		5,6,0,0,76,77,3,2,1,0,77,78,5,6,0,0,78,79,3,2,1,0,79,80,5,6,0,0,80,85,
-		3,2,1,0,81,82,5,6,0,0,82,84,3,2,1,0,83,81,1,0,0,0,84,87,1,0,0,0,85,83,
-		1,0,0,0,85,86,1,0,0,0,86,117,1,0,0,0,87,85,1,0,0,0,88,89,5,12,0,0,89,90,
-		5,6,0,0,90,91,3,2,1,0,91,95,5,6,0,0,92,93,3,4,2,0,93,94,5,6,0,0,94,96,
-		1,0,0,0,95,92,1,0,0,0,95,96,1,0,0,0,96,97,1,0,0,0,97,98,3,12,6,0,98,117,
-		1,0,0,0,99,100,5,13,0,0,100,101,5,6,0,0,101,102,3,2,1,0,102,106,5,6,0,
-		0,103,104,3,4,2,0,104,105,5,6,0,0,105,107,1,0,0,0,106,103,1,0,0,0,106,
-		107,1,0,0,0,107,108,1,0,0,0,108,109,3,10,5,0,109,117,1,0,0,0,110,111,5,
-		14,0,0,111,112,5,6,0,0,112,113,3,2,1,0,113,114,5,6,0,0,114,115,3,14,7,
-		0,115,117,1,0,0,0,116,41,1,0,0,0,116,49,1,0,0,0,116,55,1,0,0,0,116,58,
-		1,0,0,0,116,74,1,0,0,0,116,88,1,0,0,0,116,99,1,0,0,0,116,110,1,0,0,0,117,
-		17,1,0,0,0,7,21,25,71,85,95,106,116
+		5,8,66,8,8,10,8,12,8,69,9,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,
+		8,5,8,82,8,8,10,8,12,8,85,9,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,5,8,
+		96,8,8,10,8,12,8,99,9,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,108,8,8,1,8,1,
+		8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,119,8,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,
+		1,8,3,8,129,8,8,1,8,0,0,9,0,2,4,6,8,10,12,14,16,0,2,1,0,2,3,1,0,4,5,136,
+		0,23,1,0,0,0,2,27,1,0,0,0,4,29,1,0,0,0,6,31,1,0,0,0,8,33,1,0,0,0,10,35,
+		1,0,0,0,12,37,1,0,0,0,14,39,1,0,0,0,16,128,1,0,0,0,18,19,3,16,8,0,19,21,
+		5,1,0,0,20,22,5,16,0,0,21,20,1,0,0,0,21,22,1,0,0,0,22,24,1,0,0,0,23,18,
+		1,0,0,0,24,25,1,0,0,0,25,23,1,0,0,0,25,26,1,0,0,0,26,1,1,0,0,0,27,28,5,
+		17,0,0,28,3,1,0,0,0,29,30,5,17,0,0,30,5,1,0,0,0,31,32,5,17,0,0,32,7,1,
+		0,0,0,33,34,5,17,0,0,34,9,1,0,0,0,35,36,5,18,0,0,36,11,1,0,0,0,37,38,7,
+		0,0,0,38,13,1,0,0,0,39,40,7,1,0,0,40,15,1,0,0,0,41,42,5,7,0,0,42,43,5,
+		6,0,0,43,44,3,2,1,0,44,45,5,6,0,0,45,46,3,4,2,0,46,47,5,6,0,0,47,48,3,
+		6,3,0,48,49,5,6,0,0,49,50,3,10,5,0,50,129,1,0,0,0,51,52,5,8,0,0,52,53,
+		5,6,0,0,53,54,3,2,1,0,54,55,5,6,0,0,55,56,3,8,4,0,56,129,1,0,0,0,57,58,
+		5,9,0,0,58,59,5,6,0,0,59,129,3,2,1,0,60,61,5,10,0,0,61,62,5,6,0,0,62,67,
+		3,4,2,0,63,64,5,6,0,0,64,66,3,4,2,0,65,63,1,0,0,0,66,69,1,0,0,0,67,65,
+		1,0,0,0,67,68,1,0,0,0,68,129,1,0,0,0,69,67,1,0,0,0,70,71,5,11,0,0,71,72,
+		5,6,0,0,72,73,3,2,1,0,73,74,5,6,0,0,74,75,3,4,2,0,75,76,5,6,0,0,76,77,
+		3,2,1,0,77,78,5,6,0,0,78,83,3,2,1,0,79,80,5,6,0,0,80,82,3,2,1,0,81,79,
+		1,0,0,0,82,85,1,0,0,0,83,81,1,0,0,0,83,84,1,0,0,0,84,129,1,0,0,0,85,83,
+		1,0,0,0,86,87,5,12,0,0,87,88,5,6,0,0,88,89,3,2,1,0,89,90,5,6,0,0,90,91,
+		3,2,1,0,91,92,5,6,0,0,92,97,3,2,1,0,93,94,5,6,0,0,94,96,3,2,1,0,95,93,
+		1,0,0,0,96,99,1,0,0,0,97,95,1,0,0,0,97,98,1,0,0,0,98,129,1,0,0,0,99,97,
+		1,0,0,0,100,101,5,13,0,0,101,102,5,6,0,0,102,103,3,2,1,0,103,107,5,6,0,
+		0,104,105,3,4,2,0,105,106,5,6,0,0,106,108,1,0,0,0,107,104,1,0,0,0,107,
+		108,1,0,0,0,108,109,1,0,0,0,109,110,3,12,6,0,110,129,1,0,0,0,111,112,5,
+		14,0,0,112,113,5,6,0,0,113,114,3,2,1,0,114,118,5,6,0,0,115,116,3,4,2,0,
+		116,117,5,6,0,0,117,119,1,0,0,0,118,115,1,0,0,0,118,119,1,0,0,0,119,120,
+		1,0,0,0,120,121,3,10,5,0,121,129,1,0,0,0,122,123,5,15,0,0,123,124,5,6,
+		0,0,124,125,3,2,1,0,125,126,5,6,0,0,126,127,3,14,7,0,127,129,1,0,0,0,128,
+		41,1,0,0,0,128,51,1,0,0,0,128,57,1,0,0,0,128,60,1,0,0,0,128,70,1,0,0,0,
+		128,86,1,0,0,0,128,100,1,0,0,0,128,111,1,0,0,0,128,122,1,0,0,0,129,17,
+		1,0,0,0,8,21,25,67,83,97,107,118,128
 	};
 
 	public static readonly ATN _ATN =

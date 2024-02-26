@@ -1,4 +1,4 @@
-﻿using Bachelor_Project.Simulation.Agent_Actions;
+using Bachelor_Project.Simulation.Agent_Actions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,12 +17,12 @@ namespace Bachelor_Project.Simulation
             PropertyNameCaseInsensitive = true,
         };
 
-        (ArrayList[] commands, List<String> dropletnames, List<String> droplettypes) data;
+        public ArrayList[] commands;
         public Board board;
 
-        public Commander((ArrayList[] commands, List<String> dropletnames, List<String> droplettypes) data, string boarddata)
+        public Commander(ArrayList[] commands, string boarddata)
         {
-            this.data = data;
+            this.commands = commands;
             string json = File.ReadAllText(boarddata);
             board = Board.ImportBoardData(json);
         }
@@ -49,8 +49,32 @@ namespace Bachelor_Project.Simulation
             Console.WriteLine();
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.DOWN);
             board.PrintBoardState();
+            Console.WriteLine();*/
+
+            board.Droplets = [.. board.Droplets, new Droplet(board.Input[0], 24, "Water", "Wat1")];
+            board.PrintBoardState();
             Console.WriteLine();
-            
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.DOWN);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.RIGHT);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.RIGHT);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.UP);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.DOWN);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekReversal(board.Droplets[0].Occupy);
+            board.PrintBoardState();
+            Console.WriteLine();
+            Droplet_Actions.SnekMove(board.Droplets[0], Direction.LEFT);
+            board.PrintBoardState();
+            Console.WriteLine();
         }
 
         Board GetBoard()

@@ -35,7 +35,17 @@ namespace Bachelor_Project.Simulation
             foreach (var item in data.dropletpairs)
             {
                 Droplet nDrop = new Droplet(item.Value, item.Key);
-                nDrop.SetContam(data.contaminated[item.Value]);
+                if (data.contaminated.ContainsKey(item.Value)){
+                    nDrop.SetContam(data.contaminated[item.Value]);
+                }
+                else
+                {
+                    nDrop.SetContam([]);
+                }
+                if (!data.contaminates.ContainsKey(item.Value))
+                {
+                    data.contaminates.Add(item.Value, []);
+                }
                 nDrop.ContamLevel = data.contaminates[item.Value].Count;
                 board.Droplets.Add(item.Key, nDrop);
             }
@@ -50,6 +60,10 @@ namespace Bachelor_Project.Simulation
                     {
                         foreach (var item in item1.OutputDroplets)
                         {
+                            if (item == "drop6")
+                            {
+                                int a = 2;
+                            }
                             if(item2.InputDroplets.Contains(item))
                             {
                                 item2.InputCommands.Add(item1);

@@ -123,6 +123,7 @@ namespace Bachelor_Project.Parser
                         catch (Exception)
                         {
                             Console.WriteLine($"Droplet with name: {context.GetChild<ProgramParser.DropletnameContext>(i).GetText()} already exists");
+                            throw;
                         }
                         i++;
                     }

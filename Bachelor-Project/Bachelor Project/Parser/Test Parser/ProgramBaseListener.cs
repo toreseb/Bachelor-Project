@@ -60,6 +60,42 @@ public partial class ProgramBaseListener : IProgramListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDropletname([NotNull] ProgramParser.DropletnameContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.droplettype"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterDroplettype([NotNull] ProgramParser.DroplettypeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.droplettype"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitDroplettype([NotNull] ProgramParser.DroplettypeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.input"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterInput([NotNull] ProgramParser.InputContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.input"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitInput([NotNull] ProgramParser.InputContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.output"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOutput([NotNull] ProgramParser.OutputContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.output"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOutput([NotNull] ProgramParser.OutputContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="ProgramParser.number"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

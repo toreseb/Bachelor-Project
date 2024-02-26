@@ -19,7 +19,6 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
-using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using IParseTreeListener = Antlr4.Runtime.Tree.IParseTreeListener;
 using IToken = Antlr4.Runtime.IToken;
@@ -51,6 +50,36 @@ public interface IProgramListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitDropletname([NotNull] ProgramParser.DropletnameContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.droplettype"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDroplettype([NotNull] ProgramParser.DroplettypeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.droplettype"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDroplettype([NotNull] ProgramParser.DroplettypeContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.input"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInput([NotNull] ProgramParser.InputContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.input"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInput([NotNull] ProgramParser.InputContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.output"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOutput([NotNull] ProgramParser.OutputContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.output"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOutput([NotNull] ProgramParser.OutputContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="ProgramParser.number"/>.
 	/// </summary>
@@ -93,10 +122,24 @@ public interface IProgramListener : IParseTreeListener {
 	void ExitCommand([NotNull] ProgramParser.CommandContext context);
 }
 
-class ProgramPrinter : ProgramBaseListener
+class ProgramDecoder : ProgramBaseListener
 {
+
+    public override void ExitDropletname([NotNull] ProgramParser.DropletnameContext context)
+    {
+		Bachelor_Project.Parser.Parser.AddName(context.GetText());
+        base.ExitDropletname(context);
+    }
+
+    public override void ExitDroplettype([NotNull] ProgramParser.DroplettypeContext context)
+    {
+		Bachelor_Project.Parser.Parser.AddType(context.GetText());
+        base.ExitDroplettype(context);
+    }
+
     public override void ExitCommand([NotNull] ProgramParser.CommandContext context)
     {
         Bachelor_Project.Parser.Parser.Decode(context);
+		base.ExitCommand(context);
     }
 }

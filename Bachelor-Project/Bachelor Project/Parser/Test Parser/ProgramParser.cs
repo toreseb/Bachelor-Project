@@ -40,10 +40,11 @@ public partial class ProgramParser : Parser {
 		MERGE=10, SPLIT=11, MIX=12, TEMP=13, SENSE=14, NEWLINE=15, STRING=16, 
 		INT=17;
 	public const int
-		RULE_program = 0, RULE_dropletname = 1, RULE_number = 2, RULE_shape = 3, 
-		RULE_sensor = 4, RULE_command = 5;
+		RULE_program = 0, RULE_dropletname = 1, RULE_droplettype = 2, RULE_input = 3, 
+		RULE_output = 4, RULE_number = 5, RULE_shape = 6, RULE_sensor = 7, RULE_command = 8;
 	public static readonly string[] ruleNames = {
-		"program", "dropletname", "number", "shape", "sensor", "command"
+		"program", "dropletname", "droplettype", "input", "output", "number", 
+		"shape", "sensor", "command"
 	};
 
 	private static readonly string[] _LiteralNames = {
@@ -122,29 +123,29 @@ public partial class ProgramParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 17;
+			State = 23;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 12;
+				State = 18;
 				command();
-				State = 13;
+				State = 19;
 				Match(T__0);
-				State = 15;
+				State = 21;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==NEWLINE) {
 					{
-					State = 14;
+					State = 20;
 					Match(NEWLINE);
 					}
 				}
 
 				}
 				}
-				State = 19;
+				State = 25;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 32640L) != 0) );
@@ -187,7 +188,130 @@ public partial class ProgramParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 21;
+			State = 27;
+			Match(STRING);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class DroplettypeContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRING() { return GetToken(ProgramParser.STRING, 0); }
+		public DroplettypeContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_droplettype; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IProgramListener typedListener = listener as IProgramListener;
+			if (typedListener != null) typedListener.EnterDroplettype(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IProgramListener typedListener = listener as IProgramListener;
+			if (typedListener != null) typedListener.ExitDroplettype(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public DroplettypeContext droplettype() {
+		DroplettypeContext _localctx = new DroplettypeContext(Context, State);
+		EnterRule(_localctx, 4, RULE_droplettype);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 29;
+			Match(STRING);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class InputContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRING() { return GetToken(ProgramParser.STRING, 0); }
+		public InputContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_input; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IProgramListener typedListener = listener as IProgramListener;
+			if (typedListener != null) typedListener.EnterInput(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IProgramListener typedListener = listener as IProgramListener;
+			if (typedListener != null) typedListener.ExitInput(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public InputContext input() {
+		InputContext _localctx = new InputContext(Context, State);
+		EnterRule(_localctx, 6, RULE_input);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 31;
+			Match(STRING);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class OutputContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRING() { return GetToken(ProgramParser.STRING, 0); }
+		public OutputContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_output; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IProgramListener typedListener = listener as IProgramListener;
+			if (typedListener != null) typedListener.EnterOutput(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IProgramListener typedListener = listener as IProgramListener;
+			if (typedListener != null) typedListener.ExitOutput(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public OutputContext output() {
+		OutputContext _localctx = new OutputContext(Context, State);
+		EnterRule(_localctx, 8, RULE_output);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 33;
 			Match(STRING);
 			}
 		}
@@ -224,11 +348,11 @@ public partial class ProgramParser : Parser {
 	[RuleVersion(0)]
 	public NumberContext number() {
 		NumberContext _localctx = new NumberContext(Context, State);
-		EnterRule(_localctx, 4, RULE_number);
+		EnterRule(_localctx, 10, RULE_number);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 23;
+			State = 35;
 			Match(INT);
 			}
 		}
@@ -264,12 +388,12 @@ public partial class ProgramParser : Parser {
 	[RuleVersion(0)]
 	public ShapeContext shape() {
 		ShapeContext _localctx = new ShapeContext(Context, State);
-		EnterRule(_localctx, 6, RULE_shape);
+		EnterRule(_localctx, 12, RULE_shape);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 25;
+			State = 37;
 			_la = TokenStream.LA(1);
 			if ( !(_la==T__1 || _la==T__2) ) {
 			ErrorHandler.RecoverInline(this);
@@ -312,12 +436,12 @@ public partial class ProgramParser : Parser {
 	[RuleVersion(0)]
 	public SensorContext sensor() {
 		SensorContext _localctx = new SensorContext(Context, State);
-		EnterRule(_localctx, 8, RULE_sensor);
+		EnterRule(_localctx, 14, RULE_sensor);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 27;
+			State = 39;
 			_la = TokenStream.LA(1);
 			if ( !(_la==T__3 || _la==T__4) ) {
 			ErrorHandler.RecoverInline(this);
@@ -347,7 +471,16 @@ public partial class ProgramParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public DropletnameContext dropletname(int i) {
 			return GetRuleContext<DropletnameContext>(i);
 		}
+		[System.Diagnostics.DebuggerNonUserCode] public DroplettypeContext droplettype() {
+			return GetRuleContext<DroplettypeContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public InputContext input() {
+			return GetRuleContext<InputContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode OUTPUT() { return GetToken(ProgramParser.OUTPUT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public OutputContext output() {
+			return GetRuleContext<OutputContext>(0);
+		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode WASTE() { return GetToken(ProgramParser.WASTE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MERGE() { return GetToken(ProgramParser.MERGE, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SPLIT() { return GetToken(ProgramParser.SPLIT, 0); }
@@ -383,75 +516,91 @@ public partial class ProgramParser : Parser {
 	[RuleVersion(0)]
 	public CommandContext command() {
 		CommandContext _localctx = new CommandContext(Context, State);
-		EnterRule(_localctx, 10, RULE_command);
+		EnterRule(_localctx, 16, RULE_command);
 		int _la;
 		try {
-			State = 84;
+			State = 116;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case INPUT:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 29;
+				State = 41;
 				Match(INPUT);
-				State = 30;
+				State = 42;
 				Match(T__5);
-				State = 31;
+				State = 43;
 				dropletname();
+				State = 44;
+				Match(T__5);
+				State = 45;
+				droplettype();
+				State = 46;
+				Match(T__5);
+				State = 47;
+				input();
 				}
 				break;
 			case OUTPUT:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 32;
+				State = 49;
 				Match(OUTPUT);
-				State = 33;
+				State = 50;
 				Match(T__5);
-				State = 34;
+				State = 51;
 				dropletname();
+				State = 52;
+				Match(T__5);
+				State = 53;
+				output();
 				}
 				break;
 			case WASTE:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 35;
+				State = 55;
 				Match(WASTE);
-				State = 36;
+				State = 56;
 				Match(T__5);
-				State = 37;
+				State = 57;
 				dropletname();
 				}
 				break;
 			case MERGE:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 38;
+				State = 58;
 				Match(MERGE);
-				State = 39;
+				State = 59;
 				Match(T__5);
-				State = 40;
+				State = 60;
 				dropletname();
-				State = 41;
+				State = 61;
 				Match(T__5);
-				State = 42;
-				dropletname();
-				State = 43;
+				State = 62;
+				droplettype();
+				State = 63;
 				Match(T__5);
-				State = 44;
+				State = 64;
 				dropletname();
-				State = 49;
+				State = 65;
+				Match(T__5);
+				State = 66;
+				dropletname();
+				State = 71;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==T__5) {
 					{
 					{
-					State = 45;
+					State = 67;
 					Match(T__5);
-					State = 46;
+					State = 68;
 					dropletname();
 					}
 					}
-					State = 51;
+					State = 73;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
@@ -460,33 +609,33 @@ public partial class ProgramParser : Parser {
 			case SPLIT:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 52;
+				State = 74;
 				Match(SPLIT);
-				State = 53;
+				State = 75;
 				Match(T__5);
-				State = 54;
+				State = 76;
 				dropletname();
-				State = 55;
+				State = 77;
 				Match(T__5);
-				State = 56;
+				State = 78;
 				dropletname();
-				State = 57;
+				State = 79;
 				Match(T__5);
-				State = 58;
+				State = 80;
 				dropletname();
-				State = 63;
+				State = 85;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==T__5) {
 					{
 					{
-					State = 59;
+					State = 81;
 					Match(T__5);
-					State = 60;
+					State = 82;
 					dropletname();
 					}
 					}
-					State = 65;
+					State = 87;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
@@ -495,45 +644,69 @@ public partial class ProgramParser : Parser {
 			case MIX:
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 66;
+				State = 88;
 				Match(MIX);
-				State = 67;
+				State = 89;
 				Match(T__5);
-				State = 68;
+				State = 90;
 				dropletname();
-				State = 69;
+				State = 91;
 				Match(T__5);
-				State = 70;
+				State = 95;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==STRING) {
+					{
+					State = 92;
+					droplettype();
+					State = 93;
+					Match(T__5);
+					}
+				}
+
+				State = 97;
 				shape();
 				}
 				break;
 			case TEMP:
 				EnterOuterAlt(_localctx, 7);
 				{
-				State = 72;
+				State = 99;
 				Match(TEMP);
-				State = 73;
+				State = 100;
 				Match(T__5);
-				State = 74;
+				State = 101;
 				dropletname();
-				State = 75;
+				State = 102;
 				Match(T__5);
-				State = 76;
+				State = 106;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==STRING) {
+					{
+					State = 103;
+					droplettype();
+					State = 104;
+					Match(T__5);
+					}
+				}
+
+				State = 108;
 				number();
 				}
 				break;
 			case SENSE:
 				EnterOuterAlt(_localctx, 8);
 				{
-				State = 78;
+				State = 110;
 				Match(SENSE);
-				State = 79;
+				State = 111;
 				Match(T__5);
-				State = 80;
+				State = 112;
 				dropletname();
-				State = 81;
+				State = 113;
 				Match(T__5);
-				State = 82;
+				State = 114;
 				sensor();
 				}
 				break;
@@ -553,31 +726,40 @@ public partial class ProgramParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,17,87,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,1,0,1,0,
-		3,0,16,8,0,4,0,18,8,0,11,0,12,0,19,1,1,1,1,1,2,1,2,1,3,1,3,1,4,1,4,1,5,
-		1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,5,
-		5,48,8,5,10,5,12,5,51,9,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,5,5,62,8,
-		5,10,5,12,5,65,9,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,
-		1,5,1,5,1,5,1,5,1,5,3,5,85,8,5,1,5,0,0,6,0,2,4,6,8,10,0,2,1,0,2,3,1,0,
-		4,5,91,0,17,1,0,0,0,2,21,1,0,0,0,4,23,1,0,0,0,6,25,1,0,0,0,8,27,1,0,0,
-		0,10,84,1,0,0,0,12,13,3,10,5,0,13,15,5,1,0,0,14,16,5,15,0,0,15,14,1,0,
-		0,0,15,16,1,0,0,0,16,18,1,0,0,0,17,12,1,0,0,0,18,19,1,0,0,0,19,17,1,0,
-		0,0,19,20,1,0,0,0,20,1,1,0,0,0,21,22,5,16,0,0,22,3,1,0,0,0,23,24,5,17,
-		0,0,24,5,1,0,0,0,25,26,7,0,0,0,26,7,1,0,0,0,27,28,7,1,0,0,28,9,1,0,0,0,
-		29,30,5,7,0,0,30,31,5,6,0,0,31,85,3,2,1,0,32,33,5,8,0,0,33,34,5,6,0,0,
-		34,85,3,2,1,0,35,36,5,9,0,0,36,37,5,6,0,0,37,85,3,2,1,0,38,39,5,10,0,0,
-		39,40,5,6,0,0,40,41,3,2,1,0,41,42,5,6,0,0,42,43,3,2,1,0,43,44,5,6,0,0,
-		44,49,3,2,1,0,45,46,5,6,0,0,46,48,3,2,1,0,47,45,1,0,0,0,48,51,1,0,0,0,
-		49,47,1,0,0,0,49,50,1,0,0,0,50,85,1,0,0,0,51,49,1,0,0,0,52,53,5,11,0,0,
-		53,54,5,6,0,0,54,55,3,2,1,0,55,56,5,6,0,0,56,57,3,2,1,0,57,58,5,6,0,0,
-		58,63,3,2,1,0,59,60,5,6,0,0,60,62,3,2,1,0,61,59,1,0,0,0,62,65,1,0,0,0,
-		63,61,1,0,0,0,63,64,1,0,0,0,64,85,1,0,0,0,65,63,1,0,0,0,66,67,5,12,0,0,
-		67,68,5,6,0,0,68,69,3,2,1,0,69,70,5,6,0,0,70,71,3,6,3,0,71,85,1,0,0,0,
-		72,73,5,13,0,0,73,74,5,6,0,0,74,75,3,2,1,0,75,76,5,6,0,0,76,77,3,4,2,0,
-		77,85,1,0,0,0,78,79,5,14,0,0,79,80,5,6,0,0,80,81,3,2,1,0,81,82,5,6,0,0,
-		82,83,3,8,4,0,83,85,1,0,0,0,84,29,1,0,0,0,84,32,1,0,0,0,84,35,1,0,0,0,
-		84,38,1,0,0,0,84,52,1,0,0,0,84,66,1,0,0,0,84,72,1,0,0,0,84,78,1,0,0,0,
-		85,11,1,0,0,0,5,15,19,49,63,84
+		4,1,17,119,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		7,7,2,8,7,8,1,0,1,0,1,0,3,0,22,8,0,4,0,24,8,0,11,0,12,0,25,1,1,1,1,1,2,
+		1,2,1,3,1,3,1,4,1,4,1,5,1,5,1,6,1,6,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,
+		8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,
+		1,8,1,8,1,8,1,8,5,8,70,8,8,10,8,12,8,73,9,8,1,8,1,8,1,8,1,8,1,8,1,8,1,
+		8,1,8,1,8,5,8,84,8,8,10,8,12,8,87,9,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,
+		96,8,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,107,8,8,1,8,1,8,1,8,1,8,
+		1,8,1,8,1,8,1,8,3,8,117,8,8,1,8,0,0,9,0,2,4,6,8,10,12,14,16,0,2,1,0,2,
+		3,1,0,4,5,122,0,23,1,0,0,0,2,27,1,0,0,0,4,29,1,0,0,0,6,31,1,0,0,0,8,33,
+		1,0,0,0,10,35,1,0,0,0,12,37,1,0,0,0,14,39,1,0,0,0,16,116,1,0,0,0,18,19,
+		3,16,8,0,19,21,5,1,0,0,20,22,5,15,0,0,21,20,1,0,0,0,21,22,1,0,0,0,22,24,
+		1,0,0,0,23,18,1,0,0,0,24,25,1,0,0,0,25,23,1,0,0,0,25,26,1,0,0,0,26,1,1,
+		0,0,0,27,28,5,16,0,0,28,3,1,0,0,0,29,30,5,16,0,0,30,5,1,0,0,0,31,32,5,
+		16,0,0,32,7,1,0,0,0,33,34,5,16,0,0,34,9,1,0,0,0,35,36,5,17,0,0,36,11,1,
+		0,0,0,37,38,7,0,0,0,38,13,1,0,0,0,39,40,7,1,0,0,40,15,1,0,0,0,41,42,5,
+		7,0,0,42,43,5,6,0,0,43,44,3,2,1,0,44,45,5,6,0,0,45,46,3,4,2,0,46,47,5,
+		6,0,0,47,48,3,6,3,0,48,117,1,0,0,0,49,50,5,8,0,0,50,51,5,6,0,0,51,52,3,
+		2,1,0,52,53,5,6,0,0,53,54,3,8,4,0,54,117,1,0,0,0,55,56,5,9,0,0,56,57,5,
+		6,0,0,57,117,3,2,1,0,58,59,5,10,0,0,59,60,5,6,0,0,60,61,3,2,1,0,61,62,
+		5,6,0,0,62,63,3,4,2,0,63,64,5,6,0,0,64,65,3,2,1,0,65,66,5,6,0,0,66,71,
+		3,2,1,0,67,68,5,6,0,0,68,70,3,2,1,0,69,67,1,0,0,0,70,73,1,0,0,0,71,69,
+		1,0,0,0,71,72,1,0,0,0,72,117,1,0,0,0,73,71,1,0,0,0,74,75,5,11,0,0,75,76,
+		5,6,0,0,76,77,3,2,1,0,77,78,5,6,0,0,78,79,3,2,1,0,79,80,5,6,0,0,80,85,
+		3,2,1,0,81,82,5,6,0,0,82,84,3,2,1,0,83,81,1,0,0,0,84,87,1,0,0,0,85,83,
+		1,0,0,0,85,86,1,0,0,0,86,117,1,0,0,0,87,85,1,0,0,0,88,89,5,12,0,0,89,90,
+		5,6,0,0,90,91,3,2,1,0,91,95,5,6,0,0,92,93,3,4,2,0,93,94,5,6,0,0,94,96,
+		1,0,0,0,95,92,1,0,0,0,95,96,1,0,0,0,96,97,1,0,0,0,97,98,3,12,6,0,98,117,
+		1,0,0,0,99,100,5,13,0,0,100,101,5,6,0,0,101,102,3,2,1,0,102,106,5,6,0,
+		0,103,104,3,4,2,0,104,105,5,6,0,0,105,107,1,0,0,0,106,103,1,0,0,0,106,
+		107,1,0,0,0,107,108,1,0,0,0,108,109,3,10,5,0,109,117,1,0,0,0,110,111,5,
+		14,0,0,111,112,5,6,0,0,112,113,3,2,1,0,113,114,5,6,0,0,114,115,3,14,7,
+		0,115,117,1,0,0,0,116,41,1,0,0,0,116,49,1,0,0,0,116,55,1,0,0,0,116,58,
+		1,0,0,0,116,74,1,0,0,0,116,88,1,0,0,0,116,99,1,0,0,0,116,110,1,0,0,0,117,
+		17,1,0,0,0,7,21,25,71,85,95,106,116
 	};
 
 	public static readonly ATN _ATN =

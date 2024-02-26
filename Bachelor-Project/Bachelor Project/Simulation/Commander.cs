@@ -69,7 +69,7 @@ namespace Bachelor_Project.Simulation
             Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.DOWN);
             board.PrintBoardState();
             Console.WriteLine();
-            Droplet_Actions.SnekReversal(board.Droplets["Wat1"].Occupy);
+            Droplet_Actions.SnekReversal(board.Droplets["Wat1"]);
             board.PrintBoardState();
             Console.WriteLine();
             Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.LEFT);

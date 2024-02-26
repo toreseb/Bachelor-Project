@@ -302,9 +302,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
         // Switch head and tail of snake
-        public static void SnekReversal(List<Electrode> occu)
+        public static void SnekReversal(Droplet d)
         {
-            occu.Reverse();
+            d.Occupy.Reverse();
         }
 
 

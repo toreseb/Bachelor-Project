@@ -84,23 +84,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\helen\\.nuget\\packages\\": {},
+    "C:\\Users\\Tores\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\helen\\OneDrive\\Skrivebord\\Uni\\6. Semester\\Bachelorprojekt\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\Bachelor Project.csproj",
+      "projectUniqueName": "C:\\GitHub\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\Bachelor Project.csproj",
       "projectName": "Bachelor Project",
-      "projectPath": "C:\\Users\\helen\\OneDrive\\Skrivebord\\Uni\\6. Semester\\Bachelorprojekt\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\Bachelor Project.csproj",
-      "packagesPath": "C:\\Users\\helen\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\helen\\OneDrive\\Skrivebord\\Uni\\6. Semester\\Bachelorprojekt\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\obj\\",
+      "projectPath": "C:\\GitHub\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\Bachelor Project.csproj",
+      "packagesPath": "C:\\Users\\Tores\\.nuget\\packages\\",
+      "outputPath": "C:\\GitHub\\Bachelor-Project\\Bachelor-Project\\Bachelor Project\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\helen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Tores\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

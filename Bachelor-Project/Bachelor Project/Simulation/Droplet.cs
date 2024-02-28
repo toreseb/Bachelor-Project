@@ -25,6 +25,7 @@ namespace Bachelor_Project.Simulation
         public int Size { get; set; }
         public float Volume { get; set; }
         public List<Electrode> Occupy { get; set; } = [];
+        public bool snekMode { get; set; } = true;
 
         // Used for threading
         private CancellationTokenSource cancellationTokenSource;

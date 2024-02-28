@@ -232,6 +232,47 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return legalMove;
         }
 
+        public static bool CheckPlacement(Droplet d, List<Electrode> temp)
+        {
+            // For snek, just put in head instead of all positions
+            bool legalMove = true;
+            foreach (Electrode e in temp) { 
+                if (d.snekMode)
+                {
+                    // A snake may not move into itself
+                    if (!(e.Occupant == null))
+                    {
+                        legalMove = false;
+                        goto destination;
+                    }
+                }
+                else
+                {
+                    if (!(e.Occupant == null || e.Occupant.Equals(d)))
+                    {
+                        legalMove = false;
+                        goto destination;
+                    }
+                }
+            }
+
+            destination:
+            return legalMove;
+        }
+
+        public static bool CheckLegalMove(Droplet d, List<Electrode> temp)
+        {
+            bool legalMove = true;
+
+            if (!(CheckBorder(d, temp) && CheckPlacement(d, temp))){
+                legalMove = false;
+            }
+
+            return legalMove;
+        }
+
+
+
         public static bool SnekCheck(Electrode newHead)
         {
             if (newHead.Occupant == null)
@@ -313,6 +354,216 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
         // Coil snake
+        public static void CoilSnek(Droplet d)
+        {
+            // TODO: Check if snake is already coiled
+
+            int len = d.Occupy.Count;
+
+            int h, w = (int)Math.Ceiling(Math.Sqrt(len));
+
+            List<Electrode> newOccu = new List<Electrode>();
+
+            
+        }
+
+        // Check area for coil
+        public static void FindArea(Droplet d, int w, int h, Electrode head)
+        {
+            // If snake is 1 or 2 long, it is already coiled.
+            // (May move this check to before FindArea is called.
+            if (d.Occupy.Count <= 2)
+            {
+                // Snake already considered coiled.
+                return;
+            }
+
+            // Needs to find an area around where snake is which is big enough to fit the coiled snake.
+            // Parts of the snake may be there, but needs to be gone once coil reaches.
+
+            // It is easiest if there is already a space where the snake can just continue its path as the start of the coil.
+
+            // If theat is not possible, it needs to find a free space nearby - how far until we say it cannot do it?
+
+            // Should return a start position and two directions, first is for w and second is for h.
+
+            // Function knows w, h, and position of head.
+
+
+
+            // Check space behind left/right snake head, then move further up until space is found
+            // Go back along snakes body as far as w and as long as it is straight behind the head - begin check from there.
+            // Check on one side if there is room for the snake (+ buffer?). If a problem is found, check the other.
+            // If the other side also has a problem, begin checking from the problem point on the side with the "earliest" problem.
+            // Continue until a clear area is found.
+
+            // Check with +2 for boundery.
+
+            // Follow along snake to find start point and direction (the direction the snake is moving)
+            Direction dir;
+
+            if (d.Occupy[1].ePosX == head.ePosX)
+            {
+                if (d.Occupy[1].ePosY == head.ePosY + 1)
+                {
+                    dir = Direction.UP;
+                }
+                else
+                {
+                    dir = Direction.DOWN;
+                }
+            }
+            else
+            {
+                if (d.Occupy[1].ePosX == head.ePosX - 1)
+                {
+                    dir = Direction.RIGHT;
+                }
+                else
+                {
+                    dir = Direction.LEFT;
+                }
+            }
+
+            // init to 2 for head and Occypy[1]
+            int straightCount = 2;
+            int startX = 0;
+            int startY = 0;
+
+            // Find start point for looking
+            switch (dir)
+            {
+                case Direction.UP:
+                    for(int i = 2; i < w+2; i++)
+                    {
+                        if (d.Occupy[i].ePosY == head.ePosY + i)
+                        {
+                            straightCount++;
+                        } else { break; }
+                    }
+
+                    startX = head.ePosX;
+                    startY = head.ePosY + straightCount;
+
+                    break;
+                case Direction.DOWN:
+                    for (int i = 2; i < w + 2; i++)
+                    {
+                        if (d.Occupy[i].ePosY == head.ePosY - i)
+                        {
+                            straightCount++;
+                        }
+                        else { break; }
+                    }
+
+                    startX = head.ePosX;
+                    startY = head.ePosY - straightCount;
+
+                    break;
+                case Direction.RIGHT:
+                    for (int i = 2; i < w + 2; i++)
+                    {
+                        if (d.Occupy[i].ePosX == head.ePosX - i)
+                        {
+                            straightCount++;
+                        }
+                        else { break; }
+                    }
+
+                    startX = head.ePosX - straightCount;
+                    startY = head.ePosY;
+
+                    break;
+                case Direction.LEFT:
+                    for (int i = 2; i < w + 2; i++)
+                    {
+                        if (d.Occupy[i].ePosX == head.ePosX + i)
+                        {
+                            straightCount++;
+                        }
+                        else { break; }
+                    }
+
+                    startX = head.ePosX + straightCount;
+                    startY = head.ePosY;
+
+                    break;
+
+            }
+
+
+            // We now know which direction we are going and the place we need to start looking from.
+            // Check area first, then boarder (difference in boarder)
+            int cornerX;
+            int cornerY;
+
+            // Ser variables for checking to the left
+            switch (dir)
+            {
+                case Direction.UP:
+                    
+                    break;
+                case Direction.LEFT:
+                    
+                    break;
+                case Direction.DOWN:
+                    
+                    break;
+                case Direction.RIGHT:
+                    
+                    break;
+            }
+
+
+
+
+            // Check to the left of snake
+            for (int i = 0; i < w; i++)
+            {
+                for (int j = 0; j < w; j++)
+                {
+                    // Check if i within board
+                    if (i < 0 || i >= Program.C.board.GetXElectrodes()) { break; }
+                    // Check if j within board
+                    if (j >= 0 && j < Program.C.board.GetYElectrodes())
+                    {
+                        // Switch to figure out if + or -
+                        // Check for other droplets and the same (it could get in the way of itself).
+                        if (!(Program.C.board.Electrodes[i,j].Occupant == null))
+                        {
+                            goto NotViable;
+                        }
+
+
+
+
+                    }// If j is not within board, do nothing and move on.
+
+
+
+
+
+
+                    // TODO: Check for contaminants
+
+                }
+            }
+            // Left of snake was fine - return.
+            return;
+
+            // Left of snake was not fine - goto to here.
+            // Check to the right of snake if left is a bust
+            NotViable:
+            
+
+
+
+            
+
+
+
+        }
+
 
 
         // Fix snake - If snake is broken, remake it.

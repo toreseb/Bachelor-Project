@@ -89,7 +89,7 @@ namespace Bachelor_Project.Simulation
                 currentCommands.OrderBy(x => x.InputDroplets.Select(y => board.Droplets[y]).Min());
 
                 Command cCommand = currentCommands[0];
-                cCommand.ExecuteCommand();
+                // cCommand.ExecuteCommand();
                 cCommand.OutputCommands.ForEach(x => x.InputCommands.Remove(cCommand));
                 cCommand.OutputCommands.ForEach(x => 
                     {
@@ -99,11 +99,11 @@ namespace Bachelor_Project.Simulation
                     });
                 currentCommands.Remove(cCommand);
                 
-                board.PrintBoardState();
+                // board.PrintBoardState();
             }
 
-            Thread.Sleep(5000);
-            board.PrintBoardState();
+            // Thread.Sleep(5000);
+            // board.PrintBoardState();
 
             Console.WriteLine("Done");
 
@@ -122,26 +122,19 @@ namespace Bachelor_Project.Simulation
             board.PrintBoardState();
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.DOWN);
             board.PrintBoardState();
-
-            /*
-            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
-            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"],24);
-            board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.DOWN);
-            board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
-            board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
-            board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.UP);
-            board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.DOWN);
-            board.PrintBoardState();
-            Droplet_Actions.SnekReversal(board.Droplets["Wat1"]);
-            board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.LEFT);
-            board.PrintBoardState();
             */
+            
+            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
+            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"],36);
+            board.PrintBoardState();
+            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
+            board.PrintBoardState();
+            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
+            board.PrintBoardState();
+            Droplet_Actions.CoilSnek(board.Droplets["Wat1"]);
+            board.PrintBoardState();
+            
+            
         }
 
         Board GetBoard()

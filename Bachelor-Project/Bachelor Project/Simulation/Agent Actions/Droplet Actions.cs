@@ -241,7 +241,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static bool CheckPlacement(Droplet d, List<Electrode> temp)
         {
             bool legalMove = true;
-            foreach (Electrode e in temp) { 
+            foreach (Electrode e in temp) {
+                /*
                 if (d.snekMode)
                 {
                     // A snake may not move into itself
@@ -258,6 +259,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         legalMove = false;
                         break;
                     }
+                }
+                */
+                if (!(e.Occupant == null || e.Occupant.Equals(d)))
+                {
+                    legalMove = false;
+                    break;
                 }
 
                 foreach (string c in e.GetContaminants())
@@ -427,9 +434,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             int w = (int)Math.Ceiling(Math.Sqrt(len));
 
+            Console.WriteLine("w = " + w);
+
             // Find area to coil into.
 
             (Direction dir, int sideRem, string side) = FindArea(d, w);
+
+            Console.WriteLine("FindArea returns: dir = " + dir + ", sideRem = " + sideRem + ", side = " + side);
 
             // If unable to find area, return without moving.
             if (side.Equals("none"))
@@ -440,6 +451,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // Move to fill full side
             for (int i = 0; i < sideRem; i++)
             {
+                Console.WriteLine("I made a move!");
                 SnekMove(d, dir);
             }
 
@@ -490,7 +502,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         break;
                 }
 
-                for (int j = 0; j < w; j++)
+                for (int j = 1; j < w; j++)
                 {
                     SnekMove(d, tempDir);
                 }
@@ -559,9 +571,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             switch (dir)
             {
                 case Direction.UP:
-                    for(int i = 2; i < w+2; i++)
+                    for(int i = 2; i < w; i++)
                     {
-                        if (d.Occupy[i].ePosY == head.ePosY + i)
+                        if (i < Program.C.board.GetYElectrodes() && d.Occupy[i].ePosY == head.ePosY + i)
                         {
                             straightCount++;
                         } else { break; }
@@ -572,9 +584,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                     break;
                 case Direction.DOWN:
-                    for (int i = 2; i < w + 2; i++)
+                    for (int i = 2; i < w; i++)
                     {
-                        if (d.Occupy[i].ePosY == head.ePosY - i)
+                        if (i < Program.C.board.GetYElectrodes() && d.Occupy[i].ePosY == head.ePosY - i)
                         {
                             straightCount++;
                         }
@@ -586,23 +598,25 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                     break;
                 case Direction.RIGHT:
-                    for (int i = 2; i < w + 2; i++)
+                    for (int i = 2; i < w; i++)
                     {
-                        if (d.Occupy[i].ePosX == head.ePosX - i)
+                        if (i < Program.C.board.GetXElectrodes() && d.Occupy[i].ePosX == head.ePosX - i)
                         {
                             straightCount++;
                         }
                         else { break; }
                     }
 
-                    startX = head.ePosX - straightCount;
+                    Console.WriteLine(straightCount);
+
+                    startX = head.ePosX - straightCount +1;
                     startY = head.ePosY;
 
                     break;
                 case Direction.LEFT:
-                    for (int i = 2; i < w + 2; i++)
+                    for (int i = 2; i < w; i++)
                     {
-                        if (d.Occupy[i].ePosX == head.ePosX + i)
+                        if (i < Program.C.board.GetXElectrodes() && d.Occupy[i].ePosX == head.ePosX + i)
                         {
                             straightCount++;
                         }
@@ -616,8 +630,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             }
 
-            int cornerX;
-            int cornerY;
 
             List<Electrode> leftArea = new List<Electrode>();
             List<Electrode> rightArea = new List<Electrode>();
@@ -629,16 +641,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     switch (dir)
                     {
                         case Direction.UP:
-                            leftArea.Add(Program.C.board.Electrodes[startX - i, startY - j]);
-                            rightArea.Add(Program.C.board.Electrodes[startX + i, startY - j]);
+                            leftArea.Add(Program.C.board.Electrodes[startX - i, startY + j]);
+                            rightArea.Add(Program.C.board.Electrodes[startX + i, startY + j]);
                             break;
                         case Direction.LEFT:
-                            leftArea.Add(Program.C.board.Electrodes[startX - i, startY + j]);
-                            rightArea.Add(Program.C.board.Electrodes[startX - i, startY - j]);
+                            leftArea.Add(Program.C.board.Electrodes[startX - i, startY - j]);
+                            rightArea.Add(Program.C.board.Electrodes[startX - i, startY + j]);
                             break;
                         case Direction.DOWN:
-                            leftArea.Add(Program.C.board.Electrodes[startX - i, startY + j]);
-                            rightArea.Add(Program.C.board.Electrodes[startX - i, startY + j]);
+                            leftArea.Add(Program.C.board.Electrodes[startX + i, startY - j]);
+                            rightArea.Add(Program.C.board.Electrodes[startX - i, startY - j]);
                             break;
                         case Direction.RIGHT:
                             leftArea.Add(Program.C.board.Electrodes[startX + i, startY - j]);
@@ -647,6 +659,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
 
                 }
+            }
+            Console.WriteLine(dir);
+
+            Console.WriteLine("Head: " + head.Name);
+
+            foreach (Electrode e in leftArea)
+            {
+                Console.WriteLine("(" + e.ePosX + ", " + e.ePosY + ")");
             }
 
             string side = "none";

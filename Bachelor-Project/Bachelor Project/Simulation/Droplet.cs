@@ -26,32 +26,34 @@ namespace Bachelor_Project.Simulation
         public float Volume { get; set; }
         public List<Electrode> Occupy { get; set; } = [];
         public bool snekMode { get; set; } = true;
+        public List<string> Contamintants { get; set; } = [];
+        public int ContamLevel { get; set; } = 0;
 
         // Used for threading
         private CancellationTokenSource cancellationTokenSource;
         private ManualResetEventSlim workAvailableEvent = new ManualResetEventSlim(false);
 
+        private Queue<Task> TaskQueue = [];
 
-        public Droplet(Input input, float volume, string substance_name, string name = "") : base(input.PositionX, input.PositionY, 1, 1, name)
+
+        public Droplet(string substance_name, string name = "") : base(-1, -1, 1, 1, name)
         {
             Temperature = 20;
-            Volume = volume;
             Substance_Name = substance_name;
             Color = GetColor(Substance_Name);
-            Size = getSize(volume);
-            Droplet_Actions.InputDroplet(this, input, Size);
+            
             
 
             cancellationTokenSource = new CancellationTokenSource();
 
         }
 
-        public async Task StartAgent()
+        public async void StartAgent()
         {
             await Task.Run(() => { RunAgent(cancellationTokenSource.Token); });
         }
 
-        public async Task RunAgent(CancellationToken cancellationToken)
+        public async void RunAgent(CancellationToken cancellationToken)
         {
             // Run while cancellation has not been requested
             while (!cancellationToken.IsCancellationRequested)
@@ -65,6 +67,9 @@ namespace Bachelor_Project.Simulation
                 workAvailableEvent.Reset();
 
                 // Do thing
+                Task cTask = TaskQueue.Dequeue();
+                cTask.Start();
+                
 
             }
         }
@@ -72,7 +77,7 @@ namespace Bachelor_Project.Simulation
         public void GiveWork(Task task)
         {
             // TODO: Implement task queue
-
+            TaskQueue.Enqueue(task);
             // Signal that work is available
             workAvailableEvent.Set();
         }
@@ -82,15 +87,21 @@ namespace Bachelor_Project.Simulation
             cancellationTokenSource.Cancel();
         }
 
-        private string GetColor(String substance_name)
+        private string GetColor(string substance_name)
         {
             return "0000FF"; // Needs to be changed to a color based on the substance name.
         }
 
-        private int getSize(float Volume)
+
+        public void SetSizes(float Volume)
         {
-            return ((int)Volume/12)+1;
+            this.Volume = Volume;
+            Size = ((int)Volume/12)+1;
         }
 
+        internal void SetContam(List<string> list)
+        {
+            Contamintants = list;
+        }
     }
 }

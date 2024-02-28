@@ -124,19 +124,6 @@ public interface IProgramListener : IParseTreeListener {
 
 class ProgramDecoder : ProgramBaseListener
 {
-
-    public override void ExitDropletname([NotNull] ProgramParser.DropletnameContext context)
-    {
-		Bachelor_Project.Parser.Parser.AddName(context.GetText());
-        base.ExitDropletname(context);
-    }
-
-    public override void ExitDroplettype([NotNull] ProgramParser.DroplettypeContext context)
-    {
-		Bachelor_Project.Parser.Parser.AddType(context.GetText());
-        base.ExitDroplettype(context);
-    }
-
     public override void ExitCommand([NotNull] ProgramParser.CommandContext context)
     {
         Bachelor_Project.Parser.Parser.Decode(context);

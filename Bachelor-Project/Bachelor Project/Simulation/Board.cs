@@ -156,14 +156,14 @@ namespace Bachelor_Project.Simulation
             foreach (var item in iList)
             {
                 iDict.Add(item.Name, item);
-                item.point = eArray[item.PositionX/inf.electrode_size,item.PositionY/inf.electrode_size];
+                item.pointers.Add(eArray[item.PositionX/inf.electrode_size,item.PositionY/inf.electrode_size]);
             }
             Output[] oList = jObject["outputs"].Type != JTokenType.Null ? jObject["outputs"].ToObject<Output[]>() : [];
             Dictionary<String, Output> oDict = [];
             foreach (var item in oList)
             {
                 oDict.Add(item.Name, item);
-                item.point = eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size];
+                item.pointers.Add(eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size]);
             }
             Droplet[] droplets = jObject["droplets"].Type != JTokenType.Null ? jObject["droplets"].ToObject<Droplet[]>() : [];
             Dictionary<String, Droplet> dDict = [];
@@ -192,9 +192,9 @@ namespace Bachelor_Project.Simulation
             
             Sensors.Values.ToList().ForEach(x => x.pointers.ToList().ForEach(y => squares[y.ePosY][y.ePosX].Add(x)));
 
-            Input.Values.ToList().ForEach(x => squares[x.point.ePosY][x.point.ePosX].Add(x));
+            Input.Values.ToList().ForEach(x => squares[x.pointers[0].ePosY][x.pointers[0].ePosX].Add(x));
 
-            Output.Values.ToList().ForEach(x => squares[x.point.ePosY][x.point.ePosX].Add(x));
+            Output.Values.ToList().ForEach(x => squares[x.pointers[0].ePosY][x.pointers[0].ePosX].Add(x));
 
             Console.WriteLine("Board State:");
             Console.WriteLine(new String('-',1+Information.eRow*(3+Squarewidth)));

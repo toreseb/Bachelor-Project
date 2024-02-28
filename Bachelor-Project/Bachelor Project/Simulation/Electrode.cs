@@ -35,6 +35,7 @@ namespace Bachelor_Project.Simulation
         {
             return Status;
         }
-    }
 
+
+    }
 }

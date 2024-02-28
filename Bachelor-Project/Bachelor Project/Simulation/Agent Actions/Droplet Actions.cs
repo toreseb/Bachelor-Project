@@ -11,11 +11,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     internal static class Droplet_Actions
     {
         private static readonly int mixAmount = 5;
-        public static async void InputDroplet(Droplet d, Input i, int volume)
+        
+        public static void InputDroplet(Droplet d, Input i, int volume)
         {
             d.SetSizes(volume);
-            d.PositionX = i.point.ePosX;
-            d.PositionY = i.point.ePosY;
+            d.PositionX = i.pointers[0].ePosX;
+            d.PositionY = i.pointers[0].ePosY;
             InputPart(d, i);
             int size = d.Size;
             size -= 1;
@@ -29,9 +30,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         private static void InputPart(Droplet d, Input i)
         {
-            Outparser.Outparser.ElectrodeOn(i.point);
-            d.Occupy.Add(i.point);
-            i.point.Occupant = d;
+            AwaiLegalMove(d, i.pointers);
+            Outparser.Outparser.ElectrodeOn(i.pointers[0]);
+            d.Occupy.Add(i.pointers[0]);
+            i.pointers[0].Occupant = d;
         }
 
         public static void MoveDroplet(Droplet d, Direction dir)
@@ -284,6 +286,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return legalMove;
         }
 
+        public static void AwaiLegalMove(Droplet d, List<Electrode> temp)
+        {
+            while (!CheckLegalMove(d, temp))
+            {
+                Console.WriteLine(d.Name + " waiting for space");
+                Thread.Sleep(100);
+            }
+        }
+
 
 
         public static bool SnekCheck(Electrode newHead)
@@ -363,37 +374,37 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         internal static void OutputDroplet(Droplet droplet, Output output)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         internal static void WasteDroplet(Droplet droplet)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         internal static void MergeDroplets(List<string> inputDroplets, Droplet droplet)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         internal static void SplitDroplet(Droplet droplet, List<string> outputDroplets)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         internal static void MixDroplets(Droplet droplet1, Droplet droplet2, string pattern, string newType)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         internal static void TempDroplet(Droplet droplet1, Droplet droplet2, int temp, string newType)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         internal static void SenseDroplet(Droplet droplet1, Droplet droplet2, string sensorType)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
 

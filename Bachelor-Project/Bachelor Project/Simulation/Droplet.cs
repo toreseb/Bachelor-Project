@@ -67,9 +67,15 @@ namespace Bachelor_Project.Simulation
                 workAvailableEvent.Reset();
 
                 // Do thing
-                Task cTask = TaskQueue.Dequeue();
-                cTask.Start();
-                
+                while(TaskQueue.Count > 0)
+                {
+                    Task cTask = TaskQueue.Dequeue();
+                    Console.WriteLine("Droplet " + Name + " is doing work");
+                    cTask.Start();
+                    
+                    cTask.Wait(cancellationToken);
+                    Console.WriteLine("Droplet " + Name + " has done work");
+                }
 
             }
         }

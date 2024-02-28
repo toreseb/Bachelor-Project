@@ -101,6 +101,10 @@ namespace Bachelor_Project.Simulation
                 
                 board.PrintBoardState();
             }
+
+            Thread.Sleep(5000);
+            board.PrintBoardState();
+
             Console.WriteLine("Done");
 
             //Actuator e = JsonSerializer.Deserialize<Actuator>(json, options);

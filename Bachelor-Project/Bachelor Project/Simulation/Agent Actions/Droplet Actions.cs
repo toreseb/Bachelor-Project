@@ -247,7 +247,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     if (!(e.Occupant == null))
                     {
                         legalMove = false;
-                        goto destination;
+                        break;
                     }
                 }
                 else
@@ -255,9 +255,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     if (!(e.Occupant == null || e.Occupant.Equals(d)))
                     {
                         legalMove = false;
+                        break;
+                    }
+                }
+
+                foreach (string c in e.GetContaminants())
+                {
+                    if (d.Contamintants.Contains(c))
+                    {
+                        legalMove = false;
                         goto destination;
                     }
                 }
+
             }
 
             destination:
@@ -570,7 +580,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         // Check for other droplets and the same (it could get in the way of itself).
                         if (!(Program.C.board.Electrodes[i,j].Occupant == null))
                         {
-                            goto NotViable;
+                            goto notViable;
                         }
 
 
@@ -592,7 +602,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // Left of snake was not fine - goto to here.
             // Check to the right of snake if left is a bust
-            NotViable:
+            notViable:
+            return;
             
 
 

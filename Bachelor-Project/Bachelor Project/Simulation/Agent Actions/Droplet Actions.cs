@@ -238,7 +238,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool CheckPlacement(Droplet d, List<Electrode> temp)
         {
-            // For snek, just put in head instead of all positions
             bool legalMove = true;
             foreach (Electrode e in temp) { 
                 if (d.snekMode)
@@ -405,28 +404,93 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         // Coil snake
         public static void CoilSnek(Droplet d)
         {
-            // TODO: Check if snake is already coiled
-
-            int len = d.Occupy.Count;
-
-            int h, w = (int)Math.Ceiling(Math.Sqrt(len));
-
-            List<Electrode> newOccu = new List<Electrode>();
-
-            
-        }
-
-        // Check area for coil
-        public static void FindArea(Droplet d, int w, int h, Electrode head)
-        {
-            // If snake is 1 or 2 long, it is already coiled.
-            // (May move this check to before FindArea is called.
-            if (d.Occupy.Count <= 2)
+            // Droplet cannot coil if it is not in snekMode
+            // Snake is already considered coiled if it is 2 or less long
+            if (!d.snekMode || d.Occupy.Count <= 2)
             {
-                // Snake already considered coiled.
                 return;
             }
 
+
+            int len = d.Occupy.Count;
+
+            int w = (int)Math.Ceiling(Math.Sqrt(len));
+
+            // Find area to coil into.
+
+            (Direction dir, int sideRem, string side) = FindArea(d, w);
+
+            // If unable to find area, return without moving.
+            if (side.Equals("none"))
+            {
+                return;
+            }
+
+            // Move to fill full side
+            for (int i = 0; i < sideRem; i++)
+            {
+                SnekMove(d, dir);
+            }
+
+            // Fill rest of area
+            // Prototype with dir = UP and side = left
+            Direction tempDir = dir;
+            Direction sideDir = dir;
+
+            switch (dir)
+            {
+                case Direction.UP:
+                    if (side.Equals("left")) { sideDir = Direction.LEFT; }
+                    else {  sideDir = Direction.RIGHT; }
+                    break;
+                case Direction.LEFT:
+                    if (side.Equals("left")) { sideDir = Direction.DOWN; }
+                    else { sideDir = Direction.UP; }
+                    break;
+                case Direction.DOWN:
+                    if (side.Equals("left")) { sideDir = Direction.RIGHT; }
+                    else { sideDir = Direction.LEFT; }
+                    break;
+                case Direction.RIGHT:
+                    if (side.Equals("left")) { sideDir = Direction.UP; }
+                    else { sideDir = Direction.DOWN; }
+                    break;
+            }
+
+            // Start at 1 because the first (0th) row is already done
+            for (int i = 1; i < w; i++)
+            {
+                // Go to the side
+                SnekMove(d, sideDir);
+
+                // Find direction for this pass
+                switch (dir) { 
+                    case Direction.UP:
+                        if (i%2 == 0) { tempDir = Direction.UP; } else { tempDir = Direction.DOWN;}
+                        break;
+                    case Direction.LEFT:
+                        if (i % 2 == 0) { tempDir = Direction.LEFT; } else { tempDir = Direction.RIGHT; }
+                        break;
+                    case Direction.DOWN:
+                        if (i % 2 == 0) { tempDir = Direction.DOWN; } else { tempDir = Direction.UP; }
+                        break;
+                    case Direction.RIGHT:
+                        if (i % 2 == 0) { tempDir = Direction.RIGHT; } else { tempDir = Direction.LEFT; }
+                        break;
+                }
+
+                for (int j = 0; j < w; j++)
+                {
+                    SnekMove(d, tempDir);
+                }
+                
+            }
+            //Movement is done!
+        }
+
+        // Check area for coil
+        public static (Direction dir, int sideRemainder, string side) FindArea(Droplet d, int w)
+        {
             // Needs to find an area around where snake is which is big enough to fit the coiled snake.
             // Parts of the snake may be there, but needs to be gone once coil reaches.
 
@@ -450,6 +514,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // Follow along snake to find start point and direction (the direction the snake is moving)
             Direction dir;
+            Electrode head = d.Occupy[0];
 
             if (d.Occupy[1].ePosX == head.ePosX)
             {
@@ -540,32 +605,49 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             }
 
-
-            // We now know which direction we are going and the place we need to start looking from.
-            // Check area first, then boarder (difference in boarder)
             int cornerX;
             int cornerY;
 
-            // Ser variables for checking to the left
-            switch (dir)
+            List<Electrode> leftArea = new List<Electrode>();
+            List<Electrode> rightArea = new List<Electrode>();
+
+            for (int i = 0; i < w; i++)
             {
-                case Direction.UP:
-                    
-                    break;
-                case Direction.LEFT:
-                    
-                    break;
-                case Direction.DOWN:
-                    
-                    break;
-                case Direction.RIGHT:
-                    
-                    break;
+                for (int j = 0; j < w; j++)
+                {
+                    switch (dir)
+                    {
+                        case Direction.UP:
+                            leftArea.Add(Program.C.board.Electrodes[startX - i, startY - j]);
+                            rightArea.Add(Program.C.board.Electrodes[startX + i, startY - j]);
+                            break;
+                        case Direction.LEFT:
+                            leftArea.Add(Program.C.board.Electrodes[startX - i, startY + j]);
+                            rightArea.Add(Program.C.board.Electrodes[startX - i, startY - j]);
+                            break;
+                        case Direction.DOWN:
+                            leftArea.Add(Program.C.board.Electrodes[startX - i, startY + j]);
+                            rightArea.Add(Program.C.board.Electrodes[startX - i, startY + j]);
+                            break;
+                        case Direction.RIGHT:
+                            leftArea.Add(Program.C.board.Electrodes[startX + i, startY - j]);
+                            rightArea.Add(Program.C.board.Electrodes[startX + i, startY + j]);
+                            break;
+                    }
+
+                }
             }
 
+            string side = "none";
+            if (CheckLegalMove(d, leftArea))
+            {
+                side = "left";
+            }else if (CheckLegalMove(d, rightArea)) {
+                side = "right";
+            }
 
-
-
+            return (dir, w - straightCount, side);
+            /*
             // Check to the left of snake
             for (int i = 0; i < w; i++)
             {
@@ -597,20 +679,29 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 }
             }
-            // Left of snake was fine - return.
-            return;
-
-            // Left of snake was not fine - goto to here.
-            // Check to the right of snake if left is a bust
-            notViable:
-            return;
-            
+            */
 
 
 
-            
 
 
+            /*
+            switch (dir)
+            {
+                case Direction.UP:
+
+                    break;
+                case Direction.LEFT:
+
+                    break;
+                case Direction.DOWN:
+
+                    break;
+                case Direction.RIGHT:
+
+                    break;
+            }
+            */
 
         }
 

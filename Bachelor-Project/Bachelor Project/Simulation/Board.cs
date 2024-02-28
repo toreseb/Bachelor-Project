@@ -23,7 +23,10 @@ namespace Bachelor_Project.Simulation
         public Dictionary<String, Droplet> Droplets       { get; set; }
         public Information Information{ get; set; }
         public String?[] Unclassified   { get; set; }
-        
+
+        // For printing
+        int Squarewidth = 6;
+
         public Board(Information information, Electrode[,] electrodes, Dictionary<String, Actuator> actuators, Dictionary<String, Sensor> sensors, Dictionary<String, Input> input, Dictionary<String, Output> output, Dictionary<String, Droplet> droplets, String?[] unclassified)
         {
             this.Information = information;
@@ -182,7 +185,7 @@ namespace Bachelor_Project.Simulation
                 squares[i] = new List<TileEntity>[Information.eRow];
                 for (int j = 0; j < Information.eRow; j++)
                 {
-                    squares[i][j] = new List<TileEntity>();
+                    squares[i][j] = [];
                 }
             }
             Actuators.Values.ToList().ForEach(x => x.pointers.ToList().ForEach(y => squares[y.ePosY][y.ePosX].Add(x)));
@@ -194,7 +197,7 @@ namespace Bachelor_Project.Simulation
             Output.Values.ToList().ForEach(x => squares[x.point.ePosY][x.point.ePosX].Add(x));
 
             Console.WriteLine("Board State:");
-            Console.WriteLine(new String('-',1+Information.eRow*(3+6)));
+            Console.WriteLine(new String('-',1+Information.eRow*(3+Squarewidth)));
             // Write horizontal lines one by one
             for (var j = 0; j < squares.Length; j++)
             {
@@ -207,7 +210,7 @@ namespace Bachelor_Project.Simulation
 
         public string BuildPrintLine(List<TileEntity>[] row, int j)
         {
-            int squarewidth = 6;
+            
             String line1 = "| ";
             String line2 = "| ";
             String line3 = "| ";
@@ -220,9 +223,9 @@ namespace Bachelor_Project.Simulation
                 foreach (var item in square)
                 {
                     string name;
-                    if (item.Name.Length > 6)
+                    if (item.Name.Length > Squarewidth)
                     {
-                        name = item.Name[..6];
+                        name = item.Name[..Squarewidth];
                     }
                     else
                     {
@@ -246,9 +249,9 @@ namespace Bachelor_Project.Simulation
                 if (Electrodes[i,j].Occupant != null)
                 {
                     string name;
-                    if (Electrodes[i, j].Occupant.Name.Length > 6)
+                    if (Electrodes[i, j].Occupant.Name.Length > Squarewidth)
                     {
-                        name = Electrodes[i, j].Occupant.Name[..6];
+                        name = Electrodes[i, j].Occupant.Name[..Squarewidth];
                     }
                     else
                     {
@@ -264,9 +267,9 @@ namespace Bachelor_Project.Simulation
                 else
                 {
                     string name;
-                    if (Electrodes[i, j].Name.Length > 6)
+                    if (Electrodes[i, j].Name.Length > Squarewidth)
                     {
-                        name = Electrodes[i, j].Name[..6];
+                        name = Electrodes[i, j].Name[..Squarewidth];
                     }
                     else
                     {
@@ -275,9 +278,9 @@ namespace Bachelor_Project.Simulation
                     line2 += name;
                     used2 += name.Length;
                 }
-                line1 += new String(' ', squarewidth - used1) + " | ";
-                line2 += new String(' ', squarewidth - used2) + " | ";
-                line3 += new String(' ', squarewidth-used3) + " | ";
+                line1 += new String(' ', Squarewidth - used1) + " | ";
+                line2 += new String(' ', Squarewidth - used2) + " | ";
+                line3 += new String(' ', Squarewidth-used3) + " | ";
                 i++;
             }
             string totalline = line1 + "\n" + line2 + "\n" + line3;

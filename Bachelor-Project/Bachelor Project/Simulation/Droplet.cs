@@ -32,6 +32,8 @@ namespace Bachelor_Project.Simulation
         private CancellationTokenSource cancellationTokenSource;
         private ManualResetEventSlim workAvailableEvent = new ManualResetEventSlim(false);
 
+        private Queue<Task> TaskQueue = [];
+
 
         public Droplet(string substance_name, string name = "") : base(-1, -1, 1, 1, name)
         {
@@ -45,12 +47,12 @@ namespace Bachelor_Project.Simulation
 
         }
 
-        public async Task StartAgent()
+        public async void StartAgent()
         {
             await Task.Run(() => { RunAgent(cancellationTokenSource.Token); });
         }
 
-        public async Task RunAgent(CancellationToken cancellationToken)
+        public async void RunAgent(CancellationToken cancellationToken)
         {
             // Run while cancellation has not been requested
             while (!cancellationToken.IsCancellationRequested)
@@ -64,6 +66,9 @@ namespace Bachelor_Project.Simulation
                 workAvailableEvent.Reset();
 
                 // Do thing
+                Task cTask = TaskQueue.Dequeue();
+                cTask.Start();
+                
 
             }
         }
@@ -71,7 +76,7 @@ namespace Bachelor_Project.Simulation
         public void GiveWork(Task task)
         {
             // TODO: Implement task queue
-
+            TaskQueue.Enqueue(task);
             // Signal that work is available
             workAvailableEvent.Set();
         }

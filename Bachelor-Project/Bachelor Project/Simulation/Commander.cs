@@ -48,7 +48,9 @@ namespace Bachelor_Project.Simulation
                 }
                 nDrop.ContamLevel = data.contaminates[item.Value].Count;
                 board.Droplets.Add(item.Key, nDrop);
+                nDrop.StartAgent();
             }
+            
             board.Droplets = board.Droplets.OrderBy(x => x.Value.ContamLevel).ToDictionary();
             board.Droplets.Values.ToList().ForEach(x => Console.WriteLine(x.ContamLevel));
 

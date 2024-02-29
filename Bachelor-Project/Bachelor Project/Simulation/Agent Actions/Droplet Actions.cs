@@ -242,25 +242,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             bool legalMove = true;
             foreach (Electrode e in temp) {
-                /*
-                if (d.snekMode)
-                {
-                    // A snake may not move into itself
-                    if (!(e.Occupant == null))
-                    {
-                        legalMove = false;
-                        break;
-                    }
-                }
-                else
-                {
-                    if (!(e.Occupant == null || e.Occupant.Equals(d)))
-                    {
-                        legalMove = false;
-                        break;
-                    }
-                }
-                */
                 if (!(e.Occupant == null || e.Occupant.Equals(d)))
                 {
                     legalMove = false;
@@ -275,7 +256,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         goto destination;
                     }
                 }
-
             }
 
             destination:
@@ -678,43 +658,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
 
             return (dir, w - straightCount, side);
-            /*
-            // Check to the left of snake
-            for (int i = 0; i < w; i++)
-            {
-                for (int j = 0; j < w; j++)
-                {
-                    // Check if i within board
-                    if (i < 0 || i >= Program.C.board.GetXElectrodes()) { break; }
-                    // Check if j within board
-                    if (j >= 0 && j < Program.C.board.GetYElectrodes())
-                    {
-                        // Switch to figure out if + or -
-                        // Check for other droplets and the same (it could get in the way of itself).
-                        if (!(Program.C.board.Electrodes[i,j].Occupant == null))
-                        {
-                            goto notViable;
-                        }
-
-
-
-
-                    }// If j is not within board, do nothing and move on.
-
-
-
-
-
-
-                    // TODO: Check for contaminants
-
-                }
-            }
-            */
-
-
-
-
 
             /*
             switch (dir)

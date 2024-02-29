@@ -18,11 +18,11 @@ namespace Bachelor_Project.Simulation
             PropertyNameCaseInsensitive = true,
         };
 
-        (List<Command> commands, Dictionary<String,String> dropletpairs, Dictionary<String,List<String>> contaminated, Dictionary<String,List<String>> contaminates) data;
+        (List<Command> commands, Dictionary<string, string> dropletpairs, Dictionary<string, List<string>> contaminated, Dictionary<string, List<string>> contaminates) data;
         public Board board;
         List<Command> currentCommands = [];
 
-        public Commander((List<Command> commands, Dictionary<String,String> dropletpairs, Dictionary<String,List<String>> contaminated, Dictionary<String,List<String>> contaminates) data, string boarddata)
+        public Commander((List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>) data, string boarddata)
         {
             this.data = data;
             string json = File.ReadAllText(boarddata);

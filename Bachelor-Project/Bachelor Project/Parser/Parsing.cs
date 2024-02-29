@@ -10,18 +10,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bachelor_Project.Parser
+namespace Bachelor_Project.Parsing
 {
-    static class Parser
+    static public class Parsing
     {
-        static Dictionary<String,String> Dropletpairs = []; // Dropletname with their type
-        static Dictionary<String, List<String>> Contaminates = [];
-        static Dictionary<String, List<String>> Contaminated = [];
+        static Dictionary<string, string> Dropletpairs = []; // Dropletname with their type
+        static Dictionary<string, List<string>> Contaminates = [];
+        static Dictionary<string, List<string>> Contaminated = [];
         static List<Command> Commands = []; 
 
-        public static (List<Command>, Dictionary<String,String>, Dictionary<String,List<String>>,Dictionary<String,List<String>>) ParseFile(string path)
+        public static (List<Command>, Dictionary<string,string>, Dictionary<string, List<string>>,Dictionary<string, List<string>>) ParseFile(string path)
         {
-            String data = File.ReadAllText(path);
+            string data = File.ReadAllText(path);
+
+            return ParseString(data);
+
+        }
+
+        public static (List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>) ParseString(string data)
+        {
+            Dropletpairs = [];
+            Contaminates = [];
+            Contaminated = [];
+            Commands = [];
             ICharStream stream = CharStreams.fromString(data);
             ITokenSource lexer = new ProgramLexer(stream);
             ITokenStream tokens = new CommonTokenStream(lexer);
@@ -31,7 +42,6 @@ namespace Bachelor_Project.Parser
             ParseTreeWalker.Default.Walk(decoder, tree);
 
             return (Commands, Dropletpairs, Contaminated, Contaminates);
-
         }
 
         public static void Decode(ProgramParser.CommandContext context)
@@ -106,7 +116,7 @@ namespace Bachelor_Project.Parser
                         i++;
                     }
                     Console.WriteLine(output);
-                    Commands.Add(new Command("merge", mergers, [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()]));
+                    Commands.Add(new Command("merge", mergers, [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], context.GetChild<ProgramParser.DroplettypeContext>(0).GetText()));
                     break;
                 case "split": //SPLIT , droplet name , new droplet1 name , new droplet2 name , (new dropletN name)?
                     output = $"split droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} to make: ";
@@ -130,7 +140,7 @@ namespace Bachelor_Project.Parser
                     Console.WriteLine(output);
                     Commands.Add(new Command("split", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], splits));
                     break;
-                case "mix": //MIX , droplet name, (new droplet type)? , pattern
+                case "mix": //MIX , droplet name , pattern , (new droplet type)?
                     Console.Write($"mix droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} in the shape: {context.GetChild<ProgramParser.ShapeContext>(0).GetText()} pattern");
                     string newType;
                     if(context.GetChild<ProgramParser.DroplettypeContext>(0) != null)
@@ -145,7 +155,7 @@ namespace Bachelor_Project.Parser
                     Console.WriteLine();
                     Commands.Add(new Command("mix", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], context.GetChild<ProgramParser.ShapeContext>(0).GetText(), newType));
                     break;
-                case "temp": //TEMP , droplet name , (new droplet type)? , temperature
+                case "temp": //TEMP , droplet name , temperature , (new droplet type)?
                     Console.Write($"set temperature of droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} to the temperature: {context.GetChild<ProgramParser.NumberContext>(0).INT()}");
                     if (context.GetChild<ProgramParser.DroplettypeContext>(0) != null)
                     {

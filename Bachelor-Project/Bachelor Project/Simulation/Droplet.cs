@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    internal class Droplet: TileEntity
+    public class Droplet: TileEntity
     {
         // In creation of a Droplet, the following is needed:
         // Droplet <name> = new Droplet();

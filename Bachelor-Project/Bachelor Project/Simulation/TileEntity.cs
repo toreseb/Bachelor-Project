@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    internal class TileEntity
+    public class TileEntity
     {
         public string Name { get; set; }
         public int ID { get; set; }

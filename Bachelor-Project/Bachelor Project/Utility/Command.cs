@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Utility
 {
-    internal class Command(string type, List<string> inputs, List<string> outputs, params Object[] value)
+    public class Command(string type, List<string> inputs, List<string> outputs, params Object[] value)
     {
         public string Type { get; set; } = type;
         public List<string> InputDroplets = inputs;
@@ -84,6 +84,11 @@ namespace Bachelor_Project.Utility
             Console.WriteLine("]");
 
 
+        }
+
+        override public string ToString()
+        {
+            return Type + " " + string.Join(", ", InputDroplets) + " -> " + string.Join(", ", OutputDroplets) + " extra: "+ string.Join(", ", ActionValue);
         }
         
 

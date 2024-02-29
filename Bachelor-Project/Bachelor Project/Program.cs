@@ -3,7 +3,7 @@
 using Bachelor_Project;
 using Bachelor_Project.Electrode_Types;
 using Bachelor_Project.Electrode_Types.Actuator_Types;
-using Bachelor_Project.Parser;
+using Bachelor_Project.Parsing;
 
 using Bachelor_Project.Simulation;
 using Bachelor_Project.Simulation.Agent_Actions;
@@ -31,7 +31,7 @@ static class Program
         string boarddata = "BoardData.json";
         string testdata = "test.json";
 
-        var data = Parser.ParseFile(inputfiles + "\\" + testprogramcode);
+        var data = Parsing.ParseFile(inputfiles + "\\" + programcode);
         C = new Commander(data, inputfiles + "\\" + boarddata);
         C.Start();
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    internal class Electrode(int x, int y, string name = "") : TileEntity(x, y, 20, 20, name)
+    public class Electrode(int x, int y, string name = "") : TileEntity(x, y, 20, 20, name)
     {
         public int ElectrodeID { get; set; }
         public int DriverID { get; set; }

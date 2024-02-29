@@ -121,12 +121,11 @@ public interface IProgramListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCommand([NotNull] ProgramParser.CommandContext context);
 }
-
 class ProgramDecoder : ProgramBaseListener
 {
     public override void ExitCommand([NotNull] ProgramParser.CommandContext context)
     {
-        Bachelor_Project.Parser.Parser.Decode(context);
+        Bachelor_Project.Parsing.Parsing.Decode(context);
 		base.ExitCommand(context);
     }
 }

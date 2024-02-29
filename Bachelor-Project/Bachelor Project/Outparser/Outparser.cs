@@ -2,7 +2,7 @@
 
 namespace Bachelor_Project.Outparser
 {
-    static class Outparser
+    static public class Outparser
     {
         public static void ElectrodeOn(Simulation.Electrode e)
         {

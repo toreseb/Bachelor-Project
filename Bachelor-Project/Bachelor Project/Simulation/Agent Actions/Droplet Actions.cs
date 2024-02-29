@@ -679,6 +679,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
+        internal static void AwaitWork(Droplet droplet)
+        {
+            throw new NotImplementedException();
+        }
+
 
 
         // Fix snake - If snake is broken, remake it.

@@ -28,12 +28,6 @@ namespace Bachelor_Project.Utility
                     Console.WriteLine("Input");
                     Task inputDroplet = new(() => Droplet_Actions.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[0]], int.Parse((string)ActionValue[1])));
                     b.Droplets[OutputDroplets[0]].GiveWork(inputDroplet);
-                    Task moveDown = new(() => Droplet_Actions.SnekMove(b.Droplets[OutputDroplets[0]],Direction.DOWN));
-                    b.Droplets[OutputDroplets[0]].GiveWork(moveDown);
-                    Task moveRight = new(() => Droplet_Actions.SnekMove(b.Droplets[OutputDroplets[0]], Direction.RIGHT));
-                    b.Droplets[OutputDroplets[0]].GiveWork(moveRight);
-                    moveRight = new(() => Droplet_Actions.SnekMove(b.Droplets[OutputDroplets[0]], Direction.RIGHT));
-                    b.Droplets[OutputDroplets[0]].GiveWork(moveRight);
                     break;
                 case "output":
                     Console.WriteLine("Output");
@@ -49,11 +43,21 @@ namespace Bachelor_Project.Utility
                     Console.WriteLine("Merge");
                     Task mergeDroplet = new(() => Droplet_Actions.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]]));
                     b.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);
+                    foreach (var item in InputDroplets)
+                    {
+                        Task awaitWork = new(() => Droplet_Actions.AwaitWork(b.Droplets[OutputDroplets[0]]));
+                        b.Droplets[item].GiveWork(awaitWork);
+                    }
                     break;
                 case "split":
                     Console.WriteLine("Split");
                     Task splitDroplet = new(() => Droplet_Actions.SplitDroplet(b.Droplets[InputDroplets[0]], OutputDroplets));
                     b.Droplets[InputDroplets[0]].GiveWork(splitDroplet);
+                    foreach (var item in OutputDroplets)
+                    {
+                        Task awaitWork = new(() => Droplet_Actions.AwaitWork(b.Droplets[InputDroplets[0]]));
+                        b.Droplets[item].GiveWork(awaitWork);
+                    }
                     break;
                 case "mix":
                     Console.WriteLine("Mix");

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation.Agent_Actions
 {
-    internal static class Droplet_Actions
+    public static class Droplet_Actions
     {
         private static readonly int mixAmount = 5;
         
@@ -109,6 +109,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
         }
 
+
         // Droplets needing mixing are assumed to have been merged into one drop.
         // Does not take contaminants into account yet.
         public static void Mix(Droplet d)
@@ -123,14 +124,43 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (!(e.ePosX < Program.C.board.GetWidth() - 1)) right = false;
                 if (e.ePosY < 1) up = false;
                 if (!(e.ePosY < Program.C.board.GetHeight() - 1)) down = false;
-
-                // Check for other droplets in zone (+ boarder)
-
-
-                // Check for contamination
             }
 
-            // Make good movement
+            // Check for other droplets and contaminants in zone (+ boarder)
+            // Needs to check for each possible direction
+            List<Electrode> tempUR = d.Occupy;
+            List<Electrode> tempUL = d.Occupy;
+            List<Electrode> tempDL = d.Occupy;
+            List<Electrode> tempDR = d.Occupy;
+
+            if (up && right)
+            {
+                // Add all electrodes right above and to the right of + corner to list
+                int maxX = 0;
+                int maxY = 0;
+                foreach (Electrode e in d.Occupy)
+                {
+                    if (e.ePosX > maxX) maxX = e.ePosX;
+                    if (e.ePosY > maxY) maxY = e.ePosY;
+                }
+
+
+
+                }
+            if (up && left)
+            {
+                // Add all electrodes right above and to the left of + corner to list
+            }
+            if (down && left)
+            {
+                // Add all electrodes right under and to the left of + corner to list
+            }
+            if (down && right)
+            {
+                // Add all electrodes right under and to the right of + corner to list
+            }
+
+            // Make good movement - do nothing if no good movement
             if (up)
             {
                 if (left)
@@ -242,12 +272,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             bool legalMove = true;
             foreach (Electrode e in temp) {
+                // Check for other occupants
                 if (!(e.Occupant == null || e.Occupant.Equals(d)))
                 {
                     legalMove = false;
                     break;
                 }
 
+                // Check for contaminants
                 foreach (string c in e.GetContaminants())
                 {
                     if (d.Contamintants.Contains(c))

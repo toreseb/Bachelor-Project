@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation.Agent_Actions
 {
-    internal enum Direction
+    public enum Direction
     {
         UP,
         RIGHT,

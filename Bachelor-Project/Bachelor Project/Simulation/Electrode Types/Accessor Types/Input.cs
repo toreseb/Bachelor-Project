@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Electrode_Types
 {
-    internal class Input(int x, int y) : Accessor(x, y)
+    public class Input(int x, int y) : Accessor(x, y)
     {
         readonly int InputID;
         

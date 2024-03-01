@@ -8,7 +8,7 @@ using Bachelor_Project.Simulation;
 namespace Bachelor_Project.Electrode_Types
 {
     
-    internal class Sensor(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
+    public class Sensor(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
     {
         readonly int SensorID;
 

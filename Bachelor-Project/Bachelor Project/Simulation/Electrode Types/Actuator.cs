@@ -7,7 +7,7 @@ using Bachelor_Project.Simulation;
 
 namespace Bachelor_Project
 {
-    internal class Actuator(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
+    public class Actuator(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
     {
         public int ActuatorID { get; set; }
         public Boolean Status { get; set; }

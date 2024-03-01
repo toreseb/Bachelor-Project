@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    internal class Information
+    public class Information
     {
         public string platform_name { get; set; }
         public string platform_type { get; set; }

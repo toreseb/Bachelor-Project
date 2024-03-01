@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    internal class Board
+    public class Board
     {
         public Electrode[,] Electrodes  { get; set; }     
         public Dictionary<String,Actuator> Actuators     { get; set; }

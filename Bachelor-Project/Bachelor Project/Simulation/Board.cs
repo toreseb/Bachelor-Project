@@ -83,7 +83,7 @@ namespace Bachelor_Project.Simulation
             }
 
             JArray aList = jObject["actuators"].Type != JTokenType.Null ? (JArray)jObject["actuators"] : [] ;
-            Dictionary<String, Actuator> actuators = [];
+            Dictionary<string, Actuator> actuators = [];
             
             foreach (var item in aList)
 
@@ -117,9 +117,8 @@ namespace Bachelor_Project.Simulation
                 
                 
             }
-            Console.WriteLine(jObject["sensors"].Type != JTokenType.Null);
             JArray sList = jObject["sensors"].Type != JTokenType.Null ? (JArray)jObject["sensors"] : [] ;
-            Dictionary<String,Sensor> sensors = [];
+            Dictionary<string,Sensor> sensors = [];
             foreach (var item in sList)
             {
                 switch (item.Type.ToString())
@@ -152,28 +151,27 @@ namespace Bachelor_Project.Simulation
                 }
             }
             Input[] iList = jObject["inputs"].Type != JTokenType.Null ? jObject["inputs"].ToObject<Input[]>():[] ;
-            Dictionary<String, Input> iDict = [];
+            Dictionary<string, Input> iDict = [];
             foreach (var item in iList)
             {
                 iDict.Add(item.Name, item);
                 item.pointers.Add(eArray[item.PositionX/inf.electrode_size,item.PositionY/inf.electrode_size]);
             }
             Output[] oList = jObject["outputs"].Type != JTokenType.Null ? jObject["outputs"].ToObject<Output[]>() : [];
-            Dictionary<String, Output> oDict = [];
+            Dictionary<string, Output> oDict = [];
             foreach (var item in oList)
             {
                 oDict.Add(item.Name, item);
                 item.pointers.Add(eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size]);
             }
             Droplet[] droplets = jObject["droplets"].Type != JTokenType.Null ? jObject["droplets"].ToObject<Droplet[]>() : [];
-            Dictionary<String, Droplet> dDict = [];
+            Dictionary<string, Droplet> dDict = [];
             foreach (var item in droplets)
             {
                 dDict.Add(item.Name, item);
             }
-            String?[] unclassified = jObject["unclassified"].Type != JTokenType.Null ? jObject["unclassified"].ToObject<string?[]>() : [];
+            string?[] unclassified = jObject["unclassified"].Type != JTokenType.Null ? jObject["unclassified"].ToObject<string?[]>() : [];
 
-            Console.WriteLine(inf.sizeX);
             return new Board(inf, eArray, actuators, sensors, iDict, oDict, dDict, unclassified);
         }
 

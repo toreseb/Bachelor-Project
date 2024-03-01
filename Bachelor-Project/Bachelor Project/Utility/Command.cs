@@ -32,7 +32,7 @@ namespace Bachelor_Project.Utility
                 case "output":
                     Console.WriteLine("Output");
                     Task outputDroplet = new(() => Droplet_Actions.OutputDroplet(b.Droplets[InputDroplets[0]], b.Output[(string)ActionValue[0]]));
-                    b.Droplets[OutputDroplets[0]].GiveWork(outputDroplet);
+                    b.Droplets[InputDroplets[0]].GiveWork(outputDroplet);
                     break;
                 case "waste":
                     Console.WriteLine("Waste");
@@ -74,6 +74,8 @@ namespace Bachelor_Project.Utility
                     Task senseDroplet = new(() => Droplet_Actions.SenseDroplet(b.Droplets[InputDroplets[0]], b.Droplets[OutputDroplets[0]], (string)ActionValue[0]));
                     b.Droplets[InputDroplets[0]].GiveWork(senseDroplet);
                     break;
+                default:
+                    throw new ArgumentException("Invalid command type");
             }
             Console.Write("[ ");
             foreach (var item in InputDroplets)

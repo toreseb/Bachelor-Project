@@ -22,7 +22,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             size -= 1;
             while (size > 0)
             {
-                MoveDroplet(d, Direction.RIGHT);
+                SnekMove(d, Direction.RIGHT);
                 InputPart(d, i);
                 size -= 1;
             }
@@ -83,8 +83,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     if (e.Status == 0)
                     {
-                        Outparser.Outparser.ElectrodeOn(e);
-                        e.Occupant = d;
+                        MoveOnElectrode(d, e);
                     }
                 }
 
@@ -97,14 +96,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         if (e.Equals(ee)) { contains = true; break; }
                     }
                     if (!contains) {
-                        Outparser.Outparser.ElectrodeOff(e);
-                        e.Occupant = null;
+                        MoveOffElectrode(d, e);
                     }
 
                     
 
                 }
-
+                
                 d.Occupy = temp;
             }
         }
@@ -337,11 +335,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Console.WriteLine("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
                 Console.WriteLine("Old head: " + head.ePosX + " " + head.ePosY);
                 newOcc = newHead;
-                Outparser.Outparser.ElectrodeOn(newHead[0]);
-                newHead[0].Occupant = d;
+                MoveOnElectrode(d, newHead[0]);
                 newOcc = newOcc.Concat(d.Occupy).ToList();
-                Outparser.Outparser.ElectrodeOff(newOcc[newOcc.Count - 1]);
-                newOcc[newOcc.Count - 1].Occupant = null;
+                MoveOffElectrode(d, newOcc[^1]);
                 newOcc.RemoveAt(newOcc.Count - 1);
                 d.Occupy = newOcc;
                 Console.WriteLine("Droplet moved");
@@ -350,6 +346,22 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 Console.WriteLine("Droplet not moved");
             }
+        }
+
+        public static void MoveOnElectrode(Droplet d, Electrode e)
+        {
+            Outparser.Outparser.ElectrodeOn(e);
+            e.Occupant = d;
+        }
+
+        public static void MoveOffElectrode(Droplet d, Electrode e)
+        {
+            Outparser.Outparser.ElectrodeOff(e);
+            if (!e.GetContaminants().Contains(d.Substance_Name))
+            {
+                e.Contaminate(d.Substance_Name);
+            }
+            e.Occupant = null;
         }
 
 

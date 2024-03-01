@@ -14,7 +14,7 @@ namespace Bachelor_Project.Simulation
         public int ePosX { get; set; } // Electrode position X
         public int ePosY { get; set; } // Electrode position Y
         // Contamination of tile in grid, may need changing later.
-        private string[] Contaminants { get; set; } = [];
+        private List<string> Contaminants { get; set; } = [];
         public Droplet? Occupant;
 
         public Electrode() : this(0, 0)
@@ -23,10 +23,10 @@ namespace Bachelor_Project.Simulation
 
         public void Contaminate(string contaminator)
         {
-            Contaminants = [.. Contaminants, contaminator];
+            Contaminants.Add(contaminator);
         }
 
-        public string[] GetContaminants()
+        public List<string> GetContaminants()
         {
             return Contaminants;
         }

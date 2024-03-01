@@ -10,8 +10,8 @@ namespace Bachelor_Project
     internal class Actuator(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
     {
         public int ActuatorID { get; set; }
-        public Boolean Status { get; set; }
-        public Boolean NextStatus { get; set; }
+        public bool Status { get; set; }
+        public bool NextStatus { get; set; }
 
         public Actuator() : this(0, 0, 1, 1)
         {

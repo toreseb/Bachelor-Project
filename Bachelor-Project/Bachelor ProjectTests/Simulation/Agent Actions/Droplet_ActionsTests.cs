@@ -13,9 +13,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
     public class Droplet_ActionsTests
     {
         static string inputfiles = Directory.GetCurrentDirectory() + "\\..\\..\\..\\Input Files\\";
-        static string testprogramcode = "TestBoardData.json";
+        static string testBoardData = "TestBoardData.json";
 
-        static string testprogramlocation = inputfiles + "\\" + testprogramcode;
+        static string testprogramlocation = inputfiles + "\\" + testBoardData;
 
         static string json = File.ReadAllText(testprogramlocation);
         public static Board board;

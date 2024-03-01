@@ -18,11 +18,11 @@ namespace Bachelor_Project.Simulation
             PropertyNameCaseInsensitive = true,
         };
 
-        (List<Command> commands, Dictionary<string, string> dropletpairs, Dictionary<string, List<string>> contaminated, Dictionary<string, List<string>> contaminates) data;
+        (List<Command> commands, Dictionary<string, string> dropletpairs, Dictionary<string, List<string>> contaminated, Dictionary<string, List<string>> contaminates)? data;
         public Board board;
         List<Command> currentCommands = [];
 
-        public Commander((List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>) data, string boarddata)
+        public Commander((List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>)? data, string boarddata)
         {
             this.data = data;
             string json = File.ReadAllText(boarddata);
@@ -31,22 +31,27 @@ namespace Bachelor_Project.Simulation
 
         public void Setup()
         {
-            foreach (var item in data.dropletpairs)
+            if (!data.HasValue)
+            {
+                return;
+            }
+            (List<Command> commands, Dictionary<string, string> dropletpairs, Dictionary<string, List<string>> contaminated, Dictionary<string, List<string>> contaminates) = data.Value;
+            foreach (var item in dropletpairs)
             {
                 Droplet nDrop = new Droplet(item.Value, item.Key);
-                if (data.contaminated.ContainsKey(item.Value))
+                if (contaminated.ContainsKey(item.Value))
                 {
-                    nDrop.SetContam(data.contaminated[item.Value]);
+                    nDrop.SetContam(contaminated[item.Value]);
                 }
                 else
                 {
                     nDrop.SetContam([]);
                 }
-                if (!data.contaminates.ContainsKey(item.Value))
+                if (!contaminates.ContainsKey(item.Value))
                 {
-                    data.contaminates.Add(item.Value, []);
+                    contaminates.Add(item.Value, []);
                 }
-                nDrop.ContamLevel = data.contaminates[item.Value].Count;
+                nDrop.ContamLevel = contaminates[item.Value].Count;
                 board.Droplets.Add(item.Key, nDrop);
                 nDrop.StartAgent();
             }
@@ -54,9 +59,9 @@ namespace Bachelor_Project.Simulation
             board.Droplets = board.Droplets.OrderBy(x => x.Value.ContamLevel).ToDictionary();
             board.Droplets.Values.ToList().ForEach(x => Console.WriteLine(x.ContamLevel));
 
-            foreach (var item1 in data.commands)
+            foreach (var item1 in commands)
             {
-                foreach (var item2 in data.commands)
+                foreach (var item2 in commands)
                 {
                     if (item1 != item2 && !item1.InputCommands.Contains(item2) && !item2.InputCommands.Contains(item1))
                     {
@@ -75,13 +80,13 @@ namespace Bachelor_Project.Simulation
                     }
                 }
             }
-            foreach (var item in data.commands)
+            foreach (var item in commands)
             {
                 Console.WriteLine(item.Type + " needs commands: " + item.InputCommands.Count + " and allows: " + item.OutputCommands.Count);
             }
-            data.commands = data.commands.OrderBy(x => x.InputCommands.Count).ToList();
+            commands = commands.OrderBy(x => x.InputCommands.Count).ToList();
 
-            data.commands.FindAll(x => x.InputCommands.Count == 0).ForEach(x => currentCommands.Add(x));
+            commands.FindAll(x => x.InputCommands.Count == 0).ForEach(x => currentCommands.Add(x));
         }
 
         public void Start()

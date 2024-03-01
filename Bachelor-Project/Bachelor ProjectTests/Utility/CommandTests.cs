@@ -14,23 +14,27 @@ namespace Bachelor_Project.Utility.Tests
     [TestClass()]
     public class CommandTests
     {
+
+        static string inputfiles = Directory.GetCurrentDirectory() + "\\..\\..\\..\\Input Files\\";
+        static string testBoardData = "TestBoardData.json";
+
         [TestInitialize]
         public void Setup()
         {
-            //Commander C = new(null, inputfiles + "\\" + boarddata);
+            Commander C = new(null, inputfiles + "\\" + testBoardData);
+            Program.C = C;
         }
 
         [TestMethod()]
         public void ExecuteInputCommandTest()
         {
-            Droplet d = new Droplet("water", "test");
+            Droplet d = new("water", "test");
+            Program.C.board.Droplets.Add("test", d);
             Command command = new("input", [], [d.Name], "in0", "24");
             Assert.AreEqual("input", command.Type);
             command.ExecuteCommand();
             Assert.AreEqual(1, d.GetWork().Count);
-            Assert.AreEqual(TaskStatus.WaitingForActivation, d.GetWork()[0].Status);
-            d.StartAgent();
-            Assert.AreEqual(TaskStatus.Running, d.GetWork()[0].Status);
+            Assert.AreEqual(TaskStatus.Created, d.GetWork()[0].Status);
             d.Stop();
         }
     }

@@ -13,7 +13,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.Text.Json;
 
-static class Program
+static public class Program
 {
 
     public static Commander C;

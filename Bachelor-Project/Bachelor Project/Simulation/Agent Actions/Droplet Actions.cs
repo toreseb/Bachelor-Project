@@ -31,9 +31,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         private static void InputPart(Droplet d, Input i)
         {
             AwaiLegalMove(d, i.pointers);
-            Outparser.Outparser.ElectrodeOn(i.pointers[0]);
-            d.Occupy.Add(i.pointers[0]);
-            i.pointers[0].Occupant = d;
+            MoveOnElectrode(d, i.pointers[0]);
         }
 
         public static void MoveDroplet(Droplet d, Direction dir)
@@ -455,6 +453,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void MoveOnElectrode(Droplet d, Electrode e)
         {
             Outparser.Outparser.ElectrodeOn(e);
+            d.Occupy.Add(e);
             e.Occupant = d;
         }
 

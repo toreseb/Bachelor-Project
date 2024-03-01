@@ -8,7 +8,7 @@ namespace Bachelor_Project.Electrode_Types
 {
     public class Output(int x, int y) : Accessor(x, y)
     {
-        readonly int OutputID;
+        public int OutputID;
         public Output():this(0,0)
         {
 

@@ -33,6 +33,7 @@ static class Program
 
         var data = Parsing.ParseFile(inputfiles + "\\" + programcode);
         C = new Commander(data, inputfiles + "\\" + boarddata);
+        C.Setup();
         C.Start();
 
     }

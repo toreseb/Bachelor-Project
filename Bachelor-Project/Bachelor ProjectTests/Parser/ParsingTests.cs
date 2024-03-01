@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bachelor_Project.Utility;
+using Antlr4.Runtime;
 
 namespace Bachelor_Project.Parsing.Tests
 {
@@ -25,11 +26,24 @@ namespace Bachelor_Project.Parsing.Tests
             Assert.AreEqual(data.Item1.Count, 9);
         }
         [TestMethod()]
+        public void ParseWrongFileTest()
+        {
+            string wrongtestprogramlocation = "wrongtest";
+            Assert.ThrowsException<FileNotFoundException>(() => Parsing.ParseFile(wrongtestprogramlocation));
+        }
+
+        [TestMethod()]
         public void ParseStringTest()
         {
             string text = File.ReadAllText(testprogramlocation);
             var data = Parsing.ParseString(text);
             Assert.AreEqual(data.Item1.Count, 9);
+        }
+        [TestMethod()]
+        public void ParseWrongStringTest()
+        {
+            string wrongtext = "wrongtest";
+            Assert.ThrowsException<ArgumentException>(() => Parsing.ParseString(wrongtext));
         }
 
         [TestMethod()]
@@ -51,7 +65,6 @@ namespace Bachelor_Project.Parsing.Tests
 
             //Test merge
             command = data.commands[2];
-            
             Assert.IsTrue(command.Type == "merge" && command.InputDroplets.Count == 2 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "water");
 
             //Test split

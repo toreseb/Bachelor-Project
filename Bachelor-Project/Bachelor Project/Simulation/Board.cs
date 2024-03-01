@@ -259,7 +259,7 @@ namespace Bachelor_Project.Simulation
                     }
                     line2 += name;
                     used2 += name.Length;
-                }else if (Electrodes[i,j].GetContaminants().Length != 0)
+                }else if (Electrodes[i,j].GetContaminants().Count != 0)
                 {
                     line2 += "Z";
                     used2 += 1;

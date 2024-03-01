@@ -37,9 +37,12 @@ namespace Bachelor_Project.Parsing
             ITokenSource lexer = new ProgramLexer(stream);
             ITokenStream tokens = new CommonTokenStream(lexer);
             ProgramParser parser = new ProgramParser(tokens);
+            parser.AddErrorListener(new ErrorListener());
             IParseTree tree = parser.program();
             ProgramDecoder decoder = new ProgramDecoder();
             ParseTreeWalker.Default.Walk(decoder, tree);
+
+            
 
             return (Commands, Dropletpairs, Contaminated, Contaminates);
         }

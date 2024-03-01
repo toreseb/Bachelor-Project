@@ -88,6 +88,11 @@ namespace Bachelor_Project.Simulation
             workAvailableEvent.Set();
         }
 
+        public List<Task> GetWork()
+        {
+            return TaskQueue.ToList();
+        }
+
         public void Stop()
         {
             cancellationTokenSource.Cancel();

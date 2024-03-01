@@ -19,6 +19,7 @@
 // Ambiguous reference in cref attribute
 #pragma warning disable 419
 
+using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using IParseTreeListener = Antlr4.Runtime.Tree.IParseTreeListener;
 using IToken = Antlr4.Runtime.IToken;
@@ -127,5 +128,14 @@ class ProgramDecoder : ProgramBaseListener
     {
         Bachelor_Project.Parsing.Parsing.Decode(context);
 		base.ExitCommand(context);
+    }
+}
+
+class ErrorListener : BaseErrorListener
+{
+	
+    public override void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
+	{
+        throw new ArgumentException("Syntax error at line " + line + ":" + charPositionInLine + " " + msg);
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    internal class Commander
+    public class Commander
     {
 
         static private readonly JsonSerializerOptions options = new JsonSerializerOptions
@@ -29,13 +29,13 @@ namespace Bachelor_Project.Simulation
             board = Board.ImportBoardData(json);
         }
 
-        public void Start()
+        public void Setup()
         {
-
             foreach (var item in data.dropletpairs)
             {
                 Droplet nDrop = new Droplet(item.Value, item.Key);
-                if (data.contaminated.ContainsKey(item.Value)){
+                if (data.contaminated.ContainsKey(item.Value))
+                {
                     nDrop.SetContam(data.contaminated[item.Value]);
                 }
                 else
@@ -50,7 +50,7 @@ namespace Bachelor_Project.Simulation
                 board.Droplets.Add(item.Key, nDrop);
                 nDrop.StartAgent();
             }
-            
+
             board.Droplets = board.Droplets.OrderBy(x => x.Value.ContamLevel).ToDictionary();
             board.Droplets.Values.ToList().ForEach(x => Console.WriteLine(x.ContamLevel));
 
@@ -58,7 +58,7 @@ namespace Bachelor_Project.Simulation
             {
                 foreach (var item2 in data.commands)
                 {
-                    if(item1 != item2 && !item1.InputCommands.Contains(item2) && !item2.InputCommands.Contains(item1))
+                    if (item1 != item2 && !item1.InputCommands.Contains(item2) && !item2.InputCommands.Contains(item1))
                     {
                         foreach (var item in item1.OutputDroplets)
                         {
@@ -66,7 +66,7 @@ namespace Bachelor_Project.Simulation
                             {
                                 int a = 2;
                             }
-                            if(item2.InputDroplets.Contains(item))
+                            if (item2.InputDroplets.Contains(item))
                             {
                                 item2.InputCommands.Add(item1);
                                 item1.OutputCommands.Add(item2);
@@ -77,11 +77,15 @@ namespace Bachelor_Project.Simulation
             }
             foreach (var item in data.commands)
             {
-                Console.WriteLine(item.Type + " needs commands: " +item.InputCommands.Count + " and allows: " + item.OutputCommands.Count);
+                Console.WriteLine(item.Type + " needs commands: " + item.InputCommands.Count + " and allows: " + item.OutputCommands.Count);
             }
             data.commands = data.commands.OrderBy(x => x.InputCommands.Count).ToList();
 
             data.commands.FindAll(x => x.InputCommands.Count == 0).ForEach(x => currentCommands.Add(x));
+        }
+
+        public void Start()
+        {
 
             while (currentCommands.Count > 0)
             {

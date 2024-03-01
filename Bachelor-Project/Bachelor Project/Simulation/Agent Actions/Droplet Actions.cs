@@ -516,6 +516,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
         // Coil snake
+        // Could try doing it without thinking of it as a snake, just a bunch of small droplets moving to be a big one.
         public static void CoilSnek(Droplet d)
         {
             // Droplet cannot coil if it is not in snekMode

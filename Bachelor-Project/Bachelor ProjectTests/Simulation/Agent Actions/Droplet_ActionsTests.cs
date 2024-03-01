@@ -50,7 +50,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(1, amountOn);
 
             Assert.AreEqual(1, board.Input["in0"].pointers[0].Status);
-            
+
         }
 
         [TestMethod()]
@@ -88,5 +88,40 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.Fail();
         }
 
+        [TestMethod()]
+        public void MoveDropletTest_Small1x1Droplet()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void MoveDropletTest_Large2x3Droplet()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void MoveDropletTest_DropletOverBorder()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void MoveDropletTest_MoveIntoDroplet()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void MoveDropletTest_MoveCloseToDroplet()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void MoveDropletTest_MoveIntoContam()
+        {
+            Assert.Fail();
+        }
     }
 }

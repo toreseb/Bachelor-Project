@@ -128,17 +128,19 @@ namespace Bachelor_Project.Simulation
 
 
             /*
-            board.Droplets.Add("Wat1", new Droplet(board.Input["in0"], 16, "Water", "Wat1"));
-            board.PrintBoardState();
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.DOWN);
-            board.PrintBoardState();
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.UP);
+            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
+            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 36);
             board.PrintBoardState();
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
             board.PrintBoardState();
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.DOWN);
+            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
+            board.PrintBoardState();
+            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
+            board.PrintBoardState();
+            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
             board.PrintBoardState();
             */
+            
             
             board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
             Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"],36);
@@ -147,8 +149,10 @@ namespace Bachelor_Project.Simulation
             board.PrintBoardState();
             Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.LEFT);
             board.PrintBoardState();
-            
-            
+            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.UP);
+            board.PrintBoardState();
+
+
         }
 
         Board GetBoard()

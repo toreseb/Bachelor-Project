@@ -1,10 +1,13 @@
 ﻿using Bachelor_Project.Electrode_Types;
+using Bachelor_Project.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace Bachelor_Project.Simulation.Agent_Actions
 {
@@ -38,41 +41,44 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             bool legalMove = true;
             List<Electrode> temp = new List<Electrode>();
-            Electrode? newE = null;
+
+            int xChange = 0;
+            int yChange = 0;
+            switch (dir)
+            {
+                case Direction.UP:
+                    yChange = -1;
+
+                    break;
+                case Direction.LEFT:
+                    xChange = -1;
+
+                    break;
+                case Direction.DOWN:
+                    yChange = 1;
+
+                    break;
+                case Direction.RIGHT:
+                    xChange = 1;
+
+                    break;
+            }
+
+            // Make list with new placements of electrodes
             foreach (Electrode e in d.Occupy)
             {
-                int xChange = 0;
-                int yChange = 0;
-                switch (dir)
+                // Check if new posision is legal
+                if (CheckLegalPosition(d,[(e.ePosX + xChange, e.ePosY + yChange)]))
                 {
-                    case Direction.UP:
-                        yChange = -1;
-                        
-                        break;
-                    case Direction.RIGHT:
-                        xChange = 1;
-                        
-                        break;
-                    case Direction.DOWN:
-                        yChange = 1;
-                        
-                        break;
-                    case Direction.LEFT:
-                        xChange = -1;
-                        
-                        break;
-                }
-
-                if (e.ePosX + xChange < Program.C.board.GetXElectrodes() && e.ePosX + xChange >= 0 && e.ePosY + yChange < Program.C.board.GetYElectrodes() && e.ePosY + yChange >= 0)
-                {
-                    newE = Program.C.board.Electrodes[e.ePosX + xChange, e.ePosY + yChange];
-                    temp.Add(newE);
+                    temp.Add(Program.C.board.Electrodes[e.ePosX + xChange, e.ePosY + yChange]);
                 }
                 else
                 {
                     legalMove = false;
+                    break;
                 }
             }
+
 
             if (legalMove)
             {
@@ -96,12 +102,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     if (!contains) {
                         MoveOffElectrode(d, e);
                     }
-
-                    
-
                 }
                 
                 d.Occupy = temp;
+            }
+            else
+            {
+                //throw new IllegalMoveException();
+                Console.WriteLine("Illegal Move");
             }
         }
 
@@ -372,6 +380,28 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             return legalMove;
         }
+
+        public static bool CheckLegalPosition(Droplet d, List<(int, int)> pos)
+        {
+            List<Electrode> temp = new List<Electrode>();
+
+            // Check if within board
+            foreach (var (x,y) in pos)
+            {
+                if (x < Program.C.board.GetXElectrodes() && x >= 0 && y < Program.C.board.GetYElectrodes() && y >= 0)
+                {
+                    temp.Add(Program.C.board.Electrodes[x, y]);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            // Check for other droplets and contamination
+            return CheckLegalMove(d, temp);
+        }
+
 
         public static void AwaiLegalMove(Droplet d, List<Electrode> temp)
         {

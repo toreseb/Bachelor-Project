@@ -126,81 +126,153 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // Check for other droplets and contaminants in zone (+ boarder)
             // Needs to check for each possible direction
-            List<Electrode> tempUR = d.Occupy;
-            List<Electrode> tempUL = d.Occupy;
-            List<Electrode> tempDL = d.Occupy;
-            List<Electrode> tempDR = d.Occupy;
+            List<Electrode> temp = d.Occupy;
 
             if (up && right)
             {
                 // Add all electrodes right above and to the right of + corner to list
-                int maxX = 0;
-                int maxY = 0;
                 foreach (Electrode e in d.Occupy)
                 {
-                    if (e.ePosX > maxX) maxX = e.ePosX;
-                    if (e.ePosY > maxY) maxY = e.ePosY;
+                    // Check if above needs adding
+                    if (Program.C.board.Electrodes[e.ePosX, e.ePosY - 1].Occupant != d)
+                    {
+                        temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY - 1]);
+
+                        // Check if corner needs adding
+                        if (Program.C.board.Electrodes[e.ePosX + 1, e.ePosY].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX + 1, e.ePosY - 1]);
+                        }
+                    }
+                    // Check if right needs adding
+                    if (Program.C.board.Electrodes[e.ePosX + 1, e.ePosY].Occupant != d)
+                    {
+                        temp.Add(Program.C.board.Electrodes[e.ePosX + 1, e.ePosY]);
+                    }
                 }
 
-
-
+                // Check if area is legal
+                if (CheckLegalMove(d, temp))
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d, Direction.RIGHT);
+                        MoveDroplet(d, Direction.UP);
+                        MoveDroplet(d, Direction.LEFT);
+                        MoveDroplet(d, Direction.DOWN);
+                    }
+                    return;
                 }
+            }
+
             if (up && left)
             {
                 // Add all electrodes right above and to the left of + corner to list
+                foreach (Electrode e in d.Occupy)
+                {
+                    // Check if above needs adding
+                    if (Program.C.board.Electrodes[e.ePosX, e.ePosY - 1].Occupant != d)
+                    {
+                        temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY - 1]);
+
+                        // Check if corner needs adding
+                        if (Program.C.board.Electrodes[e.ePosX - 1, e.ePosY].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX - 1, e.ePosY - 1]);
+                        }
+                    }
+                    // Check if left needs adding
+                    if (Program.C.board.Electrodes[e.ePosX - 1, e.ePosY].Occupant != d)
+                    {
+                        temp.Add(Program.C.board.Electrodes[e.ePosX - 1, e.ePosY]);
+                    }
+                }
+
+                // Check if area is legal
+                if (CheckLegalMove(d, temp))
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d, Direction.UP);
+                        MoveDroplet(d, Direction.LEFT);
+                        MoveDroplet(d, Direction.DOWN);
+                        MoveDroplet(d, Direction.RIGHT);
+                    }
+                    return;
+                }
             }
+
             if (down && left)
             {
                 // Add all electrodes right under and to the left of + corner to list
+                foreach (Electrode e in d.Occupy)
+                {
+                    // Check if under needs adding
+                    if (Program.C.board.Electrodes[e.ePosX, e.ePosY + 1].Occupant != d)
+                    {
+                        temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY + 1]);
+
+                        // Check if corner needs adding
+                        if (Program.C.board.Electrodes[e.ePosX - 1, e.ePosY].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX - 1, e.ePosY + 1]);
+                        }
+                    }
+                    // Check if left needs adding
+                    if (Program.C.board.Electrodes[e.ePosX - 1, e.ePosY].Occupant != d)
+                    {
+                        temp.Add(Program.C.board.Electrodes[e.ePosX - 1, e.ePosY]);
+                    }
+                }
+
+                // Check if area is legal
+                if (CheckLegalMove(d, temp))
+                {
+                    for (int i = 0; i < mixAmount; i++)
+                    {
+                        MoveDroplet(d, Direction.LEFT);
+                        MoveDroplet(d, Direction.DOWN);
+                        MoveDroplet(d, Direction.RIGHT);
+                        MoveDroplet(d, Direction.UP);
+                    }
+                    return;
+                }
             }
+
             if (down && right)
             {
                 // Add all electrodes right under and to the right of + corner to list
-            }
+                foreach (Electrode e in d.Occupy)
+                {
+                    // Check if under needs adding
+                    if (Program.C.board.Electrodes[e.ePosX, e.ePosY + 1].Occupant != d)
+                    {
+                        temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY + 1]);
 
-            // Make good movement - do nothing if no good movement
-            if (up)
-            {
-                if (left)
-                {
-                    for (int i = 0; i < mixAmount; i++)
-                    {
-                        MoveDroplet(d,Direction.UP);
-                        MoveDroplet(d,Direction.LEFT);
-                        MoveDroplet(d,Direction.DOWN);
-                        MoveDroplet(d,Direction.RIGHT);
+                        // Check if corner needs adding
+                        if (Program.C.board.Electrodes[e.ePosX + 1, e.ePosY].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX + 1, e.ePosY + 1]);
+                        }
                     }
-                }else if (right)
-                {
-                    for (int i = 0; i < mixAmount; i++)
+                    // Check if right needs adding
+                    if (Program.C.board.Electrodes[e.ePosX + 1, e.ePosY].Occupant != d)
                     {
-                        MoveDroplet(d,Direction.RIGHT);
-                        MoveDroplet(d,Direction.UP);
-                        MoveDroplet(d,Direction.LEFT);
-                        MoveDroplet(d,Direction.DOWN);
+                        temp.Add(Program.C.board.Electrodes[e.ePosX + 1, e.ePosY]);
                     }
                 }
-            }else if (down)
-            {
-                if (left)
+
+                // Check if area is legal
+                if (CheckLegalMove(d, temp))
                 {
                     for (int i = 0; i < mixAmount; i++)
                     {
-                        MoveDroplet(d,Direction.LEFT);
-                        MoveDroplet(d,Direction.DOWN);
-                        MoveDroplet(d,Direction.RIGHT);
-                        MoveDroplet(d,Direction.UP);
+                        MoveDroplet(d, Direction.DOWN);
+                        MoveDroplet(d, Direction.RIGHT);
+                        MoveDroplet(d, Direction.UP);
+                        MoveDroplet(d, Direction.LEFT);
                     }
-                }
-                else if (right)
-                {
-                    for (int i = 0; i < mixAmount; i++)
-                    {
-                        MoveDroplet(d,Direction.DOWN);
-                        MoveDroplet(d,Direction.RIGHT);
-                        MoveDroplet(d,Direction.UP);
-                        MoveDroplet(d,Direction.LEFT);
-                    }
+                    return;
                 }
             }
         }
@@ -444,6 +516,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
         // Coil snake
+        // Could try doing it without thinking of it as a snake, just a bunch of small droplets moving to be a big one.
         public static void CoilSnek(Droplet d)
         {
             // Droplet cannot coil if it is not in snekMode

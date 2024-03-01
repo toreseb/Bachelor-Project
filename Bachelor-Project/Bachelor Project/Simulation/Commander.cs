@@ -89,6 +89,13 @@ namespace Bachelor_Project.Simulation
             commands.FindAll(x => x.InputCommands.Count == 0).ForEach(x => currentCommands.Add(x));
         }
 
+        public Board SetBoard(string boarddata)
+        {
+            string json = File.ReadAllText(boarddata);
+            board = Board.ImportBoardData(json);
+            return board;
+        }
+
         public void Start()
         {
 

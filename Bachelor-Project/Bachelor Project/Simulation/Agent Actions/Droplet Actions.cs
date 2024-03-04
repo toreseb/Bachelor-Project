@@ -417,13 +417,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
+        public static void SnekMove(Droplet d, Direction dir)
+        {
+            SnekMove(d,d.Occupy,dir);
+        }
+
         // Non-protected snake move forward 1
         // Assumes that the list of occupied electrodes are in the form of a snake.
-        public static void SnekMove(Droplet d, Direction dir)
+        public static void SnekMove(Droplet d, List<Electrode> el, Direction dir)
         {
             List<Electrode> newOcc = new List<Electrode>();
             List<Electrode> newHead = new List<Electrode>(); // Needs to be a list containing one electrode for a snekcheck.
-            Electrode head = d.Occupy.FirstOrDefault();
+            Electrode head = el.FirstOrDefault();
 
             try
             {
@@ -458,10 +463,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Console.WriteLine("Old head: " + head.ePosX + " " + head.ePosY);
                 newOcc = newHead;
                 MoveOnElectrode(d, newHead[0]);
-                newOcc = newOcc.Concat(d.Occupy).ToList();
+                newOcc = newOcc.Concat(el).ToList();
                 MoveOffElectrode(d, newOcc[^1]);
                 newOcc.RemoveAt(newOcc.Count - 1);
-                d.Occupy = newOcc;
+                //el = newOcc;
+                el.Clear();
+                el.Add(newOcc[0]);
                 Console.WriteLine("Droplet moved");
             }
             else
@@ -545,6 +552,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // TODO: What if dest is closer to d than d is long?
 
             // Find a coordinate closest to destination
+            /*
             Electrode closest = null;
             int maxDist = int.MaxValue;
             foreach(Electrode e in d.Occupy)
@@ -554,22 +562,32 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     closest = e;
                 }
             }
-
+            */
             // Make a temp snake to snek move towards the destination that grows with the shrinkage of the droplet.
             Droplet tempSnek = new Droplet(d.Substance_Name, "temp" + d.Name);
 
             int dropletSize = d.Occupy.Count;
 
             // Make tree out of blob in order to know what can safely be removed.
-            // TODO
+            Tree blobTree = BuildTree(d, [], dest);
 
-            while(tempSnek.Occupy.Count < dropletSize)
+            tempSnek.Occupy.Add(blobTree.closestElectrode);
+
+            for (int i = 0; i < dropletSize-1; i++)
             {
                 // Move tempSnek forwards but do not turn off last electrode.
-                // TODO: Find place to move farward to
+                // TODO: Find place to move farward to - right for now.
+                // Save last part of snake.
+                Electrode temp = tempSnek.Occupy[^1];
+                SnekMove(d, tempSnek.Occupy, Direction.RIGHT);
+                MoveOnElectrode(d, temp);
+
+
 
                 // Leaves in tree can be safely removed, do one.
                 // TODO: remove leaf
+                blobTree.RemoveLeaf();
+                Program.C.board.PrintBoardState();
             }
 
             d.Occupy = new List<Electrode>(tempSnek.Occupy);

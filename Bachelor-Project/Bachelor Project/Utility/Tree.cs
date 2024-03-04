@@ -16,9 +16,10 @@ namespace Bachelor_Project.Utility
         List<Electrode> NewElectrodes;
         Droplet d;
         public List<Node> Leaves;
+        public Electrode closestElectrode;
         public Tree(Droplet d, List<Electrode> oldElectrodes, List<Electrode> newElectrodes, Electrode center)
         {
-            Electrode closestElectrode = FindClosestElectrode(oldElectrodes, center);
+            closestElectrode = FindClosestElectrode(oldElectrodes, center);
             SeenElectrodes = [closestElectrode];
             NewElectrodes = newElectrodes;
             Node root = new(closestElectrode);

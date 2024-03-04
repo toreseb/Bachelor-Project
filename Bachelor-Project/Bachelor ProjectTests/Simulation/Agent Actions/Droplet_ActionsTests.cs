@@ -91,30 +91,35 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         [TestMethod()]
         public void MoveDropletTest_Small1x1Droplet()
         {
+            // TODO: Move a 1x1 droplet
             Assert.Fail();
         }
 
         [TestMethod()]
         public void MoveDropletTest_Large2x3Droplet()
         {
+            // TODO: Move a 2x3 droplet
             Assert.Fail();
         }
 
         [TestMethod()]
         public void MoveDropletTest_DropletOverBorder()
         {
+            // TODO: Try to move a droplet outside the board
             Assert.Fail();
         }
 
         [TestMethod()]
         public void MoveDropletTest_MoveIntoDroplet()
         {
+            // TODO: Try to move a droplet into another droplet
             Assert.Fail();
         }
 
         [TestMethod()]
         public void MoveDropletTest_MoveCloseToDroplet()
         {
+            // TODO: Try to move a droplet close to another droplet
             Assert.Fail();
         }
 

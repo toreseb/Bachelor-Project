@@ -145,6 +145,7 @@ namespace Bachelor_Project.Simulation
             board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
             Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"],36);
             board.PrintBoardState();
+            Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[3,1]);
             /*Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.DOWN);
             board.PrintBoardState();
             Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.LEFT);

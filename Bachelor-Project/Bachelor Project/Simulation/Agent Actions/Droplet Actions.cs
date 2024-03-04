@@ -540,8 +540,45 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        // Uncoil snake
+        // Uncoil snake - takes droplet and destination
+        // Choose head at spot close to destination. Run through rest of body, check for each part if moving it would disconnect body, if yes,
+        // go to next part, if no, turn on next electrode for head and turn off electrode for part.
+        // TODO: Figure out how to handle if snake runs into something.. No, that is handled by the algorithm, we just need to uncoil.
+        public static void UncoilSnek(Droplet d, Electrode dest)
+        {
+            // TODO: What if dest is in d?
+            // TODO: What if dest is closer to d than d is long?
 
+            // Find a coordinate closest to destination
+            Electrode closest = null;
+            int maxDist = int.MaxValue;
+            foreach(Electrode e in d.Occupy)
+            {
+                if (maxDist > Math.Abs(dest.ePosX - e.ePosX) + Math.Abs(dest.ePosY - e.ePosY))
+                {
+                    closest = e;
+                }
+            }
+
+            // Make a temp snake to snek move towards the destination that grows with the shrinkage of the droplet.
+            Droplet tempSnek = new Droplet(d.Substance_Name, "temp" + d.Name);
+
+            int dropletSize = d.Occupy.Count;
+
+            // Make tree out of blob in order to know what can safely be removed.
+            // TODO
+
+            while(tempSnek.Occupy.Count < dropletSize)
+            {
+                // Move tempSnek forwards but do not turn off last electrode.
+                // TODO: Find place to move farward to
+
+                // Leaves in tree can be safely removed, do one.
+                // TODO: remove leaf
+            }
+
+            d.Occupy = new List<Electrode>(tempSnek.Occupy);
+        }
 
 
         // Coil snake

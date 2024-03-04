@@ -101,14 +101,14 @@ namespace Bachelor_Project.Simulation
                 int startY = (int)item["positionY"] / inf.electrode_size;
 
                 int endX = ((int)item["positionX"] + (int)item["sizeX"]) / inf.electrode_size;
-                int endY = ((int)item["positionX"] + (int)item["sizeY"]) / inf.electrode_size;
+                int endY = ((int)item["positionY"] + (int)item["sizeY"]) / inf.electrode_size;
                 int i = endX - startX;
                 while (i >= 0)
                 {
                     int j = endY - startY;
                     while (j >= 0)
                     {
-                        actuators[item["name"].ToString()].pointers.Add(eArray[startY + j, startX + i]);
+                        actuators[item["name"].ToString()].pointers.Add(eArray[startX + i, startY + j]);
                         j--;
                     }
                     i--;

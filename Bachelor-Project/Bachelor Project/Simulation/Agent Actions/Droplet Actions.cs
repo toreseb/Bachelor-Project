@@ -22,7 +22,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             while (size > 0)
             {
                 CoilSnek(d, i.pointers[0], input: true);
-                size -= 1;
+                size--;
             }
         }
 
@@ -542,7 +542,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         // Could try doing it without thinking of it as a snake, just a bunch of small droplets moving to be a big one.
         public static void CoilSnek(Droplet d, Electrode center, bool input = false)
         {
-            int amount = input ? d.Occupy.Count : d.Occupy.Count -1 ; // -1 because the center is not in the list 0 if it inputs new value
+            int amount = input ? d.Occupy.Count: d.Occupy.Count -1; // -1 because the center is not in the list 0 if it inputs new value
+            if (amount == 0 && input)
+            {
+                MoveOnElectrode(d, center);
+            }
+            
+            
             
             List<Electrode> newBlob = [center];
             int i = 1;
@@ -566,7 +572,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 i++;
             }
             done:
-            d.Occupy.Sort((x, y) => Distance(x.ePosX, x.ePosY, center.ePosX, center.ePosY).CompareTo(Distance(y.ePosX, y.ePosY, center.ePosX, center.ePosY)));
+            
+            Tree snekTree = BuildTree(d, newBlob, center);
+
             foreach (var item in newBlob)
             {
                 if (!d.Occupy.Contains(item))
@@ -574,20 +582,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     MoveOnElectrode(d, item);
                 }
             }
-            foreach (var item in d.Occupy)
-            {
-                if (!newBlob.Contains(item))
-                {
-                    MoveOffElectrode(d, item);
-                }
-                
-            }
+            snekTree.RemoveTree();
+
+            Program.C.board.PrintBoardState();
 
         }
 
-        public static double Distance(int ax, int ay, int bx, int by)
+        public static Tree BuildTree(Droplet d, List<Electrode> newElectrodes, Electrode center)
         {
-            return Math.Sqrt(Math.Pow(ax - bx, 2) + Math.Pow(ay-by,2)); ;
+            return new Tree(d, d.Occupy, newElectrodes, center);
         }
 
         

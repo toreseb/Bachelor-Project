@@ -1,0 +1,71 @@
+
+{
+  information: [{
+    platform_name: "4by3example",
+    platform_type: "example",
+    platform_ID: "012345678",
+    sizeX: 180,
+    sizeY: 180
+  }],
+    electrodes: [
+      '{{repeat(9*9)}}',
+      {
+        name: "el" + '{{index()}}',
+        ID: '{{index()}}',
+        electrodeID: '{{index()}}',
+        driverID: function (tags) {
+          if (tags.index() < 9*9/2){
+            return 0;
+          }else{
+            return 1;
+          }
+        },
+        positionX: function (tags){
+          return tags.index() % 9 * 20;
+        },
+        positionY: function (tags){
+          var n = tags.index() % 9;
+          var y = tags.index() - n;
+          return y / 9 * 20;
+        },
+        sizeX: 20,
+        sizeY: 20
+      }
+    ],
+      actuators: [{
+        name: "heat1",
+        ID: 8*8+ '{{index()}}',
+        actuator: '{{index()}}',
+        type: "heater",
+        positionX: 20,
+        positionY: 0,
+        sizeX: 20,
+        sizeY: 20,
+        actualTemperature: 0,
+        desiredTemperature: 10,
+        status: false,
+        nextDesiredTemperature: 0,
+        nextStatus: false,
+        corners: null
+      }],
+        sensors: null,
+        inputs: [{
+          name: "in" + '{{index()}}',
+          ID: 8*8+1+'{{index()}}',
+          inputID: '{{index()}}',
+          positionX: 10,
+          positionY: 90
+        }],
+        outputs: [{
+          name: "out" + '{{index()}}',
+          ID: 8*8+1+'{{index()}}',
+          outputID: '{{index()}}',
+          positionX: 170,
+          positionY: 90
+        }],
+        droplets: null,
+        unclassified: null
+          
+}
+
+

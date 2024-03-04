@@ -589,7 +589,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             
             List<Electrode> newBlob = [center];
             int i = 1;
-            while(amount > 0) //rings of a square, 1 8 16 24 32
+            while(amount > 0)
             {
                 for (int j = -i; j <=i ; j++)
                 {

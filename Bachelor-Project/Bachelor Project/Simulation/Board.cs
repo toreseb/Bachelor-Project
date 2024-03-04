@@ -78,6 +78,7 @@ namespace Bachelor_Project.Simulation
             for (int j = 0; j < eList.Length; j++)
             {
                 eArray[j % inf.eRow, j / inf.eRow] = eList[j];
+                Console.WriteLine(eList[12].Name);
                 eList[j].ePosX = j % inf.eRow;
                 eList[j].ePosY = j / inf.eRow;
             }

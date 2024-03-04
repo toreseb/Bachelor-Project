@@ -18,24 +18,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void InputDroplet(Droplet d, Input i, int volume)
         {
             d.SetSizes(volume);
-            d.PositionX = i.pointers[0].ePosX;
-            d.PositionY = i.pointers[0].ePosY;
-            InputPart(d, i);
             int size = d.Size;
-            size -= 1;
             while (size > 0)
             {
-                SnekMove(d, Direction.RIGHT);
-                InputPart(d, i);
+                CoilSnek(d, i.pointers[0], input: true);
                 size -= 1;
             }
         }
 
-        private static void InputPart(Droplet d, Input i)
-        {
-            AwaiLegalMove(d, i.pointers);
-            MoveOnElectrode(d, i.pointers[0]);
-        }
 
         public static void MoveDroplet(Droplet d, Direction dir)
         {
@@ -383,7 +373,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool CheckLegalPosition(Droplet d, List<(int, int)> pos)
         {
-            List<Electrode> temp = new List<Electrode>();
+            List<Electrode> temp = [];
 
             // Check if within board
             foreach (var (x,y) in pos)
@@ -539,13 +529,69 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
+        internal static void AwaitWork(Droplet droplet)
+        {
+            //throw new NotImplementedException();
+        }
+
 
         // Uncoil snake
 
 
-
         // Coil snake
         // Could try doing it without thinking of it as a snake, just a bunch of small droplets moving to be a big one.
+        public static void CoilSnek(Droplet d, Electrode center, bool input = false)
+        {
+            int amount = input ? d.Occupy.Count : d.Occupy.Count -1 ; // -1 because the center is not in the list 0 if it inputs new value
+            
+            List<Electrode> newBlob = [center];
+            int i = 1;
+            while(amount > 0) //rings of a square, 1 8 16 24 32
+            {
+                for (int j = -i; j <=i ; j++)
+                {
+                    for (int k = -i; k <= i; k++)
+                    {
+                        if ((j == -i || j == i || k == -i || k == i) && amount > 0 && CheckLegalPosition(d, [(center.ePosX + j, center.ePosY + k)]))
+                        {
+                            newBlob.Add(Program.C.board.Electrodes[center.ePosX + j, center.ePosY + k]);
+                            amount--;
+                        }
+                        if (amount <= 0)
+                        {
+                            goto done;
+                        }
+                    }
+                }
+                i++;
+            }
+            done:
+            d.Occupy.Sort((x, y) => Distance(x.ePosX, x.ePosY, center.ePosX, center.ePosY).CompareTo(Distance(y.ePosX, y.ePosY, center.ePosX, center.ePosY)));
+            foreach (var item in newBlob)
+            {
+                if (!d.Occupy.Contains(item))
+                {
+                    MoveOnElectrode(d, item);
+                }
+            }
+            foreach (var item in d.Occupy)
+            {
+                if (!newBlob.Contains(item))
+                {
+                    MoveOffElectrode(d, item);
+                }
+                
+            }
+
+        }
+
+        public static double Distance(int ax, int ay, int bx, int by)
+        {
+            return Math.Sqrt(Math.Pow(ax - bx, 2) + Math.Pow(ay-by,2)); ;
+        }
+
+        
+        /*
         public static void CoilSnek(Droplet d)
         {
             // Droplet cannot coil if it is not in snekMode
@@ -805,7 +851,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             return (dir, w - straightCount, side);
 
-            /*
+            
             switch (dir)
             {
                 case Direction.UP:
@@ -821,14 +867,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                     break;
             }
-            */
+            
 
-        }
+        }*/
 
-        internal static void AwaitWork(Droplet droplet)
-        {
-            throw new NotImplementedException();
-        }
+
 
 
 

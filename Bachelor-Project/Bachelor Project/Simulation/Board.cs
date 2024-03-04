@@ -195,12 +195,12 @@ namespace Bachelor_Project.Simulation
             Output.Values.ToList().ForEach(x => squares[x.pointers[0].ePosY][x.pointers[0].ePosX].Add(x));
 
             Console.WriteLine("Board State:");
-            Console.WriteLine(new String('-',1+Information.eRow*(3+Squarewidth)));
+            Console.WriteLine(new string('-',1+Information.eRow*(3+Squarewidth)));
             // Write horizontal lines one by one
             for (var j = 0; j < squares.Length; j++)
             {
                 Console.WriteLine(BuildPrintLine(squares[j],j));
-                Console.WriteLine(new String('-', 1 + Information.eRow * (3 + 6)));
+                Console.WriteLine(new string('-', 1 + Information.eRow * (3 + 6)));
             }
             Console.WriteLine();
             

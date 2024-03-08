@@ -76,7 +76,7 @@ namespace Bachelor_Project.Parsing
                 case "contam": //CONTAMINATE, droplet type, (droplet type N)*
                     string contaminator = context.GetChild<ProgramParser.DroplettypeContext>(0).GetText();
                     Console.Write($"droplets of type: {contaminator} contaminates droplets of type: ");
-                    List<String> contaminants = [];
+                    List<string> contaminants = [];
                     i = 1;
                     while (context.GetChild<ProgramParser.DroplettypeContext>(i) != null)
                     {

@@ -36,23 +36,28 @@ namespace Bachelor_Project.Simulation
                 return;
             }
             (List<Command> commands, Dictionary<string, string> dropletpairs, Dictionary<string, List<string>> contaminated, Dictionary<string, List<string>> contaminates) = data.Value;
-            foreach (var item in dropletpairs)
+            foreach (var dropletpair in dropletpairs)
             {
-                Droplet nDrop = new Droplet(item.Value, item.Key);
-                if (contaminated.ContainsKey(item.Value))
+                Droplet nDrop = new Droplet(dropletpair.Value, dropletpair.Key);
+                if (contaminated.ContainsKey(dropletpair.Value))
                 {
-                    nDrop.SetContam(contaminated[item.Value]);
+                    nDrop.SetContam(contaminated[dropletpair.Value]);
                 }
                 else
                 {
                     nDrop.SetContam([]);
                 }
-                if (!contaminates.ContainsKey(item.Value))
+                if (!contaminates.ContainsKey(dropletpair.Value))
                 {
-                    contaminates.Add(item.Value, []);
+                    contaminates.Add(dropletpair.Value, []);
                 }
-                nDrop.ContamLevel = contaminates[item.Value].Count;
-                board.Droplets.Add(item.Key, nDrop);
+                nDrop.ContamLevel = contaminates[dropletpair.Value].Count;
+                Console.WriteLine(nDrop.Substance_Name +" is contaminated by");
+                foreach(var item in nDrop.Contamintants)
+                {
+                    Console.WriteLine(item);
+                }
+                board.Droplets.Add(dropletpair.Key, nDrop);
                 nDrop.StartAgent();
             }
 
@@ -146,13 +151,16 @@ namespace Bachelor_Project.Simulation
             Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"],36);
             board.PrintBoardState();
             Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[3,1]);
-            /*Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.DOWN);
             board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.LEFT);
+            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
             board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.UP);
+            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
             board.PrintBoardState();
-            */
+            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
+            board.PrintBoardState();
+            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
+            board.PrintBoardState();
+            Droplet_Actions.Mix(board.Droplets["Wat1"]);
             
 
         }

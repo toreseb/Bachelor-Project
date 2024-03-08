@@ -25,9 +25,12 @@ namespace Bachelor_Project.Simulation
         public int Size { get; set; }
         public float Volume { get; set; }
         public List<Electrode> Occupy { get; set; } = [];
-        public bool snekMode { get; set; } = true;
+        public LinkedList<Electrode> SnekList { get; set; } = [];
+        public bool SnekMode = false;
         public List<string> Contamintants { get; set; } = [];
         public int ContamLevel { get; set; } = 0;
+
+
 
         // Used for threading
         private CancellationTokenSource cancellationTokenSource;
@@ -113,6 +116,10 @@ namespace Bachelor_Project.Simulation
         internal void SetContam(List<string> list)
         {
             Contamintants = list;
+        }
+        public override string ToString()
+        {
+            return Name + " " + Substance_Name;
         }
     }
 }

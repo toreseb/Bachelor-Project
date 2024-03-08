@@ -36,6 +36,11 @@ namespace Bachelor_Project.Simulation
             return Status;
         }
 
+        public override string ToString()
+        {
+            return Name + " x: " + ePosX + " y: " + ePosY;
+        }
+
 
     }
 }

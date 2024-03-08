@@ -128,5 +128,45 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         {
             Assert.Fail();
         }
+
+        [TestMethod()]
+        public void MixTest()
+        {
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet test = new Droplet("Water", "Wat1");
+            board.Droplets.Add("Wat1", test);
+            Droplet_Actions.InputDroplet(test, board.Input["in0"], 12);
+
+            Assert.AreEqual(1, board.Droplets.Count);
+            Assert.AreEqual(2, test.Occupy.Count);
+
+            int amountOn = 0;
+            foreach (Electrode e in board.Electrodes)
+            {
+                if (e.Occupant != null) { amountOn++; }
+            }
+
+            Assert.AreEqual(2, amountOn);
+
+            Assert.IsTrue(board.Electrodes[0, 0].Occupant == test);
+            Assert.IsTrue(board.Electrodes[0, 1].Occupant == test);
+
+            Assert.IsTrue(board.Electrodes[0, 0].GetContaminants().Count == 0);
+            Assert.IsTrue(board.Electrodes[0, 1].GetContaminants().Count == 0);
+            Assert.IsTrue(board.Electrodes[0, 2].GetContaminants().Count == 0);
+            Assert.IsTrue(board.Electrodes[1, 0].GetContaminants().Count == 0);
+            Assert.IsTrue(board.Electrodes[1, 1].GetContaminants().Count == 0);
+            Assert.IsTrue(board.Electrodes[1, 2].GetContaminants().Count == 0);
+
+            Droplet_Actions.Mix(test);
+            Assert.IsTrue(board.Electrodes[0, 0].GetContaminants().Count == 1 && board.Electrodes[0, 0].GetContaminants()[0] == "Water");
+            Assert.IsTrue(board.Electrodes[0, 1].GetContaminants().Count == 1 && board.Electrodes[0, 1].GetContaminants()[0] == "Water");
+            Assert.IsTrue(board.Electrodes[0, 2].GetContaminants().Count == 1 && board.Electrodes[0, 2].GetContaminants()[0] == "Water");
+            Assert.IsTrue(board.Electrodes[1, 0].GetContaminants().Count == 1 && board.Electrodes[1, 0].GetContaminants()[0] == "Water");
+            Assert.IsTrue(board.Electrodes[1, 1].GetContaminants().Count == 1 && board.Electrodes[1, 1].GetContaminants()[0] == "Water");
+            Assert.IsTrue(board.Electrodes[1, 2].GetContaminants().Count == 1 && board.Electrodes[1, 2].GetContaminants()[0] == "Water");
+
+
+        }
     }
 }

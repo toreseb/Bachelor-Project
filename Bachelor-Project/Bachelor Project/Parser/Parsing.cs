@@ -74,31 +74,31 @@ namespace Bachelor_Project.Parsing
                     Commands.Add(new Command("waste", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], []));
                     break;
                 case "contam": //CONTAMINATE, droplet type, (droplet type N)*
-                    string contaminee = context.GetChild<ProgramParser.DroplettypeContext>(0).GetText();
-                    Console.Write($"droplets of type: {contaminee} is contaminated by droplets of type: ");
+                    string contaminator = context.GetChild<ProgramParser.DroplettypeContext>(0).GetText();
+                    Console.Write($"droplets of type: {contaminator} contaminates droplets of type: ");
                     List<String> contaminants = [];
                     i = 1;
                     while (context.GetChild<ProgramParser.DroplettypeContext>(i) != null)
                     {
                         Console.Write(context.GetChild<ProgramParser.DroplettypeContext>(i).GetText() + " ");
                         contaminants.Add(context.GetChild<ProgramParser.DroplettypeContext>(i).GetText());
-                        if (Contaminates.ContainsKey(context.GetChild<ProgramParser.DroplettypeContext>(i).GetText()))
+                        if (Contaminated.ContainsKey(context.GetChild<ProgramParser.DroplettypeContext>(i).GetText()))
                         {
-                            Contaminates[context.GetChild<ProgramParser.DroplettypeContext>(i).GetText()].Add(contaminee);
+                            Contaminated[context.GetChild<ProgramParser.DroplettypeContext>(i).GetText()].Add(contaminator);
                         }
                         else
                         {
-                            Contaminates.Add(context.GetChild<ProgramParser.DroplettypeContext>(i).GetText(), [contaminee]);
+                            Contaminated.Add(context.GetChild<ProgramParser.DroplettypeContext>(i).GetText(), [contaminator]);
                         }
 
                         i++;
                     }
                     Console.WriteLine();
-                    if (!Contaminates.ContainsKey(contaminee))
+                    if (!Contaminated.ContainsKey(contaminator))
                     {
-                        Contaminates.Add(contaminee, []);
+                        Contaminated.Add(contaminator, []);
                     }
-                    Contaminated.Add(contaminee, contaminants);
+                    Contaminates.Add(contaminator, contaminants);
                     break;
                 case "merge": //MERGE , new droplet name , new droplet type , droplet1 name , droplet2 name , (dropletN name)?
                     List<string> mergers = [];

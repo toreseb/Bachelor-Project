@@ -261,10 +261,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             int oldY = board.Droplets["Wat2"].Occupy[0].ePosY;
 
             // Move Wat2 towards Wat1, first move should be allowed, second move should be stopped
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(board.Droplets["Wat2"], Direction.RIGHT);
             Assert.AreEqual(null, board.Electrodes[oldX, oldY].Occupant);
             Assert.AreEqual(board.Droplets["Wat2"], board.Electrodes[oldX + 1, oldY].Occupant);
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(board.Droplets["Wat2"], Direction.RIGHT);
             Assert.AreEqual(board.Droplets["Wat2"], board.Electrodes[oldX + 1, oldY].Occupant);
             Assert.AreEqual(null, board.Electrodes[oldX + 2, oldY].Occupant);
         }

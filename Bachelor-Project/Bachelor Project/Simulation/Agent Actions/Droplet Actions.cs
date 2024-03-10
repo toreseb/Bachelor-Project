@@ -400,7 +400,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // Do a snekcheck
             // If move is legal, do the thing
-            if (CheckBorder(d, newHead) && SnekCheck(newHead[0]))
+            if (CheckLegalMove(d, newHead) && SnekCheck(newHead[0]))
             {
                 Console.WriteLine("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
                 Console.WriteLine("Old head: " + head.ePosX + " " + head.ePosY);

@@ -15,17 +15,37 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     {
         private static readonly int mixAmount = 5;
         
-        public static void InputDroplet(Droplet d, Input i, int volume)
+        public static void InputDroplet(Droplet d, Input i, int volume, Electrode? destination = null)
         {
+            
             d.SetSizes(volume);
             int size = d.Size;
-            while (size > 0)
+            AwaiLegalMove(d, i.pointers);
+            if (destination == null)
             {
-                CoilSnek(d, i.pointers[0], input: true);
-                size--;
+                while (size > 0)
+                {
+                    d.SnekMode = false;
+                    CoilSnek(d, i.pointers[0], input: true);
+                    size--;
+                }
+            }
+            else
+            {
+                while (size > 0)
+                {
+                    d.SnekMode = true;
+                    MoveToDest(d, destination);
+                    MoveOnElectrode(d, i.pointers[0]);
+                    size--;
+                }
             }
         }
 
+        private static void MoveToDest(Droplet d, Electrode destination) //TODO: Make sure that the droplet moves to the destination
+        {
+            return;
+        }
 
         public static void MoveDroplet(Droplet d, Direction dir)
         {
@@ -328,7 +348,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        public static void AwaiLegalMove(Droplet d, List<Electrode> temp)
+        private static void AwaiLegalMove(Droplet d, List<Electrode> temp)
         {
             while (!CheckLegalMove(d, temp))
             {

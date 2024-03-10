@@ -85,25 +85,43 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         [TestMethod()]
         public void InputDropletTest_LargeWithoutDest()
         {
-            // TODO: Input droplet without a destination (coils around input)
-            Assert.Fail();
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet test = new Droplet("Water", "Wat1");
+            board.Droplets.Add("Wat1", test);
+            Droplet_Actions.InputDroplet(test, board.Input["in0"], 60);
+
+            Assert.AreEqual(1, board.Droplets.Count);
+            Assert.AreEqual(6, test.Occupy.Count);
+
+            Assert.AreEqual(test, board.Electrodes[0, 0].Occupant);
+            Assert.AreEqual(test, board.Electrodes[0, 1].Occupant);
+            Assert.AreEqual(test, board.Electrodes[0, 2].Occupant);
+            Assert.AreEqual(test, board.Electrodes[1, 0].Occupant);
+            Assert.AreEqual(test, board.Electrodes[1, 1].Occupant);
+            Assert.AreEqual(test, board.Electrodes[1, 2].Occupant);
         }
 
         [TestMethod()]
         public void InputDropletTest_OntoOtherDroplet()
         {
             // TODO: Unable to test ATM, come back later
-            Assert.Fail();
+            //Assert.Fail();
 
             // Tests await legal move
 
             // Create board and both droplets
             board = Program.C.SetBoard(testBoardDataLocation);
-            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
-            board.Droplets.Add("Wat2", new Droplet("Water", "Wat2"));
+            Droplet Wat1 = new Droplet("Water", "Wat1");
+            Droplet Wat2 = new Droplet("Water", "Wat2");
+            board.Droplets.Add("Wat1", Wat1);
+            board.Droplets.Add("Wat2", Wat2);
+            Wat1.StartAgent();
+            Wat2.StartAgent();
 
             // Input one droplet
-            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 11);
+            Task input = new(() => Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 11));
+            Wat1.GiveWork(input);
+            input.Wait();
 
             // Get input coords
             int inX = board.Input["in0"].pointers[0].ePosX;
@@ -113,7 +131,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[inX, inY].Occupant);
 
             // Try to input other droplet
-            Droplet_Actions.InputDroplet(board.Droplets["Wat2"], board.Input["in0"], 11);
+            Task input2 = new(() => Droplet_Actions.InputDroplet(Wat2, board.Input["in0"], 11));
+            Wat2.GiveWork(input2);
+            
 
             // Check that Wat1 is at in0 and Wat2 is not
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[inX, inY].Occupant);
@@ -127,6 +147,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[inX + 2, inY].Occupant);
+            input2.Wait();
             Assert.AreEqual(board.Droplets["Wat2"], board.Electrodes[inX, inY].Occupant);
         }
 
@@ -216,8 +237,31 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         [TestMethod()]
         public void MoveDropletTest_Large2x3Droplet()
         {
-            // TODO: Move a 2x3 droplet
-            Assert.Fail();
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet test = new Droplet("Water", "Wat1");
+            board.Droplets.Add("Wat1", test);
+            Droplet_Actions.InputDroplet(test, board.Input["in0"], 60);
+
+            Assert.AreEqual(1, board.Droplets.Count);
+            Assert.AreEqual(6, test.Occupy.Count);
+
+            Assert.AreEqual(test, board.Electrodes[0, 0].Occupant);
+            Assert.AreEqual(test, board.Electrodes[0, 1].Occupant);
+            Assert.AreEqual(test, board.Electrodes[0, 2].Occupant);
+            Assert.AreEqual(test, board.Electrodes[1, 0].Occupant);
+            Assert.AreEqual(test, board.Electrodes[1, 1].Occupant);
+            Assert.AreEqual(test, board.Electrodes[1, 2].Occupant);
+
+            Droplet_Actions.MoveDroplet(test, Direction.RIGHT);
+
+            Assert.AreEqual(test, board.Electrodes[1, 0].Occupant);
+            Assert.AreEqual(test, board.Electrodes[1, 1].Occupant);
+            Assert.AreEqual(test, board.Electrodes[1, 2].Occupant);
+            Assert.AreEqual(test, board.Electrodes[2, 0].Occupant);
+            Assert.AreEqual(test, board.Electrodes[2, 1].Occupant);
+            Assert.AreEqual(test, board.Electrodes[2, 2].Occupant);
+            
+
         }
 
         [TestMethod()]

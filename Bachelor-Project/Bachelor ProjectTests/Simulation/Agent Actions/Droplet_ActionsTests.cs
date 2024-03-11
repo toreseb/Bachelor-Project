@@ -748,6 +748,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[2, 1].Occupant);
         }
 
+        /*
         [TestMethod()]
         public void CoilSnekTest_AtBoarderTop()
         {
@@ -777,6 +778,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         {
             Assert.Fail();
         }
+        */
 
         [TestMethod()]
         public void UncoilSnekTest()

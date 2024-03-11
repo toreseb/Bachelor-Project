@@ -110,6 +110,7 @@ namespace Bachelor_Project.Simulation
 
                 Command cCommand = currentCommands[0];
                 cCommand.CommandDestination ??= cCommand.FindDest();
+                Console.WriteLine(cCommand.ToString() + cCommand.CommandDestination);
                 // cCommand.ExecuteCommand();
                 cCommand.OutputCommands.ForEach(x => x.InputCommands.Remove(cCommand));
                 cCommand.OutputCommands.ForEach(x => 

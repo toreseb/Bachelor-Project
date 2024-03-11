@@ -26,26 +26,34 @@ namespace Bachelor_Project.Utility
 
         public void SetDest()
         {
-            if (NextType == null || NextName == null)
+            try
             {
-                return;
+                if (NextType == null || NextName == null)
+                {
+                    return;
+                }
+                if (NextType.IsSubclassOf(typeof(Actuator)))
+                {
+                    CommandDestination = Program.C.board.Actuators[NextName];
+                }
+                else if (NextType.Equals(typeof(Sensor)))
+                {
+                    CommandDestination = Program.C.board.Sensors[NextName];
+                }
+                else if (NextType.Equals(typeof(Output)))
+                {
+                    CommandDestination = Program.C.board.Output[NextName];
+                }
+                else // Not sure if waste is needed
+                {
+                    throw new ArgumentException("Invalid destination type");
+                }
             }
-            if (NextType.IsSubclassOf(typeof(Actuator)))
+            catch (Exception)
             {
-                CommandDestination = Program.C.board.Actuators[NextName];
+                throw new ArgumentException("Invalid destination target");
             }
-            else if (NextType.Equals(typeof(Sensor)))
-            {
-                CommandDestination = Program.C.board.Sensors[NextName];
-            }
-            else if (NextType.Equals(typeof(Output)))
-            {
-                CommandDestination = Program.C.board.Output[NextName];
-            }
-            else // Not sure if waste is needed
-            {
-                throw new ArgumentException("Invalid destination type");
-            }
+            
         }
 
         public void ExecuteCommand()

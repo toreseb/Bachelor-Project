@@ -53,10 +53,6 @@ namespace Bachelor_Project.Simulation
                 }
                 nDrop.ContamLevel = contaminates[dropletpair.Value].Count;
                 Console.WriteLine(nDrop.Substance_Name +" is contaminated by");
-                foreach(var item in nDrop.Contamintants)
-                {
-                    Console.WriteLine(item);
-                }
                 board.Droplets.Add(dropletpair.Key, nDrop);
                 nDrop.StartAgent();
             }
@@ -64,18 +60,21 @@ namespace Bachelor_Project.Simulation
             board.Droplets = board.Droplets.OrderBy(x => x.Value.ContamLevel).ToDictionary();
             board.Droplets.Values.ToList().ForEach(x => Console.WriteLine(x.ContamLevel));
 
+            foreach (var item in commands)
+            {
+                item.SetDest();
+            }
+
             foreach (var item1 in commands)
             {
+                
+                
                 foreach (var item2 in commands)
                 {
                     if (item1 != item2 && !item1.InputCommands.Contains(item2) && !item2.InputCommands.Contains(item1))
                     {
                         foreach (var item in item1.OutputDroplets)
                         {
-                            if (item == "drop6")
-                            {
-                                int a = 2;
-                            }
                             if (item2.InputDroplets.Contains(item))
                             {
                                 item2.InputCommands.Add(item1);
@@ -87,7 +86,7 @@ namespace Bachelor_Project.Simulation
             }
             foreach (var item in commands)
             {
-                Console.WriteLine(item.Type + " needs commands: " + item.InputCommands.Count + " and allows: " + item.OutputCommands.Count);
+                Console.WriteLine(item.Type + " needs commands: " + item.InputCommands.Count + " and allows: " + item.OutputCommands.Count + " and has nextdest of " + item.CommandDestination);
             }
             commands = commands.OrderBy(x => x.InputCommands.Count).ToList();
 
@@ -110,6 +109,7 @@ namespace Bachelor_Project.Simulation
                 currentCommands.OrderBy(x => x.InputDroplets.Select(y => board.Droplets[y]).Min());
 
                 Command cCommand = currentCommands[0];
+                cCommand.CommandDestination ??= cCommand.FindDest();
                 // cCommand.ExecuteCommand();
                 cCommand.OutputCommands.ForEach(x => x.InputCommands.Remove(cCommand));
                 cCommand.OutputCommands.ForEach(x => 

@@ -315,7 +315,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return legalMove;
         }
 
-        private static bool CheckLegalMove(Droplet d, List<Electrode> temp)
+        public static bool CheckLegalMove(Droplet d, List<Electrode> temp)
         {
             bool legalMove = true;
 

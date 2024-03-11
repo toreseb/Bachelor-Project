@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,6 +50,39 @@ namespace Bachelor_Project.Simulation
 
             cancellationTokenSource = new CancellationTokenSource();
 
+        }
+
+        public Electrode GetClosestFreePointer(Apparature a)
+        {
+            Electrode? closestElectrode = null;
+            double minDistance = double.MaxValue;
+            Electrode center;
+            if (SnekMode)
+            {
+                center = SnekList.First();
+            }
+            else
+            {
+                throw new NotImplementedException("Not yet implemented for non snek droplets");
+            }
+            foreach (Electrode electrode in a.pointers)
+            {
+                if (!Droplet_Actions.CheckLegalMove(this, [electrode]))
+                {
+                    continue;
+                }
+                double distance = Math.Sqrt(Math.Pow(electrode.ePosX - center.ePosX, 2) + Math.Pow(electrode.ePosY - center.ePosY, 2));
+                if (distance < minDistance)
+                {
+                    closestElectrode = electrode;
+                    minDistance = distance;
+                }
+            }
+            if (closestElectrode == null)
+            {
+                throw new Exception("No free pointers");
+            }
+            return closestElectrode;
         }
 
         public async void StartAgent()

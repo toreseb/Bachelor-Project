@@ -1,4 +1,5 @@
 ﻿using Bachelor_Project.Electrode_Types;
+using Bachelor_Project.Electrode_Types.Actuator_Types;
 using Bachelor_Project.Simulation;
 using Bachelor_Project.Simulation.Agent_Actions;
 using Newtonsoft.Json.Linq;
@@ -10,14 +11,42 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Utility
 {
-    public class Command(string type, List<string> inputs, List<string> outputs, params Object[] value)
+    public class Command(string type, List<string> inputs, List<string> outputs, string? nextName = null, Type? nextType = null, params object[] value)
     {
+
         public string Type { get; set; } = type;
         public List<string> InputDroplets = inputs;
         public List<Command> InputCommands = [];
         public List<string> OutputDroplets = outputs;
         public List<Command> OutputCommands = [];
-        public Object[] ActionValue { get; set; } = value;
+        public Type? NextType = nextType;
+        public string? NextName = nextName;
+        public TileEntity? CommandDestination = null;
+        public object[] ActionValue { get; set; } = value;
+
+        public void SetDest()
+        {
+            if (NextType == null || NextName == null)
+            {
+                return;
+            }
+            if (NextType.IsSubclassOf(typeof(Actuator)))
+            {
+                CommandDestination = Program.C.board.Actuators[NextName];
+            }
+            else if (NextType.Equals(typeof(Sensor)))
+            {
+                CommandDestination = Program.C.board.Sensors[NextName];
+            }
+            else if (NextType.Equals(typeof(Output)))
+            {
+                CommandDestination = Program.C.board.Output[NextName];
+            }
+            else // Not sure if waste is needed
+            {
+                throw new ArgumentException("Invalid destination type");
+            }
+        }
 
         public void ExecuteCommand()
         {
@@ -96,8 +125,26 @@ namespace Bachelor_Project.Utility
         {
             return Type + " " + string.Join(", ", InputDroplets) + " -> " + string.Join(", ", OutputDroplets) + " extra: "+ string.Join(", ", ActionValue);
         }
-        
 
+        internal TileEntity? FindDest()
+        {
+            foreach (Command item in OutputCommands)
+            {
+                if (item.CommandDestination != null)
+                {
+                    return item.CommandDestination;
+                }
+                else
+                {
+                    item.CommandDestination = item.FindDest();
+                    if (item.CommandDestination != null)
+                    {
+                        return item.CommandDestination;
+                    }
+                }
+            }
+            return null;
+        }
     }
 
 }

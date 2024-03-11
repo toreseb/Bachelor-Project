@@ -62,26 +62,6 @@ public interface IProgramListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitDroplettype([NotNull] ProgramParser.DroplettypeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="ProgramParser.input"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterInput([NotNull] ProgramParser.InputContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="ProgramParser.input"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitInput([NotNull] ProgramParser.InputContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="ProgramParser.output"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterOutput([NotNull] ProgramParser.OutputContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="ProgramParser.output"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitOutput([NotNull] ProgramParser.OutputContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="ProgramParser.number"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -102,15 +82,15 @@ public interface IProgramListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitShape([NotNull] ProgramParser.ShapeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="ProgramParser.sensor"/>.
+	/// Enter a parse tree produced by <see cref="ProgramParser.tileentity"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterSensor([NotNull] ProgramParser.SensorContext context);
+	void EnterTileentity([NotNull] ProgramParser.TileentityContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="ProgramParser.sensor"/>.
+	/// Exit a parse tree produced by <see cref="ProgramParser.tileentity"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitSensor([NotNull] ProgramParser.SensorContext context);
+	void ExitTileentity([NotNull] ProgramParser.TileentityContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="ProgramParser.command"/>.
 	/// </summary>
@@ -130,7 +110,6 @@ class ProgramDecoder : ProgramBaseListener
 		base.ExitCommand(context);
     }
 }
-
 class ErrorListener : BaseErrorListener
 {
 	

@@ -16,11 +16,11 @@ namespace Bachelor_Project.Simulation
     public class Board
     {
         public Electrode[,] Electrodes  { get; set; }     
-        public Dictionary<String,Actuator> Actuators     { get; set; }
-        public Dictionary<String,Sensor> Sensors         { get; set; }
-        public Dictionary<String,Input> Input    { get; set; }
-        public Dictionary<String, Output> Output { get; set; }
-        public Dictionary<String, Droplet> Droplets       { get; set; }
+        public Dictionary<string,Actuator> Actuators     { get; set; }
+        public Dictionary<string,Sensor> Sensors         { get; set; }
+        public Dictionary<string,Input> Input    { get; set; }
+        public Dictionary<string, Output> Output { get; set; }
+        public Dictionary<string, Droplet> Droplets       { get; set; }
         public Information Information{ get; set; }
         public String?[] Unclassified   { get; set; }
 

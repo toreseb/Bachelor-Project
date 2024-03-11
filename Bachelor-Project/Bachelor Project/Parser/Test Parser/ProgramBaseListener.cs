@@ -72,30 +72,6 @@ public partial class ProgramBaseListener : IProgramListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitDroplettype([NotNull] ProgramParser.DroplettypeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="ProgramParser.input"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterInput([NotNull] ProgramParser.InputContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="ProgramParser.input"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitInput([NotNull] ProgramParser.InputContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="ProgramParser.output"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterOutput([NotNull] ProgramParser.OutputContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="ProgramParser.output"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitOutput([NotNull] ProgramParser.OutputContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="ProgramParser.number"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -120,17 +96,17 @@ public partial class ProgramBaseListener : IProgramListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitShape([NotNull] ProgramParser.ShapeContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="ProgramParser.sensor"/>.
+	/// Enter a parse tree produced by <see cref="ProgramParser.tileentity"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterSensor([NotNull] ProgramParser.SensorContext context) { }
+	public virtual void EnterTileentity([NotNull] ProgramParser.TileentityContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="ProgramParser.sensor"/>.
+	/// Exit a parse tree produced by <see cref="ProgramParser.tileentity"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitSensor([NotNull] ProgramParser.SensorContext context) { }
+	public virtual void ExitTileentity([NotNull] ProgramParser.TileentityContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="ProgramParser.command"/>.
 	/// <para>The default implementation does nothing.</para>

@@ -42,9 +42,22 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
         }
 
-        private static void MoveToDest(Droplet d, Electrode destination) //TODO: Make sure that the droplet moves to the destination
+        public static void MoveToDest(Droplet d, Electrode destination) //TODO: Make sure that the droplet moves to the destination
         {
-            return;
+            d.CurrentPath ??= ModifiedAStar.FindPath(d, destination);
+            try{
+                while (d.CurrentPath.Count > 0)
+                {
+                    if (d.CurrentPath[0].Item2 != null)
+                    {
+                        SnekMove(d, d.CurrentPath[0].Item2.Value);
+                    }
+                    d.CurrentPath.RemoveAt(0);
+                }
+            }catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public static void MoveDroplet(Droplet d, Direction dir)
@@ -273,7 +286,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                             break;
                     }
 
-                    if (!(xCheck < 0 || xCheck >= Program.C.board.GetXElectrodes() || yCheck < 0 || yCheck >= Program.C.board.GetYElectrodes()))
+                    if (CheckEdge(xCheck, yCheck))
                     {
                         Droplet? occupant = Program.C.board.Electrodes[xCheck, yCheck].Occupant;
                         if (!(occupant == null || occupant.Equals(d)))
@@ -288,6 +301,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             destination:
             return legalMove;
         }
+
+        public static bool CheckEdge(int xPos, int yPos)
+        {
+            return !(xPos < 0 || xPos >= Program.C.board.GetXElectrodes() || yPos < 0 || yPos >= Program.C.board.GetYElectrodes());
+        }
+
 
         private static bool CheckPlacement(Droplet d, List<Electrode> temp)
         {

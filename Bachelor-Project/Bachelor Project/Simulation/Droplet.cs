@@ -28,8 +28,9 @@ namespace Bachelor_Project.Simulation
         public List<Electrode> Occupy { get; set; } = [];
         public LinkedList<Electrode> SnekList { get; set; } = [];
         public bool SnekMode = false;
-        public List<string> Contamintants { get; set; } = [];
+        public List<string> Contamintants { get; set; } = []; //Which substance types the droplet is contaminated by, ergo which contaminations it can't pass over.
         public int ContamLevel { get; set; } = 0;
+        public List<(Electrode, Direction?)>? CurrentPath = null;
 
 
 
@@ -71,7 +72,7 @@ namespace Bachelor_Project.Simulation
                 {
                     continue;
                 }
-                double distance = Math.Sqrt(Math.Pow(electrode.ePosX - center.ePosX, 2) + Math.Pow(electrode.ePosY - center.ePosY, 2));
+                double distance = Electrode.GetDistance(electrode, center);
                 if (distance < minDistance)
                 {
                     closestElectrode = electrode;

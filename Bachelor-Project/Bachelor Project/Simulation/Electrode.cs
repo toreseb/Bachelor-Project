@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bachelor_Project.Simulation.Agent_Actions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,31 @@ namespace Bachelor_Project.Simulation
         {
         }
 
+        public static Electrode GetClosestElectrode(List<Electrode> electrodes, Electrode goal)
+        {
+            Electrode? closestElectrode = null;
+            double minDistance = double.MaxValue;
+            foreach (Electrode electrode in electrodes)
+            {
+                double distance = GetDistance(electrode, goal);
+                if (distance < minDistance)
+                {
+                    closestElectrode = electrode;
+                    minDistance = distance;
+                }
+            }
+            if (closestElectrode == null)
+            {
+                throw new ArgumentException("No electrodes found");
+            }
+            return closestElectrode;
+        }
+
+        public static double GetDistance(Electrode e1, Electrode e2)
+        {
+            return Math.Sqrt(Math.Pow(e1.ePosX - e2.ePosX, 2) + Math.Pow(e1.ePosY - e2.ePosY, 2));
+        }
+
         public void Contaminate(string contaminator)
         {
             Contaminants.Add(contaminator);
@@ -40,7 +66,6 @@ namespace Bachelor_Project.Simulation
         {
             return Name + " x: " + ePosX + " y: " + ePosY;
         }
-
 
     }
 }

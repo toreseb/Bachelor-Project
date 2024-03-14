@@ -44,20 +44,25 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static void MoveToDest(Droplet d, Electrode destination) //TODO: Make sure that the droplet moves to the destination
         {
-            d.CurrentPath ??= ModifiedAStar.FindPath(d, destination);
             try{
                 while (d.CurrentPath.Count > 0)
                 {
-                    if (d.CurrentPath[0].Item2 != null)
-                    {
-                        SnekMove(d, d.CurrentPath[0].Item2.Value);
-                    }
-                    d.CurrentPath.RemoveAt(0);
+                    MoveTowardDest(d, destination);
                 }
             }catch (Exception ex)
             {
                 throw ex;
             }
+        }
+
+        public static void MoveTowardDest(Droplet d, Electrode destination)
+        {
+            d.CurrentPath ??= ModifiedAStar.FindPath(d, destination);
+            if (d.CurrentPath[0].Item2 != null)
+            {
+                SnekMove(d, d.CurrentPath[0].Item2.Value);
+            }
+            d.CurrentPath.RemoveAt(0);
         }
 
         public static void MoveDroplet(Droplet d, Direction dir)

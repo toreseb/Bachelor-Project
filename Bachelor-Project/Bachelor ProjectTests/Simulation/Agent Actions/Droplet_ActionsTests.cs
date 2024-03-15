@@ -833,6 +833,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         [TestMethod()]
         public void UncoilSnekTest()
         {
+            /* This test is moot as UncoilSnek has been changed to uncoiling, moving, and then recoiling.
             // Test with snake size 6
             // Create board and input droplet
             board = Program.C.SetBoard(testBoardDataBigLocation);
@@ -849,6 +850,22 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[6, 4].Occupant);
 
             // More complicated tests follow when algorithm is implemented
+            */
+
+            // Test with snake size 6
+            // Create board and input droplet
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
+            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 60);
+            Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[7, 2]);
+
+            // Check placement
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[6, 1].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[6, 2].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[6, 3].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 1].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 2].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 3].Occupant);
         }
 
         /*

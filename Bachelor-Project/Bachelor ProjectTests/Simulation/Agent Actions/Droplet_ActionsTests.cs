@@ -81,6 +81,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         public void InputDropletTest_LargeWithDest()
         {
             // TODO: Input droplet with a destination
+
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
+            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 60, board.Output["out0"]);
+            board.PrintBoardState();
+
+            
+
+
             Assert.Fail();
         }
 

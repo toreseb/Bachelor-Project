@@ -43,7 +43,7 @@ namespace Bachelor_Project.Simulation
             return closestElectrode;
         }
 
-        public List<(Electrode, Direction)> getNeighbors()
+        public List<(Electrode, Direction)> GetTrueNeighbors()
         {
             List<(Electrode, Direction)> neighbors = [];
             for (int i = 0; i < 4; i++)
@@ -76,6 +76,64 @@ namespace Bachelor_Project.Simulation
                 if (Droplet_Actions.CheckEdge(ePosX + xChange, ePosY + yChange))
                 {
                     neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange],dir));
+                }
+            }
+            return neighbors;
+        }
+
+        public List<(Electrode, Direction?)> GetExtendedNeighbors()
+        {
+            List<(Electrode, Direction?)> neighbors = [];
+            for (int i = 0; i < 8; i++)
+            {
+                int xChange = 0;
+                int yChange = 0;
+                Direction? dir;
+                switch (i)
+                {
+                    case 0:
+                        yChange = -1;
+                        dir = Direction.UP;
+                        break;
+                    case 1:
+                        yChange = -1;
+                        xChange = 1;
+                        dir = null;
+                        break;
+                    case 2:
+                        xChange = 1;
+                        dir = Direction.RIGHT;
+                        break;
+                    case 3:
+                        yChange = 1;
+                        xChange = 1;
+                        dir = null;
+                        break;
+                    case 4:
+                        yChange = 1;
+                        dir = Direction.DOWN;
+                        break;
+                    case 5:
+                        yChange = 1;
+                        xChange = -1;
+                        dir = null;
+                        break;
+                    case 6:
+                        xChange = -1;
+                        dir = Direction.LEFT;
+                        break;
+                    case 7:
+                        yChange = -1;
+                        xChange = -1;
+                        dir = null;
+                        break;
+                    default:
+                        throw new Exception("Invalid direction");
+
+                }
+                if (Droplet_Actions.CheckEdge(ePosX + xChange, ePosY + yChange))
+                {
+                    neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange], dir));
                 }
             }
             return neighbors;

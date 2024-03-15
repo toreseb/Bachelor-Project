@@ -529,7 +529,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     goto done;
                 }
                 Electrode current = activeBlob1[0];
-                List<(Electrode, Direction)> neighbors = current.getNeighbors();
+                List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors();
                 foreach (var item in neighbors)
                 {
                     if (CheckLegalMove(d,[item.Item1]) && !seenElectrodes.Contains(item.Item1) && item.Item1.Apparature == null)

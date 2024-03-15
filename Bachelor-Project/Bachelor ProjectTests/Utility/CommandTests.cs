@@ -30,7 +30,7 @@ namespace Bachelor_Project.Utility.Tests
         {
             Droplet d = new("water", "test");
             Program.C.board.Droplets.Add("test", d);
-            Command command = new("input", [], [d.Name], "in0", "24");
+            Command command = new("input", [], [d.Name], value:["in0", "24"]);
             Assert.AreEqual("input", command.Type);
             command.ExecuteCommand();
             Assert.AreEqual(1, d.GetWork().Count);
@@ -125,7 +125,7 @@ namespace Bachelor_Project.Utility.Tests
             command.ExecuteCommand();
             Assert.AreEqual(1, d.GetWork().Count);
             Assert.AreEqual(TaskStatus.Created, d.GetWork()[0].Status);
-            Command command2 = new("mix", [d.Name], [d.Name], "square", "mixed water");
+            Command command2 = new("mix", [d.Name], [d.Name], value:["square", "mixed water"]);
             Assert.AreEqual("mix", command2.Type);
             command2.ExecuteCommand();
             Assert.AreEqual(2, d.GetWork().Count);
@@ -144,7 +144,7 @@ namespace Bachelor_Project.Utility.Tests
             command.ExecuteCommand();
             Assert.AreEqual(1, d.GetWork().Count);
             Assert.AreEqual(TaskStatus.Created, d.GetWork()[0].Status);
-            Command command2 = new("temp", [d.Name], [d.Name], "40", "hot water");
+            Command command2 = new("temp", [d.Name], [d.Name], value:["40", "hot water"]);
             Assert.AreEqual("temp", command2.Type);
             command2.ExecuteCommand();
             Assert.AreEqual(2, d.GetWork().Count);

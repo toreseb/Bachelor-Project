@@ -43,6 +43,44 @@ namespace Bachelor_Project.Simulation
             return closestElectrode;
         }
 
+        public List<(Electrode, Direction)> getNeighbors()
+        {
+            List<(Electrode, Direction)> neighbors = [];
+            for (int i = 0; i < 4; i++)
+            {
+                int xChange = 0;
+                int yChange = 0;
+                Direction dir;
+                switch (i)
+                {
+                    case 0:
+                        yChange = -1;
+                        dir = Direction.UP;
+                        break;
+                    case 1:
+                        xChange = 1;
+                        dir = Direction.RIGHT;
+                        break;
+                    case 2:
+                        yChange = 1;
+                        dir = Direction.DOWN;
+                        break;
+                    case 3:
+                        xChange = -1;
+                        dir = Direction.LEFT;
+                        break;
+                    default:
+                        throw new Exception("Invalid direction");
+
+                }
+                if (Droplet_Actions.CheckEdge(ePosX + xChange, ePosY + yChange))
+                {
+                    neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange],dir));
+                }
+            }
+            return neighbors;
+        }
+
         public static double GetDistance(Electrode e1, Electrode e2)
         {
             return Math.Sqrt(Math.Pow(e1.ePosX - e2.ePosX, 2) + Math.Pow(e1.ePosY - e2.ePosY, 2));

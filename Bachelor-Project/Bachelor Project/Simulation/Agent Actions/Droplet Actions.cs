@@ -19,16 +19,21 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
             Electrode destElectrode = null;
-            if (destination != null)
-            {
-                d.SnekMode = true;
-                destElectrode = d.GetClosestFreePointer(destination);
-            }
+
             d.SetSizes(volume);
             int size = d.Size;
             AwaiLegalMove(d, i.pointers);
+            if (destination != null)
+            {
+                d.SnekMode = true;
+                MoveOnElectrode(d, i.pointers[0]) ;
+                size--;
+                destElectrode = d.GetClosestFreePointer(destination);
+            }
+            nonSnek:
             if (destination == null)
             {
+                
                 while (size > 0)
                 {
                     d.SnekMode = false;
@@ -41,16 +46,32 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 while (size > 0)
                 {
                     MoveTowardDest(d, destElectrode);
-                    MoveOnElectrode(d, i.pointers[0]);
+                    MoveOnElectrode(d, i.pointers[0], first: false);
                     size--;
+                    if (d.CurrentPath.Count <= 4)
+                    {
+                        while (size > 0)
+                        {
+                            MoveOnElectrode(d, d.SnekList.First(), first: false);
+                            size--;
+                        }
+                        CoilSnek(d, d.SnekList.First());
+                        return;
+                    }
                 }
             }
+            
         }
 
         public static void MoveToDest(Droplet d, Electrode destination) //TODO: Make sure that the droplet moves to the destination
         {
             d.CurrentPath ??= ModifiedAStar.FindPath(d, destination);
-            try{
+            if (d.CurrentPath.Count == 0)
+            {
+                d.CurrentPath = ModifiedAStar.FindPath(d, destination);
+            }
+            try
+            {
                 while (d.CurrentPath.Count > 0)
                 {
                     MoveTowardDest(d, destination);
@@ -64,6 +85,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void MoveTowardDest(Droplet d, Electrode destination)
         {
             d.CurrentPath ??= ModifiedAStar.FindPath(d, destination);
+            if (d.CurrentPath.Count == 0)
+            {
+                d.CurrentPath = ModifiedAStar.FindPath(d, destination);
+            }
             if (d.CurrentPath[0].Item2 != null)
             {
                 SnekMove(d, d.CurrentPath[0].Item2.Value);
@@ -622,27 +647,36 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             
             
             List<Electrode> newBlob = [center];
+            List<Electrode> activeBlob1 = [center];
+            List<Electrode> activeBlob2 = [];
+            List<Electrode> seenElectrodes = [center];
             int i = 1;
-            while(amount > 0)
+            while(activeBlob1.Count > 0)
             {
-                for (int j = -i; j <=i ; j++)
+                Electrode current = activeBlob1[0];
+                List<(Electrode, Direction)> neighbors = current.getNeighbors();
+                foreach (var item in neighbors)
                 {
-                    for (int k = -i; k <= i; k++)
+                    if (CheckLegalMove(d,[item.Item1]) && !seenElectrodes.Contains(item.Item1) && item.Item1.Apparature == null)
                     {
-                        if ((j == -i || j == i || k == -i || k == i) && amount > 0 && CheckLegalPosition(d, [(center.ePosX + j, center.ePosY + k)]))
-                        {
-                            newBlob.Add(Program.C.board.Electrodes[center.ePosX + j, center.ePosY + k]);
-                            amount--;
-                        }
+                        activeBlob2.Add(item.Item1);
+                        seenElectrodes.Add(item.Item1);
+                        newBlob.Add(item.Item1);
+                        amount--;
                         if (amount <= 0)
                         {
                             goto done;
                         }
                     }
                 }
-                i++;
+                activeBlob1.Remove(current);
+                if (activeBlob1.Count == 0)
+                {
+                    activeBlob1 = activeBlob2;
+                    activeBlob2 = [];
+                }
             }
-            done:
+        done:
             
             Tree snekTree = BuildTree(d, newBlob, center);
 

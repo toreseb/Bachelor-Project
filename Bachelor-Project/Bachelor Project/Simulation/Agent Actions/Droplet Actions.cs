@@ -553,54 +553,52 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
         // Uncoil snake - takes droplet and destination
-        // Choose head at spot close to destination. Run through rest of body, check for each part if moving it would disconnect body, if yes,
-        // go to next part, if no, turn on next electrode for head and turn off electrode for part.
-        // TODO: Figure out how to handle if snake runs into something.. No, that is handled by the algorithm, we just need to uncoil.
+        // Choose head at spot close to destination. Run through rest of body, check for each part if moving it would disconnect body,
+        // if yes, go to next part, if no, turn on next electrode for head and turn off electrode for part.
         public static void UncoilSnek(Droplet d, Electrode dest)
         {
-            // TODO: What if dest is in d?
-            // TODO: What if dest is closer to d than d is long?
-
-            // Find a coordinate closest to destination
-            /*
-            Electrode closest = null;
-            int maxDist = int.MaxValue;
-            foreach(Electrode e in d.Occupy)
+            // If snake already occupies destination, do nothing.
+            if (dest.Occupant.Equals(d))
             {
-                if (maxDist > Math.Abs(dest.ePosX - e.ePosX) + Math.Abs(dest.ePosY - e.ePosY))
-                {
-                    closest = e;
-                }
+                return;
             }
-            */
+
             // Make a temp snake to snek move towards the destination that grows with the shrinkage of the droplet.
             d.SnekMode = true;
             Droplet tempSnek = new Droplet(d.Substance_Name, "temp" + d.Name);
-
-            int dropletSize = d.Occupy.Count;
 
             // Make tree out of blob in order to know what can safely be removed.
             Tree blobTree = BuildTree(d, [], dest);
 
             tempSnek.Occupy.Add(blobTree.closestElectrode);
             d.SnekList.AddFirst(blobTree.closestElectrode);
-            for (int i = 0; i < dropletSize-1; i++)
+
+            // Make single moves all the way towards the destination.
+            do
             {
-                // Move tempSnek forwards but do not turn off last electrode.
-                // TODO: Find place to move farward to - right for now.
-                // Save last part of snake.
+                // Save last electrode so we can turn it on again.
+                // The tree will turn off the correct electrode.
                 Electrode temp = tempSnek.Occupy[^1];
-                SnekMove(d, tempSnek.Occupy, Direction.RIGHT);
-                MoveOnElectrode(d, temp, first: false);
+                MoveTowardDest(d, dest);
 
+                // If there are still nodes in the tree, it means that the snake is still uncoiling and the electrode that is turned off
+                // needs to be controlled by the tree. Otherwise, we are no longer uncoiling and we can just move.
+                // "> 1" because the last should not be counted.
+                if (blobTree.Nodes.Count > 1)
+                {
+                    // Turn on the electroede that was not supposed to be turned off.
+                    MoveOnElectrode(d, temp, first: false);
+                    // Turn off the right electrode.
+                    blobTree.RemoveLeaf();
+                }
 
-
-                // Leaves in tree can be safely removed, do one.
-                // TODO: remove leaf
-                blobTree.RemoveLeaf();
                 Program.C.board.PrintBoardState();
-            }
-            
+
+            } while (d.CurrentPath != null && d.CurrentPath.Count != 0);
+
+            // Once at dest, whether the snake is fully uncoiled or not, coil the snake again.
+            // This avoids long tails being in the way.
+            CoilSnek(d, dest);
         }
 
         // Coil snake

@@ -10,7 +10,7 @@ namespace Bachelor_Project.Utility
 {
     public class Tree
     {
-        List<Node> Nodes;
+        public List<Node> Nodes;
         List<Node> ActiveNodes;
         List<Electrode> SeenElectrodes;
         List<Electrode> NewElectrodes;

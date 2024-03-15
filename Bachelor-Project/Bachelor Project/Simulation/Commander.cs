@@ -165,6 +165,8 @@ namespace Bachelor_Project.Simulation
             board.PrintBoardState();
             Droplet_Actions.Mix(board.Droplets["Wat1"]);
             */
+
+            /*
             Droplet Wat1 = new Droplet("Water", "Wat1");
             Wat1.Contamintants.Add("Blood");
             board.Droplets.Add(Wat1.Name,Wat1);
@@ -181,6 +183,19 @@ namespace Bachelor_Project.Simulation
             //board.Electrodes[3, 4].Contaminate("water");
             //roplet_Actions.UncoilSnek(Wat1, board.Output["out0"].pointers[0]);
             //Droplet_Actions.MoveToDest(Wat1, board.Output["out0"].pointers[0]);
+            */
+
+
+            // Test of uncoil with dest og algorithm
+            Droplet Wat1 = new Droplet("Water", "Wat1");
+            Wat1.Contamintants.Add("Blood");
+            board.Droplets.Add(Wat1.Name, Wat1);
+            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 36);
+            Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[7,2]);
+
+
+
+
             board.PrintBoardState();
 
         }

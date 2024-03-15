@@ -166,21 +166,21 @@ namespace Bachelor_Project.Simulation
             Droplet_Actions.Mix(board.Droplets["Wat1"]);
             */
             Droplet Wat1 = new Droplet("Water", "Wat1");
-            Wat1.Contamintants.Add("blood");
+            Wat1.Contamintants.Add("Blood");
             board.Droplets.Add(Wat1.Name,Wat1);
-            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 24);
-            board.Electrodes[5, 3].Contaminate("blood");
-            board.Electrodes[5, 4].Contaminate("blood");
-            board.Electrodes[5, 2].Contaminate("blood");
-            board.Electrodes[5, 5].Contaminate("blood");
-            board.Electrodes[5, 6].Contaminate("blood");
-            board.Electrodes[5, 7].Contaminate("water");
+            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 24, board.Output["out0"]);
+            board.Electrodes[5, 3].Contaminate("Blood");
+            board.Electrodes[5, 4].Contaminate("Blood");
+            board.Electrodes[5, 2].Contaminate("Blood");
+            board.Electrodes[5, 5].Contaminate("Blood");
+            board.Electrodes[5, 6].Contaminate("Blood");
+            board.Electrodes[5, 7].Contaminate("Water");
             //board.Electrodes[4, 5].Contaminate("water");
             //board.Electrodes[5, 5].Contaminate("water");
             //board.Electrodes[6, 5].Contaminate("water");
             //board.Electrodes[3, 4].Contaminate("water");
-            Droplet_Actions.UncoilSnek(Wat1, board.Output["out0"].pointers[0]);
-            Droplet_Actions.MoveToDest(Wat1, board.Output["out0"].pointers[0]);
+            //roplet_Actions.UncoilSnek(Wat1, board.Output["out0"].pointers[0]);
+            //Droplet_Actions.MoveToDest(Wat1, board.Output["out0"].pointers[0]);
             board.PrintBoardState();
 
         }

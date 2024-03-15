@@ -109,6 +109,7 @@ namespace Bachelor_Project.Simulation
                     while (j >= 0)
                     {
                         actuators[item["name"].ToString()].pointers.Add(eArray[startX + i, startY + j]);
+                        eArray[startX + i, startY + j].Apparature = actuators[item["name"].ToString()];
                         j--;
                     }
                     i--;
@@ -145,6 +146,7 @@ namespace Bachelor_Project.Simulation
                     while (j >= 0)
                     {
                         sensors[item["name"].ToString()].pointers.Add(eArray[startY + j, startX + i]);
+                        eArray[startX + i, startY + j].Apparature = sensors[item["name"].ToString()];
                         j--;
                     }
                     i--;
@@ -156,6 +158,7 @@ namespace Bachelor_Project.Simulation
             {
                 iDict.Add(item.Name, item);
                 item.pointers.Add(eArray[item.PositionX/inf.electrode_size,item.PositionY/inf.electrode_size]);
+                eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size].Apparature = item;
             }
             Output[] oList = jObject["outputs"].Type != JTokenType.Null ? jObject["outputs"].ToObject<Output[]>() : [];
             Dictionary<string, Output> oDict = [];
@@ -163,6 +166,7 @@ namespace Bachelor_Project.Simulation
             {
                 oDict.Add(item.Name, item);
                 item.pointers.Add(eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size]);
+                eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size].Apparature = item;
             }
             Droplet[] droplets = jObject["droplets"].Type != JTokenType.Null ? jObject["droplets"].ToObject<Droplet[]>() : [];
             Dictionary<string, Droplet> dDict = [];
@@ -259,7 +263,7 @@ namespace Bachelor_Project.Simulation
                     used2 += name.Length;
                 }else if (Electrodes[i,j].GetContaminants().Count != 0)
                 {
-                    line2 += "Z";
+                    line2 += Electrodes[i, j].GetContaminants()[0].Substring(0,1);
                     used2 += 1;
                 }
                 else

@@ -15,9 +15,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     {
         private static readonly int mixAmount = 5;
         
-        public static void InputDroplet(Droplet d, Input i, int volume, Electrode? destination = null)
+        public static void InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
-            
+            Electrode destElectrode = null;
+            if (destination != null)
+            {
+                d.SnekMode = true;
+                destElectrode = d.GetClosestFreePointer(destination);
+            }
             d.SetSizes(volume);
             int size = d.Size;
             AwaiLegalMove(d, i.pointers);
@@ -34,8 +39,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 while (size > 0)
                 {
-                    d.SnekMode = true;
-                    MoveToDest(d, destination);
+                    MoveTowardDest(d, destElectrode);
                     MoveOnElectrode(d, i.pointers[0]);
                     size--;
                 }
@@ -44,6 +48,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static void MoveToDest(Droplet d, Electrode destination) //TODO: Make sure that the droplet moves to the destination
         {
+            d.CurrentPath ??= ModifiedAStar.FindPath(d, destination);
             try{
                 while (d.CurrentPath.Count > 0)
                 {
@@ -350,7 +355,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return legalMove;
         }
 
-        private static bool CheckLegalPosition(Droplet d, List<(int, int)> pos)
+        public static bool CheckLegalPosition(Droplet d, List<(int, int)> pos)
         {
             List<Electrode> temp = [];
 

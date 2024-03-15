@@ -21,7 +21,7 @@ namespace Bachelor_Project.Utility
         public List<Command> OutputCommands = [];
         public Type? NextType = nextType;
         public string? NextName = nextName;
-        public TileEntity? CommandDestination = null;
+        public Apparature? CommandDestination = null;
         public object[] ActionValue { get; set; } = value;
 
         public void SetDest()
@@ -59,12 +59,15 @@ namespace Bachelor_Project.Utility
         public void ExecuteCommand()
         {
             Board b = Program.C.board;
+            Task command;
             switch (Type) 
             {
                 case "input":
+                    
                     Console.WriteLine("Input");
-                    Task inputDroplet = new(() => Droplet_Actions.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[0]], int.Parse((string)ActionValue[1])));
-                    b.Droplets[OutputDroplets[0]].GiveWork(inputDroplet);
+                    command = new(() => Droplet_Actions.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[0]], int.Parse((string)ActionValue[1]), CommandDestination));
+
+                    b.Droplets[OutputDroplets[0]].GiveWork(command);
                     break;
                 case "output":
                     Console.WriteLine("Output");
@@ -134,7 +137,7 @@ namespace Bachelor_Project.Utility
             return Type + " " + string.Join(", ", InputDroplets) + " -> " + string.Join(", ", OutputDroplets) + " extra: "+ string.Join(", ", ActionValue);
         }
 
-        internal TileEntity? FindDest()
+        internal Apparature? FindDest()
         {
             foreach (Command item in OutputCommands)
             {

@@ -31,6 +31,7 @@ namespace Bachelor_Project.Simulation
         public List<string> Contamintants { get; set; } = []; //Which substance types the droplet is contaminated by, ergo which contaminations it can't pass over.
         public int ContamLevel { get; set; } = 0;
         public List<(Electrode, Direction?)>? CurrentPath = null;
+        public (int?, Direction?) SquareInfo { get; set; } // Square used for constant width towards edges.
 
 
 

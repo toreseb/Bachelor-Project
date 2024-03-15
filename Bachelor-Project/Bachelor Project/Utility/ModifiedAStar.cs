@@ -3,6 +3,7 @@ using Bachelor_Project.Simulation.Agent_Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -99,7 +100,7 @@ namespace Bachelor_Project.Utility
                     {
                         continue;
                     }
-                    double tentativeGScore = gScore[current] + dfunc(d, current, neighbor);
+                    double tentativeGScore = gScore[current] + dfunc(d, current, neighbor, dir);
                     if (!gScore.ContainsKey(neighbor))
                     {
                         gScore.Add(neighbor, double.MaxValue);
@@ -129,19 +130,134 @@ namespace Bachelor_Project.Utility
             throw new Exception("No path found");
 
         }
-
-        private static double dfunc(Droplet d, Electrode start, Electrode end)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+        private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir)
         {
+            if (start.Name == "el39" && dir == Direction.RIGHT)
+            {
+                int a = 2;
+            }
+            int total = 2;
             if (end.GetContaminants().Count > 0 && !end.GetContaminants().Exists( x => d.Contamintants.Contains(x))){
-                return 1;
+                total -= 1;
             }
-            else if(end.GetContaminants().Exists(x => d.Contamintants.Contains(x))) //More or better conditions later, right now for testing.
+            if (end.Apparature != null)
             {
-                return 100;
-            }else
+                total += 3;
+            }   
+
+            (bool foundEdge, int distanceToEdge) = CheckSquare(d, end, dir);
+            if (foundEdge)
             {
-                return 2;
+                total += (4-distanceToEdge)*3;
             }
+
+            if(end.GetContaminants().Exists(x => d.Contamintants.Contains(x))) //More or better conditions later, right now for testing.
+            {
+                total += 1000;
+            }
+
+            return total;
+        }
+
+        private static (bool, int) CheckSquare(Droplet d, Electrode end, Direction dir) // TODO: Change it to look at the entire square
+        {
+            if (d.SquareInfo.Item1 == null && d.SquareInfo.Item2 == null)
+            {
+                d.SquareInfo = FindSquare(d, end);
+                if (d.SquareInfo.Item1 == null && d.SquareInfo.Item2 == null)
+                {
+                    return (false, 0);
+                }
+            }
+            
+            int distance = d.SquareInfo.Item1.Value;
+            int jDist = 0;
+            bool checkX;
+            switch (dir)
+            {
+                case Direction.LEFT:
+                    jDist = -1;
+                    checkX = false;
+                    break;
+                case Direction.UP:
+                    jDist = -1;
+                    checkX = true;
+                    break;
+                case Direction.RIGHT:
+                    jDist = 1;
+                    checkX = false;
+                    break;
+                case Direction.DOWN:
+                    jDist = 1;
+                    checkX = true;
+                    break;
+                default:
+                    throw new Exception("Invalid direction");
+            }
+            for (int j = 0;j < distance; j += 1)
+            {
+                int funcJ = j * jDist;
+                for (int i = -(distance-1); i < distance; i += 1)
+                {
+                    if (checkX)
+                    {
+                        if (!Droplet_Actions.CheckLegalPosition(d, [(end.ePosX + i, end.ePosY + funcJ)]))
+                        {
+                            return (true, Math.Abs(j));
+                        }
+                    }
+                    else
+                    {
+                        if (!Droplet_Actions.CheckLegalPosition(d, [(end.ePosX + funcJ, end.ePosY + i)]))
+                        {
+                            return (true, Math.Abs(j));
+                        }
+                    }
+                }
+            }
+            return (false, 0);
+
+        }
+
+        private static (int?, Direction?) FindSquare(Droplet d, Electrode end)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 1; j < 4; j++)
+                {
+                    int xChange = 0;
+                    int yChange = 0;
+                    Direction dir;
+                    switch (i)
+                    {
+                        case 0:
+                            xChange = -j;
+                            dir = Direction.LEFT;
+                            break;
+                        case 1:
+                            yChange = -j;
+                            dir = Direction.UP;
+                            break;
+                        case 2:
+                            xChange = j;
+                            dir = Direction.RIGHT;
+                            break;
+                        case 3:
+                            yChange = j;
+                            dir = Direction.DOWN;
+                            break;
+                        default:
+                            throw new Exception("Invalid direction");
+                    }
+                    if (!Droplet_Actions.CheckLegalPosition(d, [(end.ePosX + xChange, end.ePosY + yChange)]))
+                    {
+                        return (j, dir);
+                    }
+                }
+            }
+            return (null, null);
+
         }
 
     }

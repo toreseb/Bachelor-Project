@@ -17,6 +17,7 @@ namespace Bachelor_Project.Simulation
         // Contamination of tile in grid, may need changing later.
         private List<string> Contaminants { get; set; } = [];
         public Droplet? Occupant;
+        public Apparature? Apparature;
 
         public Electrode() : this(0, 0)
         {

@@ -29,16 +29,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 size--;
                 destElectrode = d.GetClosestFreePointer(destination);
             }
-            nonSnek:
+
             if (destination == null)
             {
-                
+                d.SnekMode = false;
                 while (size > 0)
                 {
-                    d.SnekMode = false;
                     CoilSnek(d, i.pointers[0], input: true);
                     size--;
                 }
+                
             }
             else
             {
@@ -583,7 +583,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void UncoilSnek(Droplet d, Electrode dest)
         {
             // If snake already occupies destination, do nothing.
-            if (dest.Occupant.Equals(d))
+            if (dest.Occupant != null && dest.Occupant.Equals(d))
             {
                 return;
             }
@@ -652,6 +652,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             int i = 1;
             while(activeBlob1.Count > 0)
             {
+                if (amount <= 0)
+                {
+                    goto done;
+                }
                 Electrode current = activeBlob1[0];
                 List<(Electrode, Direction)> neighbors = current.getNeighbors();
                 foreach (var item in neighbors)

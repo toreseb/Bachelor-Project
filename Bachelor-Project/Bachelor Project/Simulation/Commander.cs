@@ -192,8 +192,8 @@ namespace Bachelor_Project.Simulation
             Droplet Wat1 = new Droplet("Water", "Wat1");
             Wat1.Contamintants.Add("Blood");
             board.Droplets.Add(Wat1.Name, Wat1);
-            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 36);
-            Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[7,2]);
+            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 60, board.Output["out0"]);
+            //Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[7,2]);
 
 
 

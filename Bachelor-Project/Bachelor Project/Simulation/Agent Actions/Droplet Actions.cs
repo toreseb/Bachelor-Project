@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation.Agent_Actions
 {
+    // This class contains the more basic movements and actions an agent can take.
     public static class Droplet_Actions
     {
         private static readonly int mixAmount = 5;

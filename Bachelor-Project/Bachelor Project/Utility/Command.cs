@@ -76,12 +76,12 @@ namespace Bachelor_Project.Utility
                     break;
                 case "waste":
                     Console.WriteLine("Waste");
-                    Task wasteDroplet = new(() => Droplet_Actions.WasteDroplet(b.Droplets[InputDroplets[0]]));
+                    Task wasteDroplet = new(() => Mission_Tasks.WasteDroplet(b.Droplets[InputDroplets[0]]));
                     b.Droplets[InputDroplets[0]].GiveWork(wasteDroplet);
                     break;
                 case "merge":
                     Console.WriteLine("Merge");
-                    Task mergeDroplet = new(() => Droplet_Actions.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]]));
+                    Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]]));
                     b.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);
                     foreach (var item in InputDroplets)
                     {
@@ -91,7 +91,7 @@ namespace Bachelor_Project.Utility
                     break;
                 case "split":
                     Console.WriteLine("Split");
-                    Task splitDroplet = new(() => Droplet_Actions.SplitDroplet(b.Droplets[InputDroplets[0]], OutputDroplets));
+                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], OutputDroplets));
                     b.Droplets[InputDroplets[0]].GiveWork(splitDroplet);
                     foreach (var item in OutputDroplets)
                     {
@@ -101,17 +101,17 @@ namespace Bachelor_Project.Utility
                     break;
                 case "mix":
                     Console.WriteLine("Mix");
-                    Task mixDroplet = new(() => Droplet_Actions.MixDroplets(b.Droplets[InputDroplets[0]], b.Droplets[OutputDroplets[0]], (string)ActionValue[0], (string)ActionValue[1]));
+                    Task mixDroplet = new(() => Mission_Tasks.MixDroplets(b.Droplets[InputDroplets[0]], (string)ActionValue[0], (string)ActionValue[1]));
                     b.Droplets[InputDroplets[0]].GiveWork(mixDroplet);
                     break;
                 case "temp":
                     Console.WriteLine("Temp");
-                    Task tempDroplet = new(() => Droplet_Actions.TempDroplet(b.Droplets[InputDroplets[0]], b.Droplets[OutputDroplets[0]], int.Parse((string)ActionValue[0]), (string)ActionValue[1]));
+                    Task tempDroplet = new(() => Mission_Tasks.TempDroplet(b.Droplets[InputDroplets[0]], b.Droplets[OutputDroplets[0]], int.Parse((string)ActionValue[0]), (string)ActionValue[1]));
                     b.Droplets[InputDroplets[0]].GiveWork(tempDroplet);
                     break;
                 case "sense":
                     Console.WriteLine("Sense");
-                    Task senseDroplet = new(() => Droplet_Actions.SenseDroplet(b.Droplets[InputDroplets[0]], b.Droplets[OutputDroplets[0]], (string)ActionValue[0]));
+                    Task senseDroplet = new(() => Mission_Tasks.SenseDroplet(b.Droplets[InputDroplets[0]], b.Droplets[OutputDroplets[0]], (string)ActionValue[0]));
                     b.Droplets[InputDroplets[0]].GiveWork(senseDroplet);
                     break;
                 default:

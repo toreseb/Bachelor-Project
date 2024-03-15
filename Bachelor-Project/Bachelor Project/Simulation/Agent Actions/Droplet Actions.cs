@@ -944,10 +944,5 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }*/
 
-
-
-
-
-        // Fix snake - If snake is broken, remake it.
     }
 }

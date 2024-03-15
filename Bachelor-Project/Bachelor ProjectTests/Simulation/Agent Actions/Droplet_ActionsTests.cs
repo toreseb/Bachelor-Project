@@ -365,6 +365,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         [TestMethod()]
         public void MoveDropletTest_InputIntoContam()
         {
+            Assert.Fail();
             // Create board and add droplets
             board = Program.C.SetBoard(testBoardDataLocation);
             board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));

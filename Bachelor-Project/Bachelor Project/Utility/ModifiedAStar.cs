@@ -64,7 +64,7 @@ namespace Bachelor_Project.Utility
                 }
                 openSet.Remove(current);
 
-                for(int i = 0; i < 3; i++)
+                for(int i = 0; i < 4; i++)
                 {
                     int xChange = 0;
                     int yChange = 0;
@@ -152,7 +152,7 @@ namespace Bachelor_Project.Utility
                 total += (4-distanceToEdge)*3;
             }
 
-            if(end.GetContaminants().Exists(x => d.Contamintants.Contains(x))) //More or better conditions later, right now for testing.
+            if(end.GetContaminants().Exists(d.Contamintants.Contains)) //More or better conditions later, right now for testing.
             {
                 total += 1000;
             }

@@ -128,12 +128,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        internal static void TempDroplet(Droplet droplet1, Droplet droplet2, int temp, string newType)
+        internal static void TempDroplet(Droplet droplet1, int temp, string newType)
         {
             //throw new NotImplementedException();
         }
 
-        internal static void SenseDroplet(Droplet droplet1, Droplet droplet2, string sensorType)
+        internal static void SenseDroplet(Droplet droplet1, string sensorType)
         {
             //throw new NotImplementedException();
         }

@@ -106,12 +106,12 @@ namespace Bachelor_Project.Utility
                     break;
                 case "temp":
                     Console.WriteLine("Temp");
-                    Task tempDroplet = new(() => Mission_Tasks.TempDroplet(b.Droplets[InputDroplets[0]], b.Droplets[OutputDroplets[0]], int.Parse((string)ActionValue[0]), (string)ActionValue[1]));
+                    Task tempDroplet = new(() => Mission_Tasks.TempDroplet(b.Droplets[InputDroplets[0]], int.Parse((string)ActionValue[0]), (string)ActionValue[1]));
                     b.Droplets[InputDroplets[0]].GiveWork(tempDroplet);
                     break;
                 case "sense":
                     Console.WriteLine("Sense");
-                    Task senseDroplet = new(() => Mission_Tasks.SenseDroplet(b.Droplets[InputDroplets[0]], b.Droplets[OutputDroplets[0]], (string)ActionValue[0]));
+                    Task senseDroplet = new(() => Mission_Tasks.SenseDroplet(b.Droplets[InputDroplets[0]], (string)ActionValue[0]));
                     b.Droplets[InputDroplets[0]].GiveWork(senseDroplet);
                     break;
                 default:

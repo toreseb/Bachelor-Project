@@ -768,7 +768,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[6, 4].Occupant);
 
             // Coil
-            Droplet_Actions.CoilSnek(board.Droplets["Wat1"]);
+            Droplet_Actions.CoilSnek(board.Droplets["Wat1"],
+            Program);
 
             // Check placement
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[5, 3].Occupant);

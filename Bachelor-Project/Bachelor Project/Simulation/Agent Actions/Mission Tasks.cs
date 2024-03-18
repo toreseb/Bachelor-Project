@@ -14,7 +14,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         // Droplets needing mixing are assumed to have been merged into one drop.
         // Does not take contaminants into account yet.
-        public static void MixDroplets(Droplet d, string pattern, string newType) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
+        public static bool MixDroplets(Droplet d, string pattern, string? newType = null) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
         {
             bool up = true; bool down = true; bool left = true; bool right = true;
             // Check if there is room to boogie
@@ -98,7 +98,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         }
                     }
 
-                    return;
+                    return true;
                 }
                 else
                 {

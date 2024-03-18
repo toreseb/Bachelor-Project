@@ -111,8 +111,17 @@ namespace Bachelor_Project.Simulation
                     Task cTask = TaskQueue.Dequeue();
                     Console.WriteLine("Droplet " + Name + " is doing work");
                     cTask.Start();
+                    try
+                    {
+                        
+                        cTask.Wait(cancellationToken);
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Droplet " + Name + " has been stopped");
+                        return;
+                    }
                     
-                    cTask.Wait(cancellationToken);
                     Console.WriteLine("Droplet " + Name + " has done work");
                 }
 

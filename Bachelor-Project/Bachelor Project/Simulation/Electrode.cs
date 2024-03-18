@@ -144,6 +144,24 @@ namespace Bachelor_Project.Simulation
             return Math.Sqrt(Math.Pow(e1.ePosX - e2.ePosX, 2) + Math.Pow(e1.ePosY - e2.ePosY, 2));
         }
 
+        public int GetDistanceToBorder()
+        {
+            int x = ePosX;
+            if (ePosX > (Program.C.board.Information.eRow - 1) / 2)
+            {
+                x = (Program.C.board.Information.eRow-1) - ePosX;
+            }
+            int y = ePosY;
+            if (ePosY > (Program.C.board.Information.eRow - 1) / 2)
+            {
+                y = (Program.C.board.Information.eCol-1 ) - ePosY;
+            }
+
+            return Math.Min(x, y);
+
+
+        }
+
         public void Contaminate(string contaminator)
         {
             Contaminants.Add(contaminator);

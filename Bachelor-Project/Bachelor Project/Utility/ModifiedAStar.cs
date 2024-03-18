@@ -130,34 +130,33 @@ namespace Bachelor_Project.Utility
             throw new Exception("No path found");
 
         }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
         private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir)
         {
-            if (start.Name == "el39" && dir == Direction.RIGHT)
-            {
-                int a = 2;
-            }
-            int total = 2;
-            if (end.GetContaminants().Count > 0 && !end.GetContaminants().Exists( x => d.Contamintants.Contains(x))){
-                total -= 1;
-            }
-            if (end.Apparature != null)
-            {
-                total += 3;
-            }   
+            int multiple = 3 * (end.GetDistanceToBorder());
 
+            if (!Droplet_Actions.CheckLegalMove(d, [end])) // 1: check if the move is legal
+            {
+                return multiple * 1000;
+            }else if (end.Apparature != null) // 2: Check if the end is an apparature, and therefore important
+            {
+                return (multiple+5 * 5);
+            } else if (end.GetContaminants().Count > 0 && !end.GetContaminants().Exists( x => d.Contamintants.Contains(x))){ // 3: Check if highway
+                return 1;
+            }
+            return multiple;
+            
+              
+
+            /*
             (bool foundEdge, int distanceToEdge) = CheckSquare(d, end, dir);
             if (foundEdge)
             {
-                total += (4-distanceToEdge)*3;
+                return (4-distanceToEdge)*3;
             }
+            */
 
-            if(end.GetContaminants().Exists(d.Contamintants.Contains)) //More or better conditions later, right now for testing.
-            {
-                total += 1000;
-            }
+            
 
-            return total;
         }
 
         private static (bool, int) CheckSquare(Droplet d, Electrode end, Direction dir) // TODO: Change it to look at the entire square

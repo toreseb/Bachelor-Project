@@ -826,7 +826,7 @@
             "ID": 640,
             "actuator": 0,
             "type": "heater",
-            "positionX": 20,
+            "positionX": 100,
             "positionY": 0,
             "sizeX": 20,
             "sizeY": 20,

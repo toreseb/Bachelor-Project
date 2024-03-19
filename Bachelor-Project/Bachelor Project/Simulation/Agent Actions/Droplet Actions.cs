@@ -14,13 +14,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     // This class contains the more basic movements and actions an agent can take.
     public static class Droplet_Actions
     {        
-        public static void InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
+        public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
+            
             Electrode destElectrode = null;
 
             d.SetSizes(volume);
+            Console.WriteLine("error");
             int size = d.Size;
             AwaiLegalMove(d, i.pointers);
+            
             if (destination != null)
             {
                 d.SnekMode = true;
@@ -43,8 +46,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 while (size > 0)
                 {
+                    
                     MoveTowardDest(d, destElectrode);
                     MoveOnElectrode(d, i.pointers[0], first: false);
+                    
                     size--;
                     if (d.CurrentPath.Count <= 4)
                     {
@@ -54,11 +59,23 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                             size--;
                         }
                         CoilSnek(d, d.SnekList.First());
-                        return;
+                        return true;
+                    }
+                }
+                
+                while (d.CurrentPath.Count > 4)
+                {
+                    MoveTowardDest(d, destElectrode);
+                    if (d.CurrentPath.Count <= 4)
+                    {
+                        CoilSnek(d, d.SnekList.First());
+                        return true;
                     }
                 }
             }
+            return true;
             
+
         }
 
         public static void MoveToDest(Droplet d, Electrode destination) //TODO: Make sure that the droplet moves to the destination

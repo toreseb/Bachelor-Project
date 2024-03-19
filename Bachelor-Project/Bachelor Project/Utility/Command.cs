@@ -66,7 +66,6 @@ namespace Bachelor_Project.Utility
                     
                     Console.WriteLine("Input");
                     command = new(() => Droplet_Actions.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[0]], int.Parse((string)ActionValue[1]), CommandDestination));
-
                     b.Droplets[OutputDroplets[0]].GiveWork(command);
                     break;
                 case "output":

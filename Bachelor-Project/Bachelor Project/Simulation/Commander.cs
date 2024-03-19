@@ -111,7 +111,7 @@ namespace Bachelor_Project.Simulation
                 Command cCommand = currentCommands[0];
                 cCommand.CommandDestination ??= cCommand.FindDest();
                 Console.WriteLine(cCommand.ToString() + cCommand.CommandDestination);
-                // cCommand.ExecuteCommand();
+                cCommand.ExecuteCommand();
                 cCommand.OutputCommands.ForEach(x => x.InputCommands.Remove(cCommand));
                 cCommand.OutputCommands.ForEach(x => 
                     {
@@ -127,7 +127,7 @@ namespace Bachelor_Project.Simulation
             // Thread.Sleep(5000);
             // board.PrintBoardState();
 
-            Console.WriteLine("Done");
+            //Console.WriteLine("Done");
 
             //Actuator e = JsonSerializer.Deserialize<Actuator>(json, options);
             //Console.WriteLine(e);
@@ -189,16 +189,20 @@ namespace Bachelor_Project.Simulation
 
 
             // Test of uncoil with dest og algorithm
+            /*
             Droplet Wat1 = new Droplet("Water", "Wat1");
             Wat1.Contamintants.Add("Blood");
             board.Droplets.Add(Wat1.Name, Wat1);
             Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 60, board.Output["out0"]);
+            */
             //Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[7,2]);
 
 
 
 
-            board.PrintBoardState();
+            //board.PrintBoardState();
+
+            Thread.Sleep(100000000); //TODO: make it sleep until all commands have been executed
 
         }
 

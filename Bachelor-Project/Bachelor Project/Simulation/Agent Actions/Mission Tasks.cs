@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 namespace Bachelor_Project.Simulation.Agent_Actions
 {
     // This class contains the more complicated missions the agents will have.
-    internal class Mission_Tasks
+    public class Mission_Tasks
     {
         private static readonly int mixAmount = 5;
 
         // Droplets needing mixing are assumed to have been merged into one drop.
         // Does not take contaminants into account yet.
-        public static void MixDroplets(Droplet d, string pattern, string newType) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
+        public static void MixDroplets(Droplet d, string pattern, string newType = null) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
         {
             bool up = true; bool down = true; bool left = true; bool right = true;
             // Check if there is room to boogie

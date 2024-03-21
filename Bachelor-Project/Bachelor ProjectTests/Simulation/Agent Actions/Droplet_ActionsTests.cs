@@ -857,7 +857,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[6, 5].Occupant);
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 3].Occupant);
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 4].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 5].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[5, 4].Occupant);
 
             // More in debth tests will follow when algorithm is implemented
         }
@@ -951,12 +951,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[7, 2]);
 
             // Check placement
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[6, 1].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[6, 2].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[6, 3].Occupant);
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 1].Occupant);
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 2].Occupant);
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 3].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[6, 2].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[8, 2].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[8, 1].Occupant);
         }
 
         [TestMethod()]

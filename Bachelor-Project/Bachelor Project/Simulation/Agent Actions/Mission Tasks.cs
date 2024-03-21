@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Bachelor_Project.Simulation.Agent_Actions
 {
     // This class contains the more complicated missions the agents will have.
-    internal class Mission_Tasks
+    public class Mission_Tasks
     {
         public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {

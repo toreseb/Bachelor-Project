@@ -96,31 +96,31 @@ namespace Bachelor_Project.Simulation
                         dir = Direction.UP;
                         break;
                     case 1:
+                        xChange = 1;
+                        dir = Direction.RIGHT;
+                        break;
+                    case 2:
+                        yChange = 1;
+                        dir = Direction.DOWN;
+                        break;
+                    case 3:
+                        xChange = -1;
+                        dir = Direction.LEFT;
+                        break;
+                    case 4:
                         yChange = -1;
                         xChange = 1;
                         dir = null;
                         break;
-                    case 2:
-                        xChange = 1;
-                        dir = Direction.RIGHT;
-                        break;
-                    case 3:
-                        yChange = 1;
-                        xChange = 1;
-                        dir = null;
-                        break;
-                    case 4:
-                        yChange = 1;
-                        dir = Direction.DOWN;
-                        break;
                     case 5:
                         yChange = 1;
-                        xChange = -1;
+                        xChange = 1;
                         dir = null;
                         break;
                     case 6:
+                        yChange = 1;
                         xChange = -1;
-                        dir = Direction.LEFT;
+                        dir = null;
                         break;
                     case 7:
                         yChange = -1;

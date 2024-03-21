@@ -29,6 +29,10 @@ namespace Bachelor_Project.Simulation
             SizeY = sizeY;
         }
  
+        public (int,int) GetCenter()
+        {
+            return (PositionX + SizeX / 2, PositionY + SizeY / 2);
+        }
 
        public string getName() 
        {             

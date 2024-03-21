@@ -14,20 +14,28 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     // This class contains the more basic movements and actions an agent can take.
     public static class Droplet_Actions
     {        
+
         public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
-            
+            if (d.Inputted)
+            {
+                Console.WriteLine("Droplet already inputted");
+                throw new Exception("Droplet already inputted");
+            }
+            d.Inputted = true;
+            d.Important = false;
+            d.Waiting = false;
             Electrode destElectrode = null;
 
             d.SetSizes(volume);
             Console.WriteLine("error");
             int size = d.Size;
-            AwaiLegalMove(d, i.pointers);
-            
+            AwaitLegalMove(d, i.pointers);
+
             if (destination != null)
             {
                 d.SnekMode = true;
-                MoveOnElectrode(d, i.pointers[0]) ;
+                MoveOnElectrode(d, i.pointers[0]);
                 size--;
                 destElectrode = d.GetClosestFreePointer(destination);
             }
@@ -40,16 +48,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     CoilSnek(d, i.pointers[0], input: true);
                     size--;
                 }
-                
+
             }
             else
             {
                 while (size > 0)
                 {
-                    
+
                     MoveTowardDest(d, destElectrode);
                     MoveOnElectrode(d, i.pointers[0], first: false);
-                    
+
                     size--;
                     if (d.CurrentPath.Count <= 4)
                     {
@@ -62,10 +70,21 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         return true;
                     }
                 }
-                
+
                 while (d.CurrentPath.Count > 4)
                 {
-                    MoveTowardDest(d, destElectrode);
+                    d.Waiting = true;
+                    try
+                    {
+                        MoveTowardDest(d, destElectrode);
+                    }
+                    catch (NewWorkException)
+                    {
+                        Program.C.board.PrintBoardState();
+                        d.Waiting = false;
+                        return false;
+                    }
+
                     if (d.CurrentPath.Count <= 4)
                     {
                         CoilSnek(d, d.SnekList.First());
@@ -74,8 +93,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
             }
             return true;
-            
 
+
+        }
+
+        public static Electrode MoveToApparature(Droplet d, Apparature dest)
+        {
+            Electrode closest = d.GetClosestFreePointer(dest);
+            MoveToDest(d, closest);
+            return closest;
         }
 
         public static void MoveToDest(Droplet d, Electrode destination) //TODO: Make sure that the droplet moves to the destination
@@ -97,9 +123,25 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
         }
 
+        public static Electrode MoveTowardApparature(Droplet d, Apparature dest)
+        {
+            Electrode closest = d.GetClosestFreePointer(dest);
+            MoveTowardDest(d, closest);
+            return closest;
+        }
+
         public static void MoveTowardDest(Droplet d, Electrode destination)
         {
+            if (d.GetWork().Count > 0 && d.Waiting == true && d.Important == false)
+            {
+                throw new NewWorkException();
+            }
             d.CurrentPath ??= ModifiedAStar.FindPath(d, destination);
+            if (!d.SnekMode)
+            {
+                UncoilSnek(d, destination);
+            }
+
             if (d.CurrentPath.Count == 0)
             {
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination);
@@ -321,12 +363,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        private static void AwaiLegalMove(Droplet d, List<Electrode> temp)
+        public static void AwaitLegalMove(Droplet d, List<Electrode> temp)
         {
+            int i = 0;
             while (!CheckLegalMove(d, temp))
             {
                 Console.WriteLine(d.Name + " waiting for space");
+                if (i > 50)
+                {
+                    Console.WriteLine(d.Name + " waited for too long");
+                    throw new Exception("Droplet waited for too long");
+                }
                 Thread.Sleep(100);
+                i++;
             }
         }
 
@@ -455,15 +504,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.Occupy.Reverse();
         }
 
-        internal static void OutputDroplet(Droplet droplet, Output output)
-        {
-            //throw new NotImplementedException();
-        }
-
-        internal static void AwaitWork(Droplet droplet)
-        {
-            //throw new NotImplementedException();
-        }
 
 
         // Uncoil snake - takes droplet and destination
@@ -471,6 +511,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         // if yes, go to next part, if no, turn on next electrode for head and turn off electrode for part.
         public static void UncoilSnek(Droplet d, Electrode dest)
         {
+            d.Waiting = false;
             // If snake already occupies destination, do nothing.
             if (dest.Occupant != null && dest.Occupant.Equals(d))
             {
@@ -505,6 +546,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     // Turn off the right electrode.
                     blobTree.RemoveLeaf();
                 }
+                else if(d.Waiting == false)
+                {
+                    d.Waiting = true;
+                }
 
                 Program.C.board.PrintBoardState();
 
@@ -512,12 +557,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // Once at dest, whether the snake is fully uncoiled or not, coil the snake again.
             // This avoids long tails being in the way.
-            CoilSnek(d, dest);
+            if (!d.Important)
+            {
+                CoilSnek(d, dest);
+            }
+            
         }
 
         // Coil snake
         // Could try doing it without thinking of it as a snake, just a bunch of small droplets moving to be a big one.
-        public static void CoilSnek(Droplet d, Electrode? center = null, bool input = false)
+        public static void CoilSnek(Droplet d, Electrode? center = null, Apparature? into = null, bool input = false)
         {
             if (center == null)
             {
@@ -549,7 +598,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors();
                 foreach (var item in neighbors)
                 {
-                    if (CheckLegalMove(d,[item.Item1]) && !seenElectrodes.Contains(item.Item1) && item.Item1.Apparature == null)
+                    if (CheckLegalMove(d,[item.Item1]) && !seenElectrodes.Contains(item.Item1) && item.Item1.Apparature == into)
                     {
                         activeBlob2.Add(item.Item1);
                         seenElectrodes.Add(item.Item1);
@@ -561,6 +610,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         }
                     }
                 }
+                
                 activeBlob1.Remove(current);
                 if (activeBlob1.Count == 0)
                 {
@@ -569,7 +619,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
             }
         done:
-            
+            if (amount > 0)
+            {
+                throw new Exception("Not enough space to coil");
+            }
             Tree snekTree = BuildTree(d, newBlob, center);
 
             foreach (var item in newBlob)
@@ -590,7 +643,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return new Tree(d, d.Occupy, newElectrodes, center);
         }
 
-        
+        internal static void Output(Droplet droplet, Output output)
+        {
+            Tree snekTree = BuildTree(droplet, [], output.pointers[0]);
+            snekTree.RemoveTree();
+            MoveOffElectrode(droplet, output.pointers[0]);
+            Program.C.board.PrintBoardState();
+        }
+
+
         /*
         public static void CoilSnek(Droplet d)
         {

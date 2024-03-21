@@ -374,7 +374,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         [TestMethod()]
         public void MoveDropletTest_InputIntoContam()
         {
-            Assert.Fail();
             // Create board and add droplets
             board = Program.C.SetBoard(testBoardDataLocation);
             board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
@@ -387,18 +386,34 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.InputDroplet(board.Droplets["Blood1"], board.Input["in0"], 11);
             Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
             Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
 
             // Input water
-            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 11);
+            
 
-            Assert.AreEqual(null, board.Input["in0"].pointers[0].Occupant);
+            Assert.ThrowsException<Exception>(new Action(() => Mission_Tasks.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 11)));
         }
 
         [TestMethod()]
         public void MoveDropletTest_InputAgain()
         {
-            // TODO: Input droplet already on board
-            Assert.Fail();
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet drop1 = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", drop1);
+
+
+            // Input and move blood
+            Droplet_Actions.InputDroplet(drop1, board.Input["in0"], 11);
+            Droplet_Actions.MoveDroplet(drop1, Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(drop1, Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(drop1, Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(drop1, Direction.RIGHT);
+
+            // Input water
+
+
+            Assert.ThrowsException<Exception>(new Action(() => Mission_Tasks.InputDroplet(drop1, board.Input["in0"], 11)));
         }
 
         [TestMethod()]
@@ -944,9 +959,33 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 3].Occupant);
         }
 
+        [TestMethod()]
+        public void OutputTest_Size1()
+        {
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet d = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", d);
+            Droplet_Actions.InputDroplet(d, board.Input["in0"], 11);
+            Assert.AreNotEqual(0, d.Occupy.Count);
+            Mission_Tasks.OutputDroplet(d, board.Output["out0"]);
+            Assert.AreEqual(0, d.Occupy.Count);
+        }
+
+        [TestMethod()]
+        public void OutputTest_Size3()
+        {
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet d = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", d);
+            Droplet_Actions.InputDroplet(d, board.Input["in0"], 35);
+            Assert.AreNotEqual(0, d.Occupy.Count);
+            Mission_Tasks.OutputDroplet(d, board.Output["out0"]);
+            Assert.AreEqual(0, d.Occupy.Count);
+        }
+
         /*
         [TestMethod()]
-        public void UncoilSnekTest_AtBoarder()
+        public void UncoilSnekTest_AtBorder()
         {
             Assert.Fail();
         }

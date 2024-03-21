@@ -1,6 +1,9 @@
-﻿using Bachelor_Project.Utility;
+﻿using Bachelor_Project.Electrode_Types;
+using Bachelor_Project.Electrode_Types.Actuator_Types;
+using Bachelor_Project.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +13,28 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     // This class contains the more complicated missions the agents will have.
     public class Mission_Tasks
     {
+        public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
+        {
+            return Droplet_Actions.InputDroplet(d, i, volume, destination);
+
+
+        }
+        public static void OutputDroplet(Droplet droplet, Output output)
+        {
+            droplet.Important = true;
+            Droplet_Actions.MoveToApparature(droplet, output);
+            Droplet_Actions.Output(droplet, output);
+        }
+
+
+
         private static readonly int mixAmount = 5;
 
         // Droplets needing mixing are assumed to have been merged into one drop.
         // Does not take contaminants into account yet.
         public static bool MixDroplets(Droplet d, string pattern, string? newType = null) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
         {
+            d.Important = true;
             bool up = true; bool down = true; bool left = true; bool right = true;
             // Check if there is room to boogie
             // Only checks board bounderies
@@ -113,6 +132,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
+
+
+
+
         internal static void WasteDroplet(Droplet droplet)
         {
             //throw new NotImplementedException();
@@ -128,16 +151,29 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        internal static void TempDroplet(Droplet droplet1, int temp, string newType)
+        internal static void AwaitWork(Droplet droplet)
         {
             //throw new NotImplementedException();
         }
 
-        internal static void SenseDroplet(Droplet droplet1, string sensorType)
+        internal static void TempDroplet(Droplet droplet1, Heater heater, string newType)
         {
-            //throw new NotImplementedException();
+            droplet1.Important = true;
+            Electrode closest = Droplet_Actions.MoveToApparature(droplet1, heater);
+            Droplet_Actions.CoilSnek(droplet1, center: closest, into: heater);
+            Thread.Sleep(1000); // Time to heat?
+            droplet1.ChangeType(newType);
         }
 
+        internal static void SenseDroplet(Droplet droplet1, Sensor sensor)
+        {
+            droplet1.Important = true;
+            Electrode closest = Droplet_Actions.MoveToApparature(droplet1, sensor);
+            Droplet_Actions.CoilSnek(droplet1, center: closest, into: sensor); // Depends if sensor needs to see the entire droplet
+            Thread.Sleep(1000); // Time to sense?
+        }
+
+        
 
 
     }

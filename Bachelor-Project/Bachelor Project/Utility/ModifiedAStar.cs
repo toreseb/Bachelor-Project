@@ -18,7 +18,9 @@ namespace Bachelor_Project.Utility
             totalPath.AddFirst((current,null));
             while (cameFrom.ContainsKey(current))
             {
+                
                 Direction oldDir = cameFrom[current].Item2;
+                Console.WriteLine(current.Name + " dir: " + oldDir);
                 current = cameFrom[current].Item1;
                 totalPath.AddFirst((current, oldDir));
 
@@ -30,7 +32,7 @@ namespace Bachelor_Project.Utility
         public static List<(Electrode, Direction?)> FindPath(Droplet d, Electrode goal)
         {
             Func<Electrode, Electrode, double> h = Electrode.GetDistance;
-            Electrode start = Electrode.GetClosestElectrode(d.Occupy, goal);
+            Electrode start = goal.GetClosestElectrodeInList(d.Occupy);
             List<Electrode> openSet = [start];
 
             Dictionary<Electrode, (Electrode,Direction)> cameFrom = [];
@@ -64,63 +66,43 @@ namespace Bachelor_Project.Utility
                 }
                 openSet.Remove(current);
 
-                for(int i = 0; i < 4; i++)
-                {
-                    int xChange = 0;
-                    int yChange = 0;
-                    Direction dir;
-                    switch (i)
-                    {
-                        case 0:
-                            yChange = -1;
-                            dir = Direction.UP;
-                            break;
-                        case 1:
-                            xChange = 1;
-                            dir = Direction.RIGHT;
-                            break;
-                        case 2:
-                            yChange = 1;
-                            dir = Direction.DOWN;
-                            break;
-                        case 3:
-                            xChange = -1;
-                            dir = Direction.LEFT;
-                            break;
-                        default:
-                            throw new Exception("Invalid direction");
+                List<(Electrode,Direction)> neighbors = current.GetTrueNeighbors();
 
-                    }
-                    if (!Droplet_Actions.CheckEdge(current.ePosX + xChange, current.ePosY + yChange))
-                    {
-                        continue;
-                    }
-                    Electrode neighbor = Program.C.board.Electrodes[current.ePosX+xChange, current.ePosY+yChange];
+                foreach((Electrode,Direction) neighbor in neighbors)
+                {
+
+                    Electrode neighborT = neighbor.Item1;
                     if (cameFrom.ContainsKey(current) && neighbor.Equals(cameFrom[current]))
                     {
                         continue;
                     }
-                    double tentativeGScore = gScore[current] + dfunc(d, current, neighbor, dir);
-                    if (!gScore.ContainsKey(neighbor))
+                    double tentativeGScore = gScore[current] + dfunc(d, current, neighborT, neighbor.Item2);
+                    if (neighborT.Name == "el44")
                     {
-                        gScore.Add(neighbor, double.MaxValue);
+                        Console.WriteLine(tentativeGScore);
                     }
-                    if (tentativeGScore < gScore[neighbor])
+                    if (!gScore.ContainsKey(neighborT))
                     {
-                        cameFrom[neighbor] = (current, dir);
-                        gScore[neighbor] = tentativeGScore;
-                        if (!fScore.ContainsKey(neighbor))
+                        gScore.Add(neighborT, double.MaxValue);
+                        neighborT.smallestGScore = double.MaxValue;
+                    }
+                    if (tentativeGScore < gScore[neighborT])
+                    {
+                        neighborT.smallestGScore = tentativeGScore;
+                        cameFrom[neighborT] = (current, neighbor.Item2);
+                        gScore[neighborT] = tentativeGScore;
+                        if (!fScore.ContainsKey(neighborT))
                         {
-                            fScore.Add(neighbor, gScore[neighbor] + h(neighbor, goal));
+                            fScore.Add(neighborT, gScore[neighborT] + h(neighborT, goal));
                         }
                         else
                         {
-                            fScore[neighbor] = gScore[neighbor] + h(neighbor, goal);
+                            fScore[neighborT] = gScore[neighborT] + h(neighborT, goal);
                         }
                         
-                        if (!openSet.Contains(neighbor))
+                        if (!openSet.Contains(neighborT))
                         {
-                            openSet.Add(neighbor);
+                            openSet.Add(neighborT);
                         }
                     }
                 }
@@ -132,14 +114,15 @@ namespace Bachelor_Project.Utility
         }
         private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir)
         {
-            int multiple = 3 * (end.GetDistanceToBorder());
+            int distance = end.GetDistanceToBorder();
+            int multiple = 10 * (int)Math.Pow(distance,2);
 
             if (!Droplet_Actions.CheckLegalMove(d, [end])) // 1: check if the move is legal
             {
                 return multiple * 1000;
             }else if (end.Apparature != null) // 2: Check if the end is an apparature, and therefore important
             {
-                return (multiple+5 * 5);
+                return (Math.Pow(multiple+5,10));
             } else if (end.GetContaminants().Count > 0 && !end.GetContaminants().Exists( x => d.Contamintants.Contains(x))){ // 3: Check if highway
                 return 1;
             }

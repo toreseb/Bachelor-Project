@@ -19,17 +19,19 @@ namespace Bachelor_Project.Simulation
         public Droplet? Occupant;
         public Apparature? Apparature;
 
+        public double? smallestGScore = null;
+
         public Electrode() : this(0, 0)
         {
         }
 
-        public static Electrode GetClosestElectrode(List<Electrode> electrodes, Electrode goal)
+        public Electrode GetClosestElectrodeInList(List<Electrode> electrodes)
         {
             Electrode? closestElectrode = null;
             double minDistance = double.MaxValue;
             foreach (Electrode electrode in electrodes)
             {
-                double distance = GetDistance(electrode, goal);
+                double distance = GetDistance(electrode, this);
                 if (distance < minDistance)
                 {
                     closestElectrode = electrode;
@@ -79,6 +81,23 @@ namespace Bachelor_Project.Simulation
                 }
             }
             return neighbors;
+        }
+
+        public Electrode ElectrodeStep(Direction dir)
+        {
+            switch (dir)
+            {
+                case Direction.UP:
+                    return Program.C.board.Electrodes[ePosX, ePosY - 1];
+                case Direction.RIGHT:
+                    return Program.C.board.Electrodes[ePosX + 1, ePosY];
+                case Direction.DOWN:
+                    return Program.C.board.Electrodes[ePosX, ePosY + 1];
+                case Direction.LEFT:
+                    return Program.C.board.Electrodes[ePosX - 1, ePosY];
+                default:
+                    throw new Exception("Invalid direction");
+            }
         }
 
         public List<(Electrode, Direction?)> GetExtendedNeighbors()
@@ -149,15 +168,15 @@ namespace Bachelor_Project.Simulation
             int x = ePosX;
             if (ePosX > (Program.C.board.Information.eRow - 1) / 2)
             {
-                x = (Program.C.board.Information.eRow-1) - ePosX;
+                x = (Program.C.board.Information.eRow -1) - ePosX;
             }
             int y = ePosY;
             if (ePosY > (Program.C.board.Information.eRow - 1) / 2)
             {
-                y = (Program.C.board.Information.eCol-1 ) - ePosY;
+                y = (Program.C.board.Information.eCol -1) - ePosY;
             }
 
-            return Math.Min(x, y);
+            return Math.Min(x+1, y+1);
 
 
         }

@@ -222,7 +222,13 @@ namespace Bachelor_Project.Simulation
                 int used1 = 0;
                 int used2 = 0;
                 int used3 = 0;
-                foreach (var item in square)
+                if (Electrodes[i, j].smallestGScore != null)
+                {
+                    line1 += Electrodes[i, j].smallestGScore.ToString();
+                    used1 += Electrodes[i, j].smallestGScore.ToString().Length;
+                }
+                
+                    foreach (var item in square)
                 {
                     string name;
                     if (item.Name.Length > Squarewidth)
@@ -236,8 +242,8 @@ namespace Bachelor_Project.Simulation
                     Type t = item.GetType();
                     if (t.IsSubclassOf(typeof(Actuator)) || t.IsSubclassOf(typeof(Sensor)))
                     {
-                        line1 += name;
-                        used1 += name.Length;
+                        //line1 += name;
+                        //used1 += name.Length;
                     }
                     else if (t.IsSubclassOf(typeof(Accessor)))
                     {
@@ -269,6 +275,7 @@ namespace Bachelor_Project.Simulation
                 else
                 {
                     string name;
+                    
                     if (Electrodes[i, j].Name.Length > Squarewidth)
                     {
                         name = Electrodes[i, j].Name[..Squarewidth];
@@ -277,12 +284,14 @@ namespace Bachelor_Project.Simulation
                     {
                         name = Electrodes[i, j].Name;
                     }
+                    
+                    
                     line2 += name;
                     used2 += name.Length;
                 }
-                line1 += new String(' ', Squarewidth - used1) + " | ";
-                line2 += new String(' ', Squarewidth - used2) + " | ";
-                line3 += new String(' ', Squarewidth-used3) + " | ";
+                line1 += new string(' ', Math.Max(Squarewidth - used1, 0)) + " | ";
+                line2 += new string(' ', Math.Max(Squarewidth - used2,0)) + " | ";
+                line3 += new string(' ', Squarewidth-used3) + " | ";
                 i++;
             }
             string totalline = line1 + "\n" + line2 + "\n" + line3;

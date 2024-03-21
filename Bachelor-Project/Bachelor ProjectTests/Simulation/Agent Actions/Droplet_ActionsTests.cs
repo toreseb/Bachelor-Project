@@ -87,12 +87,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.InputDroplet(d, board.Input["in0"], 60, board.Output["out0"]);
             board.PrintBoardState();
 
-            Assert.AreEqual(d, board.Electrodes[5, 3].Occupant);
-            Assert.AreEqual(d, board.Electrodes[5, 4].Occupant);
-            Assert.AreEqual(d, board.Electrodes[5, 5].Occupant);
-            Assert.AreEqual(d, board.Electrodes[6, 3].Occupant);
-            Assert.AreEqual(d, board.Electrodes[6, 4].Occupant);
-            Assert.AreEqual(d, board.Electrodes[6, 5].Occupant);
+            Assert.AreEqual(d, board.Electrodes[7, 6].Occupant);
+            Assert.AreEqual(d, board.Electrodes[7, 7].Occupant);
+            Assert.AreEqual(d, board.Electrodes[7, 8].Occupant);
+            Assert.AreEqual(d, board.Electrodes[8, 6].Occupant);
+            Assert.AreEqual(d, board.Electrodes[8, 7].Occupant);
+            Assert.AreEqual(d, board.Electrodes[8, 8].Occupant);
         }
 
         [TestMethod()]
@@ -502,7 +502,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[2, 4].Occupant);
 
             // Move down
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.DOWN);
+            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
+
+            board.PrintBoardState();
 
             // Check if expected position
             Assert.AreEqual(null, board.Electrodes[0, 1].Occupant);
@@ -672,14 +674,22 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         public void SnekMoveTest_BackIntoBody()
         {
             // Done with snake of size 3
+            // Because of the functionality of the program, we need to force it into a snake position.
 
-            // Create board and input droplet
-            board = Program.C.SetBoard(testBoardDataLocation);
-            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
-            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 24);
+            // Make droplet
+            Droplet d = new Droplet("Water", "Wat1");
 
-            // Uncoil snek
-            Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[3, 1]);
+            // Make board
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            board.Droplets.Add("Wat1", d);
+
+            // Force droplet into snake
+            d.SnekMode = true;
+            d.SetSizes(24);
+
+            Droplet_Actions.MoveOnElectrode(d, board.Electrodes[2, 1]);
+            Droplet_Actions.MoveOnElectrode(d, board.Electrodes[1, 1], false);
+            Droplet_Actions.MoveOnElectrode(d, board.Electrodes[0, 1], false);
 
             // Move left
             Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.LEFT);
@@ -693,84 +703,98 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         [TestMethod()]
         public void SnekMoveTest_IntoOtherDroplet()
         {
-            // TODO: There needs to be a test trying to move a droplet that is not input yet.
-            // Done with snake of size 2 and other droplet of size 1
+            // Make droplets
+            Droplet d1 = new Droplet("Water", "Wat1");
+            Droplet d2 = new Droplet("Water", "Wat2");
 
-            // Create board and input droplet
-            board = Program.C.SetBoard(testBoardDataLocation);
-            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
-            board.Droplets.Add("Wat2", new Droplet("Water", "Wat2"));
+            // Make board
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            board.Droplets.Add("Wat1", d1);
+            board.Droplets.Add("Wat2", d2);
 
-            // Input and move other droplet (Wat2)
-            Droplet_Actions.InputDroplet(board.Droplets["Wat2"], board.Input["in0"], 11);
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat2"], Direction.RIGHT);
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat2"], Direction.RIGHT);
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat2"], Direction.RIGHT);
+            // Force droplet into snake
+            d1.SnekMode = true;
+            d2.SnekMode = true;
+            d1.SetSizes(24);
+            d2.SetSizes(11);
 
-            // Input and uncoil droplet (Wat1)
-            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 12);
-            Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[3, 1]);
+            // Place droplets
+            Droplet_Actions.MoveOnElectrode(d1, board.Electrodes[2, 4]);
+            Droplet_Actions.MoveOnElectrode(d1, board.Electrodes[1, 4], false);
+            Droplet_Actions.MoveOnElectrode(d1, board.Electrodes[0, 4], false);
 
-            // Check state
-            Assert.AreEqual(board.Droplets["Wat2"], board.Electrodes[3, 1].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[0,1].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[1,1].Occupant);
+            Droplet_Actions.MoveOnElectrode(d2, board.Electrodes[4, 4]);
 
-            // Try to move Wat1 into Wat2's boarder
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
+            // Check position of Wat1
+            Assert.AreEqual(d1, board.Electrodes[0, 4].Occupant);
+            Assert.AreEqual(d1, board.Electrodes[1, 4].Occupant);
+            Assert.AreEqual(d1, board.Electrodes[2, 4].Occupant);
 
-            // Check that it did not move
-            Assert.AreEqual(board.Droplets["Wat2"], board.Electrodes[3, 1].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[0, 1].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[1, 1].Occupant);
+            // Move Wat1 into Wat2's boarder
+            Droplet_Actions.SnekMove(d1, Direction.RIGHT);
+
+            // Check that Wat1 did not move.
+            Assert.AreEqual(d1, board.Electrodes[0, 4].Occupant);
+            Assert.AreEqual(d1, board.Electrodes[1, 4].Occupant);
+            Assert.AreEqual(d1, board.Electrodes[2, 4].Occupant);
         }
 
         [TestMethod()]
         public void SnekMoveTest_IntoContam()
         {
-            // Done with water snake of size 2 and blood droplet of size 1
+            // Done with a water snake of size 2 and blood of size 1
+            // Because of the functionality of the program, we need to force it into a snake position.
 
-            // Create board and input droplet
-            board = Program.C.SetBoard(testBoardDataLocation);
-            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
-            board.Droplets.Add("Blood1", new Droplet("Blood", "Blood1"));
+            // Make droplets
+            Droplet w = new Droplet("Water", "Wat1");
+            Droplet b = new Droplet("Blood", "Blood1");
+
+            // Make board
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            board.Droplets.Add("Wat1", w);
+            board.Droplets.Add("Blood1", b);
+
+            // Force droplet into snake
+            w.SnekMode = true;
+            w.SetSizes(12);
+
+            Droplet_Actions.MoveOnElectrode(w, board.Electrodes[3, 0]);
+            Droplet_Actions.MoveOnElectrode(w, board.Electrodes[2, 0], false);
 
             // Water is contaminated by blood
             board.Droplets["Wat1"].Contamintants = ["Blood"];
             board.Droplets["Blood1"].Contamintants = [];
 
-            // Input and move snake (Wat1)
-            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 12);
-            Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[3, 1]);
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.UP);
-
             // Input and move blood
             Droplet_Actions.InputDroplet(board.Droplets["Blood1"], board.Input["in0"], 11);
             Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
-            Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.DOWN);
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.LEFT); // move water out of the way
             Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
             Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
+            Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
+
+            board.PrintBoardState();
 
             // Move water close to contam
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.LEFT);
+            Droplet_Actions.SnekMove(w, Direction.DOWN);
+            Droplet_Actions.SnekMove(w, Direction.DOWN);
+            Droplet_Actions.SnekMove(w, Direction.DOWN);
 
             // Check positions and contam
-            Assert.IsTrue(board.Electrodes[1,1].GetContaminants().Any());
-            Assert.AreEqual(null, board.Electrodes[1, 1].Occupant);
-            Assert.AreEqual(board.Droplets["Blood1"], board.Electrodes[3, 2].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[1, 0].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[2, 0].Occupant);
+            Assert.IsTrue(board.Electrodes[3,4].GetContaminants().Any());
+            Assert.AreEqual(null, board.Electrodes[3, 4].Occupant);
+            Assert.AreEqual(board.Droplets["Blood1"], board.Electrodes[6, 4].Occupant); // Blood is far enough away to not interfere
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[3, 2].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[3, 3].Occupant);
 
             // Try to move into contam
             Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.DOWN);
 
             // Check that snake did not move
-            Assert.AreEqual(null, board.Electrodes[1, 1].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[1, 0].Occupant);
-            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[2, 0].Occupant);
+            Assert.AreEqual(null, board.Electrodes[3, 4].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[3, 2].Occupant);
+            Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[3, 3].Occupant);
         }
 
         [TestMethod()]

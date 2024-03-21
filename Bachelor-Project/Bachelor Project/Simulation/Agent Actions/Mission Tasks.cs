@@ -15,80 +15,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     {
         public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
-            d.Important = false;
-            d.Waiting = false;
-            Electrode destElectrode = null;
-
-            d.SetSizes(volume);
-            Console.WriteLine("error");
-            int size = d.Size;
-            Droplet_Actions.AwaitLegalMove(d, i.pointers);
-
-            if (destination != null)
-            {
-                d.SnekMode = true;
-                Droplet_Actions.MoveOnElectrode(d, i.pointers[0]);
-                size--;
-                destElectrode = d.GetClosestFreePointer(destination);
-            }
-
-            if (destination == null)
-            {
-                d.SnekMode = false;
-                while (size > 0)
-                {
-                    Droplet_Actions.CoilSnek(d, i.pointers[0], input: true);
-                    size--;
-                }
-
-            }
-            else
-            {
-                while (size > 0)
-                {
-
-                    Droplet_Actions.MoveTowardDest(d, destElectrode);
-                    Droplet_Actions.MoveOnElectrode(d, i.pointers[0], first: false);
-
-                    size--;
-                    if (d.CurrentPath.Count <= 4)
-                    {
-                        while (size > 0)
-                        {
-                            Droplet_Actions.MoveOnElectrode(d, d.SnekList.First(), first: false);
-                            size--;
-                        }
-                        Droplet_Actions.CoilSnek(d, d.SnekList.First());
-                        return true;
-                    }
-                }
-
-                while (d.CurrentPath.Count > 4)
-                {
-                    d.Waiting = true;
-                    try
-                    {
-                        Droplet_Actions.MoveTowardDest(d, destElectrode);
-                    }
-                    catch (NewWorkException)
-                    {
-                        Program.C.board.PrintBoardState();
-                        d.Waiting = false;
-                        return false;
-                    }
-                    
-                    if (d.CurrentPath.Count <= 4)
-                    {
-                        Droplet_Actions.CoilSnek(d, d.SnekList.First());
-                        return true;
-                    }
-                }
-            }
-            return true;
+            return Droplet_Actions.InputDroplet(d, i, volume, destination);
 
 
         }
-        internal static void OutputDroplet(Droplet droplet, Output output)
+        public static void OutputDroplet(Droplet droplet, Output output)
         {
             droplet.Important = true;
             Droplet_Actions.MoveToApparature(droplet, output);
@@ -220,6 +151,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
+        internal static void AwaitWork(Droplet droplet)
+        {
+            //throw new NotImplementedException();
+        }
+
         internal static void TempDroplet(Droplet droplet1, Heater heater, string newType)
         {
             droplet1.Important = true;
@@ -237,10 +173,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Thread.Sleep(1000); // Time to sense?
         }
 
-        internal static void AwaitWork(Droplet droplet)
-        {
-            //throw new NotImplementedException();
-        }
+        
 
 
     }

@@ -15,6 +15,88 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     public static class Droplet_Actions
     {        
 
+        public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
+        {
+            if (d.Inputted)
+            {
+                Console.WriteLine("Droplet already inputted");
+                throw new Exception("Droplet already inputted");
+            }
+            d.Inputted = true;
+            d.Important = false;
+            d.Waiting = false;
+            Electrode destElectrode = null;
+
+            d.SetSizes(volume);
+            Console.WriteLine("error");
+            int size = d.Size;
+            AwaitLegalMove(d, i.pointers);
+
+            if (destination != null)
+            {
+                d.SnekMode = true;
+                MoveOnElectrode(d, i.pointers[0]);
+                size--;
+                destElectrode = d.GetClosestFreePointer(destination);
+            }
+
+            if (destination == null)
+            {
+                d.SnekMode = false;
+                while (size > 0)
+                {
+                    CoilSnek(d, i.pointers[0], input: true);
+                    size--;
+                }
+
+            }
+            else
+            {
+                while (size > 0)
+                {
+
+                    MoveTowardDest(d, destElectrode);
+                    MoveOnElectrode(d, i.pointers[0], first: false);
+
+                    size--;
+                    if (d.CurrentPath.Count <= 4)
+                    {
+                        while (size > 0)
+                        {
+                            MoveOnElectrode(d, d.SnekList.First(), first: false);
+                            size--;
+                        }
+                        CoilSnek(d, d.SnekList.First());
+                        return true;
+                    }
+                }
+
+                while (d.CurrentPath.Count > 4)
+                {
+                    d.Waiting = true;
+                    try
+                    {
+                        MoveTowardDest(d, destElectrode);
+                    }
+                    catch (NewWorkException)
+                    {
+                        Program.C.board.PrintBoardState();
+                        d.Waiting = false;
+                        return false;
+                    }
+
+                    if (d.CurrentPath.Count <= 4)
+                    {
+                        CoilSnek(d, d.SnekList.First());
+                        return true;
+                    }
+                }
+            }
+            return true;
+
+
+        }
+
         public static Electrode MoveToApparature(Droplet d, Apparature dest)
         {
             Electrode closest = d.GetClosestFreePointer(dest);
@@ -283,10 +365,17 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static void AwaitLegalMove(Droplet d, List<Electrode> temp)
         {
+            int i = 0;
             while (!CheckLegalMove(d, temp))
             {
                 Console.WriteLine(d.Name + " waiting for space");
+                if (i > 50)
+                {
+                    Console.WriteLine(d.Name + " waited for too long");
+                    throw new Exception("Droplet waited for too long");
+                }
                 Thread.Sleep(100);
+                i++;
             }
         }
 

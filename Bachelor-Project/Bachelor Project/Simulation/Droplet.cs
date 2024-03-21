@@ -42,6 +42,8 @@ namespace Bachelor_Project.Simulation
 
         private Queue<Task> TaskQueue = [];
 
+        public bool Inputted = false;
+
 
         public Droplet(string substance_name, string name = "") : base(-1, -1, 1, 1, name)
         {

@@ -33,7 +33,8 @@ namespace Bachelor_Project.Simulation
         public List<(Electrode, Direction?)>? CurrentPath = null;
         public (int?, Direction?) SquareInfo { get; set; } // Square used for constant width towards edges.
 
-
+        public bool Waiting = true; // If a droplet is waiting, it's movement isn't important, so it can be changed. This is for actions
+        public bool Important = true; // If a droplet is important, it's movement is important, so it can't be changed. This is for tasks
 
         // Used for threading
         private CancellationTokenSource cancellationTokenSource;
@@ -54,6 +55,28 @@ namespace Bachelor_Project.Simulation
 
         }
 
+        public static Electrode GetClosestPartToApparature(Apparature a)
+        {
+            Electrode? closestElectrode = null;
+            double minDistance = double.MaxValue;
+            Electrode center;
+            foreach (Electrode electrode in a.pointers)
+            {
+                (int x, int y) = a.GetCenter();
+                double distance = Electrode.GetDistance(electrode, new Electrode(x, y));
+                if (distance < minDistance)
+                {
+                    closestElectrode = electrode;
+                    minDistance = distance;
+                }
+            }
+            if (closestElectrode == null)
+            {
+                throw new Exception("Droplet has no electrodes");
+            }
+            return closestElectrode;
+        }
+
         public Electrode GetClosestFreePointer(Apparature a)
         {
             Electrode? closestElectrode = null;
@@ -65,7 +88,7 @@ namespace Bachelor_Project.Simulation
             }
             else
             {
-                throw new NotImplementedException("Not yet implemented for non snek droplets");
+                center = GetClosestPartToApparature(a);
             }
             foreach (Electrode electrode in a.pointers)
             {
@@ -166,5 +189,12 @@ namespace Bachelor_Project.Simulation
         {
             return Name + " " + Substance_Name;
         }
+
+        public void ChangeType(string newType)
+        {
+            Substance_Name = newType;
+            SetContam(Program.C.data.Value.contaminated[newType]);
+        }
+
     }
 }

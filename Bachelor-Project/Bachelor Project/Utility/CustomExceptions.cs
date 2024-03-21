@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Utility
 {
-    public class IllegalMoveException : Exception
+    public class IllegalMoveException(string message = "Illegal Move") : Exception(message)
     {
-        public IllegalMoveException(string message = "Illegal Move") : base(message) { }
+    }
+    public class  NewWorkException(string message = "New Work Has Been Given") : Exception(message)
+    {
     }
 }

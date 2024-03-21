@@ -160,7 +160,7 @@ namespace Bachelor_Project.Parsing
                     Console.WriteLine();
                     Commands.Add(new Command("mix", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], value: [context.GetChild<ProgramParser.ShapeContext>(0).GetText(), newType]));
                     break;
-                case "temp": //TEMP , droplet name , temperature , heater name , (new droplet type)?
+                case "temp": //TEMP , droplet name , heater name , (new droplet type)?
                     Console.Write($"heat droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} with heater: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()}");
                     if (context.GetChild<ProgramParser.DroplettypeContext>(0) != null)
                     {

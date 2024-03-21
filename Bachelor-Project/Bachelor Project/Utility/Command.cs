@@ -65,12 +65,12 @@ namespace Bachelor_Project.Utility
                 case "input":
                     
                     Console.WriteLine("Input");
-                    command = new(() => Droplet_Actions.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[0]], int.Parse((string)ActionValue[1]), CommandDestination));
+                    command = new(() => Mission_Tasks.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[0]], int.Parse((string)ActionValue[1]), CommandDestination));
                     b.Droplets[OutputDroplets[0]].GiveWork(command);
                     break;
                 case "output":
                     Console.WriteLine("Output");
-                    Task outputDroplet = new(() => Droplet_Actions.OutputDroplet(b.Droplets[InputDroplets[0]], b.Output[(string)ActionValue[0]]));
+                    Task outputDroplet = new(() => Mission_Tasks.OutputDroplet(b.Droplets[InputDroplets[0]], b.Output[NextName]));
                     b.Droplets[InputDroplets[0]].GiveWork(outputDroplet);
                     break;
                 case "waste":
@@ -84,7 +84,7 @@ namespace Bachelor_Project.Utility
                     b.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);
                     foreach (var item in InputDroplets)
                     {
-                        Task awaitWork = new(() => Droplet_Actions.AwaitWork(b.Droplets[OutputDroplets[0]]));
+                        Task awaitWork = new(() => Mission_Tasks.AwaitWork(b.Droplets[OutputDroplets[0]]));
                         b.Droplets[item].GiveWork(awaitWork);
                     }
                     break;
@@ -94,7 +94,7 @@ namespace Bachelor_Project.Utility
                     b.Droplets[InputDroplets[0]].GiveWork(splitDroplet);
                     foreach (var item in OutputDroplets)
                     {
-                        Task awaitWork = new(() => Droplet_Actions.AwaitWork(b.Droplets[InputDroplets[0]]));
+                        Task awaitWork = new(() => Mission_Tasks.AwaitWork(b.Droplets[InputDroplets[0]]));
                         b.Droplets[item].GiveWork(awaitWork);
                     }
                     break;
@@ -105,12 +105,12 @@ namespace Bachelor_Project.Utility
                     break;
                 case "temp":
                     Console.WriteLine("Temp");
-                    Task tempDroplet = new(() => Mission_Tasks.TempDroplet(b.Droplets[InputDroplets[0]], int.Parse((string)ActionValue[0]), (string)ActionValue[1]));
+                    Task tempDroplet = new(() => Mission_Tasks.TempDroplet(b.Droplets[InputDroplets[0]], (Heater)b.Actuators[NextName], (string)ActionValue[0]));
                     b.Droplets[InputDroplets[0]].GiveWork(tempDroplet);
                     break;
                 case "sense":
                     Console.WriteLine("Sense");
-                    Task senseDroplet = new(() => Mission_Tasks.SenseDroplet(b.Droplets[InputDroplets[0]], (string)ActionValue[0]));
+                    Task senseDroplet = new(() => Mission_Tasks.SenseDroplet(b.Droplets[InputDroplets[0]], b.Sensors[NextName]));
                     b.Droplets[InputDroplets[0]].GiveWork(senseDroplet);
                     break;
                 default:

@@ -18,7 +18,7 @@ namespace Bachelor_Project.Simulation
             PropertyNameCaseInsensitive = true,
         };
 
-        (List<Command> commands, Dictionary<string, string> dropletpairs, Dictionary<string, List<string>> contaminated, Dictionary<string, List<string>> contaminates)? data;
+        public (List<Command> commands, Dictionary<string, string> dropletpairs, Dictionary<string, List<string>> contaminated, Dictionary<string, List<string>> contaminates)? data;
         public Board board;
         List<Command> currentCommands = [];
 

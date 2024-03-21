@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Bachelor_Project.Simulation.Agent_Actions
 {
     // This class contains the more complicated missions the agents will have.
-    internal class Mission_Tasks
+    public class Mission_Tasks
     {
         private static readonly int mixAmount = 5;
 

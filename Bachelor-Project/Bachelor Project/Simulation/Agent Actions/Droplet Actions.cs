@@ -257,10 +257,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
+        private static bool CheckBorder(Droplet d, List<Electrode> temp)
+        {
+            return CheckBorder([d], temp);
+        }
 
 
         // Used to check if new droplet position upholds border
-        private static bool CheckBorder(Droplet d, List<Electrode> temp)
+        private static bool CheckBorder(List<Droplet> droplets, List<Electrode> temp)
         {
             // For snek, just put in head instead of all positions
             bool legalMove = true;
@@ -307,7 +311,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     if (CheckEdge(xCheck, yCheck))
                     {
                         Droplet? occupant = Program.C.board.Electrodes[xCheck, yCheck].Occupant;
-                        if (!(occupant == null || occupant.Equals(d)))
+                        if (!(occupant == null || droplets.Contains(occupant)))
                         {
                             legalMove = false;
                             goto destination;
@@ -382,9 +386,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool CheckLegalMove(Droplet d, List<Electrode> temp)
         {
+            return CheckLegalMove([d], temp);
+        }
+
+        public static bool CheckLegalMove(List<Droplet> droplets, List<Electrode> temp)
+        {
             bool legalMove = true;
 
-            if (!(CheckBorder(d, temp) && CheckPlacement(d, temp))){
+            if (!(CheckBorder(droplets, temp) && CheckPlacement(droplets, temp))){
                 legalMove = false;
             }
 
@@ -714,6 +723,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
         public static void MergeMove(Droplet result, List<Droplet> mergers, Electrode mergePoint) // TODO: Can corners be cut?
+            // TODO: Maybe CheckLegalMove instead
         {
             // This method assumes that the droplets to be merged are close and ready to move into each other
             // and is just here to bypass the restrictions of the regular move
@@ -743,20 +753,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 looking.RemoveAt(0);
 
                 // If the e we are currently looking at is valid, we can look further along it.
-                if (CheckPlacement(mergers, [e])){
-                    List<(Electrode, Direction)> neighbors = e.GetTrueNeighbors();
-                    List<(Electrode, Direction?)> diagonals = e.GetExtendedNeighbors();
-
-                    foreach ((Electrode el, Direction direction) in neighbors)
-                    {
-                        looking.Add(el);
-                    }
-                    foreach ((Electrode el, Direction? direction) in diagonals)
-                    {
-                        looking.Add(el);
-                    }
-
+                if (CheckLegalMove(mergers, [e])){
                     space.Add(e);
+
+                    List<(Electrode, Direction?)> neighbors = e.GetExtendedNeighbors();
+
+                    foreach ((Electrode el, Direction? direction) in neighbors)
+                    {
+                        looking.Add(el);
+                    }
                 }
                 // Continue with next electrode in looking
             }
@@ -765,13 +770,27 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             foreach (Electrode e in space)
             {
                 MoveOnElectrode(result, e);
+
+                foreach (Droplet d in mergers)
+                {
+                    if (d.Occupy.Contains(e))
+                    {
+                        d.Occupy.Remove(e);
+                    }
+                }
             }
+
+            Printer.PrintBoard();
 
             // Make trees of mergers and turn off the electrodes not in the space.
             foreach (Droplet d in mergers)
             {
                 Tree tree = new Tree(d, d.Occupy, space, mergePoint);
                 tree.RemoveTree();
+
+                // TODO: Remove d from board
+
+                Printer.PrintBoard();
             }
             // The droplets should now all be in the space.
         }

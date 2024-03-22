@@ -1,5 +1,6 @@
 input drop1 water in0 36;
-temp drop1 heat1 hotwater;
-contam hotwater water;
-mix drop1 square;
-output drop1 out0;
+input drop2 blood in1 36;
+contam water blood;
+contam blood water;
+output drop1 out1;
+output drop2 out0;

@@ -13,13 +13,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 {
     // This class contains the more basic movements and actions an agent can take.
     public static class Droplet_Actions
-    {        
+    {
+
+        private static readonly object MoveLock = new object(); //Lock to ensure that only one droplet moves at the exact same time
 
         public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
             if (d.Inputted)
             {
-                Console.WriteLine("Droplet already inputted");
+                Printer.Print("Droplet already inputted");
                 throw new Exception("Droplet already inputted");
             }
             d.Inputted = true;
@@ -28,7 +30,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Electrode destElectrode = null;
 
             d.SetSizes(volume);
-            Console.WriteLine("error");
             int size = d.Size;
             AwaitLegalMove(d, i.pointers);
 
@@ -80,7 +81,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                     catch (NewWorkException)
                     {
-                        Program.C.board.PrintBoardState();
+                        Printer.PrintBoard();
                         d.Waiting = false;
                         return false;
                     }
@@ -117,7 +118,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     MoveTowardDest(d, destination);
                 }
-            }catch (Exception ex)
+            }catch (NullReferenceException ex)
             {
                 throw ex;
             }
@@ -151,13 +152,26 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 moved = false;
                 d.SnekList.AddFirst(d.CurrentPath[0].Item1.ElectrodeStep(d.CurrentPath[0].Item2.Value));
-
+                d.CurrentPath.RemoveAt(0);
             }
             else if (d.CurrentPath[0].Item2 != null)
             {
-                SnekMove(d, d.CurrentPath[0].Item2.Value);
+                bool changed = SnekMove(d, d.CurrentPath[0].Item2.Value);
+                if (changed)
+                {
+                    d.TriedMoveCounter = 0;
+                    d.CurrentPath.RemoveAt(0);
+                }else
+                {
+                    d.TriedMoveCounter++;
+                    moved = false;
+                }
             }
-            d.CurrentPath.RemoveAt(0);
+            if (d.TriedMoveCounter > 10)
+            {
+                d.CurrentPath = ModifiedAStar.FindPath(d, destination);
+            }
+            Printer.PrintBoard();
             return moved;
         }
 
@@ -238,7 +252,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             else
             {
                 //throw new IllegalMoveException();
-                Console.WriteLine("Illegal Move");
+                Printer.Print("Illegal Move");
             }
         }
 
@@ -313,37 +327,43 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         private static bool CheckPlacement(Droplet d, List<Electrode> temp)
         {
-            return CheckPlacement([d], temp);
+            if (!CheckOtherDroplets(d, temp))
+            {
+                return false;
+            }
+            if (!CheckContaminations(d, temp))
+            {
+                return false;
+            }
+
+            return true;
         }
-
-
-        private static bool CheckPlacement(List<Droplet> droplets, List<Electrode> temp)
+        public static bool CheckOtherDroplets(Droplet d, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
         {
-            bool legalMove = true;
-            foreach (Electrode e in temp) {
-                // Check for other occupants
+            foreach (Electrode e in temp)
+            {
                 if (!(e.Occupant == null || droplets.Contains(e.Occupant)))
                 {
-                    legalMove = false;
-                    break;
+                    return false;
                 }
+            }
+            return true;
+        }
 
+        public static bool CheckContaminations(Droplet d, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
+        {
+            foreach (Electrode e in temp)
+            {
                 // Check for contaminants
                 foreach (string c in e.GetContaminants())
                 {
                     foreach (Droplet d in droplets)
                     {
-                        if (d.Contamintants.Contains(c))
-                        {
-                            legalMove = false;
-                            goto destination;
-                        }
+                        return false;
                     }
                 }
             }
-
-            destination:
-            return legalMove;
+            return true;
         }
 
         public static bool CheckLegalMove(Droplet d, List<Electrode> temp)
@@ -384,10 +404,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             int i = 0;
             while (!CheckLegalMove(d, temp))
             {
-                Console.WriteLine(d.Name + " waiting for space");
+                Printer.Print(d.Name + " waiting for space");
                 if (i > 50)
                 {
-                    Console.WriteLine(d.Name + " waited for too long");
+                    Printer.Print(d.Name + " waited for too long");
                     throw new Exception("Droplet waited for too long");
                 }
                 Thread.Sleep(100);
@@ -410,16 +430,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        public static void SnekMove(Droplet d, Direction dir)
+        public static bool SnekMove(Droplet d, Direction dir)
         {
-            SnekMove(d,d.Occupy,dir);
+            return SnekMove(d,d.Occupy,dir);
         }
 
         // Non-protected snake move forward 1
         // Assumes that the list of occupied electrodes are in the form of a snake.
-        public static void SnekMove(Droplet d, List<Electrode> el, Direction dir)
+        public static bool SnekMove(Droplet d, List<Electrode> el, Direction dir) // Returns true if movement happened, false if it got stopped
         {
-            Console.WriteLine("SnekMove Toward: " +dir);
+            Printer.Print("SnekMove Toward: " +dir);
             List<Electrode> newOcc = new List<Electrode>();
             List<Electrode> newHead = new List<Electrode>(); // Needs to be a list containing one electrode for a snekcheck.
             Electrode head;
@@ -452,27 +472,33 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Movement out of bounds");
-                return;
+                Printer.Print("Movement out of bounds");
+                return false;
+            }
+
+            lock (MoveLock)
+            {
+                // Do a snekcheck
+                // If move is legal, do the thing
+                if (CheckLegalMove(d, newHead) && SnekCheck(newHead[0]))
+                {
+
+                    Printer.Print("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
+                    Printer.Print("Old head: " + head.ePosX + " " + head.ePosY);
+
+                    MoveOnElectrode(d, newHead[0]);
+
+                    MoveOffElectrode(d);
+                    Printer.Print("Droplet moved");
+                    return true;
+                }
+                else
+                {
+                    Printer.Print("Droplet not moved");
+                    return false;
+                }
             }
             
-
-            // Do a snekcheck
-            // If move is legal, do the thing
-            if (CheckLegalMove(d, newHead) && SnekCheck(newHead[0]))
-            {
-                Console.WriteLine("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
-                Console.WriteLine("Old head: " + head.ePosX + " " + head.ePosY);
-
-                MoveOnElectrode(d, newHead[0]);
-                
-                MoveOffElectrode(d);
-                Console.WriteLine("Droplet moved");
-            }
-            else
-            {
-                Console.WriteLine("Droplet not moved");
-            }
         }
 
         public static void MoveOnElectrode(Droplet d, Electrode e, bool first = true)
@@ -545,8 +571,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 priorCounter++;
                 MoveTowardDest(d, dest);
-                Console.WriteLine("SPECIAL BOARD:");
-                Program.C.board.PrintBoardState();
+                Printer.Print("SPECIAL BOARD:");
+                Printer.PrintBoard();
             }
             // Make tree out of blob in order to know what can safely be removed.
             Tree blobTree = BuildTree(d, d.SnekList.ToList(), d.SnekList.First());
@@ -572,7 +598,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     d.Waiting = true;
                 }
 
-                Program.C.board.PrintBoardState();
+                Printer.PrintBoard();
 
             } while (d.CurrentPath != null && d.CurrentPath.Count != 0);
 
@@ -655,7 +681,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             snekTree.RemoveTree();
 
-            Program.C.board.PrintBoardState();
+            Printer.PrintBoard();
 
         }
 
@@ -669,7 +695,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Tree snekTree = BuildTree(droplet, [], output.pointers[0]);
             snekTree.RemoveTree();
             MoveOffElectrode(droplet, output.pointers[0]);
-            Program.C.board.PrintBoardState();
+            Printer.PrintBoard();
         }
 
 

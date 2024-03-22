@@ -31,6 +31,7 @@ namespace Bachelor_Project.Simulation
 
         public void Setup()
         {
+            Printer.PrintBoard();
             if (!data.HasValue)
             {
                 return;
@@ -52,13 +53,13 @@ namespace Bachelor_Project.Simulation
                     contaminates.Add(dropletpair.Value, []);
                 }
                 nDrop.ContamLevel = contaminates[dropletpair.Value].Count;
-                Console.WriteLine(nDrop.Substance_Name +" is contaminated by");
+                Printer.Print(nDrop.Substance_Name +" is contaminated by");
                 board.Droplets.Add(dropletpair.Key, nDrop);
                 nDrop.StartAgent();
             }
 
             board.Droplets = board.Droplets.OrderBy(x => x.Value.ContamLevel).ToDictionary();
-            board.Droplets.Values.ToList().ForEach(x => Console.WriteLine(x.ContamLevel));
+            board.Droplets.Values.ToList().ForEach(x => Printer.Print(x.ContamLevel));
 
             foreach (var item in commands)
             {
@@ -86,7 +87,7 @@ namespace Bachelor_Project.Simulation
             }
             foreach (var item in commands)
             {
-                Console.WriteLine(item.Type + " needs commands: " + item.InputCommands.Count + " and allows: " + item.OutputCommands.Count + " and has nextdest of " + item.CommandDestination);
+                Printer.Print(item.Type + " needs commands: " + item.InputCommands.Count + " and allows: " + item.OutputCommands.Count + " and has nextdest of " + item.CommandDestination);
             }
             commands = commands.OrderBy(x => x.InputCommands.Count).ToList();
 
@@ -110,7 +111,7 @@ namespace Bachelor_Project.Simulation
 
                 Command cCommand = currentCommands[0];
                 cCommand.CommandDestination ??= cCommand.FindDest();
-                Console.WriteLine(cCommand.ToString() + cCommand.CommandDestination);
+                Printer.Print(cCommand.ToString() + cCommand.CommandDestination);
                 cCommand.ExecuteCommand();
                 cCommand.OutputCommands.ForEach(x => x.InputCommands.Remove(cCommand));
                 cCommand.OutputCommands.ForEach(x => 
@@ -127,10 +128,10 @@ namespace Bachelor_Project.Simulation
             // Thread.Sleep(5000);
             // board.PrintBoardState();
 
-            //Console.WriteLine("Done");
+            //Printer.Print("Done");
 
             //Actuator e = JsonSerializer.Deserialize<Actuator>(json, options);
-            //Console.WriteLine(e);
+            //Printer.Print(e);
 
 
             /*
@@ -151,10 +152,10 @@ namespace Bachelor_Project.Simulation
             board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
             Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"],36);
             board.PrintBoardState();
-            Console.WriteLine("Uncoil start");
+            Printer.Print("Uncoil start");
             Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[3,1]);
             board.PrintBoardState();
-            Console.WriteLine("Uncoil done");
+            Printer.Print("Uncoil done");
             Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
             board.PrintBoardState();
             Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);

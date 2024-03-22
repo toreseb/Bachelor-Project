@@ -122,6 +122,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 throw ex;
             }
+            Printer.PrintBoard();
         }
 
         public static Electrode MoveTowardApparature(Droplet d, Apparature dest)
@@ -134,6 +135,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static bool MoveTowardDest(Droplet d, Electrode destination) // returns true if droplet physcally moves, false if the head changes location in the droplet
         {
             bool moved = true;
+            bool removePath = true;
             if (d.GetWork().Count > 0 && d.Waiting == true && d.Important == false)
             {
                 throw new NewWorkException();
@@ -152,7 +154,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 moved = false;
                 d.SnekList.AddFirst(d.CurrentPath[0].Item1.ElectrodeStep(d.CurrentPath[0].Item2.Value));
-                d.CurrentPath.RemoveAt(0);
             }
             else if (d.CurrentPath[0].Item2 != null)
             {
@@ -160,10 +161,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (changed)
                 {
                     d.TriedMoveCounter = 0;
-                    d.CurrentPath.RemoveAt(0);
-                }else
+                }
+                else
                 {
                     d.TriedMoveCounter++;
+                    removePath = false;
                     moved = false;
                 }
             }
@@ -171,7 +173,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination);
             }
-            Printer.PrintBoard();
+            if (removePath)
+            {
+                d.CurrentPath.RemoveAt(0);
+            }
             return moved;
         }
 

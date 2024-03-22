@@ -115,7 +115,7 @@ namespace Bachelor_Project.Utility
         private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir)
         {
             int distance = end.GetDistanceToBorder();
-            int multiple = 10 * distance;
+            int multiple = 10 * (int)Math.Pow(distance,2);
 
             if (!Droplet_Actions.CheckLegalMove(d, [end])) // 1: check if the move is legal
             {

@@ -130,8 +130,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return closest;
         }
 
-        public static void MoveTowardDest(Droplet d, Electrode destination)
+        public static bool MoveTowardDest(Droplet d, Electrode destination) // returns true if droplet physcally moves, false if the head changes location in the droplet
         {
+            bool moved = true;
             if (d.GetWork().Count > 0 && d.Waiting == true && d.Important == false)
             {
                 throw new NewWorkException();
@@ -146,11 +147,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination);
             }
-            if (d.CurrentPath[0].Item2 != null)
+            if (d.CurrentPath[0].Item2 != null && d.Occupy.Contains(d.CurrentPath[0].Item1.ElectrodeStep(d.CurrentPath[0].Item2.Value)))
+            {
+                moved = false;
+                d.SnekList.AddFirst(d.CurrentPath[0].Item1.ElectrodeStep(d.CurrentPath[0].Item2.Value));
+
+            }
+            else if (d.CurrentPath[0].Item2 != null)
             {
                 SnekMove(d, d.CurrentPath[0].Item2.Value);
             }
             d.CurrentPath.RemoveAt(0);
+            return moved;
         }
 
         public static void MoveDroplet(Droplet d, Direction dir)
@@ -411,6 +419,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         // Assumes that the list of occupied electrodes are in the form of a snake.
         public static void SnekMove(Droplet d, List<Electrode> el, Direction dir)
         {
+            Console.WriteLine("SnekMove Toward: " +dir);
             List<Electrode> newOcc = new List<Electrode>();
             List<Electrode> newHead = new List<Electrode>(); // Needs to be a list containing one electrode for a snekcheck.
             Electrode head;
@@ -528,29 +537,33 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // Make a temp snake to snek move towards the destination that grows with the shrinkage of the droplet.
             d.SnekMode = true;
-            Droplet tempSnek = new Droplet(d.Substance_Name, "temp" + d.Name);
-
+            Electrode start = dest.GetClosestElectrodeInList(d.Occupy);
+            d.SnekList.AddFirst(start);
+            d.CurrentPath = ModifiedAStar.FindPath(d, dest);
+            int priorCounter = 0;
+            while (d.CurrentPath[0].Item2 != null && d.Occupy.Contains(d.CurrentPath[0].Item1.ElectrodeStep(d.CurrentPath[0].Item2.Value))) //Move the head inside the blob
+            {
+                priorCounter++;
+                MoveTowardDest(d, dest);
+                Console.WriteLine("SPECIAL BOARD:");
+                Program.C.board.PrintBoardState();
+            }
             // Make tree out of blob in order to know what can safely be removed.
-            Tree blobTree = BuildTree(d, [], dest);
-
-            tempSnek.Occupy.Add(blobTree.closestElectrode);
-            d.SnekList.AddFirst(blobTree.closestElectrode);
+            Tree blobTree = BuildTree(d, d.SnekList.ToList(), d.SnekList.First());
 
             // Make single moves all the way towards the destination.
             do
             {
                 // Save last electrode so we can turn it on again.
                 // The tree will turn off the correct electrode.
-                Electrode temp = tempSnek.Occupy[^1];
-                MoveTowardDest(d, dest);
+                bool moved = MoveTowardDest(d, dest);
 
                 // If there are still nodes in the tree, it means that the snake is still uncoiling and the electrode that is turned off
                 // needs to be controlled by the tree. Otherwise, we are no longer uncoiling and we can just move.
                 // "> 1" because the last should not be counted.
-                if (blobTree.Nodes.Count > 1)
+                if (blobTree.Nodes.Count > (1 + priorCounter) && moved)
                 {
-                    // Turn on the electroede that was not supposed to be turned off.
-                    MoveOnElectrode(d, temp, first: false);
+                    MoveOnElectrode(d, start, first: false);
                     // Turn off the right electrode.
                     blobTree.RemoveLeaf();
                 }

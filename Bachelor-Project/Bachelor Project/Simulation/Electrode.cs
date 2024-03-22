@@ -103,8 +103,13 @@ namespace Bachelor_Project.Simulation
         public List<(Electrode, Direction?)> GetExtendedNeighbors()
         {
             List<(Electrode, Direction?)> neighbors = [];
-            for (int i = 0; i < 8; i++)
+            bool upSeen = false;
+            bool rightSeen = false;
+            bool downSeen = false;
+            bool leftSeen = false;
+            for (int i = 0; i < 4; i++)
             {
+                
                 int xChange = 0;
                 int yChange = 0;
                 Direction? dir;
@@ -126,29 +131,43 @@ namespace Bachelor_Project.Simulation
                         xChange = -1;
                         dir = Direction.LEFT;
                         break;
-                    case 4:
-                        yChange = -1;
-                        xChange = 1;
-                        dir = null;
-                        break;
-                    case 5:
-                        yChange = 1;
-                        xChange = 1;
-                        dir = null;
-                        break;
-                    case 6:
-                        yChange = 1;
-                        xChange = -1;
-                        dir = null;
-                        break;
-                    case 7:
-                        yChange = -1;
-                        xChange = -1;
-                        dir = null;
-                        break;
                     default:
                         throw new Exception("Invalid direction");
-
+                }
+                if (Droplet_Actions.CheckEdge(ePosX + xChange, ePosY + yChange))
+                {
+                    neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange], dir));
+                }
+            }
+            for(int i = 0; i < 4; i++)
+            {
+                int xChange = 0;
+                int yChange = 0;
+                Direction? dir;
+                if (i == 0 && (upSeen || rightSeen))
+                {
+                    xChange = 1;
+                    yChange = -1;
+                    dir = null;
+                }else if (i == 1 &&(rightSeen || downSeen))
+                {
+                    xChange = 1;
+                    yChange = 1;
+                    dir = null;
+                }else if (i == 2 && (downSeen || leftSeen))
+                {
+                    xChange = -1;
+                    yChange = 1;
+                    dir = null;
+                }else if (i == 3 && (leftSeen || upSeen))
+                {
+                    xChange = -1;
+                    yChange = -1;
+                    dir = null;
+                }
+                else
+                {
+                    throw new Exception("Invalid direction");
                 }
                 if (Droplet_Actions.CheckEdge(ePosX + xChange, ePosY + yChange))
                 {

@@ -122,6 +122,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 throw ex;
             }
+            Printer.PrintBoard();
         }
 
         public static Electrode MoveTowardApparature(Droplet d, Apparature dest)
@@ -160,7 +161,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (changed)
                 {
                     d.TriedMoveCounter = 0;
-                    Printer.PrintBoard();
                 }
                 else
                 {

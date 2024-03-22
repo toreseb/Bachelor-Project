@@ -1061,6 +1061,60 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(drop1, board.Electrodes[1, 7].Occupant);
 
         }
-        
+
+        [TestMethod()]
+        public void MergeMoveTest()
+        {
+            // Make board, make droplets, place droplets ready for merge.
+            Droplet w = new Droplet("Water", "Wat1");
+            Droplet b = new Droplet("Blood", "Blood1");
+            Droplet mix = new Droplet("BloodWater", "Bw");
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            board.Droplets.Add("Wat1", w);
+            board.Droplets.Add("Blood1", b);
+            board.Droplets.Add("Bw", mix);
+
+            w.SetSizes(48);
+            b.SetSizes(36);
+
+            Droplet_Actions.MoveOnElectrode(w, board.Electrodes[2, 4]);
+            Droplet_Actions.MoveOnElectrode(w, board.Electrodes[2, 5]);
+            Droplet_Actions.MoveOnElectrode(w, board.Electrodes[2, 6]);
+            Droplet_Actions.MoveOnElectrode(w, board.Electrodes[3, 4]);
+            Droplet_Actions.MoveOnElectrode(w, board.Electrodes[3, 5]);
+
+            Droplet_Actions.MoveOnElectrode(b, board.Electrodes[5, 5]);
+            Droplet_Actions.MoveOnElectrode(b, board.Electrodes[5, 6]);
+            Droplet_Actions.MoveOnElectrode(b, board.Electrodes[6, 6]);
+            Droplet_Actions.MoveOnElectrode(b, board.Electrodes[6, 7]);
+
+            Printer.PrintBoard();
+
+            // It's time... TO MIX!!
+            Droplet_Actions.MergeMove(mix, [w, b], board.Electrodes[4, 5]);
+            Printer.PrintBoard();
+
+            Assert.AreEqual(0, w.Occupy.Count);
+            Assert.AreEqual(0, b.Occupy.Count);
+            Assert.AreEqual(8, mix.Occupy.Count);
+
+            Assert.AreEqual(mix, board.Electrodes[3, 5].Occupant);
+            Assert.AreEqual(mix, board.Electrodes[3, 6].Occupant);
+            Assert.AreEqual(mix, board.Electrodes[4, 4].Occupant);
+            Assert.AreEqual(mix, board.Electrodes[4, 5].Occupant);
+            Assert.AreEqual(mix, board.Electrodes[4, 6].Occupant);
+            Assert.AreEqual(mix, board.Electrodes[5, 4].Occupant);
+            Assert.AreEqual(mix, board.Electrodes[5, 5].Occupant);
+            Assert.AreEqual(mix, board.Electrodes[5, 6].Occupant);
+
+            Assert.AreEqual(null, board.Electrodes[2, 4].Occupant);
+            Assert.AreEqual(null, board.Electrodes[2, 5].Occupant);
+            Assert.AreEqual(null, board.Electrodes[2, 6].Occupant);
+            Assert.AreEqual(null, board.Electrodes[3, 4].Occupant);
+
+            Assert.AreEqual(null, board.Electrodes[6, 6].Occupant);
+            Assert.AreEqual(null, board.Electrodes[6, 7].Occupant);
+        }
+
     }
 }

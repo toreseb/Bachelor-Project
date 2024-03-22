@@ -330,25 +330,32 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return !(xPos < 0 || xPos >= Program.C.board.GetXElectrodes() || yPos < 0 || yPos >= Program.C.board.GetYElectrodes());
         }
 
+        private static bool CheckPlacement(Droplet d, List<Electrode> temp){
+            return CheckPlacement([d], temp);
+        }
 
-        private static bool CheckPlacement(Droplet d, List<Electrode> temp)
+        private static bool CheckPlacement(List<Droplet> droplets, List<Electrode> temp)
         {
-            if (!CheckOtherDroplets(d, temp))
+            if (!CheckOtherDroplets(droplets, temp))
             {
                 return false;
             }
-            if (!CheckContaminations(d, temp))
+            if (!CheckContaminations(droplets, temp))
             {
                 return false;
             }
 
             return true;
         }
-        public static bool CheckOtherDroplets(Droplet d, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
+
+        public static bool CheckOtherDroplets(Droplet d, List<Electrode> temp){
+            return CheckOtherDroplets([d], temp);
+        }
+        public static bool CheckOtherDroplets(List<Droplet> droplets, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
         {
             foreach (Electrode e in temp)
             {
-                if (!(e.Occupant == null || e.Occupant.Equals(d)))
+                if (!(e.Occupant == null || droplets.Contains(e.Occupant)))
                 {
                     return false;
                 }
@@ -356,16 +363,22 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool CheckContaminations(Droplet d, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
+        public static bool CheckContaminations(Droplet d, List<Electrode> temp){
+            return CheckContaminations([d], temp);
+        }
+
+        public static bool CheckContaminations(List<Droplet> droplets, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
         {
             foreach (Electrode e in temp)
             {
                 // Check for contaminants
                 foreach (string c in e.GetContaminants())
                 {
-                    if (d.Contamintants.Contains(c))
+                    foreach (Droplet d in droplets)
                     {
-                        return false;
+                        if (d.Contamintants.Contains(c)){
+                            return false;
+                        }
                     }
                 }
             }
@@ -705,285 +718,68 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        /*
-        public static void CoilSnek(Droplet d)
+        public static void MergeMove(Droplet result, List<Droplet> mergers, Electrode mergePoint) // TODO: Can corners be cut?
         {
-            // Droplet cannot coil if it is not in snekMode
-            // Snake is already considered coiled if it is 2 or less long
-            if (!d.snekMode || d.Occupy.Count <= 2)
+            // This method assumes that the droplets to be merged are close and ready to move into each other
+            // and is just here to bypass the restrictions of the regular move
+
+            // Take volume of all merging droplets and make a space of size corresponding to this volume.
+            // Then, have each droplet touching this area and make trees to turn off their pre-merge positions.
+
+            double volume = 0;
+            foreach (Droplet d in mergers)
             {
-                return;
+                volume += d.Volume;
             }
 
+            result.SetSizes(volume);
 
-            int len = d.Occupy.Count;
+            // Find space.
+            List<Electrode> looking = [mergePoint];
+            List<Electrode> space = new List<Electrode>();
 
-            int w = (int)Math.Ceiling(Math.Sqrt(len));
-
-            Printer.Print("w = " + w);
-
-            // Find area to coil into.
-
-            (Direction dir, int sideRem, string side) = FindArea(d, w);
-
-            Printer.Print("FindArea returns: dir = " + dir + ", sideRem = " + sideRem + ", side = " + side);
-
-            // If unable to find area, return without moving.
-            if (side.Equals("none"))
+            while (space.Count < result.Size)
             {
-                return;
-            }
-
-            // Move to fill full side
-            for (int i = 0; i < sideRem; i++)
-            {
-                Printer.Print("I made a move!");
-                SnekMove(d, dir);
-            }
-
-            // Fill rest of area
-            // Prototype with dir = UP and side = left
-            Direction tempDir = dir;
-            Direction sideDir = dir;
-
-            switch (dir)
-            {
-                case Direction.UP:
-                    if (side.Equals("left")) { sideDir = Direction.LEFT; }
-                    else {  sideDir = Direction.RIGHT; }
-                    break;
-                case Direction.LEFT:
-                    if (side.Equals("left")) { sideDir = Direction.DOWN; }
-                    else { sideDir = Direction.UP; }
-                    break;
-                case Direction.DOWN:
-                    if (side.Equals("left")) { sideDir = Direction.RIGHT; }
-                    else { sideDir = Direction.LEFT; }
-                    break;
-                case Direction.RIGHT:
-                    if (side.Equals("left")) { sideDir = Direction.UP; }
-                    else { sideDir = Direction.DOWN; }
-                    break;
-            }
-
-            // Start at 1 because the first (0th) row is already done
-            for (int i = 1; i < w; i++)
-            {
-                // Go to the side
-                SnekMove(d, sideDir);
-
-                // Find direction for this pass
-                switch (dir) { 
-                    case Direction.UP:
-                        if (i%2 == 0) { tempDir = Direction.UP; } else { tempDir = Direction.DOWN;}
-                        break;
-                    case Direction.LEFT:
-                        if (i % 2 == 0) { tempDir = Direction.LEFT; } else { tempDir = Direction.RIGHT; }
-                        break;
-                    case Direction.DOWN:
-                        if (i % 2 == 0) { tempDir = Direction.DOWN; } else { tempDir = Direction.UP; }
-                        break;
-                    case Direction.RIGHT:
-                        if (i % 2 == 0) { tempDir = Direction.RIGHT; } else { tempDir = Direction.LEFT; }
-                        break;
-                }
-
-                for (int j = 1; j < w; j++)
+                if (looking.Count == 0)
                 {
-                    SnekMove(d, tempDir);
+                    throw new Exception("Not enough space");
                 }
-                
+                Electrode e = looking[0];
+                looking.RemoveAt(0);
+
+                // If the e we are currently looking at is valid, we can look further along it.
+                if (CheckPlacement(mergers, [e])){
+                    List<(Electrode, Direction)> neighbors = e.GetTrueNeighbors();
+                    List<(Electrode, Direction?)> diagonals = e.GetExtendedNeighbors();
+
+                    foreach ((Electrode el, Direction direction) in neighbors)
+                    {
+                        looking.Add(el);
+                    }
+                    foreach ((Electrode el, Direction? direction) in diagonals)
+                    {
+                        looking.Add(el);
+                    }
+
+                    space.Add(e);
+                }
+                // Continue with next electrode in looking
             }
-            //Movement is done!
+
+            // Turn on electrodes in found space - also adds e to occupy in result.
+            foreach (Electrode e in space)
+            {
+                MoveOnElectrode(result, e);
+            }
+
+            // Make trees of mergers and turn off the electrodes not in the space.
+            foreach (Droplet d in mergers)
+            {
+                Tree tree = new Tree(d, d.Occupy, space, mergePoint);
+                tree.RemoveTree();
+            }
+            // The droplets should now all be in the space.
         }
-
-        // Check area for coil
-        public static (Direction dir, int sideRemainder, string side) FindArea(Droplet d, int w)
-        {
-            // Needs to find an area around where snake is which is big enough to fit the coiled snake.
-            // Parts of the snake may be there, but needs to be gone once coil reaches.
-
-            // It is easiest if there is already a space where the snake can just continue its path as the start of the coil.
-
-            // If theat is not possible, it needs to find a free space nearby - how far until we say it cannot do it?
-
-            // Should return a start position and two directions, first is for w and second is for h.
-
-            // Function knows w, h, and position of head.
-
-
-
-            // Check space behind left/right snake head, then move further up until space is found
-            // Go back along snakes body as far as w and as long as it is straight behind the head - begin check from there.
-            // Check on one side if there is room for the snake (+ buffer?). If a problem is found, check the other.
-            // If the other side also has a problem, begin checking from the problem point on the side with the "earliest" problem.
-            // Continue until a clear area is found.
-
-            // Check with +2 for boundery.
-
-            // Follow along snake to find start point and direction (the direction the snake is moving)
-            Direction dir;
-            Electrode head = d.Occupy[0];
-
-            if (d.Occupy[1].ePosX == head.ePosX)
-            {
-                if (d.Occupy[1].ePosY == head.ePosY + 1)
-                {
-                    dir = Direction.UP;
-                }
-                else
-                {
-                    dir = Direction.DOWN;
-                }
-            }
-            else
-            {
-                if (d.Occupy[1].ePosX == head.ePosX - 1)
-                {
-                    dir = Direction.RIGHT;
-                }
-                else
-                {
-                    dir = Direction.LEFT;
-                }
-            }
-
-            // init to 2 for head and Occypy[1]
-            int straightCount = 2;
-            int startX = 0;
-            int startY = 0;
-
-            // Find start point for looking
-            switch (dir)
-            {
-                case Direction.UP:
-                    for(int i = 2; i < w; i++)
-                    {
-                        if (i < Program.C.board.GetYElectrodes() && d.Occupy[i].ePosY == head.ePosY + i)
-                        {
-                            straightCount++;
-                        } else { break; }
-                    }
-
-                    startX = head.ePosX;
-                    startY = head.ePosY + straightCount;
-
-                    break;
-                case Direction.DOWN:
-                    for (int i = 2; i < w; i++)
-                    {
-                        if (i < Program.C.board.GetYElectrodes() && d.Occupy[i].ePosY == head.ePosY - i)
-                        {
-                            straightCount++;
-                        }
-                        else { break; }
-                    }
-
-                    startX = head.ePosX;
-                    startY = head.ePosY - straightCount;
-
-                    break;
-                case Direction.RIGHT:
-                    for (int i = 2; i < w; i++)
-                    {
-                        if (i < Program.C.board.GetXElectrodes() && d.Occupy[i].ePosX == head.ePosX - i)
-                        {
-                            straightCount++;
-                        }
-                        else { break; }
-                    }
-
-                    Printer.Print(straightCount);
-
-                    startX = head.ePosX - straightCount +1;
-                    startY = head.ePosY;
-
-                    break;
-                case Direction.LEFT:
-                    for (int i = 2; i < w; i++)
-                    {
-                        if (i < Program.C.board.GetXElectrodes() && d.Occupy[i].ePosX == head.ePosX + i)
-                        {
-                            straightCount++;
-                        }
-                        else { break; }
-                    }
-
-                    startX = head.ePosX + straightCount;
-                    startY = head.ePosY;
-
-                    break;
-
-            }
-
-
-            List<Electrode> leftArea = new List<Electrode>();
-            List<Electrode> rightArea = new List<Electrode>();
-
-            for (int i = 0; i < w; i++)
-            {
-                for (int j = 0; j < w; j++)
-                {
-                    switch (dir)
-                    {
-                        case Direction.UP:
-                            leftArea.Add(Program.C.board.Electrodes[startX - i, startY + j]);
-                            rightArea.Add(Program.C.board.Electrodes[startX + i, startY + j]);
-                            break;
-                        case Direction.LEFT:
-                            leftArea.Add(Program.C.board.Electrodes[startX - i, startY - j]);
-                            rightArea.Add(Program.C.board.Electrodes[startX - i, startY + j]);
-                            break;
-                        case Direction.DOWN:
-                            leftArea.Add(Program.C.board.Electrodes[startX + i, startY - j]);
-                            rightArea.Add(Program.C.board.Electrodes[startX - i, startY - j]);
-                            break;
-                        case Direction.RIGHT:
-                            leftArea.Add(Program.C.board.Electrodes[startX + i, startY - j]);
-                            rightArea.Add(Program.C.board.Electrodes[startX + i, startY + j]);
-                            break;
-                    }
-
-                }
-            }
-            Printer.Print(dir);
-
-            Printer.Print("Head: " + head.Name);
-
-            foreach (Electrode e in leftArea)
-            {
-                Printer.Print("(" + e.ePosX + ", " + e.ePosY + ")");
-            }
-
-            string side = "none";
-            if (CheckLegalMove(d, leftArea))
-            {
-                side = "left";
-            }else if (CheckLegalMove(d, rightArea)) {
-                side = "right";
-            }
-
-            return (dir, w - straightCount, side);
-
-            
-            switch (dir)
-            {
-                case Direction.UP:
-
-                    break;
-                case Direction.LEFT:
-
-                    break;
-                case Direction.DOWN:
-
-                    break;
-                case Direction.RIGHT:
-
-                    break;
-            }
-            
-
-        }*/
 
     }
 }

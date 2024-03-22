@@ -25,7 +25,7 @@ namespace Bachelor_Project.Simulation
         public float Temperature { get; set; }
 
         public int Size { get; set; }
-        public float Volume { get; set; }
+        public double Volume { get; set; }
         public List<Electrode> Occupy { get; set; } = [];
         public LinkedList<Electrode> SnekList { get; set; } = [];
         public bool SnekMode = false;
@@ -180,7 +180,7 @@ namespace Bachelor_Project.Simulation
         }
 
 
-        public void SetSizes(float Volume)
+        public void SetSizes(double Volume)
         {
             this.Volume = Volume;
             Size = ((int)Volume/12)+1;

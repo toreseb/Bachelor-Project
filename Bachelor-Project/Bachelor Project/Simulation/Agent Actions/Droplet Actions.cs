@@ -325,20 +325,28 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return !(xPos < 0 || xPos >= Program.C.board.GetXElectrodes() || yPos < 0 || yPos >= Program.C.board.GetYElectrodes());
         }
 
-        private static bool CheckPlacement(Droplet d, List<Electrode> temp)
+        private static bool CheckPlacement(Droplet d, List<Electrode> temp){
+            return CheckPlacement([d], temp);
+        }
+
+        private static bool CheckPlacement(List<Droplet> droplets, List<Electrode> temp)
         {
-            if (!CheckOtherDroplets(d, temp))
+            if (!CheckOtherDroplets(droplets, temp))
             {
                 return false;
             }
-            if (!CheckContaminations(d, temp))
+            if (!CheckContaminations(droplets, temp))
             {
                 return false;
             }
 
             return true;
         }
-        public static bool CheckOtherDroplets(Droplet d, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
+
+        public static bool CheckOtherDroplets(Droplet d, List<Electrode> temp){
+            return CheckOtherDroplets([d], temp);
+        }
+        public static bool CheckOtherDroplets(List<Droplet> droplets, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
         {
             foreach (Electrode e in temp)
             {
@@ -350,7 +358,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool CheckContaminations(Droplet d, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
+        public static bool CheckContaminations(Droplet d, List<Electrode> temp){
+            return CheckContaminations([d], temp);
+        }
+
+        public static bool CheckContaminations(List<Droplet> droplets, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
         {
             foreach (Electrode e in temp)
             {
@@ -359,7 +371,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     foreach (Droplet d in droplets)
                     {
-                        return false;
+                        if (d.Contamintants.Contains(c)){
+                            return false;
+                        }
                     }
                 }
             }

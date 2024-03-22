@@ -20,7 +20,7 @@ namespace Bachelor_Project.Utility
             {
                 
                 Direction oldDir = cameFrom[current].Item2;
-                Console.WriteLine(current.Name + " dir: " + oldDir);
+                Printer.Print(current.Name + " dir: " + oldDir);
                 current = cameFrom[current].Item1;
                 totalPath.AddFirst((current, oldDir));
 
@@ -79,7 +79,7 @@ namespace Bachelor_Project.Utility
                     double tentativeGScore = gScore[current] + dfunc(d, current, neighborT, neighbor.Item2);
                     if (neighborT.Name == "el44")
                     {
-                        Console.WriteLine(tentativeGScore);
+                        Printer.Print(tentativeGScore);
                     }
                     if (!gScore.ContainsKey(neighborT))
                     {
@@ -115,14 +115,14 @@ namespace Bachelor_Project.Utility
         private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir)
         {
             int distance = end.GetDistanceToBorder();
-            int multiple = 10 * (int)Math.Pow(distance,2);
+            int multiple = 10 * distance;
 
             if (!Droplet_Actions.CheckLegalMove(d, [end])) // 1: check if the move is legal
             {
                 return multiple * 1000;
             }else if (end.Apparature != null) // 2: Check if the end is an apparature, and therefore important
             {
-                return (Math.Pow(multiple+5,10));
+                return (Math.Pow(multiple+5,2));
             } else if (end.GetContaminants().Count > 0 && !end.GetContaminants().Exists( x => d.Contamintants.Contains(x))){ // 3: Check if highway
                 return 1;
             }

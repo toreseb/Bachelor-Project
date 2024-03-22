@@ -1,6 +1,7 @@
 ﻿using Bachelor_Project.Electrode_Types;
 using Bachelor_Project.Electrode_Types.Actuator_Types;
 using Bachelor_Project.Electrode_Types.Sensor_Types;
+using Bachelor_Project.Utility;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
 using System;
@@ -94,7 +95,7 @@ namespace Bachelor_Project.Simulation
                         actuators.Add(item["name"].ToString(), item.ToObject<Heater>());
                         break;
                     default:
-                        Console.WriteLine("Actuator type not recognized");
+                        Printer.Print("Actuator type not recognized");
                         break;
                     }
                 int startX = (int)item["positionX"] / inf.electrode_size;
@@ -131,7 +132,7 @@ namespace Bachelor_Project.Simulation
                         sensors.Add(item["name"].ToString(), item.ToObject<SizeSensor>());
                         break;
                     default:
-                        Console.WriteLine("Sensor type not recognized");
+                        Printer.Print("Sensor type not recognized");
                         break;
                 }
                 int startX = (int)item["positionX"] / inf.electrode_size;
@@ -179,7 +180,7 @@ namespace Bachelor_Project.Simulation
             return new Board(inf, eArray, actuators, sensors, iDict, oDict, dDict, unclassified);
         }
 
-        public void PrintBoardState() // Row and Col are switched, so the board is printed correctly
+        public bool PrintBoardState() // Row and Col are switched, so the board is printed correctly
         {
             List<TileEntity>[][] squares = new List<TileEntity>[Information.eCol][];
             for (int i = 0; i < Information.eCol; i++)
@@ -207,15 +208,15 @@ namespace Bachelor_Project.Simulation
                 Console.WriteLine(new string('-', 1 + Information.eRow * (3 + 6)));
             }
             Console.WriteLine();
-            
+            return true;
         }
 
         public string BuildPrintLine(List<TileEntity>[] row, int j)
         {
             
-            String line1 = "| ";
-            String line2 = "| ";
-            String line3 = "| ";
+            string line1 = "| ";
+            string line2 = "| ";
+            string line3 = "| ";
             int i = 0;
             foreach (var square in row)
             {

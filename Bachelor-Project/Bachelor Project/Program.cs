@@ -7,6 +7,7 @@ using Bachelor_Project.Parsing;
 
 using Bachelor_Project.Simulation;
 using Bachelor_Project.Simulation.Agent_Actions;
+using Bachelor_Project.Utility;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Specialized;
@@ -22,7 +23,7 @@ static public class Program
     {
 
         string inputfiles = Directory.GetCurrentDirectory() + "\\..\\..\\..\\Input Files";
-        Console.WriteLine(inputfiles);
+        Printer.Print(inputfiles);
         
 
 

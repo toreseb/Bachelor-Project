@@ -1,5 +1,6 @@
 ﻿using Bachelor_Project.Electrode_Types;
 using Bachelor_Project.Simulation.Agent_Actions;
+using Bachelor_Project.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,6 +44,8 @@ namespace Bachelor_Project.Simulation
         private Queue<Task> TaskQueue = [];
 
         public bool Inputted = false;
+
+        public int TriedMoveCounter = 0;
 
 
         public Droplet(string substance_name, string name = "") : base(-1, -1, 1, 1, name)
@@ -94,7 +97,7 @@ namespace Bachelor_Project.Simulation
             }
             foreach (Electrode electrode in a.pointers)
             {
-                if (!Droplet_Actions.CheckLegalMove(this, [electrode]))
+                if (!Droplet_Actions.CheckContaminations(this, [electrode]))
                 {
                     continue;
                 }
@@ -134,7 +137,7 @@ namespace Bachelor_Project.Simulation
                 while(TaskQueue.Count > 0)
                 {
                     Task cTask = TaskQueue.Dequeue();
-                    Console.WriteLine("Droplet " + Name + " is doing work");
+                    Printer.Print("Droplet " + Name + " is doing work");
                     cTask.Start();
                     try
                     {
@@ -143,11 +146,11 @@ namespace Bachelor_Project.Simulation
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("Droplet " + Name + " has been stopped");
+                        Printer.Print("Droplet " + Name + " has been stopped");
                         return;
                     }
                     
-                    Console.WriteLine("Droplet " + Name + " has done work");
+                    Printer.Print("Droplet " + Name + " has done work");
                 }
 
             }

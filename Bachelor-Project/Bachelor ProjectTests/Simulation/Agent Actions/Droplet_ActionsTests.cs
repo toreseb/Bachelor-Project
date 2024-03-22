@@ -859,7 +859,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[7, 4].Occupant);
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[5, 4].Occupant);
 
-            // More in debth tests will follow when algorithm is implemented
+            // More in depth tests will follow when algorithm is implemented
         }
 
         /* 

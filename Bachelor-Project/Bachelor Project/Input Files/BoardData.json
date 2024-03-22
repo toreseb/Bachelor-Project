@@ -840,22 +840,36 @@
     ],
     "sensors": null,
     "inputs": [
-        {
-            "name": "in0",
-            "ID": 650,
-            "inputID": 0,
-            "positionX": 10,
-            "positionY": 90
-        }
+      {
+        "name": "in0",
+        "ID": 650,
+        "inputID": 0,
+        "positionX": 30,
+        "positionY": 90
+      },
+      {
+        "name": "in1",
+        "ID": 651,
+        "inputID": 1,
+        "positionX": 150,
+        "positionY": 90
+      }
     ],
     "outputs": [
-        {
-            "name": "out0",
-            "ID": 650,
-            "outputID": 0,
-            "positionX": 170,
-            "positionY": 90
-        }
+      {
+        "name": "out0",
+        "ID": 652,
+        "outputID": 0,
+        "positionX": 10,
+        "positionY": 90
+      },  
+      {
+        "name": "out1",
+        "ID": 653,
+        "outputID": 0,
+        "positionX": 170,
+        "positionY": 90
+      }
     ],
     "droplets": null,
     "unclassified": null

@@ -143,7 +143,7 @@ namespace Bachelor_Project.Simulation
             {
                 int xChange = 0;
                 int yChange = 0;
-                Direction? dir;
+                Direction? dir = null;
                 if (i == 0 && (upSeen || rightSeen))
                 {
                     xChange = 1;
@@ -164,10 +164,6 @@ namespace Bachelor_Project.Simulation
                     xChange = -1;
                     yChange = -1;
                     dir = null;
-                }
-                else
-                {
-                    throw new Exception("Invalid direction");
                 }
                 if (Droplet_Actions.CheckEdge(ePosX + xChange, ePosY + yChange))
                 {

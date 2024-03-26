@@ -150,6 +150,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination);
             }
+
             if (d.CurrentPath[0].Item2 != null && d.Occupy.Contains(d.CurrentPath[0].Item1.ElectrodeStep(d.CurrentPath[0].Item2.Value)))
             {
                 moved = false;

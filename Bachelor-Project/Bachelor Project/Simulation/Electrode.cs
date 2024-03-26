@@ -117,18 +117,22 @@ namespace Bachelor_Project.Simulation
                 {
                     case 0:
                         yChange = -1;
+                        upSeen = true;
                         dir = Direction.UP;
                         break;
                     case 1:
                         xChange = 1;
+                        rightSeen = true;
                         dir = Direction.RIGHT;
                         break;
                     case 2:
                         yChange = 1;
+                        downSeen = true;
                         dir = Direction.DOWN;
                         break;
                     case 3:
                         xChange = -1;
+                        leftSeen = true;
                         dir = Direction.LEFT;
                         break;
                     default:

@@ -29,7 +29,7 @@ namespace Bachelor_Project.Utility
                     moveInsideSelf++;
                 }
             }
-            return (totalPath.ToList(),moveInsideSelf -1);
+            return (totalPath.ToList(),moveInsideSelf-1);
         }
 
 

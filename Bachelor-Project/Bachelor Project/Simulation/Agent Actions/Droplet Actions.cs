@@ -131,10 +131,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return closest;
         }
 
-        public static bool MoveTowardDest(Droplet d, Electrode destination) // returns true if droplet physcally moves, false if the head changes location in the droplet
+        public static (bool, Electrode? movedOffElectrode) MoveTowardDest(Droplet d, Electrode destination) // returns true if droplet physcally moves, false if the head changes location in the droplet
         {
             bool moved = true;
             bool removePath = true;
+            Electrode? movedOff = null;
             if (d.GetWork().Count > 0 && d.Waiting == true && d.Important == false)
             {
                 throw new NewWorkException();
@@ -150,6 +151,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (d.TriedMoveCounter > 10)
                 {
                     Console.WriteLine(d.Name + " needed to find a new path");
+                    d.TriedMoveCounter = 0;
                 }
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination);
             }
@@ -157,7 +159,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             if (d.CurrentPath.Value.path[0].Item2 == null)
             {
                 d.CurrentPath.Value.path.RemoveAt(0);
-                return moved;
+                return (moved, null); // Hopefully this should just be null.
             }
 
             if (d.Occupy.Contains(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value)))
@@ -169,7 +171,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             else
             {
-                bool changed = SnekMove(d, d.CurrentPath.Value.path[0].Item2.Value);
+                (bool changed, movedOff) = SnekMove(d, d.CurrentPath.Value.path[0].Item2.Value);
                 if (changed)
                 {
                     d.TriedMoveCounter = 0;
@@ -186,7 +188,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 d.CurrentPath.Value.path.RemoveAt(0);
             }
-            return moved;
+            return (moved, movedOff);
         }
 
         public static void MoveDroplet(Droplet d, Direction dir)
@@ -467,14 +469,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        public static bool SnekMove(Droplet d, Direction dir)
+        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, Direction dir)
         {
             return SnekMove(d,d.Occupy,dir);
         }
 
         // Non-protected snake move forward 1
         // Assumes that the list of occupied electrodes are in the form of a snake.
-        public static bool SnekMove(Droplet d, List<Electrode> el, Direction dir) // Returns true if movement happened, false if it got stopped
+        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, List<Electrode> el, Direction dir) // Returns true if movement happened, false if it got stopped
         {
             Printer.Print("SnekMove Toward: " +dir);
             List<Electrode> newOcc = new List<Electrode>();
@@ -510,7 +512,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             catch (Exception ex)
             {
                 Printer.Print("Movement out of bounds");
-                return false;
+                return (false,null);
             }
 
             lock (MoveLock)
@@ -525,14 +527,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                     MoveOnElectrode(d, newHead[0]);
 
-                    MoveOffElectrode(d);
+                    
                     Printer.Print("Droplet moved");
-                    return true;
+                    return (true,MoveOffElectrode(d));
                 }
                 else
                 {
                     Printer.Print("Droplet not moved");
-                    return false;
+                    return (false,null);
                 }
             }
             
@@ -557,7 +559,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             e.Occupant = d;
         }
 
-        public static void MoveOffElectrode(Droplet d, Electrode? e = null)
+        public static Electrode MoveOffElectrode(Droplet d, Electrode? e = null)
         {
             if (e == null)
             {
@@ -575,6 +577,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             d.Occupy.Remove(e);
             e.Occupant = null;
+            return e;
         }
 
 
@@ -604,13 +607,26 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.SnekList.AddFirst(start);
             d.CurrentPath = ModifiedAStar.FindPath(d, dest);
             int priorCounter = 0;
+            int totalExtraAdded = 0;
+            int extraAdded = 0;
             while (d.CurrentPath.Value.path[0].Item2 != null && d.CurrentPath.Value.inside > 0) //Move the head inside the blob
             {
-                priorCounter++;
-                MoveTowardDest(d, dest);
+                if (d.Occupy.Contains(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value)))
+                {
+                    priorCounter++;
+                }
+                
+                (bool physMove, Electrode movedOffElectrode) = MoveTowardDest(d, dest);
+                if (physMove)
+                {
+                    MoveOnElectrode(d, movedOffElectrode, first: false) ;
+                    totalExtraAdded++;
+                }
                 Printer.Print("SPECIAL BOARD:");
                 Printer.PrintBoard();
             }
+            extraAdded = totalExtraAdded;
+            Electrode treeStart = d.SnekList.First();
             // Make tree out of blob in order to know what can safely be removed.
             Tree blobTree = BuildTree(d, d.SnekList.ToList(), d.SnekList.First());
 
@@ -619,16 +635,21 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 // Save last electrode so we can turn it on again.
                 // The tree will turn off the correct electrode.
-                bool moved = MoveTowardDest(d, dest);
+                bool moved = MoveTowardDest(d, dest).Item1;
 
                 // If there are still nodes in the tree, it means that the snake is still uncoiling and the electrode that is turned off
                 // needs to be controlled by the tree. Otherwise, we are no longer uncoiling and we can just move.
                 // "> 1" because the last should not be counted.
-                if (blobTree.Nodes.Count > (1 + priorCounter) && moved)
+                if (blobTree.Nodes.Count > (1 + priorCounter + totalExtraAdded) && moved)
                 {
                     MoveOnElectrode(d, start, first: false);
                     // Turn off the right electrode.
                     blobTree.RemoveLeaf();
+                }
+                else if (extraAdded > 0)
+                {
+                    MoveOffElectrode(d);
+                    extraAdded--;
                 }
                 else if(d.Waiting == false)
                 {

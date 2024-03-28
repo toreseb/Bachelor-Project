@@ -31,7 +31,7 @@ namespace Bachelor_Project.Simulation
         public bool SnekMode = false;
         public List<string> Contamintants { get; set; } = []; //Which substance types the droplet is contaminated by, ergo which contaminations it can't pass over.
         public int ContamLevel { get; set; } = 0;
-        public List<(Electrode, Direction?)>? CurrentPath = null;
+        public (List<(Electrode, Direction?)> path, int inside)? CurrentPath = null; //List of electrode and directions is the path with the moving direction, int is the amount of movement the path takes inside the droplet
         public (int?, Direction?) SquareInfo { get; set; } // Square used for constant width towards edges.
 
         public bool Waiting = true; // If a droplet is waiting, it's movement isn't important, so it can be changed. This is for actions

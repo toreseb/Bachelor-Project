@@ -60,7 +60,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     MoveOnElectrode(d, i.pointers[0], first: false);
 
                     size--;
-                    if (d.CurrentPath.Count <= 4)
+                    if (d.CurrentPath.Value.path.Count <= 4)
                     {
                         while (size > 0)
                         {
@@ -72,7 +72,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                 }
 
-                while (d.CurrentPath.Count > 4)
+                while (d.CurrentPath.Value.path.Count > 4)
                 {
                     d.Waiting = true;
                     try
@@ -86,7 +86,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         return false;
                     }
 
-                    if (d.CurrentPath.Count <= 4)
+                    if (d.CurrentPath.Value.path.Count <= 4)
                     {
                         CoilSnek(d, d.SnekList.First());
                         return true;
@@ -107,14 +107,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static void MoveToDest(Droplet d, Electrode destination) //TODO: Make sure that the droplet moves to the destination
         {
-            d.CurrentPath ??= ModifiedAStar.FindPath(d, destination);
-            if (d.CurrentPath.Count == 0)
+            if (d.CurrentPath == null || d.CurrentPath.Value.path.Count == 0)
             {
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination);
             }
             try
             {
-                while (d.CurrentPath.Count > 0)
+                while (d.CurrentPath.Value.path.Count > 0)
                 {
                     MoveTowardDest(d, destination);
                 }
@@ -140,25 +139,37 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 throw new NewWorkException();
             }
-            d.CurrentPath ??= ModifiedAStar.FindPath(d, destination);
+
             if (!d.SnekMode)
             {
                 UncoilSnek(d, destination);
             }
 
-            if (d.CurrentPath.Count == 0)
+            if (d.CurrentPath == null || d.CurrentPath.Value.path.Count == 0 || d.TriedMoveCounter > 10)
             {
+                if (d.TriedMoveCounter > 10)
+                {
+                    Console.WriteLine(d.Name + " needed to find a new path");
+                }
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination);
             }
 
-            if (d.CurrentPath[0].Item2 != null && d.Occupy.Contains(d.CurrentPath[0].Item1.ElectrodeStep(d.CurrentPath[0].Item2.Value)))
+            if (d.CurrentPath.Value.path[0].Item2 == null)
+            {
+                d.CurrentPath.Value.path.RemoveAt(0);
+                return moved;
+            }
+
+            if (d.Occupy.Contains(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value)))
             {
                 moved = false;
-                d.SnekList.AddFirst(d.CurrentPath[0].Item1.ElectrodeStep(d.CurrentPath[0].Item2.Value));
+                d.SnekList.AddFirst(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value));
+                int reduced = d.CurrentPath.Value.inside - 1;
+                d.CurrentPath = (d.CurrentPath.Value.path, reduced);
             }
-            else if (d.CurrentPath[0].Item2 != null)
+            else
             {
-                bool changed = SnekMove(d, d.CurrentPath[0].Item2.Value);
+                bool changed = SnekMove(d, d.CurrentPath.Value.path[0].Item2.Value);
                 if (changed)
                 {
                     d.TriedMoveCounter = 0;
@@ -170,13 +181,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     moved = false;
                 }
             }
-            if (d.TriedMoveCounter > 10)
-            {
-                d.CurrentPath = ModifiedAStar.FindPath(d, destination);
-            }
+            
             if (removePath)
             {
-                d.CurrentPath.RemoveAt(0);
+                d.CurrentPath.Value.path.RemoveAt(0);
             }
             return moved;
         }
@@ -596,7 +604,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.SnekList.AddFirst(start);
             d.CurrentPath = ModifiedAStar.FindPath(d, dest);
             int priorCounter = 0;
-            while (d.CurrentPath[0].Item2 != null && d.Occupy.Contains(d.CurrentPath[0].Item1.ElectrodeStep(d.CurrentPath[0].Item2.Value))) //Move the head inside the blob
+            while (d.CurrentPath.Value.path[0].Item2 != null && d.CurrentPath.Value.inside > 0) //Move the head inside the blob
             {
                 priorCounter++;
                 MoveTowardDest(d, dest);
@@ -629,7 +637,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 Printer.PrintBoard();
 
-            } while (d.CurrentPath != null && d.CurrentPath.Count != 0);
+            } while (d.CurrentPath != null && d.CurrentPath.Value.path.Count != 0);
 
             // Once at dest, whether the snake is fully uncoiled or not, coil the snake again.
             // This avoids long tails being in the way.

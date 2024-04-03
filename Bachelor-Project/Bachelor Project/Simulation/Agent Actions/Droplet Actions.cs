@@ -917,8 +917,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Tree tree = new Tree(d, d.Occupy, space, mergePoint);
                 tree.RemoveTree();
 
-
-                MoveOffElectrode(d, d.Occupy[0]);
+                while(d.Occupy.Count > 0)
+                {
+                    MoveOffElectrode(d, d.Occupy[0]);
+                }
                 // TODO: Remove d from board
 
                 Printer.PrintBoard();

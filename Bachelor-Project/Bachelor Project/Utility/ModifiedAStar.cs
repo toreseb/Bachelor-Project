@@ -12,10 +12,11 @@ namespace Bachelor_Project.Utility
     internal class ModifiedAStar //Heavily inspired by https://en.wikipedia.org/wiki/A*_search_algorithm
     {
 
-        public static List<(Electrode, Direction?)> ReconstructPath(Dictionary<Electrode, (Electrode, Direction)> cameFrom, Electrode current)
+        public static (List<(Electrode, Direction?)>, int) ReconstructPath(Droplet d, Dictionary<Electrode, (Electrode, Direction)> cameFrom, Electrode current)
         {
             LinkedList<(Electrode, Direction?)> totalPath = [];
             totalPath.AddFirst((current,null));
+            int moveInsideSelf = 0;
             while (cameFrom.ContainsKey(current))
             {
                 
@@ -23,13 +24,16 @@ namespace Bachelor_Project.Utility
                 Printer.Print(current.Name + " dir: " + oldDir);
                 current = cameFrom[current].Item1;
                 totalPath.AddFirst((current, oldDir));
-
+                if (d.Occupy.Contains(current))
+                {
+                    moveInsideSelf++;
+                }
             }
-            return totalPath.ToList();
+            return (totalPath.ToList(),moveInsideSelf-1);
         }
 
 
-        public static List<(Electrode, Direction?)> FindPath(Droplet d, Electrode goal)
+        public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal)
         {
             Func<Electrode, Electrode, double> h = Electrode.GetDistance;
             Electrode start = goal.GetClosestElectrodeInList(d.Occupy);
@@ -58,11 +62,11 @@ namespace Bachelor_Project.Utility
                 }
                 if (current == null)
                 {
-                    return [];
+                    return ([],0);
                 }
                 if (current == goal)
                 {
-                    return ReconstructPath(cameFrom, current);
+                    return ReconstructPath(d, cameFrom, current);
                 }
                 openSet.Remove(current);
 

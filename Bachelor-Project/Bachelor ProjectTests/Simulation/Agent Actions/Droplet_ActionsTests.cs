@@ -988,6 +988,36 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         }
 
         [TestMethod()]
+        public void UncoilSnek_OutIntoSelf()
+        {
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            Droplet d = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", d);
+            Droplet_Actions.InputDroplet(d, board.Input["in0"], 36);
+            Droplet_Actions.MoveOnElectrode(d, board.Electrodes[2, 4]);
+            Droplet_Actions.MoveOnElectrode(d, board.Electrodes[2, 5]);
+            Droplet_Actions.MoveOnElectrode(d, board.Electrodes[2, 6]);
+            Droplet_Actions.MoveOnElectrode(d, board.Electrodes[0, 6]);
+
+            Assert.AreEqual(8, d.Occupy.Count);
+
+            Droplet_Actions.UncoilSnek(d, board.Electrodes[8,5]);
+
+            Assert.AreEqual(8, d.Occupy.Count);
+
+            Assert.AreEqual(d, board.Electrodes[8, 5].Occupant);
+            Assert.AreEqual(d, board.Electrodes[8, 6].Occupant);
+            Assert.AreEqual(d, board.Electrodes[8, 7].Occupant);
+            Assert.AreEqual(d, board.Electrodes[7, 4].Occupant);
+            Assert.AreEqual(d, board.Electrodes[7, 5].Occupant);
+            Assert.AreEqual(d, board.Electrodes[7, 6].Occupant);
+            Assert.AreEqual(d, board.Electrodes[7, 7].Occupant);
+            Assert.AreEqual(d, board.Electrodes[6, 5].Occupant);
+
+
+        }
+
+        [TestMethod()]
         public void OutputTest_Size1()
         {
             board = Program.C.SetBoard(testBoardDataLocation);

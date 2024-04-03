@@ -13,4 +13,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         DOWN,
         LEFT
     }
+    public static class DirectionUtils
+    {
+        public static Direction GetOppositeDirection(Direction dir)
+        {
+            return dir + 2 % 4;
+        }
+    }
+
 }

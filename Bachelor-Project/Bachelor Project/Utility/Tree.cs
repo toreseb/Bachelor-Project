@@ -153,5 +153,9 @@ namespace Bachelor_Project.Utility
         {
             Children.Remove(child);
         }
+        public override string ToString()
+        {
+            return Electrode.ToString();
+        }
     }
 }

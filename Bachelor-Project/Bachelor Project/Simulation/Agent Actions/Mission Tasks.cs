@@ -15,12 +15,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     {
         public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
+            Printer.Print(d.Name + " : INPUTTING");
             return Droplet_Actions.InputDroplet(d, i, volume, destination);
 
 
         }
         public static void OutputDroplet(Droplet droplet, Output output)
         {
+            Printer.Print(droplet.Name + " : OUTPUTTING");
             droplet.Important = true;
             Droplet_Actions.MoveToApparature(droplet, output);
             Droplet_Actions.Output(droplet, output);
@@ -34,6 +36,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         // Does not take contaminants into account yet.
         public static bool MixDroplets(Droplet d, string pattern, string? newType = null) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
         {
+            Printer.Print(d.Name + " : MIXING");
             d.Important = true;
             bool up = true; bool down = true; bool left = true; bool right = true;
             // Check if there is room to boogie
@@ -106,7 +109,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     directions.Add(Direction.LEFT);
                 }
                 // Check if area is legal
-                if (Droplet_Actions.CheckLegalMove(d, temp))
+                if (Droplet_Actions.CheckLegalMove(d, temp).legalmove)
                 {
                     for (int i = 0; i < mixAmount; i++)
                     {
@@ -141,8 +144,20 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        internal static void MergeDroplets(List<string> inputDroplets, Droplet droplet)
+        internal static void MergeDroplets(List<string> inputDroplets, Droplet droplet, Task calcMerge, UsefullSemaphore beforeDone)
         {
+            Printer.Print(droplet.Name + " : MERGING");
+            calcMerge.Start();
+            beforeDone.Wait(inputDroplets.Count);
+            foreach (var inputDroplet in inputDroplets)
+            {
+                Droplet other = Program.C.board.Droplets[inputDroplet];
+                if (!other.Removed)
+                {
+                    droplet.Override(other);
+                }
+            }
+            Printer.PrintBoard();
             //throw new NotImplementedException();
         }
 
@@ -151,13 +166,28 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        internal static void AwaitWork(Droplet droplet)
+        internal static void AwaitWork(Droplet d, Task<Electrode> AwaitWork, UsefullSemaphore beforeDone, UsefullSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
         {
-            //throw new NotImplementedException();
+            
+            beforeDone.WaitOne();
+            Electrode location = AwaitWork.Result;
+            try
+            {
+                d.CurrentPath = null;
+                Droplet_Actions.MoveToDest(d, location, mergeDoplets);
+            }
+            catch (ThreadInterruptedException e)
+            {
+                selfDone.TryReleaseOne();
+                throw e;
+            }
+            selfDone.TryReleaseOne();
+
         }
 
         internal static void TempDroplet(Droplet droplet1, Heater heater, string newType)
         {
+            Printer.Print(droplet1.Name + " : TEMPING");
             droplet1.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(droplet1, heater);
             Droplet_Actions.CoilSnek(droplet1, center: closest, into: heater);
@@ -167,6 +197,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         internal static void SenseDroplet(Droplet droplet1, Sensor sensor)
         {
+            Printer.Print(droplet1.Name + " : SENSING");
             droplet1.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(droplet1, sensor);
             Droplet_Actions.CoilSnek(droplet1, center: closest, into: sensor); // Depends if sensor needs to see the entire droplet

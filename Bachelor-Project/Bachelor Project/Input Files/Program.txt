@@ -1,6 +1,6 @@
-input drop1 water in0 36;
-input drop2 blood in1 36;
+input drop1 water in0 24;
+input drop2 blood in1 23;
 contam water blood;
 contam blood water;
-output drop1 out1;
-output drop2 out0;
+merge drop3 bloodwater drop1 drop2;
+output drop3 out0;

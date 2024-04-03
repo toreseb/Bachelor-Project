@@ -121,7 +121,7 @@ namespace Bachelor_Project.Utility
             int distance = end.GetDistanceToBorder();
             int multiple = 10 * (int)Math.Pow(distance,2);
 
-            if (!Droplet_Actions.CheckLegalMove(d, [end])) // 1: check if the move is legal
+            if (!Droplet_Actions.CheckLegalMove(d, [end]).legalmove) // 1: check if the move is legal
             {
                 return multiple * 1000;
             }else if (end.Apparature != null) // 2: Check if the end is an apparature, and therefore important

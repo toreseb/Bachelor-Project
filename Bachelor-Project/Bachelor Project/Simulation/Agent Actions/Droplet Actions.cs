@@ -834,5 +834,53 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // The droplets should now all be in the space.
         }
 
+        /*
+        public static void splitDroplet(Droplet source, List<(Droplet, int)> results)
+        {
+            // For loop to split the droplets out one by one.
+            // Makes a snake of appropriate size a la uncoil and cuts it off.
+            // After cutoff, the 'new' droplet is given the task of moving.
+
+            foreach ((Droplet d, int size) in results)
+            {
+                // Find electrode in source closest to where splitter needs to go.
+                Electrode start = xxx.GetClosestElectrodeInList(source.Occupy);
+
+                // Make tree from the closest electrode to dest.
+                Tree sourceTree = BuildTree(source, [], start);
+
+                // Find path split droplet needs to follow.
+                d.SnekList.AddFirst(start);
+                d.CurrentPath = ModifiedAStar.FindPath(d, xxx);
+
+                // Move out the amount of spaces this splitter needs
+                int i = 0;
+                while (i < size)
+                {
+                    // Try to make move towarda dest
+                    bool moved = MoveTowardDest(d, xxx).Item1;
+
+                    if (moved)
+                    {
+                        // Turn on the electrode MoveTowardDest turned off.
+                        MoveOnElectrode(d, start, first: false);
+                        // Turn off the right electrode.
+                        sourceTree.RemoveLeaf();
+
+                        i++;
+                    }
+                    else if (d.Waiting == false)
+                    {
+                        d.Waiting = true;
+                    }
+
+                    // What if destination is not far enough to have the snake completely split from the source?
+                }
+
+                // Give d the task of moving.
+            }
+        }
+        */
+
     }
 }

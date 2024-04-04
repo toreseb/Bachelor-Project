@@ -816,12 +816,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         public void SnekReversalTest()
         {
             // Create board and input droplet
-            board = Program.C.SetBoard(testBoardDataLocation);
+            board = Program.C.SetBoard(testBoardDataBigLocation);
             Droplet drop1 = new Droplet("Water", "Wat1");
             board.Droplets.Add("Wat1", drop1);
             Droplet_Actions.InputDroplet(drop1, board.Input["in0"], 24);
             drop1.Important = true; // To make sure it doesn't coil
-            Droplet_Actions.UncoilSnek(drop1, board.Electrodes[3, 1]);
+            Droplet_Actions.UncoilSnek(drop1, board.Electrodes[3, 4]);
 
             Electrode oldHead = drop1.SnekList.First.Value;
             Electrode newHead = drop1.SnekList.Last.Value;

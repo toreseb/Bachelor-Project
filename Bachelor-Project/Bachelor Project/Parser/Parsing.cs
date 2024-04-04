@@ -123,12 +123,31 @@ namespace Bachelor_Project.Parsing
                     Printer.Print(output);
                     Commands.Add(new Command("merge", mergers, [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], value: [context.GetChild<ProgramParser.DroplettypeContext>(0).GetText()]));
                     break;
-                case "split": //SPLIT , droplet name , new droplet1 name , new droplet2 name , (new dropletN name)?
+                case "split": //SPLIT , olddroplet name , new droplet1 name, ratio1? , new droplet2 name, ratio2? , (new dropletN name, ratioN? )*
                     output = $"split droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} to make: ";
                     List<string> splits = [];
+                    List<int> ratios = [];
                     i = 1;
+                    int usingRatios = -1; //unassigned
                     while (context.GetChild<ProgramParser.DropletnameContext>(i) != null)
                     {
+                        if (context.GetChild<ProgramParser.NumberContext>(i) != null)
+                        {
+                            if (usingRatios == 0)
+                            {
+                                throw new ArgumentException("Either use no ratios or all ratios");
+                            }
+                            usingRatios = 1; // using ratios
+                            ratios.Add(int.Parse(context.GetChild<ProgramParser.NumberContext>(i).GetText()));
+                        }
+                        else if (usingRatios == 1)
+                        {
+                            throw new ArgumentException("Either use no ratios or all ratios");
+                        }
+                        else
+                        {
+                            usingRatios = 0; // not using ratios
+                        }
                         output = string.Concat(output, context.GetChild<ProgramParser.DropletnameContext>(i).GetText() + " ").ToString();
                         splits.Add(context.GetChild<ProgramParser.DropletnameContext>(i).GetText());
                         try
@@ -143,7 +162,15 @@ namespace Bachelor_Project.Parsing
                         i++;
                     }
                     Printer.Print(output);
-                    Commands.Add(new Command("split", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], splits));
+                    if (usingRatios == 1)
+                    {
+                        Commands.Add(new Command("split", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], splits, value: ratios));
+                    }
+                    else
+                    {
+                        Commands.Add(new Command("split", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], splits));
+                    }
+                    
                     break;
                 case "mix": //MIX , droplet name , pattern , (new droplet type)?
                     Console.Write($"mix droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} in the shape: {context.GetChild<ProgramParser.ShapeContext>(0).GetText()} pattern");

@@ -52,6 +52,10 @@ namespace Bachelor_Project.Simulation
                 {
                     contaminates.Add(dropletpair.Value, []);
                 }
+                if (!contaminated.ContainsKey(dropletpair.Value))
+                {
+                    contaminated.Add(dropletpair.Value, []);
+                }
                 nDrop.ContamLevel = contaminates[dropletpair.Value].Count;
                 Printer.Print(nDrop.Substance_Name +" is contaminated by");
                 board.Droplets.Add(dropletpair.Key, nDrop);

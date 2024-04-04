@@ -822,7 +822,7 @@
     ],
     "actuators": [
         {
-            "name": "heat1",
+            "name": "heat0",
             "ID": 640,
             "actuator": 0,
             "type": "heater",

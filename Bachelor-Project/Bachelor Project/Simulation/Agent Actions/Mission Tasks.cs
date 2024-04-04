@@ -15,6 +15,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     {
         public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
+            Printer.Print(d.Name + " has NextDestiantion of: " + d.nextDestination);
             Printer.Print(d.Name + " : INPUTTING");
             return Droplet_Actions.InputDroplet(d, i, volume, destination);
 

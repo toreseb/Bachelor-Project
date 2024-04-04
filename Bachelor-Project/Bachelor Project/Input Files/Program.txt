@@ -2,5 +2,7 @@ input drop1 water in0 24;
 input drop2 blood in1 23;
 contam water blood;
 contam blood water;
+contam milk blood water;
 merge drop3 bloodwater drop1 drop2;
+temp drop3 heat0;
 output drop3 out0;

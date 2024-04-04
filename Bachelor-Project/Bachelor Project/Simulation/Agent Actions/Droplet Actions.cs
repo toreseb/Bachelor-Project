@@ -64,10 +64,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     {
                         while (size > 0)
                         {
-                            MoveOnElectrode(d, d.SnekList.First(), first: false);
+                            CoilSnek(d, d.SnekList.First(), input: true);
                             size--;
                         }
-                        CoilSnek(d, d.SnekList.First());
                         return true;
                     }
                 }
@@ -585,6 +584,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             
         }
+        public static void TakeOverElectrode(Droplet d, Electrode e)
+        {
+            if (e.Occupant != null)
+            {
+                e.Occupant.Occupy.Remove(e);
+            }
+            else
+            {
+                Outparser.Outparser.ElectrodeOn(e);
+            }
+            d.Occupy.Add(e);
+            e.Occupant = d;
+        }
 
         public static void MoveOnElectrode(Droplet d, Electrode e, bool first = true)
         {
@@ -690,10 +702,22 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // Make single moves all the way towards the destination.
             do
             {
+                if (extraAdded > 0)
+                {
+                    MoveOffElectrode(d);
+                    extraAdded--;
+                }
                 // Save last electrode so we can turn it on again.
                 // The tree will turn off the correct electrode.
                 bool moved = MoveTowardDest(d, dest, mergeDroplets).Item1;
-                
+                if (d.Occupy.Contains(dest))
+                {
+                    if (!d.Important)
+                    {
+                        CoilSnek(d, dest);
+                    }
+                    return;
+                }
                 // If there are still nodes in the tree, it means that the snake is still uncoiling and the electrode that is turned off
                 // needs to be controlled by the tree. Otherwise, we are no longer uncoiling and we can just move.
                 // "> 1" because the last should not be counted.
@@ -703,21 +727,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     // Turn off the right electrode.
                     blobTree.RemoveLeaf();
                 }
-                else if (extraAdded > 0)
-                {
-                    MoveOffElectrode(d);
-                    extraAdded--;
-                }
                 else if(d.Waiting == false)
                 {
                     d.Waiting = true;
                 }
 
                 Printer.PrintBoard();
-                if (!d.SnekMode)
-                {
-                    return;
-                }
             } while (d.CurrentPath != null && d.CurrentPath.Value.path.Count != 0);
 
             // Once at dest, whether the snake is fully uncoiled or not, coil the snake again.
@@ -763,7 +778,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors();
                 foreach (var item in neighbors)
                 {
-                    if (CheckLegalMove(d,[item.Item1]).legalmove && !seenElectrodes.Contains(item.Item1) && item.Item1.Apparature == into)
+                    if (into != null)
+                    {
+                        int a = 2;
+                    }
+                        if (CheckLegalMove(d,[item.Item1]).legalmove && !seenElectrodes.Contains(item.Item1) && (item.Item1.Apparature == into || item.Item1.Occupant == d))
                     {
                         activeBlob2.Add(item.Item1);
                         seenElectrodes.Add(item.Item1);
@@ -786,7 +805,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         done:
             if (amount > 0)
             {
-                throw new Exception("Not enough space to coil");
+                Printer.Print("Not enough space to coil");
+                Printer.PrintBoard();
+                Thread.Sleep(1000);
+                throw new IllegalMoveException("Not enough space to coil");
             }
             Tree snekTree = BuildTree(d, newBlob, center);
 
@@ -843,9 +865,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
             MoveOnElectrode(d, center);
-            d.Occupy = d.Occupy.Concat(mergeDroplet.Occupy).ToList();
-            mergeDroplet.Occupy = [];
-            mergeDroplet.RemoveFromBoard();
+            d.TakeOver(mergeDroplet);
+            
             d.SnekList = [];
             d.SnekMode = false;
 

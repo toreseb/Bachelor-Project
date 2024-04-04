@@ -21,7 +21,7 @@ static public class Program
 
     static void Main(string[] args)
     {
-
+        Printer.Print("Starting Program");
         string inputfiles = Directory.GetCurrentDirectory() + "\\..\\..\\..\\Input Files";
         Printer.Print(inputfiles);
         

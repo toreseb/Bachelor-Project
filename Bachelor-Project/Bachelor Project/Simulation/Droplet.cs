@@ -37,6 +37,8 @@ namespace Bachelor_Project.Simulation
         public bool Waiting = true; // If a droplet is waiting, it's movement isn't important, so it can be changed. This is for actions
         public bool Important = true; // If a droplet is important, it's movement is important, so it can't be changed. This is for tasks
 
+        public Apparature? nextDestination = null;
+
         // Used for threading
         private CancellationTokenSource cancellationTokenSource;
         private ManualResetEventSlim workAvailableEvent = new ManualResetEventSlim(false);
@@ -153,9 +155,13 @@ namespace Bachelor_Project.Simulation
 
                             cTask.Wait(cancellationToken);
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
                             Printer.Print("Droplet " + Name + " has been stopped");
+                            if (Name == "drop3")
+                            {
+                                throw e;
+                            }
                             return;
                         }
 
@@ -210,7 +216,7 @@ namespace Bachelor_Project.Simulation
         }
         public override string ToString()
         {
-            return Name + " " + Substance_Name;
+            return Name + " " + Substance_Name + " OccupyCount = " + Occupy.Count;
         }
 
         public void ChangeType(string newType)
@@ -256,6 +262,20 @@ namespace Bachelor_Project.Simulation
                 {
                     Droplet_Actions.MoveOnElectrode(this, item);
                 }
+            }
+            d.RemoveFromBoard();
+        }
+        /// <summary>
+        /// This droplet gains all the electrodes of d, and Removes d
+        /// </summary>
+        /// <param name="d"></param>
+        public void TakeOver(Droplet d)
+        {
+            SnekMode = false;
+            List<Electrode> elec = new(d.Occupy);
+            foreach (var item in elec)
+            {
+                Droplet_Actions.TakeOverElectrode(this, item);
             }
             d.RemoveFromBoard();
         }

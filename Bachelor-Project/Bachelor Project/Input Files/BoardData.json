@@ -844,28 +844,21 @@
         "name": "in0",
         "ID": 650,
         "inputID": 0,
-        "positionX": 30,
-        "positionY": 90
+        "positionX": 90,
+        "positionY": 0
       },
       {
         "name": "in1",
         "ID": 651,
         "inputID": 1,
-        "positionX": 150,
-        "positionY": 90
+        "positionX": 90,
+        "positionY": 170
       }
     ],
     "outputs": [
       {
         "name": "out0",
         "ID": 652,
-        "outputID": 0,
-        "positionX": 10,
-        "positionY": 110
-      },  
-      {
-        "name": "out1",
-        "ID": 653,
         "outputID": 0,
         "positionX": 170,
         "positionY": 90

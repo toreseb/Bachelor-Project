@@ -80,13 +80,21 @@ namespace Bachelor_Project.Utility
                     break;
                 case "merge":
                     Printer.Print("Merge");
-                    Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]]));
-                    b.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);
+
+                    UsefullSemaphore sem1 = new(InputDroplets.Count);
+                    Task<Electrode> calcMerge = new(() => Droplet_Actions.MergeCalc(InputDroplets, b.Droplets[OutputDroplets[0]], sem1));
+
+                    UsefullSemaphore sem2 = new(InputDroplets.Count);
                     foreach (var item in InputDroplets)
                     {
-                        Task awaitWork = new(() => Mission_Tasks.AwaitWork(b.Droplets[OutputDroplets[0]]));
+                        Task awaitWork = new(() => Mission_Tasks.AwaitWork(b.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
                         b.Droplets[item].GiveWork(awaitWork);
                     }
+                    Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]], calcMerge, sem2));
+
+                    b.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);
+
+
                     break;
                 case "split":
                     Printer.Print("Split");
@@ -94,8 +102,8 @@ namespace Bachelor_Project.Utility
                     b.Droplets[InputDroplets[0]].GiveWork(splitDroplet);
                     foreach (var item in OutputDroplets)
                     {
-                        Task awaitWork = new(() => Mission_Tasks.AwaitWork(b.Droplets[InputDroplets[0]]));
-                        b.Droplets[item].GiveWork(awaitWork);
+                        //Task awaitWork = new(() => Mission_Tasks.AwaitWork(splitDroplet));
+                        //b.Droplets[item].GiveWork(awaitWork);
                     }
                     break;
                 case "mix":

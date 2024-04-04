@@ -45,7 +45,11 @@ namespace Bachelor_Project.Simulation
 
         public bool Inputted = false;
 
+        public bool Removed = false;
+
         public int TriedMoveCounter = 0;
+
+        public Thread Thread;
 
 
         public Droplet(string substance_name, string name = "") : base(-1, -1, 1, 1, name)
@@ -53,10 +57,12 @@ namespace Bachelor_Project.Simulation
             Temperature = 20;
             Substance_Name = substance_name;
             Color = GetColor(Substance_Name);
-            
-            
 
             cancellationTokenSource = new CancellationTokenSource();
+
+            Thread = new Thread(new ThreadStart(StartAgent));
+
+            
 
         }
 
@@ -115,45 +121,57 @@ namespace Bachelor_Project.Simulation
             return closestElectrode;
         }
 
-        public async void StartAgent()
+
+        private async void StartAgent()
         {
-            await Task.Run(() => { RunAgent(cancellationTokenSource.Token); });
+           RunAgent(cancellationTokenSource.Token);
         }
 
         public async void RunAgent(CancellationToken cancellationToken)
         {
-            // Run while cancellation has not been requested
-            while (!cancellationToken.IsCancellationRequested)
+            try
             {
-                // Needs to wait for task to be put in a task queue by Commander, then execute task and wait again
-
-                // Wait for work to become available
-                workAvailableEvent.Wait(cancellationToken);
-
-                // Reset signal
-                workAvailableEvent.Reset();
-
-                // Do thing
-                while(TaskQueue.Count > 0)
+                // Run while cancellation has not been requested
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    Task cTask = TaskQueue.Dequeue();
-                    Printer.Print("Droplet " + Name + " is doing work");
-                    cTask.Start();
-                    try
+                    // Needs to wait for task to be put in a task queue by Commander, then execute task and wait again
+
+                    // Wait for work to become available
+                    workAvailableEvent.Wait(cancellationToken);
+
+                    // Reset signal
+                    workAvailableEvent.Reset();
+
+                    // Do thing
+                    while (TaskQueue.Count > 0)
                     {
-                        
-                        cTask.Wait(cancellationToken);
+                        Task cTask = TaskQueue.Dequeue();
+                        Printer.Print("Droplet " + Name + " is doing work");
+                        cTask.Start();
+                        try
+                        {
+
+                            cTask.Wait(cancellationToken);
+                        }
+                        catch (Exception)
+                        {
+                            Printer.Print("Droplet " + Name + " has been stopped");
+                            return;
+                        }
+
+                        Printer.Print("Droplet " + Name + " has done work");
                     }
-                    catch (Exception)
-                    {
-                        Printer.Print("Droplet " + Name + " has been stopped");
-                        return;
-                    }
-                    
-                    Printer.Print("Droplet " + Name + " has done work");
+
                 }
+            }
+            catch (ThreadInterruptedException)
+            {
+
+            }catch (OperationCanceledException)
+            {
 
             }
+            
         }
 
         public void GiveWork(Task task)
@@ -201,5 +219,45 @@ namespace Bachelor_Project.Simulation
             SetContam(Program.C.data.Value.contaminated[newType]);
         }
 
+        internal void RemoveFromBoard()
+        {
+            // TODO: Remove it entirely from the board
+            foreach (var item in Occupy)
+            {
+                if (item.Occupant == this)
+                {
+                    Droplet_Actions.MoveOffElectrode(this, item);
+                }
+                
+            }
+            SnekMode = false;
+            Removed = true;
+            Stop();
+            Thread.Interrupt();
+        }
+
+        /// <summary>
+        /// This droplet override the other droplet, essentially stealing all of the data
+        /// </summary>
+        /// <param name="d"></param>
+        public void Override(Droplet d) 
+        {
+            SnekMode = d.SnekMode;
+            if (SnekMode)
+            {
+                foreach (var item in d.SnekList)
+                {
+                    Droplet_Actions.MoveOnElectrode(this,item);
+                }
+            }
+            else
+            {
+                foreach (var item in d.Occupy)
+                {
+                    Droplet_Actions.MoveOnElectrode(this, item);
+                }
+            }
+            d.RemoveFromBoard();
+        }
     }
 }

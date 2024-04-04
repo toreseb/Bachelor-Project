@@ -128,8 +128,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet Wat2 = new Droplet("Water", "Wat2");
             board.Droplets.Add("Wat1", Wat1);
             board.Droplets.Add("Wat2", Wat2);
-            Wat1.StartAgent();
-            Wat2.StartAgent();
+            Wat1.Thread.Start();
+            Wat2.Thread.Start();
 
             // Input one droplet
             Task input = new(() => Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 11));
@@ -817,18 +817,20 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         {
             // Create board and input droplet
             board = Program.C.SetBoard(testBoardDataLocation);
-            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
-            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 24);
-            Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[3, 1]);
+            Droplet drop1 = new Droplet("Water", "Wat1");
+            board.Droplets.Add("Wat1", drop1);
+            Droplet_Actions.InputDroplet(drop1, board.Input["in0"], 24);
+            drop1.Important = true; // To make sure it doesn't coil
+            Droplet_Actions.UncoilSnek(drop1, board.Electrodes[3, 1]);
 
-            Electrode oldHead = board.Droplets["Wat1"].Occupy[0];
-            Electrode newHead = board.Droplets["Wat1"].Occupy[^1];
+            Electrode oldHead = drop1.SnekList.First.Value;
+            Electrode newHead = drop1.SnekList.Last.Value;
 
-            Assert.AreEqual(oldHead, board.Droplets["Wat1"].Occupy[0]);
+            Assert.AreEqual(oldHead, drop1.SnekList.First.Value);
 
-            Droplet_Actions.SnekReversal(board.Droplets["Wat1"]);
+            Droplet_Actions.SnekReversal(drop1);
 
-            Assert.AreEqual(newHead, board.Droplets["Wat1"].Occupy[0]);
+            Assert.AreEqual(newHead, drop1.SnekList.First.Value);
         }
 
         [TestMethod()]

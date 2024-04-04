@@ -55,7 +55,7 @@ namespace Bachelor_Project.Simulation
                 nDrop.ContamLevel = contaminates[dropletpair.Value].Count;
                 Printer.Print(nDrop.Substance_Name +" is contaminated by");
                 board.Droplets.Add(dropletpair.Key, nDrop);
-                nDrop.StartAgent();
+                nDrop.Thread.Start();
             }
 
             board.Droplets = board.Droplets.OrderBy(x => x.Value.ContamLevel).ToDictionary();

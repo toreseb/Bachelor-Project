@@ -112,18 +112,44 @@ namespace Bachelor_Project.Utility
                     break;
                 case "split":
                     Printer.Print("Split");
-                    List<float> ratios = [];
+                    Dictionary<string, double> ratios = [];
+
                     if (ActionValue[0] == null)
                     {
-                        ratios = Enumerable.Repeat<float>(100 / InputDroplets.Count, InputDroplets.Count).ToList();
+                        foreach(string d in OutputDroplets)
+                        {
+                            ratios.Add(d, 100 / OutputDroplets.Count);
+                        }
+                    }
+                    else
+                    {
+                        double sum = 0;
+
+                        foreach(string d in OutputDroplets)
+                        {
+                            sum += ((Dictionary<string, int>)ActionValue[0])[d];
+                        }
+
+                        foreach (string d in OutputDroplets)
+                        {
+                            ratios.Add(d, ((Dictionary<string, int>)ActionValue[0])[d] / sum * 100);
+                        }
                     }
 
-                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], OutputDroplets));
+                    Dictionary<string, UsefullSemaphore> dropSem = new Dictionary<string, UsefullSemaphore>();
+
+                    foreach (string dName in OutputDroplets)
+                    {
+                        UsefullSemaphore sem = new UsefullSemaphore(0, 1);
+                        dropSem.Add(dName, sem);
+                    }
+
+                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], OutputDroplets, ratios, dropSem));
                     b.Droplets[InputDroplets[0]].GiveWork(splitDroplet);
                     foreach (var item in OutputDroplets)
                     {
-                        //Task awaitWork = new(() => Mission_Tasks.AwaitWork(splitDroplet));
-                        //b.Droplets[item].GiveWork(awaitWork);
+                        Task awaitSplitWork = new(() => Mission_Tasks.AwaitSplitWork(InputDroplets[0], dropSem[item]));
+                        b.Droplets[item].GiveWork(awaitSplitWork);
                     }
                     break;
                 case "mix":

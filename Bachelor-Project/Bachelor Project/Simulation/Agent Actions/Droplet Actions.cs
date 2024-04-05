@@ -619,18 +619,38 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             
         }
-        public static void TakeOverElectrode(Droplet d, Electrode e)
+        public static void TakeOverElectrode(Droplet d, Electrode e, bool first = true)
         {
-            if (e.Occupant != null)
-            {
-                e.Occupant.Occupy.Remove(e);
-            }
-            else
+            lock (MoveLock)
             {
                 Outparser.Outparser.ElectrodeOn(e);
+                if (d.SnekMode)
+                {
+                    if (e.Occupant != null && e.Occupant != d)
+                    {
+                        e.Occupant.SnekList.Remove(e);
+                    }
+
+                    if (first)
+                    {
+                        d.SnekList.AddFirst(e);
+                    }
+                    else
+                    {
+                        d.SnekList.AddLast(e);
+                    }
+                }
+                if (e.Occupant != null)
+                {
+                    e.Occupant.Occupy.Remove(e);
+                }
+                else
+                {
+                    Outparser.Outparser.ElectrodeOn(e);
+                }
+                d.Occupy.Add(e);
+                e.Occupant = d;
             }
-            d.Occupy.Add(e);
-            e.Occupant = d;
         }
 
         public static void MoveOnElectrode(Droplet d, Electrode e, bool first = true)
@@ -1029,53 +1049,111 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // The droplets should now all be in the space.
         }
 
-        /*
-        public static void splitDroplet(Droplet source, List<(Droplet, int)> results)
+        
+        public static void splitDroplet(Droplet source, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem)
         {
             // For loop to split the droplets out one by one.
             // Makes a snake of appropriate size a la uncoil and cuts it off.
             // After cutoff, the 'new' droplet is given the task of moving.
 
-            foreach ((Droplet d, int size) in results)
+            foreach ((string dName, double ratio) in ratios)
             {
+                Droplet d = Program.C.board.Droplets[dName];
+
                 // Find electrode in source closest to where splitter needs to go.
-                Electrode start = xxx.GetClosestElectrodeInList(source.Occupy);
+                Electrode dest = d.nextDestination.pointers.FirstOrDefault();
+                Electrode start = dest.GetClosestElectrodeInList(source.Occupy);
 
                 // Make tree from the closest electrode to dest.
                 Tree sourceTree = BuildTree(source, [], start);
 
+                d.SnekMode = true;
+                d.SnekList = [];
+
                 // Find path split droplet needs to follow.
-                d.SnekList.AddFirst(start);
-                d.CurrentPath = ModifiedAStar.FindPath(d, xxx);
+                TakeOverElectrode(d, start);
+                d.CurrentPath = ModifiedAStar.FindPath(d, dest);
+
+                // Find number of electrodes to occupy
+                d.SetSizes(source.Volume * ratio / 100);
 
                 // Move out the amount of spaces this splitter needs
-                int i = 0;
-                while (i < size)
+                int i = 1;
+                while (i < d.Size)
                 {
-                    // Try to make move towarda dest
-                    bool moved = MoveTowardDest(d, xxx).Item1;
-
-                    if (moved)
+                    if (d.CurrentPath.Value.path.Count > Constants.DestBuff)
                     {
-                        // Turn on the electrode MoveTowardDest turned off.
-                        MoveOnElectrode(d, start, first: false);
-                        // Turn off the right electrode.
-                        sourceTree.RemoveLeaf();
+                        // Try to make move toward dest
+                        bool moved = MoveTowardDest(d, dest).Item1;
 
-                        i++;
+                        if (moved)
+                        {
+                            // Turn on the electrode MoveTowardDest turned off.
+                            MoveOnElectrode(d, start, first: false);
+                            // Turn off the right electrode.
+                            sourceTree.RemoveLeaf();
+
+                            i++;
+                        }
+                        else if (d.Waiting == false)
+                        {
+                            d.Waiting = true;
+                        }
                     }
-                    else if (d.Waiting == false)
+                    else
                     {
-                        d.Waiting = true;
+                        int remainder = d.Size - i;
+
+                        // Coil at dest and remove from source
+                        CoilWithoutRemoval(d, remainder); 
+
+                        // Remove the corresponding electrodes from the source tree
+                        for (int j = 0; j < remainder; j++)
+                        {
+                            sourceTree.RemoveLeaf();
+                        }
+
+                        // Normal coil to suck up tail
+                        CoilSnek(d, dest);
+
+                        i += remainder;
                     }
+                    
 
                     // What if destination is not far enough to have the snake completely split from the source?
                 }
-
                 // Give d the task of moving.
+                dropSem[d.Name].TryReleaseOne();
+            }
+
+            source.RemoveFromBoard();
+        }
+        
+        /// <summary>
+        /// Coils around head without removing from tail.
+        /// Used for input and split.
+        /// </summary>
+        /// <param name="d"></param>
+        public static void CoilWithoutRemoval(Droplet d, int remainder)
+        {
+            List<Electrode> workingList = [d.Occupy[0]];
+            // Coil without removing
+            for (int i = 0; i < remainder; i++)
+            {
+                Electrode e = workingList[0];
+                workingList.Remove(e);
+
+                List<(Electrode, Direction?)> neighbors = e.GetExtendedNeighbors();
+
+                foreach ((Electrode n, Direction? dir) in neighbors)
+                {
+                    if (n.Occupant.Equals(null))
+                    {
+                        MoveOnElectrode(d,n, first: false);
+                        workingList.Add(n);
+                    }
+                }
             }
         }
-        */
-
     }
 }

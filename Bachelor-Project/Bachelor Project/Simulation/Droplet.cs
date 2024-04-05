@@ -36,8 +36,10 @@ namespace Bachelor_Project.Simulation
 
         public bool Waiting = true; // If a droplet is waiting, it's movement isn't important, so it can be changed. This is for actions
         public bool Important = true; // If a droplet is important, it's movement is important, so it can't be changed. This is for tasks
+        public bool MergeReady = false; // Determines if a droplet is in the state where it is possible to merge.
 
         public Apparature? nextDestination = null;
+        public Electrode? nextElectrodeDestination = null;
 
         // Used for threading
         private CancellationTokenSource cancellationTokenSource;
@@ -88,6 +90,19 @@ namespace Bachelor_Project.Simulation
                 throw new Exception("Droplet has no electrodes");
             }
             return closestElectrode;
+        }
+
+        public void SetNextElectrodeDestination()
+        {
+            if (nextDestination != null)
+            {
+                nextElectrodeDestination = GetClosestFreePointer(nextDestination);
+            }
+            else
+            {
+                throw new NullReferenceException("Can't find the closest electrode destination, when next destination is null");
+            }
+            
         }
 
         public Electrode GetClosestFreePointer(Apparature a)

@@ -839,22 +839,29 @@
         }
     ],
     "sensors": null,
-    "inputs": [
-      {
-        "name": "in0",
-        "ID": 650,
-        "inputID": 0,
-        "positionX": 90,
-        "positionY": 0
-      },
-      {
-        "name": "in1",
-        "ID": 651,
-        "inputID": 1,
-        "positionX": 90,
-        "positionY": 170
-      }
-    ],
+  "inputs": [
+    {
+      "name": "in0",
+      "ID": 650,
+      "inputID": 0,
+      "positionX": 90,
+      "positionY": 0
+    },
+    {
+      "name": "in1",
+      "ID": 651,
+      "inputID": 1,
+      "positionX": 90,
+      "positionY": 170
+    },
+    {
+      "name": "in2",
+      "ID": 652,
+      "inputID": 2,
+      "positionX": 0,
+      "positionY": 90
+    }
+  ],
     "outputs": [
       {
         "name": "out0",

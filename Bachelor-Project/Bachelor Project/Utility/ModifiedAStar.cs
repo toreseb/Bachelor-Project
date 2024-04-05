@@ -33,7 +33,7 @@ namespace Bachelor_Project.Utility
         }
 
 
-        public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal)
+        public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal, List<string>? mergeDroplets = null)
         {
             Func<Electrode, Electrode, double> h = Electrode.GetDistance;
             Electrode start = goal.GetClosestElectrodeInList(d.Occupy);
@@ -80,15 +80,12 @@ namespace Bachelor_Project.Utility
                     {
                         continue;
                     }
-                    double tentativeGScore = gScore[current] + dfunc(d, current, neighborT, neighbor.Item2);
-                    if (neighborT.Name == "el44")
-                    {
-                        Printer.Print(tentativeGScore);
-                    }
+                    double tentativeGScore = gScore[current] + dfunc(d, current, neighborT, neighbor.Item2, mergeDroplets);
                     if (!gScore.ContainsKey(neighborT))
                     {
                         gScore.Add(neighborT, double.MaxValue);
                         neighborT.smallestGScore = double.MaxValue;
+
                     }
                     if (tentativeGScore < gScore[neighborT])
                     {
@@ -116,15 +113,27 @@ namespace Bachelor_Project.Utility
             throw new Exception("No path found");
 
         }
-        private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir)
+        private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir, List<string>? mergeDroplets = null)
         {
             int distance = end.GetDistanceToBorder();
             int multiple = 10 * (int)Math.Pow(distance,2);
+            List<Droplet> droplets = [d];
+            if (mergeDroplets != null)
+            {
+                foreach (var item in mergeDroplets)
+                {
+                    Droplet cDroplet = Program.C.board.Droplets[item];
+                    if (!droplets.Contains(cDroplet))
+                    {
+                        droplets.Add(cDroplet);
+                    }
+                }
+            }
 
-            if (!Droplet_Actions.CheckLegalMove(d, [end]).legalmove) // 1: check if the move is legal
+            if (!Droplet_Actions.CheckLegalMove(droplets, [end]).legalmove) // 1: check if the move is legal
             {
                 return multiple * 1000;
-            }else if (end.Apparature != null) // 2: Check if the end is an apparature, and therefore important
+            }else if (end.Apparature != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an apparature, and therefore important
             {
                 return (Math.Pow(multiple+5,2));
             } else if (end.GetContaminants().Count > 0 && !end.GetContaminants().Exists( x => d.Contamintants.Contains(x))){ // 3: Check if highway

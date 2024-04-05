@@ -17,8 +17,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             Printer.Print(d.Name + " has NextDestiantion of: " + d.nextDestination);
             Printer.Print(d.Name + " : INPUTTING");
-            return Droplet_Actions.InputDroplet(d, i, volume, destination);
-
+            bool result = Droplet_Actions.InputDroplet(d, i, volume, destination);
+            return result;
 
         }
         public static void OutputDroplet(Droplet droplet, Output output)
@@ -175,6 +175,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             try
             {
                 d.CurrentPath = null;
+                d.nextElectrodeDestination = location;
                 Droplet_Actions.MoveToDest(d, location, mergeDoplets);
             }
             catch (ThreadInterruptedException e)

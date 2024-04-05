@@ -126,7 +126,7 @@ namespace Bachelor_Project.Parsing
                 case "split": //SPLIT , olddroplet name , new droplet1 name, ratio1? , new droplet2 name, ratio2? , (new dropletN name, ratioN? )*
                     output = $"split droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} to make: ";
                     List<string> splits = [];
-                    List<int> ratios = [];
+                    Dictionary<string, int> ratios = [];
                     i = 1;
                     int usingRatios = -1; //unassigned
                     while (context.GetChild<ProgramParser.DropletnameContext>(i) != null)
@@ -138,7 +138,7 @@ namespace Bachelor_Project.Parsing
                                 throw new ArgumentException("Either use no ratios or all ratios");
                             }
                             usingRatios = 1; // using ratios
-                            ratios.Add(int.Parse(context.GetChild<ProgramParser.NumberContext>(i).GetText()));
+                            ratios.Add(context.GetChild<ProgramParser.DropletnameContext>(i).GetText(), int.Parse(context.GetChild<ProgramParser.NumberContext>(i).GetText()));
                         }
                         else if (usingRatios == 1)
                         {

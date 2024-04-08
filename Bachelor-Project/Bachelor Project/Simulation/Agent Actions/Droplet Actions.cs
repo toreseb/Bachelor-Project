@@ -137,13 +137,17 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return closest;
         }
 
-        public static (bool, Electrode? movedOffElectrode) MoveTowardDest(Droplet d, Electrode destination, List<string>? mergeDroplets = null) // returns true if droplet physcally moves, false if not
+        public static (bool, Electrode? movedOffElectrode) MoveTowardDest(Droplet d, Electrode destination, List<string>? mergeDroplets = null, bool remove = true) // returns true if droplet physcally moves, false if not
         {
             Thread.Sleep(0);
             if (d.Removed)
             {
                 throw new ThreadInterruptedException();
             }
+
+            // For testing
+            int preSize = d.Occupy.Count;
+
             bool moved = true;
             bool removePath = true;
             Electrode? movedOff = null;
@@ -160,9 +164,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     throw new ThreadInterruptedException();
                 }
+                int preCoilSize = d.Occupy.Count;
                 UncoilSnek(d, destination, mergeDroplets);
                 if (!d.SnekMode)
                 {
+                    if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
+                    {
+                        int a = 2;
+                    }
                     return (true, null);
                 }
             }
@@ -198,6 +207,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (d.CurrentPath.Value.path[0].Item2 == null)
                 {
                     d.CurrentPath.Value.path.RemoveAt(0);
+                    if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
+                    {
+                        int a = 2;
+                    }
                     return (moved, null); // Hopefully this should just be null.
                 }
                 bool legalMove = true; Droplet? occupant = null;
@@ -236,19 +249,17 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     if (d.SnekList.First.Value.ElectrodeStep(dir).ElectrodeStep(dir).Occupant != occupant)
                     {
                         MoveOnElectrode(d, d.SnekList.First.Value.ElectrodeStep(dir));
-                        MoveOffElectrode(d);
                     }
-                    Thread.Sleep(1000);
                     Merge(d, occupant, d.SnekList.First.Value.ElectrodeStep(dir), mergeDroplets); //TODO: make sure that if a droplet meets 2 droplets in it's borders, it somehow merge with either the first then the second, or both at once
                     Printer.PrintBoard();
-                    Thread.Sleep(10);
-                    return (true, null);
+
+                    return (false, null);
 
                 }
                 else
                 {
                     Thread.Sleep(0);
-                    (bool changed, movedOff) = SnekMove(d, d.CurrentPath.Value.path[0].Item2.Value);
+                    (bool changed, movedOff) = SnekMove(d, d.CurrentPath.Value.path[0].Item2.Value, remove);
                     if (changed)
                     {
                         d.TriedMoveCounter = 0;
@@ -264,6 +275,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (removePath)
                 {
                     d.CurrentPath.Value.path.RemoveAt(0);
+                }
+                if (((remove == true && preSize != d.Occupy.Count) || (remove == false && preSize+1 != d.Occupy.Count)) && d.Occupy.Count != d.Size)
+                {
+                    int a = 2;
                 }
                 return (moved, movedOff);
             }
@@ -549,14 +564,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, Direction dir)
+        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, Direction dir, bool remove = true)
         {
-            return SnekMove(d,d.Occupy,dir);
+            return SnekMove(d,d.Occupy,dir, remove);
         }
 
         // Non-protected snake move forward 1
         // Assumes that the list of occupied electrodes are in the form of a snake.
-        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, List<Electrode> el, Direction dir) // Returns true if movement happened, false if it got stopped
+        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, List<Electrode> el, Direction dir, bool remove = true) // Returns true if movement happened, false if it got stopped
         {
             Printer.Print("SnekMove Toward: " +dir);
             List<Electrode> newOcc = new List<Electrode>();
@@ -609,7 +624,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                     
                     Printer.Print("Droplet moved");
-                    return (true,MoveOffElectrode(d));
+                    Electrode movedOffElectrode = null;
+                    if (remove)
+                    {
+                        movedOffElectrode = MoveOffElectrode(d);
+                    }
+                    return (true,movedOffElectrode);
                 }
                 else
                 {
@@ -724,12 +744,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void UncoilSnek(Droplet d, Electrode dest, List<string>? mergeDroplets = null)
         {
             d.Waiting = false;
+
+            // For Testing
+            int preSize = d.Occupy.Count;
             
             // If snake already occupies destination, coil around dest.
             if (dest.Occupant != null && dest.Occupant.Equals(d))
             {
                 d.CurrentPath = null;
                 CoilSnek(d, dest);
+                if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
+                {
+                    int a = 2;
+                }
                 return;
             }
 
@@ -767,46 +794,51 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     throw new ThreadInterruptedException();
                 }
-                if (extraAdded > 0)
+                
+                lock (MoveLock)
                 {
-                    MoveOffElectrode(d);
-                    extraAdded--;
-                }
-                // Save last electrode so we can turn it on again.
-                // The tree will turn off the correct electrode.
-                if (d.Name == "drop1")
-                {
-                    int a = 2;
-                }
-                bool moved;
-                do
-                {
-                    moved = MoveTowardDest(d, dest, mergeDroplets).Item1;
-                } while (!moved);
+                    if (extraAdded > 0)
+                    {
+                        MoveOffElectrode(d);
+                        extraAdded--;
+                    }
+                    // Save last electrode so we can turn it on again.
+                    // The tree will turn off the correct electrode.
+                    bool moved;
+                    bool needToRemove = true;
+                    if (blobTree.Nodes.Count > (1 + priorCounter + totalExtraAdded)){
+                        needToRemove = false;
+                    }
 
-                if (d.Occupy.Contains(dest) && !d.Important)
-                {
-                    CoilSnek(d, dest);
-                    return;
-                }
-                // If there are still nodes in the tree, it means that the snake is still uncoiling and the electrode that is turned off
-                // needs to be controlled by the tree. Otherwise, we are no longer uncoiling and we can just move.
-                // "> 1" because the last should not be counted.
-                if (blobTree.Nodes.Count > (1 + priorCounter + totalExtraAdded) && moved)
-                {
-                    d.MergeReady = false;
-                    MoveOnElectrode(d, start, first: false);
-                    // Turn off the right electrode.
-                    blobTree.RemoveLeaf();
-                    if (blobTree.Nodes.Count <= (1 + priorCounter + totalExtraAdded))
+                    moved = MoveTowardDest(d, dest, mergeDroplets, remove: needToRemove).Item1;
+
+
+                    
+                    // If there are still nodes in the tree, it means that the snake is still uncoiling and the electrode that is turned off
+                    // needs to be controlled by the tree. Otherwise, we are no longer uncoiling and we can just move.
+                    // "> 1" because the last should not be counted.
+                    if (!needToRemove && moved)
                     {
                         d.MergeReady = true;
+                        // Turn off the right electrode.
+                        blobTree.RemoveLeaf();
+                        if (blobTree.Nodes.Count <= (1 + priorCounter + totalExtraAdded))
+                        {
+                            d.MergeReady = true;
+                        }
                     }
-                }
-                else if(d.Waiting == false)
-                {
-                    d.MergeReady = true;
-                    d.Waiting = true;
+                    else if (d.Waiting == false)
+                    {
+                        d.MergeReady = true;
+                        d.Waiting = true;
+                    }
+
+                    if (d.Occupy.Contains(dest) && !d.Important)
+                    {
+                        int preCoilSize = d.Occupy.Count;
+                        CoilSnek(d, dest);
+                        return;
+                    }
                 }
 
                 Printer.PrintBoard();
@@ -819,6 +851,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 CoilSnek(d, dest);
             }
             d.MergeReady = true;
+            if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
+            {
+                int a = 2;
+            }
         }
 
         // Coil snake
@@ -826,6 +862,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void CoilSnek(Droplet d, Electrode? center = null, Apparature? into = null, bool input = false)
         {
             d.MergeReady = false;
+
+            // For Testing
+            int preSize = d.Occupy.Count;
+
             if (center == null)
             {
                 center = d.SnekList.First();
@@ -860,10 +900,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors();
                 foreach (var item in neighbors)
                 {
-                    if (into != null)
-                    {
-                        int a = 2;
-                    }
+
                         if (CheckLegalMove(d,[item.Item1]).legalmove && !seenElectrodes.Contains(item.Item1) && (item.Item1.Apparature == into || item.Item1.Occupant == d))
                     {
                         activeBlob2.Add(item.Item1);
@@ -920,6 +957,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             Printer.PrintBoard();
             d.MergeReady = true;
+
+            if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
+            {
+                int a = 2;
+            }
 
         }
 

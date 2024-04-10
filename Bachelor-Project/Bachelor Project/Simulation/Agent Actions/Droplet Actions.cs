@@ -170,7 +170,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
                     {
-                        int a = 2;
+                        throw new ArgumentException("Anomaly in Occupy.Count");
                     }
                     return (true, null);
                 }
@@ -180,20 +180,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 if (d.TriedMoveCounter > 10)
                 {
-                    if (mergeDroplets != null)
-                    {
-                        lock (MoveLock)
-                        {
-                            CoilSnek(d);
-                            // TODO: Actually make them merge together when one of them is coilled
-                        }
-                        
-                    }
-                    else
-                    {
-                        Console.WriteLine(d.Name + " needed to find a new path");
-                        d.TriedMoveCounter = 0;
-                    }
+                    Console.WriteLine(d.Name + " needed to find a new path");
+                    d.TriedMoveCounter = 0;
 
                 }
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination, mergeDroplets);
@@ -209,7 +197,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     d.CurrentPath.Value.path.RemoveAt(0);
                     if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
                     {
-                        int a = 2;
+                        throw new ArgumentException("Anomaly in Occupy.Count");
                     }
                     return (moved, null); // Hopefully this should just be null.
                 }
@@ -278,7 +266,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
                 if (((remove == true && preSize != d.Occupy.Count) || (remove == false && preSize+1 != d.Occupy.Count)) && d.Occupy.Count != d.Size)
                 {
-                    int a = 2;
+                    throw new ArgumentException("Anomaly in Occupy.Count");
                 }
                 return (moved, movedOff);
             }
@@ -755,7 +743,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 CoilSnek(d, dest);
                 if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
                 {
-                    int a = 2;
+                    throw new ArgumentException("Anomaly in Occupy.Count");
                 }
                 return;
             }
@@ -853,7 +841,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.MergeReady = true;
             if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
             {
-                int a = 2;
+                throw new ArgumentException("Anomaly in Occupy.Count");
             }
         }
 
@@ -958,9 +946,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintBoard();
             d.MergeReady = true;
 
-            if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
+            if ((input == false && preSize != d.Occupy.Count && d.Occupy.Count != d.Size) || (input == true && preSize != d.Occupy.Count-1))
             {
-                int a = 2;
+                throw new ArgumentException("Anomaly in Occupy.Count");
             }
 
         }

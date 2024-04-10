@@ -164,16 +164,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         internal static void SplitDroplet(Droplet droplet, List<string> outputDroplets, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem)
         {
+            droplet.Important = true;
             // Run Droplet_Actions.splitDroplet
             Droplet_Actions.splitDroplet(droplet, ratios, dropSem);
         }
 
-        internal static void AwaitSplitWork(string outputDroplet, UsefullSemaphore beginSem)
+        internal static void AwaitSplitWork(Droplet droplet, string outputDroplet, UsefullSemaphore beginSem)
         {
-            Droplet d = Program.C.board.Droplets[outputDroplet];
             beginSem.WaitOne();
 
-            Droplet_Actions.MoveToApparature(d, d.nextDestination);
+            Droplet_Actions.MoveToApparature(droplet, droplet.nextDestination);
         }
 
         internal static void AwaitWork(Droplet d, Task<Electrode> AwaitWork, UsefullSemaphore beforeDone, UsefullSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done

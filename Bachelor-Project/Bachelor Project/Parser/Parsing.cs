@@ -131,14 +131,14 @@ namespace Bachelor_Project.Parsing
                     int usingRatios = -1; //unassigned
                     while (context.GetChild<ProgramParser.DropletnameContext>(i) != null)
                     {
-                        if (context.GetChild<ProgramParser.NumberContext>(i) != null)
+                        if (context.GetChild<ProgramParser.NumberContext>(i-1) != null)
                         {
                             if (usingRatios == 0)
                             {
                                 throw new ArgumentException("Either use no ratios or all ratios");
                             }
                             usingRatios = 1; // using ratios
-                            ratios.Add(context.GetChild<ProgramParser.DropletnameContext>(i).GetText(), int.Parse(context.GetChild<ProgramParser.NumberContext>(i).GetText()));
+                            ratios.Add(context.GetChild<ProgramParser.DropletnameContext>(i).GetText(), int.Parse(context.GetChild<ProgramParser.NumberContext>(i-1).GetText()));
                         }
                         else if (usingRatios == 1)
                         {

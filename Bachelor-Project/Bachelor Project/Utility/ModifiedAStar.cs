@@ -33,7 +33,7 @@ namespace Bachelor_Project.Utility
         }
 
 
-        public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal, List<string>? mergeDroplets = null)
+        public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal, List<string>? mergeDroplets = null, string? splitDroplet = null)
         {
             Func<Electrode, Electrode, double> h = Electrode.GetDistance;
             Electrode start = goal.GetClosestElectrodeInList(d.Occupy);
@@ -80,16 +80,23 @@ namespace Bachelor_Project.Utility
                     {
                         continue;
                     }
-                    double tentativeGScore = gScore[current] + dfunc(d, current, neighborT, neighbor.Item2, mergeDroplets);
+                    double tentativeGScore = gScore[current] + dfunc(d, current, neighborT, neighbor.Item2, mergeDroplets, splitDroplet);
                     if (!gScore.ContainsKey(neighborT))
                     {
                         gScore.Add(neighborT, double.MaxValue);
-                        neighborT.smallestGScore = double.MaxValue;
+                        if (d.Name == "drop2")
+                        {
+                            neighborT.smallestGScore = double.MaxValue;
+
+                        }
 
                     }
                     if (tentativeGScore < gScore[neighborT])
                     {
-                        neighborT.smallestGScore = tentativeGScore;
+                        if (d.Name == "drop2")
+                        {
+                            neighborT.smallestGScore = tentativeGScore;
+                        }
                         cameFrom[neighborT] = (current, neighbor.Item2);
                         gScore[neighborT] = tentativeGScore;
                         if (!fScore.ContainsKey(neighborT))
@@ -113,7 +120,7 @@ namespace Bachelor_Project.Utility
             throw new Exception("No path found");
 
         }
-        private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir, List<string>? mergeDroplets = null)
+        private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir, List<string>? mergeDroplets = null, string? splitDroplet = null)
         {
             int distance = end.GetDistanceToBorder();
             int multiple = 10 * (int)Math.Pow(distance,2);
@@ -130,7 +137,7 @@ namespace Bachelor_Project.Utility
                 }
             }
 
-            if (!Droplet_Actions.CheckLegalMove(droplets, [end]).legalmove) // 1: check if the move is legal
+            if (!Droplet_Actions.CheckLegalMove(droplets, [end], splitDroplet).legalmove) // 1: check if the move is legal
             {
                 return multiple * 1000;
             }else if (end.Apparature != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an apparature, and therefore important

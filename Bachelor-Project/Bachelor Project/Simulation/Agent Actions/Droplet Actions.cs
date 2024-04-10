@@ -63,9 +63,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     size--;
                     if (d.CurrentPath.Value.path.Count <= 4)
                     {
+                        Electrode center = d.SnekList.First();
                         while (size > 0)
                         {
-                            CoilSnek(d, d.SnekList.First(), input: true);
+                            CoilSnek(d, center, input: true);
                             size--;
                         }
                         d.MergeReady = true;
@@ -107,7 +108,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static Electrode MoveToApparature(Droplet d, Apparature dest)
         {
             Electrode closest = d.GetClosestFreePointer(dest);
-            MoveToDest(d, closest);
+
+            try
+            {
+                MoveToDest(d, closest);
+            }
+            catch (NewWorkException)
+            {
+                Printer.PrintBoard();
+                d.Waiting = false;
+                d.MergeReady = true;
+                return closest;
+            }
             return closest;
         }
 
@@ -137,7 +149,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return closest;
         }
 
-        public static (bool, Electrode? movedOffElectrode) MoveTowardDest(Droplet d, Electrode destination, List<string>? mergeDroplets = null, bool remove = true) // returns true if droplet physcally moves, false if not
+        public static (bool, Electrode? movedOffElectrode) MoveTowardDest(Droplet d, Electrode destination, List<string>? mergeDroplets = null, string? splitDroplet = null, bool remove = true) // returns true if droplet physcally moves, false if not
         {
             Thread.Sleep(0);
             if (d.Removed)
@@ -151,6 +163,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             bool moved = true;
             bool removePath = true;
             Electrode? movedOff = null;
+            bool changed = false;
             if (d.GetWork().Count > 0 && d.Waiting == true && d.Important == false)
             {
                 d.SnekMode = false;
@@ -247,7 +260,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 else
                 {
                     Thread.Sleep(0);
-                    (bool changed, movedOff) = SnekMove(d, d.CurrentPath.Value.path[0].Item2.Value, remove);
+                    (changed, movedOff) = SnekMove(d, d.CurrentPath.Value.path[0].Item2.Value, splitDroplet: splitDroplet, remove);
                     if (changed)
                     {
                         d.TriedMoveCounter = 0;
@@ -264,7 +277,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     d.CurrentPath.Value.path.RemoveAt(0);
                 }
-                if (((remove == true && preSize != d.Occupy.Count) || (remove == false && preSize+1 != d.Occupy.Count)) && d.Occupy.Count != d.Size)
+                if (((remove == true && preSize != d.Occupy.Count) || ((remove == false && changed == true) && preSize+1 != d.Occupy.Count)) && d.Occupy.Count != d.Size)
                 {
                     throw new ArgumentException("Anomaly in Occupy.Count");
                 }
@@ -355,14 +368,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        private static (bool legalmove, Droplet? occupant) CheckBorder(Droplet d, List<Electrode> temp)
+        private static (bool legalmove, Droplet? occupant) CheckBorder(Droplet d, List<Electrode> temp, string? source = null)
         {
-            return CheckBorder([d], temp);
+            return CheckBorder([d], temp, source);
         }
 
 
         // Used to check if new droplet position upholds border
-        private static (bool legalmove, Droplet? occupant) CheckBorder(List<Droplet> droplets, List<Electrode> temp)
+        private static (bool legalmove, Droplet? occupant) CheckBorder(List<Droplet> droplets, List<Electrode> temp, string? source = null)
         {
             Droplet? occupant = null;
             // For snek, just put in head instead of all positions
@@ -412,8 +425,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         occupant = Program.C.board.Electrodes[xCheck, yCheck].Occupant;
                         if (!(occupant == null || droplets.Contains(occupant)))
                         {
-                            legalMove = false;
-                            goto destination;
+                            if (source != null)
+                            {
+                                if (!occupant.Equals(Program.C.board.Droplets[source]))
+                                {
+                                    legalMove = false;
+                                }
+                            }
+                            else
+                            {
+                                legalMove = false;
+                                goto destination;
+                            }
                         }
                     }
                     
@@ -483,15 +506,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static (bool legalmove, Droplet? occupant) CheckLegalMove(Droplet d, List<Electrode> temp)
+        public static (bool legalmove, Droplet? occupant) CheckLegalMove(Droplet d, List<Electrode> temp, string? source = null)
         {
-            return CheckLegalMove([d], temp);
+            return CheckLegalMove([d], temp, source);
         }
 
-        public static (bool legalmove, Droplet? occupant) CheckLegalMove(List<Droplet> droplets, List<Electrode> temp)
+        public static (bool legalmove, Droplet? occupant) CheckLegalMove(List<Droplet> droplets, List<Electrode> temp, string? source = null)
         {
             bool legalMove = true;
-            (bool borderCheck, Droplet? occupant) = CheckBorder(droplets, temp);
+            (bool borderCheck, Droplet? occupant) = CheckBorder(droplets, temp, source);
             if (!(borderCheck && CheckPlacement(droplets, temp))){
                 legalMove = false;
             }
@@ -499,7 +522,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return (legalMove, occupant);
         }
 
-        public static bool CheckLegalPosition(Droplet d, List<(int, int)> pos)
+        public static bool CheckLegalPosition(Droplet d, List<(int, int)> pos, string? source = null)
         {
             List<Electrode> temp = [];
 
@@ -517,14 +540,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
 
             // Check for other droplets and contamination
-            return CheckLegalMove(d, temp).legalmove;
+            return CheckLegalMove(d, temp, source).legalmove;
         }
 
 
-        public static void AwaitLegalMove(Droplet d, List<Electrode> temp)
+        public static void AwaitLegalMove(Droplet d, List<Electrode> temp, string? source = null)
         {
             int i = 0;
-            while (!CheckLegalMove(d, temp).legalmove)
+            while (!CheckLegalMove(d, temp, source).legalmove)
             {
                 Printer.Print(d.Name + " waiting for space");
                 if (i > 50)
@@ -552,14 +575,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, Direction dir, bool remove = true)
+        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, Direction dir, string? splitDroplet = null, bool remove = true)
         {
-            return SnekMove(d,d.Occupy,dir, remove);
+            return SnekMove(d,d.Occupy,dir, splitDroplet: splitDroplet, remove);
         }
 
         // Non-protected snake move forward 1
         // Assumes that the list of occupied electrodes are in the form of a snake.
-        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, List<Electrode> el, Direction dir, bool remove = true) // Returns true if movement happened, false if it got stopped
+        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, List<Electrode> el, Direction dir, string? splitDroplet = null, bool remove = true) // Returns true if movement happened, false if it got stopped
         {
             Printer.Print("SnekMove Toward: " +dir);
             List<Electrode> newOcc = new List<Electrode>();
@@ -602,7 +625,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 // Do a snekcheck
                 // If move is legal, do the thing
-                if (CheckLegalMove(d, newHead).legalmove && SnekCheck(newHead[0]))
+                if (CheckLegalMove(d, newHead, splitDroplet).legalmove && SnekCheck(newHead[0]))
                 {
 
                     Printer.Print("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
@@ -1086,6 +1109,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // Makes a snake of appropriate size a la uncoil and cuts it off.
             // After cutoff, the 'new' droplet is given the task of moving.
 
+            source.Waiting = false;
+
             foreach ((string dName, double ratio) in ratios)
             {
                 Droplet d = Program.C.board.Droplets[dName];
@@ -1102,7 +1127,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 // Find path split droplet needs to follow.
                 TakeOverElectrode(d, start);
-                d.CurrentPath = ModifiedAStar.FindPath(d, dest);
+                d.CurrentPath = ModifiedAStar.FindPath(d, dest, splitDroplet: source.Name);
+
+                Printer.PrintBoard();
+
+                Thread.Sleep(100);
 
                 // Find number of electrodes to occupy
                 d.SetSizes(source.Volume * ratio / 100);
@@ -1114,7 +1143,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     if (d.CurrentPath.Value.path.Count > Constants.DestBuff)
                     {
                         // Try to make move toward dest
-                        bool moved = MoveTowardDest(d, dest).Item1;
+                        bool moved = MoveTowardDest(d, dest, splitDroplet: source.Name).Item1;
 
                         if (moved)
                         {
@@ -1152,8 +1181,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                     // What if destination is not far enough to have the snake completely split from the source?
                 }
+
+                // TODO: Move all the way away
+
+
+                d.Waiting = true;
+                d.Important = false;
+
                 // Give d the task of moving.
                 dropSem[d.Name].TryReleaseOne();
+
+                Printer.PrintBoard();
+                Printer.Print(dName + " DONE!!");
             }
 
             source.RemoveFromBoard();
@@ -1177,7 +1216,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 foreach ((Electrode n, Direction? dir) in neighbors)
                 {
-                    if (n.Occupant.Equals(null))
+                    if (n.Occupant == null)
                     {
                         MoveOnElectrode(d,n, first: false);
                         workingList.Add(n);

@@ -178,7 +178,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         internal static void AwaitWork(Droplet d, Task<Electrode> AwaitWork, UsefullSemaphore beforeDone, UsefullSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
         {
-            
+            d.Important = true;
             beforeDone.WaitOne();
             Electrode location = AwaitWork.Result;
             try

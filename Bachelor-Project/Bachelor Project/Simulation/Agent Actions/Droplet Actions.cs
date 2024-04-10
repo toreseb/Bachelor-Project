@@ -199,7 +199,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     {
                         throw new ArgumentException("Anomaly in Occupy.Count");
                     }
-                    return (moved, null); // Hopefully this should just be null.
+                    return (false, null); // Hopefully this should just be null.
                 }
                 bool legalMove = true; Droplet? occupant = null;
                 if (d.SnekMode)
@@ -222,6 +222,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (d.Occupy.Contains(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value))) // if it goes through itself
                 {
                     moved = false;
+                    if (d.SnekList.Contains(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value)))
+                    {
+                        d.SnekList.Remove(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value));
+                    }
                     d.SnekList.AddFirst(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value));
                     int reduced = d.CurrentPath.Value.inside - 1;
                     d.CurrentPath = (d.CurrentPath.Value.path, reduced);
@@ -861,7 +865,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.SnekMode = false;
             d.SnekList.Clear();
             
-            int amount = input ? d.Occupy.Count: d.Occupy.Count -1; // -1 because the center is not in the list 0 if it inputs new value
+            int amount = input ? d.Occupy.Count : d.Occupy.Count -1; // -1 because the center is not in the list 0 if it inputs new value
             if (amount == 0 && input)
             {
                 MoveOnElectrode(d, center);
@@ -888,8 +892,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors();
                 foreach (var item in neighbors)
                 {
-
-                        if (CheckLegalMove(d,[item.Item1]).legalmove && !seenElectrodes.Contains(item.Item1) && (item.Item1.Apparature == into || item.Item1.Occupant == d))
+                    if (CheckLegalMove(d,[item.Item1]).legalmove && !seenElectrodes.Contains(item.Item1) && (item.Item1.Apparature == into || (into == null && item.Item1.Occupant == d)))
                     {
                         activeBlob2.Add(item.Item1);
                         seenElectrodes.Add(item.Item1);
@@ -940,6 +943,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
                 }
+                
+                
             }
             snekTree.RemoveTree();
 
@@ -998,7 +1003,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 d.CurrentPath = null;
             }
-            
+            Printer.Print(d.Name + " and " + mergeDroplet.Name + " has been merged");
 
         }
 

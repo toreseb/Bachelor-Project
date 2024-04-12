@@ -146,7 +146,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             // Try to input other droplet
             Task input2 = new(() => Droplet_Actions.InputDroplet(Wat2, board.Input["in0"], 11));
             Wat2.GiveWork(input2);
-            
+
 
             // Check that Wat1 is at in0 and Wat2 is not
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[inX, inY].Occupant);
@@ -390,7 +390,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.MoveDroplet(board.Droplets["Blood1"], Direction.RIGHT);
 
             // Input water
-            
+
 
             Assert.ThrowsException<Exception>(new Action(() => Mission_Tasks.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 11)));
         }
@@ -797,7 +797,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.SnekMove(w, Direction.DOWN);
 
             // Check positions and contam
-            Assert.IsTrue(board.Electrodes[3,4].GetContaminants().Any());
+            Assert.IsTrue(board.Electrodes[3, 4].GetContaminants().Any());
             Assert.AreEqual(null, board.Electrodes[3, 4].Occupant);
             Assert.AreEqual(board.Droplets["Blood1"], board.Electrodes[6, 4].Occupant); // Blood is far enough away to not interfere
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[3, 2].Occupant);
@@ -864,7 +864,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             // More in depth tests will follow when algorithm is implemented
         }
 
-    
+
         [TestMethod()]
         public void CoilSnekTest_InCorner()
         {
@@ -890,15 +890,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(drop1, board.Electrodes[1, 8].Occupant);
             Assert.AreEqual(drop1, board.Electrodes[1, 7].Occupant);
         }
-        
+
         [TestMethod()]
         public void CoilSnekTest_CloseToOtherDroplet()
         {
             board = Program.C.SetBoard(testBoardDataBigLocation);
             Droplet drop1 = new Droplet("Water", "Wat1");
             Droplet drop2 = new Droplet("Water", "Wat2");
-            board.Droplets.Add("Wat1",drop1);
-            board.Droplets.Add("Wat2",drop2);
+            board.Droplets.Add("Wat1", drop1);
+            board.Droplets.Add("Wat2", drop2);
             Droplet_Actions.InputDroplet(drop1, board.Input["in0"], 11); // Size = 1
 
             Droplet_Actions.UncoilSnek(drop1, board.Electrodes[2, 4]);
@@ -925,7 +925,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(null, board.Electrodes[2, 5].Occupant);
 
         }
-        
+
         [TestMethod()]
         public void CoilSnekTest_CloseToApperature()
         {
@@ -949,7 +949,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(drop1, board.Electrodes[0, 2].Occupant);
             Assert.AreEqual(drop1, board.Electrodes[1, 2].Occupant);
         }
-        
+
 
         [TestMethod()]
         public void UncoilSnekTest()
@@ -1003,7 +1003,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             Assert.AreEqual(8, d.Occupy.Count);
 
-            Droplet_Actions.UncoilSnek(d, board.Electrodes[8,5]);
+            Droplet_Actions.UncoilSnek(d, board.Electrodes[8, 5]);
 
             Assert.AreEqual(8, d.Occupy.Count);
 
@@ -1064,7 +1064,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(drop2, board.Electrodes[4, 3].Occupant);
             Assert.AreEqual(drop2, board.Electrodes[5, 4].Occupant);
         }
-        
+
         [TestMethod()]
         public void UncoilSnekTest_InSmallSpace()
         {
@@ -1148,5 +1148,27 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(null, board.Electrodes[6, 7].Occupant);
         }
 
+        [TestMethod()]
+        public void splitDropletTest_TwoSplitters()
+        {
+            Assert.Fail();
+
+            Droplet w = new Droplet("Water", "Wat1");
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            board.Droplets.Add("Wat1", w);
+            w.SetSizes(48);
+        }
+
+        [TestMethod()]
+        public void splitDropletTest_SeveralSplitters()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void splitDropletTest_CloseToDest()
+        {
+            Assert.Fail();
+        }
     }
 }

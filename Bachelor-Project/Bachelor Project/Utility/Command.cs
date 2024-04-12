@@ -148,7 +148,7 @@ namespace Bachelor_Project.Utility
                     b.Droplets[InputDroplets[0]].GiveWork(splitDroplet);
                     foreach (var item in OutputDroplets)
                     {
-                        Task awaitSplitWork = new(() => Mission_Tasks.AwaitSplitWork(InputDroplets[0], dropSem[item]));
+                        Task awaitSplitWork = new(() => Mission_Tasks.AwaitSplitWork(b.Droplets[item], InputDroplets[0], dropSem[item]));
                         b.Droplets[item].GiveWork(awaitSplitWork);
                     }
                     break;

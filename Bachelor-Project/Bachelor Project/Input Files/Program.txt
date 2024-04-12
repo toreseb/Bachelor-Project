@@ -1,9 +1,4 @@
-input drop1 water in0 24;
-input drop2 blood in1 23;
-input drop3 blood in2 11;
-contam water blood;
-contam blood water;
-contam milk blood water;
-merge drop4 bloodwater drop1 drop2 drop3;
-temp drop4 heat0;
-output drop4 out0;
+input drop1 water in2 48;
+split drop1 drop2 30 drop3 70;
+temp drop2 heat0;
+output drop3 out0;

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -70,21 +71,21 @@ namespace Bachelor_Project.Simulation
 
         }
 
-        public static Electrode GetClosestPartToApparature(Apparature a)
+        public static Electrode GetClosestPartToApparature(Droplet d, Apparature a)
         {
+            (int x, int y) = a.GetCenter();
             Electrode? closestElectrode = null;
             double minDistance = double.MaxValue;
-            Electrode center;
-            foreach (Electrode electrode in a.pointers)
+            foreach (Electrode e in d.Occupy)
             {
-                (int x, int y) = a.GetCenter();
-                double distance = Electrode.GetDistance(electrode, new Electrode(x, y));
+                double distance = Electrode.GetDistance(e, new Electrode(x, y));
                 if (distance < minDistance)
                 {
-                    closestElectrode = electrode;
+                    closestElectrode = e;
                     minDistance = distance;
                 }
             }
+
             if (closestElectrode == null)
             {
                 throw new Exception("Droplet has no electrodes");
@@ -116,7 +117,7 @@ namespace Bachelor_Project.Simulation
             }
             else
             {
-                center = GetClosestPartToApparature(a);
+                center = GetClosestPartToApparature(this, a);
             }
             foreach (Electrode electrode in a.pointers)
             {
@@ -173,10 +174,7 @@ namespace Bachelor_Project.Simulation
                         catch (Exception e)
                         {
                             Printer.Print("Droplet " + Name + " has been stopped");
-                            if (Name == "drop3")
-                            {
-                                throw e;
-                            }
+
                             return;
                         }
 

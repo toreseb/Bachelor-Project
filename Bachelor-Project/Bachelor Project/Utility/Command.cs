@@ -60,19 +60,6 @@ namespace Bachelor_Project.Utility
         {
             Board b = Program.C.board;
             Task command;
-            foreach (string dName in InputDroplets) 
-            {
-                Droplet d = b.Droplets[dName];
-                d.nextDestination = CommandDestination;
-            }
-            foreach (Command cmd in OutputCommands)
-            {
-                cmd.InputDroplets.ForEach((string dName) =>
-                {
-                    Droplet d = b.Droplets[dName];
-                    d.nextDestination = cmd.CommandDestination;
-                });
-            }
 
             switch (Type) 
             {

@@ -241,13 +241,11 @@ namespace Bachelor_Project.Simulation
         internal void RemoveFromBoard()
         {
             // TODO: Remove it entirely from the board
-            foreach (var item in Occupy)
+            List<Electrode> oldElectrode = new(Occupy);
+            foreach (var item in oldElectrode)
             {
-                if (item.Occupant == this)
-                {
-                    Droplet_Actions.MoveOffElectrode(this, item);
-                }
-                
+                Droplet_Actions.MoveOffElectrode(this, item);
+
             }
             SnekMode = false;
             Removed = true;
@@ -255,29 +253,7 @@ namespace Bachelor_Project.Simulation
             Thread.Interrupt();
         }
 
-        /// <summary>
-        /// This droplet override the other droplet, essentially stealing all of the data
-        /// </summary>
-        /// <param name="d"></param>
-        public void Override(Droplet d) 
-        {
-            SnekMode = d.SnekMode;
-            if (SnekMode)
-            {
-                foreach (var item in d.SnekList)
-                {
-                    Droplet_Actions.MoveOnElectrode(this,item);
-                }
-            }
-            else
-            {
-                foreach (var item in d.Occupy)
-                {
-                    Droplet_Actions.MoveOnElectrode(this, item);
-                }
-            }
-            d.RemoveFromBoard();
-        }
+
         /// <summary>
         /// This droplet gains all the electrodes of d, and Removes d
         /// </summary>

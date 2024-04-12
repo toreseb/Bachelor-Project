@@ -75,7 +75,7 @@ namespace Bachelor_Project.Simulation
                         throw new Exception("Invalid direction");
 
                 }
-                if (Droplet_Actions.CheckEdge(ePosX + xChange, ePosY + yChange))
+                if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange))
                 {
                     neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange],dir));
                 }
@@ -138,7 +138,7 @@ namespace Bachelor_Project.Simulation
                     default:
                         throw new Exception("Invalid direction");
                 }
-                if (Droplet_Actions.CheckEdge(ePosX + xChange, ePosY + yChange))
+                if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange))
                 {
                     neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange], dir));
                 }
@@ -169,7 +169,7 @@ namespace Bachelor_Project.Simulation
                     yChange = -1;
                     dir = null;
                 }
-                if (Droplet_Actions.CheckEdge(ePosX + xChange, ePosY + yChange))
+                if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange))
                 {
                     neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange], dir));
                 }

@@ -171,7 +171,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Droplet other = Program.C.board.Droplets[inputDroplet];
                 if (!other.Removed)
                 {
-                    d.Override(other);
+                    d.TakeOver(other);
                 }
             }
             Printer.PrintBoard();
@@ -237,7 +237,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         internal static void SetupDestinations(Droplet d, Apparature destination)
         {
             d.nextDestination = destination;
-            d.SetNextElectrodeDestination();
+            if (d.Occupy.Count > 0)
+            {
+                d.SetNextElectrodeDestination();
+            }
+            
         }
         
 

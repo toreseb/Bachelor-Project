@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static Antlr4.Runtime.Atn.SemanticContext;
 
 namespace Bachelor_Project.Utility
 {
@@ -35,6 +36,8 @@ namespace Bachelor_Project.Utility
 
         public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal, List<string>? mergeDroplets = null, string? splitDroplet = null)
         {
+
+
             Func<Electrode, Electrode, double> h = Electrode.GetDistance;
             Electrode start = goal.GetClosestElectrodeInList(d.Occupy);
             List<Electrode> openSet = [start];
@@ -67,6 +70,7 @@ namespace Bachelor_Project.Utility
                 if (current == goal)
                 {
                     return ReconstructPath(d, cameFrom, current);
+                    
                 }
                 openSet.Remove(current);
 
@@ -137,9 +141,14 @@ namespace Bachelor_Project.Utility
                     }
                 }
             }
-
-            if (!Droplet_Actions.CheckLegalMove(droplets, [end], splitDroplet).legalmove) // 1: check if the move is legal
+            if (d.Name == "drop3" && mergeDroplets != null)
             {
+                Electrode[,] electrodes = Program.C.board.Electrodes; 
+                int a = 2;
+            }
+            if (!Droplet_Actions.CheckLegalMove(droplets, [end],mergeDroplets: mergeDroplets, source: splitDroplet).legalmove) // 1: check if the move is legal
+            {
+                
                 return multiple * 1000;
             }else if (end.Apparature != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an apparature, and therefore important
             {

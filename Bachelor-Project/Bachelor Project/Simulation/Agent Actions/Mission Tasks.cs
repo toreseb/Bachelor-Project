@@ -181,7 +181,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         internal static void SplitDroplet(Droplet d, List<string> outputDroplets, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem, Apparature cmdDestination)
         {
             SetupDestinations(d, cmdDestination);
-            droplet.Important = true;
+            d.Important = true;
             // Run Droplet_Actions.splitDroplet
             Droplet_Actions.splitDroplet(d, ratios, dropSem);
         }

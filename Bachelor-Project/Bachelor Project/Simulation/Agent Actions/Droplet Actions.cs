@@ -588,7 +588,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         // Assumes that the list of occupied electrodes are in the form of a snake.
         public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, List<Electrode> el, Direction dir, string? splitDroplet = null, bool remove = true) // Returns true if movement happened, false if it got stopped
         {
-            Printer.Print("SnekMove Toward: " +dir);
+            Printer.Print(d.Name +" SnekMoves Toward: " +dir);
             List<Electrode> newOcc = new List<Electrode>();
             List<Electrode> newHead = new List<Electrode>(); // Needs to be a list containing one electrode for a snekcheck.
             Electrode head;
@@ -998,7 +998,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
 
             done.TryRelease(inputDroplets.Count);
-            return Program.C.board.Electrodes[4,4];
+            return droplet.nextElectrodeDestination;
         }
 
         public static void Merge(Droplet d, Droplet mergeDroplet, Electrode center, List<string> mergeDroplets)

@@ -84,19 +84,20 @@ namespace Bachelor_Project.Utility
                     if (!gScore.ContainsKey(neighborT))
                     {
                         gScore.Add(neighborT, double.MaxValue);
-                        if (d.Name == "drop2")
+                        if (d.Name == "drop3")
                         {
                             neighborT.smallestGScore = double.MaxValue;
-
                         }
+                        //neighborT.smallestGScore = double.MaxValue;
 
                     }
                     if (tentativeGScore < gScore[neighborT])
                     {
-                        if (d.Name == "drop2")
+                        if (d.Name == "drop3")
                         {
                             neighborT.smallestGScore = tentativeGScore;
                         }
+                        //neighborT.smallestGScore = tentativeGScore;
                         cameFrom[neighborT] = (current, neighbor.Item2);
                         gScore[neighborT] = tentativeGScore;
                         if (!fScore.ContainsKey(neighborT))

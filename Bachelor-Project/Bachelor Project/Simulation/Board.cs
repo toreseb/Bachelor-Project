@@ -229,7 +229,7 @@ namespace Bachelor_Project.Simulation
                     used1 += Electrodes[i, j].smallestGScore.ToString().Length;
                 }
                 
-                    foreach (var item in square)
+                foreach (var item in square)
                 {
                     string name;
                     if (item.Name.Length > Squarewidth)
@@ -243,8 +243,8 @@ namespace Bachelor_Project.Simulation
                     Type t = item.GetType();
                     if (t.IsSubclassOf(typeof(Actuator)) || t.IsSubclassOf(typeof(Sensor)))
                     {
-                        /*line1 += name;
-                        used1 += name.Length;*/
+                        //line1 += name;
+                        //used1 += name.Length;
                     }
                     else if (t.IsSubclassOf(typeof(Accessor)))
                     {

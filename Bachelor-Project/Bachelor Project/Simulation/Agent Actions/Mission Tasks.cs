@@ -145,9 +145,25 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        internal static void MergeDroplets(List<string> inputDroplets, Droplet droplet, Task calcMerge, UsefullSemaphore beforeDone)
+        internal static void MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefullSemaphore beforeDone, Apparature cmdDestination)
         {
-            Printer.Print(droplet.Name + " : MERGING");
+            SetupDestinations(d, cmdDestination);
+            Printer.Print(d.Name + " : MERGING");
+            foreach (var item1 in inputDroplets)
+            {
+                foreach (var item2 in inputDroplets)
+                {
+                    Droplet id1 = Program.C.board.Droplets[item1];
+                    Droplet id2 = Program.C.board.Droplets[item2];
+
+                    if(id1 != id2)
+                    {
+                        id1.Contamintants.Remove(id2.Substance_Name);
+                    }
+
+                }
+
+            }
             calcMerge.Start();
             beforeDone.Wait(inputDroplets.Count);
             foreach (var inputDroplet in inputDroplets)
@@ -155,17 +171,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Droplet other = Program.C.board.Droplets[inputDroplet];
                 if (!other.Removed)
                 {
-                    droplet.Override(other);
+                    d.Override(other);
                 }
             }
             Printer.PrintBoard();
             //throw new NotImplementedException();
         }
 
-        internal static void SplitDroplet(Droplet droplet, List<string> outputDroplets, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem)
+        internal static void SplitDroplet(Droplet d, List<string> outputDroplets, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem, Apparature cmdDestination)
         {
+            SetupDestinations(d, cmdDestination);
             // Run Droplet_Actions.splitDroplet
-            Droplet_Actions.splitDroplet(droplet, ratios, dropSem);
+            Droplet_Actions.splitDroplet(d, ratios, dropSem);
         }
 
         internal static void AwaitSplitWork(string outputDroplet, UsefullSemaphore beginSem)
@@ -196,25 +213,32 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
-        internal static void TempDroplet(Droplet droplet1, Heater heater, string newType)
+        internal static void TempDroplet(Droplet d, Heater heater, string newType)
         {
-            Printer.Print(droplet1.Name + " : TEMPING");
-            droplet1.Important = true;
-            Electrode closest = Droplet_Actions.MoveToApparature(droplet1, heater);
-            Droplet_Actions.CoilSnek(droplet1, center: closest, into: heater);
+            SetupDestinations(d, heater);
+            Printer.Print(d.Name + " : TEMPING");
+            d.Important = true;
+            Electrode closest = Droplet_Actions.MoveToApparature(d, heater);
+            Droplet_Actions.CoilSnek(d, center: closest, into: heater);
             Thread.Sleep(1000); // Time to heat?
-            droplet1.ChangeType(newType);
+            d.ChangeType(newType);
         }
 
-        internal static void SenseDroplet(Droplet droplet1, Sensor sensor)
+        internal static void SenseDroplet(Droplet d, Sensor sensor)
         {
-            Printer.Print(droplet1.Name + " : SENSING");
-            droplet1.Important = true;
-            Electrode closest = Droplet_Actions.MoveToApparature(droplet1, sensor);
-            Droplet_Actions.CoilSnek(droplet1, center: closest, into: sensor); // Depends if sensor needs to see the entire droplet
+            SetupDestinations(d, sensor);
+            Printer.Print(d.Name + " : SENSING");
+            d.Important = true;
+            Electrode closest = Droplet_Actions.MoveToApparature(d, sensor);
+            Droplet_Actions.CoilSnek(d, center: closest, into: sensor); // Depends if sensor needs to see the entire droplet
             Thread.Sleep(1000); // Time to sense?
         }
 
+        internal static void SetupDestinations(Droplet d, Apparature destination)
+        {
+            d.nextDestination = destination;
+            d.SetNextElectrodeDestination();
+        }
         
 
 

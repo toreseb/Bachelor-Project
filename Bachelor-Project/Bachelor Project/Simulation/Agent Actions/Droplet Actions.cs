@@ -1036,6 +1036,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
+        /// <summary>
+        /// This is discontinued, and no longer is used.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="mergers"></param>
+        /// <param name="mergePoint"></param>
+        /// <exception cref="Exception"></exception>
+
         public static void MergeMove(Droplet result, List<Droplet> mergers, Electrode mergePoint) // TODO: Can corners be cut?
             // TODO: Maybe CheckLegalMove instead
         {

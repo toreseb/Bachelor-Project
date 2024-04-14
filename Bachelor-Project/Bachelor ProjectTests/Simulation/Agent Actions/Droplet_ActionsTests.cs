@@ -117,8 +117,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         [TestMethod()]
         public void InputDropletTest_OntoOtherDroplet()
         {
-            // TODO: Unable to test ATM, come back later
-            //Assert.Fail();
 
             // Tests await legal move
 

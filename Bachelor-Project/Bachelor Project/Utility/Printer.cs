@@ -19,8 +19,11 @@ namespace Bachelor_Project.Utility
 
         static Printer()
         {
-            cancellationTokenSource = new CancellationTokenSource();
-            StartAgent();
+            if (Settings.Printing)
+            {
+                cancellationTokenSource = new CancellationTokenSource();
+                StartAgent();
+            }
         }
 
         public static async void StartAgent()

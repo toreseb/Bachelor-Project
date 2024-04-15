@@ -145,7 +145,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        internal static void MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefullSemaphore beforeDone, Apparature cmdDestination)
+        public static void MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefullSemaphore beforeDone, Apparature cmdDestination)
         {
             SetupDestinations(d, cmdDestination);
             Printer.Print(d.Name + " : MERGING");
@@ -171,7 +171,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Droplet other = Program.C.board.Droplets[inputDroplet];
                 if (!other.Removed)
                 {
-                    d.Override(other);
+                    d.TakeOver(other);
                 }
             }
             Printer.PrintBoard();
@@ -194,7 +194,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Droplet_Actions.MoveToApparature(droplet, droplet.nextDestination);
         }
 
-        internal static void AwaitWork(Droplet d, Task<Electrode> AwaitWork, UsefullSemaphore beforeDone, UsefullSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
+        public static void AwaitWork(Droplet d, Task<Electrode> AwaitWork, UsefullSemaphore beforeDone, UsefullSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
         {
             d.Important = true;
             beforeDone.WaitOne();
@@ -238,7 +238,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         internal static void SetupDestinations(Droplet d, Apparature destination)
         {
             d.nextDestination = destination;
-            d.SetNextElectrodeDestination();
+            if (d.Occupy.Count > 0)
+            {
+                d.SetNextElectrodeDestination();
+            }
+            
         }
         
 

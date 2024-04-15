@@ -23,6 +23,7 @@ namespace Bachelor_Project.Utility.Tests
         {
             Commander C = new(null, inputfiles + "\\" + testBoardData);
             Program.C = C;
+
         }
 
         [TestMethod()]

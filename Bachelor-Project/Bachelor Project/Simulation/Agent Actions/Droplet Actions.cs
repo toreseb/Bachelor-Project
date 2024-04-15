@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using static Antlr4.Runtime.Atn.SemanticContext;
 
 
 namespace Bachelor_Project.Simulation.Agent_Actions
@@ -373,14 +374,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        private static (bool legalmove, Droplet? occupant) CheckBorder(Droplet d, List<Electrode> temp, string? source = null)
+        private static (bool legalmove, Droplet? occupant) CheckBorder(Droplet d, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null)
         {
-            return CheckBorder([d], temp, source);
+            return CheckBorder([d], temp, mergeDroplets: mergeDroplets, source: source);
         }
 
 
         // Used to check if new droplet position upholds border
-        private static (bool legalmove, Droplet? occupant) CheckBorder(List<Droplet> droplets, List<Electrode> temp, string? source = null)
+        private static (bool legalmove, Droplet? occupant) CheckBorder(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null)
         {
             Droplet? occupant = null;
             // For snek, just put in head instead of all positions
@@ -424,15 +425,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                             xCheck++;
                             break;
                     }
-
-                    if (CheckEdge(xCheck, yCheck))
+                    if (droplets[0].Name == "drop3" && temp[0].Name == "el3" && mergeDroplets != null)
+                    {
+                        int a = 2;
+                    }
+                    if (CheckBoardEdge(xCheck, yCheck))
                     {
                         occupant = Program.C.board.Electrodes[xCheck, yCheck].Occupant;
-                        if (!(occupant == null || droplets.Contains(occupant)))
+                        if (occupant != null && !droplets.Contains(occupant))
                         {
-                            if (source != null)
+                            if (source != null || mergeDroplets != null)
                             {
-                                if (!occupant.Equals(Program.C.board.Droplets[source]))
+                                if (occupant.Name != source || (mergeDroplets != null && !mergeDroplets.Contains(occupant.Name)))
                                 {
                                     legalMove = false;
                                 }
@@ -451,18 +455,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return (legalMove, occupant);
         }
 
-        public static bool CheckEdge(int xPos, int yPos)
+        public static bool CheckBoardEdge(int xPos, int yPos)
         {
             return !(xPos < 0 || xPos >= Program.C.board.GetXElectrodes() || yPos < 0 || yPos >= Program.C.board.GetYElectrodes());
         }
 
-        private static bool CheckPlacement(Droplet d, List<Electrode> temp){
-            return CheckPlacement([d], temp);
+        private static bool CheckPlacement(Droplet d, List<Electrode> temp, List<string>? mergeDroplets = null)
+        {
+            return CheckPlacement([d], temp, mergeDroplets: mergeDroplets);
         }
 
-        private static bool CheckPlacement(List<Droplet> droplets, List<Electrode> temp)
+        private static bool CheckPlacement(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null)
         {
-            if (!CheckOtherDroplets(droplets, temp))
+            if (!CheckOtherDroplets(droplets, temp, mergeDroplets))
             {
                 return false;
             }
@@ -474,14 +479,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool CheckOtherDroplets(Droplet d, List<Electrode> temp){
-            return CheckOtherDroplets([d], temp);
+        public static bool CheckOtherDroplets(Droplet d, List<Electrode> temp, List<string>? mergeDroplets = null)
+        {
+            return CheckOtherDroplets([d], temp, mergeDroplets: mergeDroplets);
         }
-        public static bool CheckOtherDroplets(List<Droplet> droplets, List<Electrode> temp) // Returns false if there is a contamination that is not compatible with the droplet
+        public static bool CheckOtherDroplets(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null) // Returns false if there is a contamination that is not compatible with the droplet
         {
             foreach (Electrode e in temp)
             {
-                if (!(e.Occupant == null || droplets.Contains(e.Occupant)))
+                if (!(e.Occupant == null || droplets.Contains(e.Occupant) || (mergeDroplets != null && mergeDroplets.Contains(e.Occupant.Name))))
                 {
                     return false;
                 }
@@ -511,16 +517,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static (bool legalmove, Droplet? occupant) CheckLegalMove(Droplet d, List<Electrode> temp, string? source = null)
+        public static (bool legalmove, Droplet? occupant) CheckLegalMove(Droplet d, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null)
         {
-            return CheckLegalMove([d], temp, source);
+            return CheckLegalMove([d], temp, mergeDroplets: mergeDroplets, source: source) ;
         }
 
-        public static (bool legalmove, Droplet? occupant) CheckLegalMove(List<Droplet> droplets, List<Electrode> temp, string? source = null)
+        public static (bool legalmove, Droplet? occupant) CheckLegalMove(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null)
         {
             bool legalMove = true;
-            (bool borderCheck, Droplet? occupant) = CheckBorder(droplets, temp, source);
-            if (!(borderCheck && CheckPlacement(droplets, temp))){
+            (bool borderCheck, Droplet? occupant) = CheckBorder(droplets, temp, mergeDroplets, source);
+            if (!(borderCheck && CheckPlacement(droplets, temp, mergeDroplets))){
                 legalMove = false;
             }
 
@@ -545,14 +551,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
 
             // Check for other droplets and contamination
-            return CheckLegalMove(d, temp, source).legalmove;
+            return CheckLegalMove(d, temp, source: source).legalmove;
         }
 
 
         public static void AwaitLegalMove(Droplet d, List<Electrode> temp, string? source = null)
         {
             int i = 0;
-            while (!CheckLegalMove(d, temp, source).legalmove)
+            while (!CheckLegalMove(d, temp, source: source).legalmove)
             {
                 Printer.Print(d.Name + " waiting for space");
                 if (i > 50)
@@ -630,7 +636,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 // Do a snekcheck
                 // If move is legal, do the thing
-                if (CheckLegalMove(d, newHead, splitDroplet).legalmove && SnekCheck(newHead[0]))
+                if (CheckLegalMove(d, newHead, source: splitDroplet).legalmove && SnekCheck(newHead[0]))
                 {
 
                     Printer.Print("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
@@ -780,7 +786,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.SnekMode = true;
             Electrode start = dest.GetClosestElectrodeInList(d.Occupy);
             d.SnekList.AddFirst(start);
-            d.CurrentPath = ModifiedAStar.FindPath(d, dest);
+            d.CurrentPath = ModifiedAStar.FindPath(d, dest, mergeDroplets: mergeDroplets);
             int priorCounter = 0;
             int totalExtraAdded = 0;
             while (d.CurrentPath.Value.path[0].Item2 != null && d.CurrentPath.Value.inside > 0) //Move the head inside the blob
@@ -999,7 +1005,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
 
             done.TryRelease(inputDroplets.Count);
-            return droplet.nextElectrodeDestination;
+            return droplet.nextDestination.pointers[0]; //TODO: update to find a better spot to merge
         }
 
         public static void Merge(Droplet d, Droplet mergeDroplet, Electrode center, List<string> mergeDroplets)
@@ -1030,6 +1036,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.Print(d.Name + " and " + mergeDroplet.Name + " has been merged");
 
         }
+
+        /// <summary>
+        /// This is discontinued, and no longer is used.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="mergers"></param>
+        /// <param name="mergePoint"></param>
+        /// <exception cref="Exception"></exception>
 
         public static void MergeMove(Droplet result, List<Droplet> mergers, Electrode mergePoint) // TODO: Can corners be cut?
             // TODO: Maybe CheckLegalMove instead

@@ -223,7 +223,6 @@ namespace Bachelor_Project.Simulation
                 int used1 = 0;
                 int used2 = 0;
                 int used3 = 0;
-
                 /*
                 if (Electrodes[i, j].smallestGScore != null)
                 {

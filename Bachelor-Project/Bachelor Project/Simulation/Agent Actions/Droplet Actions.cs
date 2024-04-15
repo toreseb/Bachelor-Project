@@ -1140,15 +1140,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Droplet d = Program.C.board.Droplets[dName];
 
                 // Find electrode in source closest to where splitter needs to go. nextElectrodeDestination is not set, so we do it here.
-                d.SetNextElectrodeDestination(); // Frick.. To set this, I need the starting point, but I need this to find the starting point.
-                // I am unsure how to fix this.
-
-                Printer.Print("I have set electrode destination for " + d.Name); // We are never getting to this
+                d.SetNextElectrodeDestination(); 
 
                 Electrode dest = d.nextElectrodeDestination;
                 Electrode start = dest.GetClosestElectrodeInList(source.Occupy);
-
-                Printer.Print("I have found the start point for " + d.Name);
 
                 // Make tree from the closest electrode to dest.
                 Tree sourceTree = BuildTree(source, [], start);
@@ -1158,7 +1153,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 // Find path split droplet needs to follow.
                 TakeOverElectrode(d, start);
-
 
                 d.CurrentPath = ModifiedAStar.FindPath(d, dest, splitDroplet: source.Name);
 
@@ -1174,6 +1168,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 else
                 {
                     throw new Exception("Connected to hardware");
+                }
+
+                // If destination is in or too close to the source, set a destination to split to - d is tasked with going back later.
+                // MinDist = sqrt(d.size)
+                if (CheckMinDistanceDrop(d.nextElectrodeDestination, d, Constants.SplitBuff))
+                {
+                    dest = FindFreeSpaceForSplit(d, source, d.Size);
                 }
 
                 // Move out the amount of spaces this splitter needs
@@ -1237,7 +1238,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                     else
                     {
-                        CoilSnek(d, app: d.nextDestination);
+                        CoilSnek(d, app: d.nextDestination); // TODO: d.nextDestination or dest?
+                        // TODO: This could be an issue if we are not far enough removed from source and its boarder.
+                        // Actually, I think it can handle it.
                     }
                 }
 
@@ -1280,6 +1283,158 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                 }
             }
+        }
+
+        public static Electrode? FindFreeSpaceForSplit(Droplet d, Droplet source, int size)
+        {
+            bool foundSpace = false;
+            List<Electrode> activeEl = source.Occupy;
+            List<Electrode> newSpace = [];
+
+            // Search for space until a large enough one is found.
+            while (!foundSpace)
+            {
+                // Use extended neighbors until a free space is found.
+                List<(Electrode, Direction?)> neighbors = activeEl[0].GetExtendedNeighbors();
+                activeEl.RemoveAt(0);
+
+                foreach ((Electrode e, Direction? dir) in neighbors)
+                {
+                    // If e is not a space that d can occupy, add it to the list
+                    if(e.Occupant != null)
+                    {
+                        activeEl.Add(e);
+                    }
+                    else
+                    {
+                        foreach (string contam in d.Contamintants)
+                        {
+                            if (e.GetContaminants().Contains(contam))
+                            {
+                                activeEl.Add(e);
+                            }
+                        }
+                    }
+
+                    // If e IS a space that d can occupy, check if the space is large enough.
+                    if (!activeEl.Contains(e))
+                    {
+                        (bool, Electrode?) spaceCheck = CheckIfLargeEnoughSpace(d, e, size);
+                        if (spaceCheck.Item1)
+                        {
+                            return spaceCheck.Item2;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static (bool, Electrode?) CheckIfLargeEnoughSpace(Droplet d, Electrode e, int size)
+        {
+            // REMINDER dropletSize kvadratrod væk fra source mindst. To be safe the furthest one away?
+            List<Electrode> checkingList = [e];
+            List<Electrode> clearList = [e];
+            List<(Electrode, Direction?)> neighbors = [];
+            
+            while(clearList.Count < size)
+            {
+                if (checkingList.Count == 0)
+                {
+                    return (false, null);
+                }
+
+                neighbors = checkingList[0].GetExtendedNeighbors();
+                checkingList.RemoveAt(0);
+
+                foreach ((Electrode n, Direction? dir) in neighbors)
+                {
+                    if (n.Occupant == null)
+                    {
+                        bool contamOk = true;
+                        foreach (string contam in e.GetContaminants())
+                        {
+                            if (d.Contamintants.Contains(contam))
+                            {
+                                contamOk = false;
+                            }
+                        }
+                        if (contamOk)
+                        {
+                            checkingList.Add(n);
+                            clearList.Add(n);
+                        }
+                    }
+                }
+            }
+
+            // Find middle of space
+            Electrode? middle = ApproximateMiddleOfSpace(clearList);
+
+            return (true, middle);
+        }
+
+        public static bool CheckMinDistanceDrop(Electrode dest, Droplet d, int allowedDist)
+        {
+            foreach (Electrode e in d.Occupy)
+            {
+                if (Electrode.GetDistance(dest, e) < allowedDist)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static Electrode? ApproximateMiddleOfSpace(List<Electrode> space)
+        {
+            int minX = int.MaxValue;
+            int maxX = 0;
+            int minY = int.MaxValue;
+            int maxY = 0;
+
+            foreach (Electrode e in space)
+            {
+                if (e.ePosX < minX) minX = e.ePosX;
+                if (e.ePosY < minY) minY = e.ePosY;
+                if (e.ePosX > maxX) maxX = e.ePosX;
+                if (e.ePosY > maxY) maxY = e.ePosY;
+            }
+
+            // Find electrode in middle of area
+            int midX = (minX + maxX) / 2;
+            int midY = (minY + maxY) / 2;
+
+            List<(Electrode, Direction?)> neighbors = [];
+            List<Electrode> checking = [];
+
+            // If Electrode[midX, midY] is in space, return it.
+            // Otherwise, look at neighbors until one is in space.
+            if (space.Contains(Program.C.board.Electrodes[midX, midY]))
+            {
+                return Program.C.board.Electrodes[midX, midY];
+            }
+            else
+            {
+                checking.Add(Program.C.board.Electrodes[midX, midY]);
+                while (checking.Count > 0)
+                {
+                    neighbors = checking[0].GetExtendedNeighbors();
+                    checking.RemoveAt(0);
+
+                    foreach ((Electrode n, Direction? dir) in neighbors)
+                    {
+                        if (space.Contains(n))
+                        {
+                            return n;
+                        }
+                        checking.Add(n);
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -100,7 +100,7 @@ namespace Bachelor_Project.Simulation
             {
                 nextElectrodeDestination = GetClosestFreePointer(nextDestination);
             }
-            else
+            else if (nextElectrodeDestination == null)
             {
                 nextElectrodeDestination = Occupy[0];
                 // TODO: think of making this better

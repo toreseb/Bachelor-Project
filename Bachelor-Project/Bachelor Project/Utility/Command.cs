@@ -101,27 +101,7 @@ namespace Bachelor_Project.Utility
                     Printer.Print("Split");
                     Dictionary<string, double> ratios = [];
 
-                    if (ActionValue[0] == null)
-                    {
-                        foreach(string d in OutputDroplets)
-                        {
-                            ratios.Add(d, 100 / OutputDroplets.Count);
-                        }
-                    }
-                    else
-                    {
-                        double sum = 0;
-
-                        foreach(string d in OutputDroplets)
-                        {
-                            sum += ((Dictionary<string, int>)ActionValue[0])[d];
-                        }
-
-                        foreach (string d in OutputDroplets)
-                        {
-                            ratios.Add(d, ((Dictionary<string, int>)ActionValue[0])[d] / sum * 100);
-                        }
-                    }
+                    ratios = Calc.Ratio((Dictionary<string, int>)ActionValue[0], OutputDroplets);
 
                     Dictionary<string, UsefullSemaphore> dropSem = new Dictionary<string, UsefullSemaphore>();
 

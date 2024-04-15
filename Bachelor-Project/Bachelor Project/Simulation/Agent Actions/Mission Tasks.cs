@@ -219,7 +219,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.Print(d.Name + " : TEMPING");
             d.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(d, heater);
-            Droplet_Actions.CoilSnek(d, center: closest, into: heater);
             Thread.Sleep(1000); // Time to heat?
             d.ChangeType(newType);
         }

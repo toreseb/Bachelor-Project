@@ -12,9 +12,11 @@ namespace Bachelor_Project
         public int ActuatorID { get; set; }
         public bool Status { get; set; }
         public bool NextStatus { get; set; }
-
+        
+        
         public Actuator() : this(0, 0, 1, 1)
         {
+            CoilInto = true;
         }
 
     }

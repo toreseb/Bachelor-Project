@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
-    public class Apparature(int x, int y, int sizeX, int sizeY, string name = "") : TileEntity(x, y,sizeX, sizeY, name)
+    public abstract class Apparature(int x, int y, int sizeX, int sizeY, string name = "") : TileEntity(x, y,sizeX, sizeY, name)
     {
         public List<Electrode> pointers = [];
 
-        
+        public bool CoilInto { get; set; }
+
 
     }
 }

@@ -70,7 +70,7 @@ namespace Bachelor_Project.Utility
                 }
             }
         }
-        public void RemoveLeaf(Apparature? into = null)
+        public void RemoveLeaf(bool into = false)
         {
             Node cLeaf = Leaves[0];
             if (cLeaf.Parent != null || into != null)
@@ -99,7 +99,7 @@ namespace Bachelor_Project.Utility
 
 
  
-        public void RemoveTree(Apparature? into = null)
+        public void RemoveTree(bool into = false)
         {
             while(Leaves.Count > 0)
             {

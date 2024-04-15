@@ -12,7 +12,10 @@ namespace Bachelor_Project.Electrode_Types
     {
         readonly int SensorID;
 
-
+        public Sensor() : this(0, 0, 1, 1)
+        {
+            CoilInto = false;
+        }
     }
 
     

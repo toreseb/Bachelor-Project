@@ -110,10 +110,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             Electrode closest = d.GetClosestFreePointer(dest);
 
+            
+
             try
             {
                 MoveToDest(d, closest);
-                CoilSnek(d, closest, into: dest);
+                CoilSnek(d, closest, app: dest);
             }
             catch (NewWorkException)
             {
@@ -881,7 +883,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         // Coil snake
         // Could try doing it without thinking of it as a snake, just a bunch of small droplets moving to be a big one.
-        public static void CoilSnek(Droplet d, Electrode? center = null, Apparature? into = null, bool input = false)
+        public static void CoilSnek(Droplet d, Electrode? center = null, Apparature? app = null, bool input = false)
         {
             d.MergeReady = false;
 
@@ -922,7 +924,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors();
                 foreach (var item in neighbors)
                 {
-                    if (CheckLegalMove(d,[item.Item1]).legalmove && !seenElectrodes.Contains(item.Item1) && (item.Item1.Apparature == into || (into == null && item.Item1.Occupant == d)))
+                    if (CheckLegalMove(d,[item.Item1]).legalmove && !seenElectrodes.Contains(item.Item1) && (app != null && ((app.CoilInto && item.Item1.Apparature == app)||(!app.CoilInto)) || (app == null && (item.Item1.Occupant == d || item.Item1.Apparature == null))))
                     {
                         activeBlob2.Add(item.Item1);
                         seenElectrodes.Add(item.Item1);
@@ -976,7 +978,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 
                 
             }
-            snekTree.RemoveTree(into);
+            snekTree.RemoveTree(app != null && app.CoilInto);
 
             Printer.PrintBoard();
             d.MergeReady = true;
@@ -1228,7 +1230,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                     else
                     {
-                        CoilSnek(d, into: d.nextDestination);
+                        CoilSnek(d, app: d.nextDestination);
                     }
                 }
 

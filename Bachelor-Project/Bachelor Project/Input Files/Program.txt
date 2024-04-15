@@ -5,5 +5,5 @@ contam water blood;
 contam blood water;
 contam milk blood water;
 merge drop4 bloodwater drop1 drop2 drop3;
-temp drop4 heat0;
+temp drop4 heat0 1;
 output drop4 out0;

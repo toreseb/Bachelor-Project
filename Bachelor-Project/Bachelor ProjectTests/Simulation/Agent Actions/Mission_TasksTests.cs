@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bachelor_Project.Utility;
+using Bachelor_Project.Electrode_Types.Actuator_Types;
 
 namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 {
@@ -32,6 +33,73 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Program.C = C;
             board = Program.C.board;
         }
+
+        [TestMethod()]
+        public void InputDropletTest()
+        {
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet Wat1 = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", Wat1);
+            Wat1.Thread.Start();
+
+            Assert.AreEqual(0, Wat1.Occupy.Count);
+
+            Task input1 = new(() => Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 12));
+            Wat1.GiveWork(input1);
+            input1.Wait();
+            Assert.AreEqual(2, Wat1.Occupy.Count);
+        }
+
+        [TestMethod()]
+        public void OutputDropletTest()
+        {
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet Wat1 = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", Wat1);
+            Wat1.Thread.Start();
+
+            Task input1 = new(() => Mission_Tasks.InputDroplet(Wat1, board.Input["in0"], 12));
+            Wat1.GiveWork(input1);
+            input1.Wait();
+            Assert.AreEqual(2, Wat1.Occupy.Count);
+            Assert.AreEqual(false, Wat1.Removed);
+            Task output1 = new(() => Mission_Tasks.OutputDroplet(Wat1, board.Output["out0"]));
+            Wat1.GiveWork(output1);
+            output1.Wait();
+            Assert.AreEqual(0, Wat1.Occupy.Count);
+            Assert.AreEqual(true, Wat1.Removed);
+
+        }
+
+        [TestMethod()]
+        public void MixDropletsTest()
+        {
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet Wat1 = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", Wat1);
+            Wat1.Thread.Start();
+
+            Task input1 = new(() => Mission_Tasks.InputDroplet(Wat1, board.Input["in0"], 12));
+            Wat1.GiveWork(input1);
+            input1.Wait();
+            Assert.AreEqual(2, Wat1.Occupy.Count);
+
+            Assert.AreEqual(0, Wat1.Occupy[0].GetContaminants().Count);
+            Assert.AreEqual(0, Wat1.Occupy[1].GetContaminants().Count);
+
+            Task mix1 = new(() => Mission_Tasks.MixDroplets(Wat1, "square"));
+            Wat1.GiveWork(mix1);
+            mix1.Wait();
+            Assert.AreEqual(2, Wat1.Occupy.Count);
+
+            Assert.AreEqual(1, Wat1.Occupy[0].GetContaminants().Count);
+            Assert.AreEqual(1, Wat1.Occupy[1].GetContaminants().Count);
+            Assert.AreEqual(Wat1.Substance_Name, Wat1.Occupy[0].GetContaminants()[0]);
+            Assert.AreEqual(Wat1.Substance_Name, Wat1.Occupy[1].GetContaminants()[0]);
+
+        }
+
+
 
         [TestMethod()]
         public void MergeDropletsTest()
@@ -83,7 +151,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             }
             Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, board.Droplets[OutputDroplets[0]], calcMerge, sem2, CommandDestination));
 
-            
+
             board.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);
             mergeDroplet.Wait();
             Assert.AreEqual(3, Wat4.Occupy.Count);
@@ -95,6 +163,67 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
 
 
+
+        }
+
+        [TestMethod()]
+        public void TempDropletTest()
+        {
+
+
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            Droplet Wat1 = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", Wat1);
+            Wat1.Thread.Start();
+
+            Task input1 = new(() => Mission_Tasks.InputDroplet(Wat1, board.Input["in0"], 12));
+            Wat1.GiveWork(input1);
+            input1.Wait();
+            Assert.AreEqual(2, Wat1.Occupy.Count);
+
+            Assert.AreEqual(0, Wat1.Occupy[0].GetContaminants().Count);
+            Assert.AreEqual(0, Wat1.Occupy[1].GetContaminants().Count);
+
+            int time = 1;
+            Task temp1 = new(() => Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], Wat1.Substance_Name, time));
+            Wat1.GiveWork(temp1);
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            temp1.Wait();
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+
+            Assert.IsTrue(elapsedMs >= time * 1000);
+        }
+
+        [TestMethod()]
+        public void SenseDropletTest()
+        {
+            board = Program.C.SetBoard(specialBoardDataLocation + "//WithSensors.json");
+            Droplet Wat1 = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", Wat1);
+            Wat1.Thread.Start();
+
+            Task input1 = new(() => Mission_Tasks.InputDroplet(Wat1, board.Input["in0"], 12));
+            Wat1.GiveWork(input1);
+            input1.Wait();
+
+            Assert.AreEqual(null, board.Sensors["sens0"].value);
+
+            Task sense1 = new(() => Mission_Tasks.SenseDroplet(Wat1, board.Sensors["sens0"]));
+            Wat1.GiveWork(sense1);
+            sense1.Wait();
+
+            Assert.AreNotEqual(null, board.Sensors["sens0"].value);
+            Assert.AreEqual("0000FF", (string)board.Sensors["sens0"].value[0]);
+
+            Wat1.Color = "FFFF00";
+
+            Task sense2 = new(() => Mission_Tasks.SenseDroplet(Wat1, board.Sensors["sens0"]));
+            Wat1.GiveWork(sense2);
+            sense2.Wait();
+
+            Assert.AreNotEqual(null, board.Sensors["sens0"].value);
+            Assert.AreEqual("FFFF00", (string)board.Sensors["sens0"].value[0]);
 
         }
     }

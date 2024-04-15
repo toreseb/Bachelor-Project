@@ -65,22 +65,22 @@ namespace Bachelor_Project.Utility
             {
                 case "input":
                     
-                    Printer.Print("Input");
+                    Printer.PrintLine("Input");
                     command = new(() => Mission_Tasks.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[0]], int.Parse((string)ActionValue[1]), CommandDestination));
                     b.Droplets[OutputDroplets[0]].GiveWork(command);
                     break;
                 case "output":
-                    Printer.Print("Output");
+                    Printer.PrintLine("Output");
                     Task outputDroplet = new(() => Mission_Tasks.OutputDroplet(b.Droplets[InputDroplets[0]], b.Output[NextName]));
                     b.Droplets[InputDroplets[0]].GiveWork(outputDroplet);
                     break;
                 case "waste":
-                    Printer.Print("Waste");
+                    Printer.PrintLine("Waste");
                     Task wasteDroplet = new(() => Mission_Tasks.WasteDroplet(b.Droplets[InputDroplets[0]]));
                     b.Droplets[InputDroplets[0]].GiveWork(wasteDroplet);
                     break;
                 case "merge":
-                    Printer.Print("Merge");
+                    Printer.PrintLine("Merge");
 
                     UsefullSemaphore sem1 = new(InputDroplets.Count);
                     Task<Electrode> calcMerge = new(() => Droplet_Actions.MergeCalc(InputDroplets, b.Droplets[OutputDroplets[0]], sem1));
@@ -98,7 +98,7 @@ namespace Bachelor_Project.Utility
 
                     break;
                 case "split":
-                    Printer.Print("Split");
+                    Printer.PrintLine("Split");
                     Dictionary<string, double> ratios = [];
 
                     ratios = Calc.Ratio((Dictionary<string, int>)ActionValue[0], OutputDroplets);
@@ -120,34 +120,34 @@ namespace Bachelor_Project.Utility
                     }
                     break;
                 case "mix":
-                    Printer.Print("Mix");
+                    Printer.PrintLine("Mix");
                     Task mixDroplet = new(() => Mission_Tasks.MixDroplets(b.Droplets[InputDroplets[0]], (string)ActionValue[0], (string)ActionValue[1]));
                     b.Droplets[InputDroplets[0]].GiveWork(mixDroplet);
                     break;
                 case "temp":
-                    Printer.Print("Temp");
-                    Task tempDroplet = new(() => Mission_Tasks.TempDroplet(b.Droplets[InputDroplets[0]], (Heater)b.Actuators[NextName], (string)ActionValue[0]));
+                    Printer.PrintLine("Temp");
+                    Task tempDroplet = new(() => Mission_Tasks.TempDroplet(b.Droplets[InputDroplets[0]], (Heater)b.Actuators[NextName], (string)ActionValue[0], int.Parse((string)ActionValue[1])));
                     b.Droplets[InputDroplets[0]].GiveWork(tempDroplet);
                     break;
                 case "sense":
-                    Printer.Print("Sense");
+                    Printer.PrintLine("Sense");
                     Task senseDroplet = new(() => Mission_Tasks.SenseDroplet(b.Droplets[InputDroplets[0]], b.Sensors[NextName]));
                     b.Droplets[InputDroplets[0]].GiveWork(senseDroplet);
                     break;
                 default:
                     throw new ArgumentException("Invalid command type");
             }
-            Console.Write("[ ");
+            Printer.Print("[ ");
             foreach (var item in InputDroplets)
             {
-                Console.Write(item + ", ");
+                Printer.Print(item + ", ");
             }
-            Console.Write("] -> [ ");
+            Printer.Print("] -> [ ");
             foreach (var item in OutputDroplets)
             {
-                Console.Write(item + ", ");
+                Printer.Print(item + ", ");
             }
-            Printer.Print("]");
+            Printer.PrintLine("]");
 
 
         }

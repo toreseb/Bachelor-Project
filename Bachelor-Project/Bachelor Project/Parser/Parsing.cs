@@ -56,33 +56,33 @@ namespace Bachelor_Project.Parsing
             switch (context.GetChild(0).GetText())
             {
                 case "input": //INPUT , droplet name , droplet type , input name, input volume
-                    Printer.Print($"input droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} of type: {context.GetChild<ProgramParser.DroplettypeContext>(0).GetText()} at input: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()} with volume: {context.GetChild<ProgramParser.NumberContext>(0).GetText()}");
+                    Printer.PrintLine($"input droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} of type: {context.GetChild<ProgramParser.DroplettypeContext>(0).GetText()} at input: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()} with volume: {context.GetChild<ProgramParser.NumberContext>(0).GetText()}");
                     try
                     {
                         Dropletpairs.Add(context.GetChild<ProgramParser.DropletnameContext>(0).GetText(), context.GetChild<ProgramParser.DroplettypeContext>(0).GetText());
                     }
                     catch (Exception)
                     {
-                        Printer.Print($"Droplet with name: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} already exists");
+                        Printer.PrintLine($"Droplet with name: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} already exists");
                     }
                     Commands.Add(new Command("input", [], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], value:[context.GetChild<ProgramParser.TileentityContext>(0).GetText(), context.GetChild<ProgramParser.NumberContext>(0).GetText()]));
                     break;
                 case "output": //OUTPUT , droplet name , output name
-                    Printer.Print($"output droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} at output: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()}");
+                    Printer.PrintLine($"output droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} at output: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()}");
                     Commands.Add(new Command( "output", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [], nextName: context.GetChild<ProgramParser.TileentityContext>(0).GetText(), nextType: typeof(Output)));
                     break;
                 case "waste": //WASTE , droplet name
-                    Printer.Print($"waste droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()}");
+                    Printer.PrintLine($"waste droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()}");
                     Commands.Add(new Command("waste", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], []));
                     break;
                 case "contam": //CONTAMINATE, droplet type, (droplet type N)*
                     string contaminator = context.GetChild<ProgramParser.DroplettypeContext>(0).GetText();
-                    Console.Write($"droplets of type: {contaminator} contaminates droplets of type: ");
+                    Printer.Print($"droplets of type: {contaminator} contaminates droplets of type: ");
                     List<string> contaminants = [];
                     i = 1;
                     while (context.GetChild<ProgramParser.DroplettypeContext>(i) != null)
                     {
-                        Console.Write(context.GetChild<ProgramParser.DroplettypeContext>(i).GetText() + " ");
+                        Printer.Print(context.GetChild<ProgramParser.DroplettypeContext>(i).GetText() + " ");
                         contaminants.Add(context.GetChild<ProgramParser.DroplettypeContext>(i).GetText());
                         if (Contaminated.ContainsKey(context.GetChild<ProgramParser.DroplettypeContext>(i).GetText()))
                         {
@@ -95,7 +95,7 @@ namespace Bachelor_Project.Parsing
 
                         i++;
                     }
-                    Printer.Print();
+                    Printer.PrintLine();
                     if (!Contaminated.ContainsKey(contaminator))
                     {
                         Contaminated.Add(contaminator, []);
@@ -120,7 +120,7 @@ namespace Bachelor_Project.Parsing
                         mergers.Add(context.GetChild<ProgramParser.DropletnameContext>(i).GetText());
                         i++;
                     }
-                    Printer.Print(output);
+                    Printer.PrintLine(output);
                     Commands.Add(new Command("merge", mergers, [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], value: [context.GetChild<ProgramParser.DroplettypeContext>(0).GetText()]));
                     break;
                 case "split": //SPLIT , olddroplet name , new droplet1 name, ratio1? , new droplet2 name, ratio2? , (new dropletN name, ratioN? )*
@@ -161,7 +161,7 @@ namespace Bachelor_Project.Parsing
                         }
                         i++;
                     }
-                    Printer.Print(output);
+                    Printer.PrintLine(output);
                     if (usingRatios == 1)
                     {
                         Commands.Add(new Command("split", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], splits, value: ratios));
@@ -173,36 +173,36 @@ namespace Bachelor_Project.Parsing
                     
                     break;
                 case "mix": //MIX , droplet name , pattern , (new droplet type)?
-                    Console.Write($"mix droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} in the shape: {context.GetChild<ProgramParser.ShapeContext>(0).GetText()} pattern");
+                    Printer.Print($"mix droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} in the shape: {context.GetChild<ProgramParser.ShapeContext>(0).GetText()} pattern");
                     string newType;
                     if(context.GetChild<ProgramParser.DroplettypeContext>(0) != null)
                     {
                         newType = context.GetChild<ProgramParser.DroplettypeContext>(0).GetText();
-                        Console.Write($" with new type: {context.GetChild<ProgramParser.DroplettypeContext>(0).GetText()}");
+                        Printer.Print($" with new type: {context.GetChild<ProgramParser.DroplettypeContext>(0).GetText()}");
                     }
                     else
                     {
                         newType = Dropletpairs[context.GetChild<ProgramParser.DropletnameContext>(0).GetText()];
                     }
-                    Printer.Print();
+                    Printer.PrintLine();
                     Commands.Add(new Command("mix", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], value: [context.GetChild<ProgramParser.ShapeContext>(0).GetText(), newType]));
                     break;
                 case "temp": //TEMP , droplet name , heater name , (new droplet type)?
-                    Console.Write($"heat droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} with heater: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()}");
+                    Printer.Print($"heat droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} with heater: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()}");
                     if (context.GetChild<ProgramParser.DroplettypeContext>(0) != null)
                     {
                         newType = context.GetChild<ProgramParser.DroplettypeContext>(0).GetText();
-                        Console.Write($" with new type: {context.GetChild<ProgramParser.DroplettypeContext>(0).GetText()}");
+                        Printer.Print($" with new type: {context.GetChild<ProgramParser.DroplettypeContext>(0).GetText()}");
                     }
                     else
                     {
                         newType = Dropletpairs[context.GetChild<ProgramParser.DropletnameContext>(0).GetText()];
                     }
-                    Printer.Print();
-                    Commands.Add(new Command("temp", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], nextName: context.GetChild<ProgramParser.TileentityContext>(0).GetText(), nextType: typeof(Heater), newType));
+                    Printer.PrintLine();
+                    Commands.Add(new Command("temp", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], nextName: context.GetChild<ProgramParser.TileentityContext>(0).GetText(), nextType: typeof(Heater),  value: [newType, context.GetChild<ProgramParser.NumberContext>(0).GetText()]));
                     break;
                 case "sense": //SENSE , droplet name , sensor
-                    Printer.Print($"sense droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} with sensor: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()}");
+                    Printer.PrintLine($"sense droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} with sensor: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()}");
                     Commands.Add(new Command("sense", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], nextName: context.GetChild<ProgramParser.TileentityContext>(0).GetText(), nextType: typeof(Sensor)));
                     break;
                 default:

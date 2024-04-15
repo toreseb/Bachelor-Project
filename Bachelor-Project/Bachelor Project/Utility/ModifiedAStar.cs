@@ -22,7 +22,7 @@ namespace Bachelor_Project.Utility
             {
                 
                 Direction oldDir = cameFrom[current].Item2;
-                Printer.Print(current.Name + " dir: " + oldDir);
+                Printer.PrintLine(current.Name + " dir: " + oldDir);
                 current = cameFrom[current].Item1;
                 totalPath.AddFirst((current, oldDir));
                 if (d.Occupy.Contains(current))

@@ -167,8 +167,12 @@ namespace Bachelor_Project.Simulation
                     while (TaskQueue.Count > 0)
                     {
                         Task cTask = TaskQueue.Dequeue();
-                        Printer.Print("Droplet " + Name + " is doing work");
+                        Printer.PrintLine("Droplet " + Name + " is doing work");
                         cTask.Start();
+                        if (Name == "drop4")
+                        {
+                            int a = 2;
+                        }
                         try
                         {
 
@@ -176,12 +180,12 @@ namespace Bachelor_Project.Simulation
                         }
                         catch (Exception e)
                         {
-                            Printer.Print("Droplet " + Name + " has been stopped");
+                            Printer.PrintLine("Droplet " + Name + " has been stopped");
 
                             return;
                         }
 
-                        Printer.Print("Droplet " + Name + " has done work");
+                        Printer.PrintLine("Droplet " + Name + " has done work");
                     }
 
                 }
@@ -189,7 +193,8 @@ namespace Bachelor_Project.Simulation
             catch (ThreadInterruptedException)
             {
 
-            }catch (OperationCanceledException)
+            }
+            catch (OperationCanceledException)
             {
 
             }
@@ -252,6 +257,7 @@ namespace Bachelor_Project.Simulation
             }
             SnekMode = false;
             Removed = true;
+            Printer.PrintLine("Droplet " + Name + " has been stopped");
             Stop();
             Thread.Interrupt();
         }

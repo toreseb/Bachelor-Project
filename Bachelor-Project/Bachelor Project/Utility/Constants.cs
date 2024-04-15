@@ -10,6 +10,7 @@ namespace Bachelor_Project.Utility
     {
         public static readonly int DestBuff = 4;
         public static readonly int SplitBuff = 3;
+        public const int MixAmount = 5;
     }
 
 }

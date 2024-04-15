@@ -4,18 +4,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bachelor_Project.Simulation;
+using Bachelor_Project.Utility;
 
 namespace Bachelor_Project.Electrode_Types
 {
     
-    public class Sensor(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
+    public abstract class Sensor(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
     {
-        readonly int SensorID;
+        readonly int sensorID;
 
-        public Sensor() : this(0, 0, 1, 1)
+        abstract public string Type { get; set; }
+
+        public override bool CoilInto { get; set; } = false;
+
+        public object[]? value;
+
+        public object[]? Sense()
         {
-            CoilInto = false;
+            if (Settings.ConnectedToHardware)
+            {
+                //TODO: Somehow gain data from the Hardware
+                throw new NotImplementedException();
+            }
+            else
+            {
+                value = SenseFunc();
+                return value;
+
+            }
         }
+
+        public abstract object[]? SenseFunc();
+
     }
 
     

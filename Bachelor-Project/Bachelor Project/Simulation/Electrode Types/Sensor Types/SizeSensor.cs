@@ -8,5 +8,15 @@ namespace Bachelor_Project.Electrode_Types.Sensor_Types
 {
     internal class SizeSensor(int x, int y, int sizeX, int sizeY) : Sensor(x, y, sizeX, sizeY)
     {
+
+        override public string Type { get; set; } = "size";
+        public override object[]? SenseFunc() // Returns [Volume, Size]
+        {
+            if (pointers[0].Occupant != null)
+            {
+                return [pointers[0].Occupant.Volume, pointers[0].Occupant.Size];
+            }
+            return null;
+        }
     }
 }

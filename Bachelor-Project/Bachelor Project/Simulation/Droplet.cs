@@ -76,7 +76,7 @@ namespace Bachelor_Project.Simulation
             (int x, int y) = a.GetCenter();
             Electrode? closestElectrode = null;
             double minDistance = double.MaxValue;
-            foreach (Electrode e in d.Occupy)
+            foreach (Electrode e in d.Occupy) // BROKEN - There is a problem when splitting as there is nothing in Occupy
             {
                 double distance = Electrode.GetDistance(e, new Electrode(x, y));
                 if (distance < minDistance)
@@ -88,7 +88,8 @@ namespace Bachelor_Project.Simulation
 
             if (closestElectrode == null)
             {
-                throw new Exception("Droplet has no electrodes");
+                return a.pointers[0];
+                //throw new Exception("Droplet has no electrodes");
             }
             return closestElectrode;
         }
@@ -101,7 +102,9 @@ namespace Bachelor_Project.Simulation
             }
             else
             {
-                throw new NullReferenceException("Can't find the closest electrode destination, when next destination is null");
+                nextElectrodeDestination = Occupy[0];
+                // TODO: think of making this better
+                //throw new NullReferenceException("Can't find the closest electrode destination, when next destination is null");
             }
             
         }
@@ -117,7 +120,7 @@ namespace Bachelor_Project.Simulation
             }
             else
             {
-                center = GetClosestPartToApparature(this, a);
+                center = GetClosestPartToApparature(this, a); // DEBUG: Droplet 1 is stopped here??
             }
             foreach (Electrode electrode in a.pointers)
             {

@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Bachelor_Project.Utility;
 using System.Security.Cryptography;
+using Bachelor_Project.Electrode_Types.Actuator_Types;
+using Bachelor_Project.Parsing;
+
 
 namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 {
@@ -16,9 +19,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         static string inputfiles = Directory.GetCurrentDirectory() + "\\..\\..\\..\\Input Files\\";
         static string testBoardData = "TestBoardData.json";
         static string testBoardDataBig = "TestBoardDataBig.json";
+        static string testBoardDataBigWithMoreHeat = "TestBoardDataBigWithMoreHeat.json";
 
         static string testBoardDataLocation = inputfiles + "\\" + testBoardData;
         static string testBoardDataBigLocation = inputfiles + "\\" + testBoardDataBig;
+        static string testBoardDataBigWithMoreHeatLocation = inputfiles + "\\" + testBoardDataBigWithMoreHeat;
 
         static Board board;
 
@@ -1151,12 +1156,39 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         [TestMethod()]
         public void splitDropletTest_TwoSplitters()
         {
-            Assert.Fail();
+            Droplet w1 = new Droplet("Water", "Wat1");
+            Droplet w2 = new Droplet("Water", "Wat2");
+            Droplet w3 = new Droplet("Water", "Wat3");
 
-            Droplet w = new Droplet("Water", "Wat1");
-            board = Program.C.SetBoard(testBoardDataBigLocation);
-            board.Droplets.Add("Wat1", w);
-            w.SetSizes(48);
+            board = Program.C.SetBoard(testBoardDataBigWithMoreHeatLocation);
+
+            board.Droplets.Add("Wat1", w1);
+            board.Droplets.Add("Wat2", w2);
+            board.Droplets.Add("Wat3", w3);
+
+            w2.nextDestination = board.Actuators["heat1"];
+            w2.nextElectrodeDestination = board.Electrodes[7, 0];
+            w3.nextDestination = board.Actuators["heat2"];
+            w3.nextElectrodeDestination = board.Electrodes[7, 8];
+
+            Droplet_Actions.InputDroplet(w1, board.Input["in0"], 48);
+
+            Dictionary<string, double> ratios = new Dictionary<string, double>();
+            ratios.Add(w2.Name, 30);
+            ratios.Add(w3.Name, 70);
+
+            Dictionary<string, UsefullSemaphore> sems = new Dictionary<string, UsefullSemaphore>();
+            sems.Add(w2.Name, new UsefullSemaphore(0, 1));
+            sems.Add(w3.Name, new UsefullSemaphore(0, 1));
+
+            Droplet_Actions.splitDroplet(w1, ratios, sems);
+
+            Droplet_Actions.MoveToApparature(w2, board.Actuators["heat1"]);
+            Droplet_Actions.MoveToApparature(w3, board.Actuators["heat2"]);
+
+            Printer.PrintBoard();
+
+            Assert.Fail();
         }
 
         [TestMethod()]
@@ -1167,6 +1199,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
         [TestMethod()]
         public void splitDropletTest_CloseToDest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void splitDropletTest_WithObstacles()
         {
             Assert.Fail();
         }

@@ -70,22 +70,27 @@ namespace Bachelor_Project.Utility
                 }
             }
         }
-        public void RemoveLeaf()
+        public void RemoveLeaf(Apparature? into = null)
         {
             Node cLeaf = Leaves[0];
-            if (cLeaf.Parent != null)
+            if (cLeaf.Parent != null || into != null)
             {
                 if (!NewElectrodes.Contains(cLeaf.Electrode))
                 {
                     Printer.Print("moving off electrode: "+cLeaf.Electrode.Name);
                     Droplet_Actions.MoveOffElectrode(d, cLeaf.Electrode);
                 }
-                cLeaf.Parent.RemoveChild(cLeaf);
-                
-                if (cLeaf.Parent.Children.Count == 0)
+
+                if (cLeaf.Parent != null)
                 {
-                    Leaves.Add(cLeaf.Parent);
+                    cLeaf.Parent.RemoveChild(cLeaf);
+
+                    if (cLeaf.Parent.Children.Count == 0)
+                    {
+                        Leaves.Add(cLeaf.Parent);
+                    }
                 }
+                
             }
             Nodes.Remove(cLeaf);
             Leaves.Remove(cLeaf);
@@ -94,11 +99,11 @@ namespace Bachelor_Project.Utility
 
 
  
-        public void RemoveTree()
+        public void RemoveTree(Apparature? into = null)
         {
             while(Leaves.Count > 0)
             {
-                RemoveLeaf();
+                RemoveLeaf(into);
 
             }
         }

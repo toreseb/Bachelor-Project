@@ -112,6 +112,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             try
             {
                 MoveToDest(d, closest);
+                CoilSnek(d, closest, into: dest);
             }
             catch (NewWorkException)
             {
@@ -125,7 +126,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static void MoveToDest(Droplet d, Electrode destination, List<string>? mergeDroplets = null) //TODO: Make sure that the droplet moves to the destination
         {
-            if (d.CurrentPath == null || d.CurrentPath.Value.path.Count == 0)
+            if (d.CurrentPath == null || d.CurrentPath.Value.path.Count == 0 || d.CurrentPath.Value.path[^1].Item1 != destination)
             {
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination, mergeDroplets);
             }
@@ -969,7 +970,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 
                 
             }
-            snekTree.RemoveTree();
+            snekTree.RemoveTree(into);
 
             Printer.PrintBoard();
             d.MergeReady = true;
@@ -1114,15 +1115,24 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // Makes a snake of appropriate size a la uncoil and cuts it off.
             // After cutoff, the 'new' droplet is given the task of moving.
 
+            Printer.Print("I am splitting!");
+
             source.Waiting = false;
 
             foreach ((string dName, double ratio) in ratios)
             {
                 Droplet d = Program.C.board.Droplets[dName];
 
-                // Find electrode in source closest to where splitter needs to go.
-                Electrode dest = d.nextDestination.pointers.FirstOrDefault();
+                // Find electrode in source closest to where splitter needs to go. nextElectrodeDestination is not set, so we do it here.
+                d.SetNextElectrodeDestination(); // Frick.. To set this, I need the starting point, but I need this to find the starting point.
+                // I am unsure how to fix this.
+
+                Printer.Print("I have set electrode destination for " + d.Name); // We are never getting to this
+
+                Electrode dest = d.nextElectrodeDestination;
                 Electrode start = dest.GetClosestElectrodeInList(source.Occupy);
+
+                Printer.Print("I have found the start point for " + d.Name);
 
                 // Make tree from the closest electrode to dest.
                 Tree sourceTree = BuildTree(source, [], start);
@@ -1132,6 +1142,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 // Find path split droplet needs to follow.
                 TakeOverElectrode(d, start);
+
+
                 d.CurrentPath = ModifiedAStar.FindPath(d, dest, splitDroplet: source.Name);
 
                 Printer.PrintBoard();
@@ -1184,10 +1196,27 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                     
 
-                    // What if destination is not far enough to have the snake completely split from the source?
+                    // TODO: What if destination is not far enough to have the snake completely split from the source?
                 }
 
-                // TODO: Move all the way away
+                // Move all the way away
+                // I can use CheckBoarder for it and just give it the current position of the droplet that was just split off.
+                while (!CheckBorder(d, d.Occupy).Item1)
+                {
+                    if (d.CurrentPath.Value.path.Count > Constants.DestBuff)
+                    {
+                        bool moved = MoveTowardDest(d, dest, splitDroplet: source.Name).Item1;
+
+                        if (!moved && d.Waiting == false)
+                        {
+                            d.Waiting = true;
+                        }
+                    }
+                    else
+                    {
+                        CoilSnek(d, into: d.nextDestination);
+                    }
+                }
 
 
                 d.Waiting = true;

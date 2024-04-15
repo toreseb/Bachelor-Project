@@ -220,7 +220,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.Print(d.Name + " : TEMPING");
             d.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(d, heater);
-            Droplet_Actions.CoilSnek(d, center: closest, into: heater);
             Thread.Sleep(1000); // Time to heat?
             d.ChangeType(newType);
         }
@@ -231,7 +230,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.Print(d.Name + " : SENSING");
             d.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(d, sensor);
-            Droplet_Actions.CoilSnek(d, center: closest, into: sensor); // Depends if sensor needs to see the entire droplet
+            Droplet_Actions.CoilSnek(d, center: closest, app: sensor); // Depends if sensor needs to see the entire droplet
             Thread.Sleep(1000); // Time to sense?
         }
 

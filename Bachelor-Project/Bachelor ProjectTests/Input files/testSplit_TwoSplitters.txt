@@ -1,0 +1,4 @@
+input drop1 water in2 48;
+split drop1 drop2 30 drop3 70;
+temp drop2 heat1;
+output drop3 out2;

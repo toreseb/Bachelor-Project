@@ -31,7 +31,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
 
-        private static readonly int mixAmount = 5;
+        
 
         // Droplets needing mixing are assumed to have been merged into one drop.
         // Does not take contaminants into account yet.
@@ -112,7 +112,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 // Check if area is legal
                 if (Droplet_Actions.CheckLegalMove(d, temp).legalmove)
                 {
-                    for (int i = 0; i < mixAmount; i++)
+                    for (int i = 0; i < Constants.MixAmount; i++)
                     {
                         foreach (var item in directions)
                         {

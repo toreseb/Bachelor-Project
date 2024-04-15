@@ -34,6 +34,45 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         }
 
         [TestMethod()]
+        public void InputDropletTest()
+        {
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet Wat1 = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", Wat1);
+            Wat1.Thread.Start();
+
+            Assert.AreEqual(0, Wat1.Occupy.Count);
+
+            Task input1 = new(() => Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 12));
+            Wat1.GiveWork(input1);
+            input1.Wait();
+            Assert.AreEqual(2, Wat1.Occupy.Count);
+        }
+
+        [TestMethod()]
+        public void OutputDropletTest()
+        {
+            board = Program.C.SetBoard(testBoardDataLocation);
+            Droplet Wat1 = new("Water", "Wat1");
+            board.Droplets.Add("Wat1", Wat1);
+            Wat1.Thread.Start();
+
+            Task input1 = new(() => Mission_Tasks.InputDroplet(Wat1, board.Input["in0"], 12));
+            Wat1.GiveWork(input1);
+            input1.Wait();
+            Assert.AreEqual(2, Wat1.Occupy.Count);
+            Assert.AreEqual(false, Wat1.Removed);
+            Task Output1 = new(() => Mission_Tasks.OutputDroplet(Wat1, board.Output["out0"]));
+            Wat1.GiveWork(Output1);
+            Output1.Wait();
+            Assert.AreEqual(0, Wat1.Occupy.Count);
+            Assert.AreEqual(true, Wat1.Removed);
+
+        }
+
+
+
+        [TestMethod()]
         public void MergeDropletsTest()
         {
             // Create board and both droplets
@@ -83,7 +122,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             }
             Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, board.Droplets[OutputDroplets[0]], calcMerge, sem2, CommandDestination));
 
-            
+
             board.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);
             mergeDroplet.Wait();
             Assert.AreEqual(3, Wat4.Occupy.Count);
@@ -97,5 +136,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
 
         }
+
+        
     }
 }

@@ -1000,6 +1000,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Tree snekTree = BuildTree(droplet, [], output.pointers[0]);
             snekTree.RemoveTree();
             MoveOffElectrode(droplet, output.pointers[0]);
+            droplet.RemoveFromBoard();
             Printer.PrintBoard();
         }
 

@@ -21,9 +21,9 @@ static public class Program
 
     static void Main(string[] args)
     {
-        Printer.Print("Starting Program");
+        Printer.PrintLine("Starting Program");
         string inputfiles = Directory.GetCurrentDirectory() + "\\..\\..\\..\\Input Files";
-        Printer.Print(inputfiles);
+        Printer.PrintLine(inputfiles);
         
 
 

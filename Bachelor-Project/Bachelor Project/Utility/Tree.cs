@@ -77,7 +77,7 @@ namespace Bachelor_Project.Utility
             {
                 if (!NewElectrodes.Contains(cLeaf.Electrode))
                 {
-                    Printer.Print("moving off electrode: "+cLeaf.Electrode.Name);
+                    Printer.PrintLine("moving off electrode: "+cLeaf.Electrode.Name);
                     Droplet_Actions.MoveOffElectrode(d, cLeaf.Electrode);
                 }
 

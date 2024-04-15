@@ -8,7 +8,7 @@ namespace Bachelor_Project.Utility
 {
     public static class Settings
     {
-        public static bool ConnectedToHardware = false;
-        public static bool Printing = true;
+        public const bool ConnectedToHardware = false;
+        public const bool Printing = true;
     }
 }

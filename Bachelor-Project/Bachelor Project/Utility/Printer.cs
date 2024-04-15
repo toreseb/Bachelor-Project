@@ -85,20 +85,33 @@ namespace Bachelor_Project.Utility
             
         }
 
-        public static void Print(object? message = null)
+        public static void Print(object? message)
         {
             GivePrint(new Task<bool>(() => PrintCommand(message)));
         }
 
-        private static bool PrintCommand(object? message)
+        public static void PrintLine(object? message = null)
         {
-            if (message == null)
+            GivePrint(new Task<bool>(() => PrintCommand(message, true)));
+        }
+
+        private static bool PrintCommand(object? message, bool newLine = false)
+        {
+            if (message == null && newLine == true)
             {
                 Console.WriteLine();
             }
             else
             {
-                Console.WriteLine(message.ToString());
+                if (newLine == true)
+                {
+                    Console.WriteLine(message.ToString());
+                }
+                else
+                {
+                    Console.Write(message.ToString());
+                }
+                
             }
             return true;
         }

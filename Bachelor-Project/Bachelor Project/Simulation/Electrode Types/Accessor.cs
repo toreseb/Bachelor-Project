@@ -10,9 +10,8 @@ namespace Bachelor_Project.Electrode_Types
 
     public class Accessor(int x, int y) : Apparature(x, y, 1, 1)
     {
-        public Accessor() : this(0, 0)
-        {
-            CoilInto = false;
-        }
+        public override bool CoilInto { get; set; } = false;
+
+
     }
 }

@@ -95,7 +95,7 @@ namespace Bachelor_Project.Simulation
                         actuators.Add(item["name"].ToString(), item.ToObject<Heater>());
                         break;
                     default:
-                        Printer.Print("Actuator type not recognized");
+                        Printer.PrintLine("Actuator type not recognized");
                         break;
                     }
                 int startX = (int)item["positionX"] / inf.electrode_size;
@@ -123,35 +123,22 @@ namespace Bachelor_Project.Simulation
             Dictionary<string,Sensor> sensors = [];
             foreach (var item in sList)
             {
-                switch (item.Type.ToString())
+                Sensor trueItem;
+                switch (item["type"].ToString())
                 {
                     case "RGB_color":
-                        sensors.Add(item["name"].ToString(),item.ToObject<RGB_Sensor>());
+                        trueItem = item.ToObject<RGBSensor>();
                         break;
                     case "size":
-                        sensors.Add(item["name"].ToString(), item.ToObject<SizeSensor>());
+                        trueItem = item.ToObject<SizeSensor>();
                         break;
                     default:
-                        Printer.Print("Sensor type not recognized");
-                        break;
+                        Printer.PrintLine("Sensor type not recognized");
+                        throw new NotImplementedException();
                 }
-                int startX = (int)item["positionX"] / inf.electrode_size;
-                int startY = (int)item["positionY"] / inf.electrode_size;
-
-                int endX = ((int)item["positionX"] + (int)item["sizeX"]) / inf.electrode_size;
-                int endY = ((int)item["positionX"] + (int)item["sizeY"]) / inf.electrode_size;
-                int i = endX - startX;
-                while (i >= 0)
-                {
-                    int j = endY - startY;
-                    while (j >= 0)
-                    {
-                        sensors[item["name"].ToString()].pointers.Add(eArray[startY + j, startX + i]);
-                        eArray[startX + i, startY + j].Apparature = sensors[item["name"].ToString()];
-                        j--;
-                    }
-                    i--;
-                }
+                sensors.Add(item["name"].ToString(), trueItem);
+                trueItem.pointers.Add(eArray[trueItem.PositionX/inf.electrode_size, trueItem.PositionY/inf.electrode_size]);
+                eArray[trueItem.PositionX / inf.electrode_size, trueItem.PositionY / inf.electrode_size].Apparature = trueItem;
             }
             Input[] iList = jObject["inputs"].Type != JTokenType.Null ? jObject["inputs"].ToObject<Input[]>():[] ;
             Dictionary<string, Input> iDict = [];

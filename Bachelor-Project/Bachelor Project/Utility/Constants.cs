@@ -8,8 +8,8 @@ namespace Bachelor_Project.Utility
 {
     public static class Constants
     {
-        public static readonly int DestBuff = 4;
-        public static readonly int MixAmount = 5;
+        public const int DestBuff = 4;
+        public const int MixAmount = 5;
     }
 
 }

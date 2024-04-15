@@ -1,0 +1,879 @@
+{
+    "information": [
+        {
+            "platform_name": "4by3example",
+            "platform_type": "example",
+            "platform_ID": 12345678,
+            "sizeX": 180,
+            "sizeY": 180
+        }
+    ],
+    "electrodes": [
+        {
+            "name": "el0",
+            "ID": 0,
+            "electrodeID": 0,
+            "driverID": 0,
+            "positionX": 0,
+            "positionY": 0,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el1",
+            "ID": 1,
+            "electrodeID": 1,
+            "driverID": 0,
+            "positionX": 20,
+            "positionY": 0,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el2",
+            "ID": 2,
+            "electrodeID": 2,
+            "driverID": 0,
+            "positionX": 40,
+            "positionY": 0,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el3",
+            "ID": 3,
+            "electrodeID": 3,
+            "driverID": 0,
+            "positionX": 60,
+            "positionY": 0,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el4",
+            "ID": 4,
+            "electrodeID": 4,
+            "driverID": 0,
+            "positionX": 80,
+            "positionY": 0,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el5",
+            "ID": 5,
+            "electrodeID": 5,
+            "driverID": 0,
+            "positionX": 100,
+            "positionY": 0,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el6",
+            "ID": 6,
+            "electrodeID": 6,
+            "driverID": 0,
+            "positionX": 120,
+            "positionY": 0,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el7",
+            "ID": 7,
+            "electrodeID": 7,
+            "driverID": 0,
+            "positionX": 140,
+            "positionY": 0,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el8",
+            "ID": 8,
+            "electrodeID": 8,
+            "driverID": 0,
+            "positionX": 160,
+            "positionY": 0,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el9",
+            "ID": 9,
+            "electrodeID": 9,
+            "driverID": 0,
+            "positionX": 0,
+            "positionY": 20,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el10",
+            "ID": 10,
+            "electrodeID": 10,
+            "driverID": 0,
+            "positionX": 20,
+            "positionY": 20,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el11",
+            "ID": 11,
+            "electrodeID": 11,
+            "driverID": 0,
+            "positionX": 40,
+            "positionY": 20,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el12",
+            "ID": 12,
+            "electrodeID": 12,
+            "driverID": 0,
+            "positionX": 60,
+            "positionY": 20,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el13",
+            "ID": 13,
+            "electrodeID": 13,
+            "driverID": 0,
+            "positionX": 80,
+            "positionY": 20,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el14",
+            "ID": 14,
+            "electrodeID": 14,
+            "driverID": 0,
+            "positionX": 100,
+            "positionY": 20,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el15",
+            "ID": 15,
+            "electrodeID": 15,
+            "driverID": 0,
+            "positionX": 120,
+            "positionY": 20,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el16",
+            "ID": 16,
+            "electrodeID": 16,
+            "driverID": 0,
+            "positionX": 140,
+            "positionY": 20,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el17",
+            "ID": 17,
+            "electrodeID": 17,
+            "driverID": 0,
+            "positionX": 160,
+            "positionY": 20,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el18",
+            "ID": 18,
+            "electrodeID": 18,
+            "driverID": 0,
+            "positionX": 0,
+            "positionY": 40,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el19",
+            "ID": 19,
+            "electrodeID": 19,
+            "driverID": 0,
+            "positionX": 20,
+            "positionY": 40,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el20",
+            "ID": 20,
+            "electrodeID": 20,
+            "driverID": 0,
+            "positionX": 40,
+            "positionY": 40,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el21",
+            "ID": 21,
+            "electrodeID": 21,
+            "driverID": 0,
+            "positionX": 60,
+            "positionY": 40,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el22",
+            "ID": 22,
+            "electrodeID": 22,
+            "driverID": 0,
+            "positionX": 80,
+            "positionY": 40,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el23",
+            "ID": 23,
+            "electrodeID": 23,
+            "driverID": 0,
+            "positionX": 100,
+            "positionY": 40,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el24",
+            "ID": 24,
+            "electrodeID": 24,
+            "driverID": 0,
+            "positionX": 120,
+            "positionY": 40,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el25",
+            "ID": 25,
+            "electrodeID": 25,
+            "driverID": 0,
+            "positionX": 140,
+            "positionY": 40,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el26",
+            "ID": 26,
+            "electrodeID": 26,
+            "driverID": 0,
+            "positionX": 160,
+            "positionY": 40,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el27",
+            "ID": 27,
+            "electrodeID": 27,
+            "driverID": 0,
+            "positionX": 0,
+            "positionY": 60,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el28",
+            "ID": 28,
+            "electrodeID": 28,
+            "driverID": 0,
+            "positionX": 20,
+            "positionY": 60,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el29",
+            "ID": 29,
+            "electrodeID": 29,
+            "driverID": 0,
+            "positionX": 40,
+            "positionY": 60,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el30",
+            "ID": 30,
+            "electrodeID": 30,
+            "driverID": 0,
+            "positionX": 60,
+            "positionY": 60,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el31",
+            "ID": 31,
+            "electrodeID": 31,
+            "driverID": 0,
+            "positionX": 80,
+            "positionY": 60,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el32",
+            "ID": 32,
+            "electrodeID": 32,
+            "driverID": 0,
+            "positionX": 100,
+            "positionY": 60,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el33",
+            "ID": 33,
+            "electrodeID": 33,
+            "driverID": 0,
+            "positionX": 120,
+            "positionY": 60,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el34",
+            "ID": 34,
+            "electrodeID": 34,
+            "driverID": 0,
+            "positionX": 140,
+            "positionY": 60,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el35",
+            "ID": 35,
+            "electrodeID": 35,
+            "driverID": 0,
+            "positionX": 160,
+            "positionY": 60,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el36",
+            "ID": 36,
+            "electrodeID": 36,
+            "driverID": 0,
+            "positionX": 0,
+            "positionY": 80,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el37",
+            "ID": 37,
+            "electrodeID": 37,
+            "driverID": 0,
+            "positionX": 20,
+            "positionY": 80,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el38",
+            "ID": 38,
+            "electrodeID": 38,
+            "driverID": 0,
+            "positionX": 40,
+            "positionY": 80,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el39",
+            "ID": 39,
+            "electrodeID": 39,
+            "driverID": 0,
+            "positionX": 60,
+            "positionY": 80,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el40",
+            "ID": 40,
+            "electrodeID": 40,
+            "driverID": 0,
+            "positionX": 80,
+            "positionY": 80,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el41",
+            "ID": 41,
+            "electrodeID": 41,
+            "driverID": 1,
+            "positionX": 100,
+            "positionY": 80,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el42",
+            "ID": 42,
+            "electrodeID": 42,
+            "driverID": 1,
+            "positionX": 120,
+            "positionY": 80,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el43",
+            "ID": 43,
+            "electrodeID": 43,
+            "driverID": 1,
+            "positionX": 140,
+            "positionY": 80,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el44",
+            "ID": 44,
+            "electrodeID": 44,
+            "driverID": 1,
+            "positionX": 160,
+            "positionY": 80,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el45",
+            "ID": 45,
+            "electrodeID": 45,
+            "driverID": 1,
+            "positionX": 0,
+            "positionY": 100,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el46",
+            "ID": 46,
+            "electrodeID": 46,
+            "driverID": 1,
+            "positionX": 20,
+            "positionY": 100,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el47",
+            "ID": 47,
+            "electrodeID": 47,
+            "driverID": 1,
+            "positionX": 40,
+            "positionY": 100,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el48",
+            "ID": 48,
+            "electrodeID": 48,
+            "driverID": 1,
+            "positionX": 60,
+            "positionY": 100,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el49",
+            "ID": 49,
+            "electrodeID": 49,
+            "driverID": 1,
+            "positionX": 80,
+            "positionY": 100,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el50",
+            "ID": 50,
+            "electrodeID": 50,
+            "driverID": 1,
+            "positionX": 100,
+            "positionY": 100,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el51",
+            "ID": 51,
+            "electrodeID": 51,
+            "driverID": 1,
+            "positionX": 120,
+            "positionY": 100,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el52",
+            "ID": 52,
+            "electrodeID": 52,
+            "driverID": 1,
+            "positionX": 140,
+            "positionY": 100,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el53",
+            "ID": 53,
+            "electrodeID": 53,
+            "driverID": 1,
+            "positionX": 160,
+            "positionY": 100,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el54",
+            "ID": 54,
+            "electrodeID": 54,
+            "driverID": 1,
+            "positionX": 0,
+            "positionY": 120,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el55",
+            "ID": 55,
+            "electrodeID": 55,
+            "driverID": 1,
+            "positionX": 20,
+            "positionY": 120,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el56",
+            "ID": 56,
+            "electrodeID": 56,
+            "driverID": 1,
+            "positionX": 40,
+            "positionY": 120,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el57",
+            "ID": 57,
+            "electrodeID": 57,
+            "driverID": 1,
+            "positionX": 60,
+            "positionY": 120,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el58",
+            "ID": 58,
+            "electrodeID": 58,
+            "driverID": 1,
+            "positionX": 80,
+            "positionY": 120,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el59",
+            "ID": 59,
+            "electrodeID": 59,
+            "driverID": 1,
+            "positionX": 100,
+            "positionY": 120,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el60",
+            "ID": 60,
+            "electrodeID": 60,
+            "driverID": 1,
+            "positionX": 120,
+            "positionY": 120,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el61",
+            "ID": 61,
+            "electrodeID": 61,
+            "driverID": 1,
+            "positionX": 140,
+            "positionY": 120,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el62",
+            "ID": 62,
+            "electrodeID": 62,
+            "driverID": 1,
+            "positionX": 160,
+            "positionY": 120,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el63",
+            "ID": 63,
+            "electrodeID": 63,
+            "driverID": 1,
+            "positionX": 0,
+            "positionY": 140,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el64",
+            "ID": 64,
+            "electrodeID": 64,
+            "driverID": 1,
+            "positionX": 20,
+            "positionY": 140,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el65",
+            "ID": 65,
+            "electrodeID": 65,
+            "driverID": 1,
+            "positionX": 40,
+            "positionY": 140,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el66",
+            "ID": 66,
+            "electrodeID": 66,
+            "driverID": 1,
+            "positionX": 60,
+            "positionY": 140,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el67",
+            "ID": 67,
+            "electrodeID": 67,
+            "driverID": 1,
+            "positionX": 80,
+            "positionY": 140,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el68",
+            "ID": 68,
+            "electrodeID": 68,
+            "driverID": 1,
+            "positionX": 100,
+            "positionY": 140,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el69",
+            "ID": 69,
+            "electrodeID": 69,
+            "driverID": 1,
+            "positionX": 120,
+            "positionY": 140,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el70",
+            "ID": 70,
+            "electrodeID": 70,
+            "driverID": 1,
+            "positionX": 140,
+            "positionY": 140,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el71",
+            "ID": 71,
+            "electrodeID": 71,
+            "driverID": 1,
+            "positionX": 160,
+            "positionY": 140,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el72",
+            "ID": 72,
+            "electrodeID": 72,
+            "driverID": 1,
+            "positionX": 0,
+            "positionY": 160,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el73",
+            "ID": 73,
+            "electrodeID": 73,
+            "driverID": 1,
+            "positionX": 20,
+            "positionY": 160,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el74",
+            "ID": 74,
+            "electrodeID": 74,
+            "driverID": 1,
+            "positionX": 40,
+            "positionY": 160,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el75",
+            "ID": 75,
+            "electrodeID": 75,
+            "driverID": 1,
+            "positionX": 60,
+            "positionY": 160,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el76",
+            "ID": 76,
+            "electrodeID": 76,
+            "driverID": 1,
+            "positionX": 80,
+            "positionY": 160,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el77",
+            "ID": 77,
+            "electrodeID": 77,
+            "driverID": 1,
+            "positionX": 100,
+            "positionY": 160,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el78",
+            "ID": 78,
+            "electrodeID": 78,
+            "driverID": 1,
+            "positionX": 120,
+            "positionY": 160,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el79",
+            "ID": 79,
+            "electrodeID": 79,
+            "driverID": 1,
+            "positionX": 140,
+            "positionY": 160,
+            "sizeX": 20,
+            "sizeY": 20
+        },
+        {
+            "name": "el80",
+            "ID": 80,
+            "electrodeID": 80,
+            "driverID": 1,
+            "positionX": 160,
+            "positionY": 160,
+            "sizeX": 20,
+            "sizeY": 20
+        }
+    ],
+    "actuators": [
+        {
+            "name": "heat0",
+            "ID": 640,
+            "actuator": 0,
+            "type": "heater",
+            "positionX": 100,
+            "positionY": 0,
+            "sizeX": 20,
+            "sizeY": 20,
+            "actualTemperature": 0,
+            "desiredTemperature": 10,
+            "status": false,
+            "nextDesiredTemperature": 0,
+            "nextStatus": false,
+            "corners": null
+        }
+    ],
+  "sensors": [
+    {
+      "name": "sens0",
+      "ID": 660,
+      "sensorID": 0,
+      "type": "RGB_color",
+      "positionX": 90,
+      "positionY": 170
+    },
+    {
+      "name": "sens1",
+      "ID": 661,
+      "sensorID": 1,
+      "type": "size",
+      "positionX": 0,
+      "positionY": 90
+    }
+  ],
+  "inputs": [
+    {
+      "name": "in0",
+      "ID": 650,
+      "inputID": 0,
+      "positionX": 90,
+      "positionY": 0
+    }
+  ],
+    "outputs": [
+      {
+        "name": "out0",
+        "ID": 652,
+        "outputID": 0,
+        "positionX": 170,
+        "positionY": 90
+      }
+    ],
+    "droplets": null,
+    "unclassified": null
+}

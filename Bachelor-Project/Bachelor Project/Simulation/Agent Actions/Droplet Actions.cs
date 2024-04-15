@@ -23,7 +23,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.MergeReady = false;
             if (d.Inputted)
             {
-                Printer.Print("Droplet already inputted");
+                Printer.PrintLine("Droplet already inputted");
                 throw new Exception("Droplet already inputted");
             }
             d.Inputted = true;
@@ -197,7 +197,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 if (d.TriedMoveCounter > 10)
                 {
-                    Console.WriteLine(d.Name + " needed to find a new path");
+                    Printer.PrintLine(d.Name + " needed to find a new path");
                     d.TriedMoveCounter = 0;
 
                 }
@@ -371,7 +371,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             else
             {
                 //throw new IllegalMoveException();
-                Printer.Print("Illegal Move");
+                Printer.PrintLine("Illegal Move");
             }
         }
 
@@ -562,10 +562,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             int i = 0;
             while (!CheckLegalMove(d, temp, source: source).legalmove)
             {
-                Printer.Print(d.Name + " waiting for space");
+                Printer.PrintLine(d.Name + " waiting for space");
                 if (i > 50)
                 {
-                    Printer.Print(d.Name + " waited for too long");
+                    Printer.PrintLine(d.Name + " waited for too long");
                     throw new Exception("Droplet waited for too long");
                 }
                 Thread.Sleep(100);
@@ -597,7 +597,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         // Assumes that the list of occupied electrodes are in the form of a snake.
         public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, List<Electrode> el, Direction dir, string? splitDroplet = null, bool remove = true) // Returns true if movement happened, false if it got stopped
         {
-            Printer.Print(d.Name +" SnekMoves Toward: " +dir);
+            Printer.PrintLine(d.Name +" SnekMoves Toward: " +dir);
             List<Electrode> newOcc = new List<Electrode>();
             List<Electrode> newHead = new List<Electrode>(); // Needs to be a list containing one electrode for a snekcheck.
             Electrode head;
@@ -630,7 +630,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             catch (Exception ex)
             {
-                Printer.Print("Movement out of bounds");
+                Printer.PrintLine("Movement out of bounds");
                 return (false,null);
             }
 
@@ -641,13 +641,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (CheckLegalMove(d, newHead, source: splitDroplet).legalmove && SnekCheck(newHead[0]))
                 {
 
-                    Printer.Print("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
-                    Printer.Print("Old head: " + head.ePosX + " " + head.ePosY);
+                    Printer.PrintLine("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
+                    Printer.PrintLine("Old head: " + head.ePosX + " " + head.ePosY);
 
                     MoveOnElectrode(d, newHead[0]);
 
                     
-                    Printer.Print("Droplet moved");
+                    Printer.PrintLine("Droplet moved");
                     Electrode movedOffElectrode = null;
                     if (remove)
                     {
@@ -657,7 +657,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
                 else
                 {
-                    Printer.Print("Droplet not moved");
+                    Printer.PrintLine("Droplet not moved");
                     return (false,null);
                 }
             }
@@ -804,7 +804,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     MoveOnElectrode(d, movedOffElectrode, first: false) ;
                     totalExtraAdded++;
                 }
-                Printer.Print("SPECIAL BOARD:");
+                Printer.PrintLine("SPECIAL BOARD:");
                 Printer.PrintBoard();
             }
             int extraAdded = totalExtraAdded;
@@ -951,7 +951,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             if (amount > 0)
             {
-                Printer.Print("Not enough space to coil");
+                Printer.PrintLine("Not enough space to coil");
                 Printer.PrintBoard();
                 Thread.Sleep(1000);
                 throw new IllegalMoveException("Not enough space to coil");
@@ -1036,7 +1036,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 d.CurrentPath = null;
             }
-            Printer.Print(d.Name + " and " + mergeDroplet.Name + " has been merged");
+            Printer.PrintLine(d.Name + " and " + mergeDroplet.Name + " has been merged");
 
         }
 
@@ -1132,7 +1132,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // Makes a snake of appropriate size a la uncoil and cuts it off.
             // After cutoff, the 'new' droplet is given the task of moving.
 
-            Printer.Print("I am splitting!");
+            Printer.PrintLine("I am splitting!");
 
             source.Waiting = false;
 
@@ -1144,12 +1144,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 d.SetNextElectrodeDestination(); // Frick.. To set this, I need the starting point, but I need this to find the starting point.
                 // I am unsure how to fix this.
 
-                Printer.Print("I have set electrode destination for " + d.Name); // We are never getting to this
+                Printer.PrintLine("I have set electrode destination for " + d.Name); // We are never getting to this
 
                 Electrode dest = d.nextElectrodeDestination;
                 Electrode start = dest.GetClosestElectrodeInList(source.Occupy);
 
-                Printer.Print("I have found the start point for " + d.Name);
+                Printer.PrintLine("I have found the start point for " + d.Name);
 
                 // Make tree from the closest electrode to dest.
                 Tree sourceTree = BuildTree(source, [], start);
@@ -1250,7 +1250,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 dropSem[d.Name].TryReleaseOne();
 
                 Printer.PrintBoard();
-                Printer.Print(dName + " DONE!!");
+                Printer.PrintLine(dName + " DONE!!");
             }
 
             source.RemoveFromBoard();

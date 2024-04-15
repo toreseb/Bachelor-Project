@@ -15,15 +15,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     {
         public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
-            Printer.Print(d.Name + " has NextDestiantion of: " + d.nextDestination);
-            Printer.Print(d.Name + " : INPUTTING");
+            Printer.PrintLine(d.Name + " has NextDestiantion of: " + d.nextDestination);
+            Printer.PrintLine(d.Name + " : INPUTTING");
             bool result = Droplet_Actions.InputDroplet(d, i, volume, destination);
             return result;
 
         }
         public static void OutputDroplet(Droplet droplet, Output output)
         {
-            Printer.Print(droplet.Name + " : OUTPUTTING");
+            Printer.PrintLine(droplet.Name + " : OUTPUTTING");
             droplet.Important = true;
             Droplet_Actions.MoveToApparature(droplet, output);
             Droplet_Actions.Output(droplet, output);
@@ -37,7 +37,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         // Does not take contaminants into account yet.
         public static bool MixDroplets(Droplet d, string pattern, string? newType = null) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
         {
-            Printer.Print(d.Name + " : MIXING");
+            Printer.PrintLine(d.Name + " : MIXING");
             d.Important = true;
             bool up = true; bool down = true; bool left = true; bool right = true;
             // Check if there is room to boogie
@@ -148,7 +148,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefullSemaphore beforeDone, Apparature cmdDestination)
         {
             SetupDestinations(d, cmdDestination);
-            Printer.Print(d.Name + " : MERGING");
+            Printer.PrintLine(d.Name + " : MERGING");
             foreach (var item1 in inputDroplets)
             {
                 foreach (var item2 in inputDroplets)
@@ -214,24 +214,29 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
-        internal static void TempDroplet(Droplet d, Heater heater, string newType)
+        public static void TempDroplet(Droplet d, Heater heater, string newType, int time)
         {
             SetupDestinations(d, heater);
-            Printer.Print(d.Name + " : TEMPING");
+            Printer.PrintLine(d.Name + " : TEMPING");
             d.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(d, heater);
-            Thread.Sleep(1000); // Time to heat?
-            d.ChangeType(newType);
+            Thread.Sleep(time*1000); // Time to heat?
+            if (d.Substance_Name != newType)
+            {
+                d.ChangeType(newType);
+            }
+            
         }
 
-        internal static void SenseDroplet(Droplet d, Sensor sensor)
+        public static void SenseDroplet(Droplet d, Sensor sensor)
         {
             SetupDestinations(d, sensor);
-            Printer.Print(d.Name + " : SENSING");
+            Printer.PrintLine(d.Name + " : SENSING");
             d.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(d, sensor);
             Droplet_Actions.CoilSnek(d, center: closest, app: sensor); // Depends if sensor needs to see the entire droplet
-            Thread.Sleep(1000); // Time to sense?
+            sensor.Sense();
+
         }
 
         internal static void SetupDestinations(Droplet d, Apparature destination)

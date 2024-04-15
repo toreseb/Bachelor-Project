@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Utility
 {
-    internal class Settings
+    public static class Settings
     {
+        public static bool ConnectedToHardware = false;
+        public static bool Printing = true;
     }
 }

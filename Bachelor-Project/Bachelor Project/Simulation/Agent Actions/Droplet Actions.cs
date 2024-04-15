@@ -1167,7 +1167,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Thread.Sleep(100);
 
                 // Find number of electrodes to occupy
-                d.SetSizes(source.Volume * ratio / 100);
+                if (!Settings.ConnectedToHardware)
+                {
+                    d.SetSizes(source.Volume * ratio / 100);
+                }
+                else
+                {
+                    throw new Exception("Connected to hardware");
+                }
 
                 // Move out the amount of spaces this splitter needs
                 int i = 1;

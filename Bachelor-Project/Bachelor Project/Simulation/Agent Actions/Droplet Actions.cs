@@ -32,6 +32,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Electrode destElectrode = null;
 
             d.SetSizes(volume);
+            if (d.Volume < 6)
+            {
+                throw new ArgumentException("droplet too small");
+            }
             int size = d.Size;
             AwaitLegalMove(d, i.pointers);
 

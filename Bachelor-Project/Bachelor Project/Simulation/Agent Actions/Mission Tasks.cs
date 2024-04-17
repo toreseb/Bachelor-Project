@@ -214,14 +214,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
-        public static void TempDroplet(Droplet d, Heater heater, string newType, int time)
+        public static void TempDroplet(Droplet d, Heater heater, int time, string newType = null)
         {
             SetupDestinations(d, heater);
             Printer.PrintLine(d.Name + " : TEMPING");
             d.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(d, heater);
+            if (time <= 0)
+            {
+                throw new ArgumentException("Time must be greater than 0");
+            }
             Thread.Sleep(time*1000); // Time to heat?
-            if (d.Substance_Name != newType)
+            if (newType != null && d.Substance_Name != newType)
             {
                 d.ChangeType(newType);
             }

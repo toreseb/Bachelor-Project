@@ -126,7 +126,7 @@ namespace Bachelor_Project.Utility
                     break;
                 case "temp":
                     Printer.PrintLine("Temp");
-                    Task tempDroplet = new(() => Mission_Tasks.TempDroplet(b.Droplets[InputDroplets[0]], (Heater)b.Actuators[NextName], (string)ActionValue[0], int.Parse((string)ActionValue[1])));
+                    Task tempDroplet = new(() => Mission_Tasks.TempDroplet(b.Droplets[InputDroplets[0]], (Heater)b.Actuators[NextName], int.Parse((string)ActionValue[1]), newType: (string)ActionValue[0]));
                     b.Droplets[InputDroplets[0]].GiveWork(tempDroplet);
                     break;
                 case "sense":

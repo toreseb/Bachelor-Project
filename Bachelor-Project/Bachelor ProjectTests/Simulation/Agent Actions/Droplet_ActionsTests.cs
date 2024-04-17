@@ -1323,5 +1323,70 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         {
             Assert.Fail();
         }
+
+        [TestMethod()]
+        public void tempDropletNormal()
+        {
+            Droplet Wat1 = new Droplet("Water", "Wat1");
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            board.Droplets.Add(Wat1.Name, Wat1);
+
+            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 11);
+
+            Droplet_Actions.MoveToApparature(Wat1, board.Actuators["heat1"]);
+
+            int time = 1;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], time);
+            watch.Stop();
+
+            var elapsedMs = watch.ElapsedMilliseconds;
+
+            Assert.IsTrue(elapsedMs >= time * 1000);
+        }
+
+        [TestMethod()]
+        public void tempDropletNewType()
+        {
+            Droplet Wat1 = new Droplet("Water", "Wat1");
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            board.Droplets.Add(Wat1.Name, Wat1);
+
+            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 11);
+
+            Droplet_Actions.MoveToApparature(Wat1, board.Actuators["heat1"]);
+
+            int time = 1;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], time, newType : "HotWater");
+            watch.Stop();
+
+            var elapsedMs = watch.ElapsedMilliseconds;
+
+            Assert.IsTrue(elapsedMs >= time * 1000);
+            Assert.AreEqual("HotWater", Wat1.Substance_Name);
+        }
+
+        [TestMethod()]
+        public void tempDropletNoTime()
+        {
+            Droplet Wat1 = new("Water", "Wat1");
+            board = Program.C.SetBoard(testBoardDataBigLocation);
+            board.Droplets.Add(Wat1.Name, Wat1);
+
+            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 11);
+
+            Droplet_Actions.MoveToApparature(Wat1, board.Actuators["heat1"]);
+
+            int time = 0;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            Assert.ThrowsException<ArgumentException>(() => Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], time));
+            watch.Stop();
+
+            var elapsedMs = watch.ElapsedMilliseconds;
+
+            Assert.IsTrue(elapsedMs >= time * 1000);
+        }
+
     }
 }

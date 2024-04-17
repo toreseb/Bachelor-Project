@@ -185,7 +185,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(0, Wat1.Occupy[1].GetContaminants().Count);
 
             int time = 1;
-            Task temp1 = new(() => Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], Wat1.Substance_Name, time));
+            Task temp1 = new(() => Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], time, Wat1.Substance_Name));
             Wat1.GiveWork(temp1);
             var watch = System.Diagnostics.Stopwatch.StartNew();
             temp1.Wait();

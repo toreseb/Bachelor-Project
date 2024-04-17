@@ -243,7 +243,15 @@ namespace Bachelor_Project.Simulation
         public void ChangeType(string newType)
         {
             Substance_Name = newType;
-            SetContam(Program.C.data.Value.contaminated[newType]);
+            if (Program.C.data != null && Program.C.data.Value.contaminated.ContainsKey(newType))
+            {
+                SetContam(Program.C.data.Value.contaminated[newType]);
+            }
+            else
+            {
+                SetContam([]);
+            }
+            
         }
 
         internal void RemoveFromBoard()

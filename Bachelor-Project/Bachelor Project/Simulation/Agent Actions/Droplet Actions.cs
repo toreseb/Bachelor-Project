@@ -924,6 +924,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors();
                 foreach (var item in neighbors)
                 {
+                    if (item.Item1.ePosX == 2 && item.Item1.ePosY == 4)
+                    {
+                        int a = 2;
+                    }
                     if (CheckLegalMove(d,[item.Item1]).legalmove && !seenElectrodes.Contains(item.Item1) && (app != null && ((app.CoilInto && item.Item1.Apparature == app)||(!app.CoilInto)) || (app == null && (item.Item1.Occupant == d || item.Item1.Apparature == null))))
                     {
                         activeBlob2.Add(item.Item1);
@@ -1139,6 +1143,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             foreach ((string dName, double ratio) in ratios)
             {
                 Droplet d = Program.C.board.Droplets[dName];
+                d.Waiting = false;
 
                 // Find electrode in source closest to where splitter needs to go. nextElectrodeDestination is not set, so we do it here.
                 d.SetNextElectrodeDestination(); 
@@ -1155,8 +1160,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 // Find path split droplet needs to follow.
                 TakeOverElectrode(d, start);
 
-                d.CurrentPath = ModifiedAStar.FindPath(d, dest, splitDroplet: source.Name);
-
                 Printer.PrintBoard();
 
                 Thread.Sleep(100);
@@ -1165,24 +1168,33 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (!Settings.ConnectedToHardware)
                 {
                     d.SetSizes(source.Volume * ratio / 100);
+                    if (d.Volume < 6)
+                    {
+                        throw new ArgumentException("Droplet too small");
+                    }
                 }
                 else
                 {
                     throw new Exception("Connected to hardware");
                 }
 
+                int destBuffer = Constants.DestBuff;
+
                 // If destination is in or too close to the source, set a destination to split to - d is tasked with going back later.
                 // MinDist = sqrt(d.size)
-                if (CheckMinDistanceDrop(d.nextElectrodeDestination, d, Constants.SplitBuff))
+                if (!CheckMinDistanceDrop(d.nextElectrodeDestination, d, Constants.SplitBuff))
                 {
                     dest = FindFreeSpaceForSplit(d, source, d.Size);
+                    destBuffer = 0;
                 }
+
+                d.CurrentPath = ModifiedAStar.FindPath(d, dest, splitDroplet: source.Name);
 
                 // Move out the amount of spaces this splitter needs
                 int i = 1;
                 while (i < d.Size)
                 {
-                    if (d.CurrentPath.Value.path.Count > Constants.DestBuff)
+                    if (d.CurrentPath.Value.path.Count > destBuffer)
                     {
                         // Try to make move toward dest
                         bool moved = MoveTowardDest(d, dest, splitDroplet: source.Name).Item1;
@@ -1219,8 +1231,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                         i += remainder;
                     }
-                    
 
+                    Printer.PrintBoard();
                     // TODO: What if destination is not far enough to have the snake completely split from the source?
                 }
 
@@ -1228,7 +1240,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 // I can use CheckBoarder for it and just give it the current position of the droplet that was just split off.
                 while (!CheckBorder(d, d.Occupy).Item1)
                 {
-                    if (d.CurrentPath.Value.path.Count > Constants.DestBuff)
+                    if (d.CurrentPath.Value.path.Count > destBuffer)
                     {
                         bool moved = MoveTowardDest(d, dest, splitDroplet: source.Name).Item1;
 
@@ -1239,7 +1251,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                     else
                     {
-                        CoilSnek(d, app: d.nextDestination); // TODO: d.nextDestination or dest?
+                        CoilSnek(d, center: dest); // TODO: d.nextDestination or dest?
                         // TODO: This could be an issue if we are not far enough removed from source and its boarder.
                         // Actually, I think it can handle it.
                     }
@@ -1268,7 +1280,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             List<Electrode> workingList = [d.Occupy[0]];
             // Coil without removing
-            for (int i = 0; i < remainder; i++)
+            int i = 0;
+            while (i < remainder)
             {
                 Electrode e = workingList[0];
                 workingList.Remove(e);
@@ -1277,10 +1290,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 foreach ((Electrode n, Direction? dir) in neighbors)
                 {
-                    if (n.Occupant == null)
+                    if (CheckLegalMove(d, [n]).legalmove && e.Apparature == null)
                     {
                         MoveOnElectrode(d,n, first: false);
                         workingList.Add(n);
+                        i++;
+
+                        if (i >= remainder)
+                        {
+                            return;
+                        }
                     }
                 }
             }
@@ -1289,32 +1308,27 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static Electrode? FindFreeSpaceForSplit(Droplet d, Droplet source, int size)
         {
             bool foundSpace = false;
-            List<Electrode> activeEl = source.Occupy;
-            List<Electrode> newSpace = [];
+            List<Electrode> activeEl = new (source.Occupy);
+            List<Electrode> seenElectrodes = [];
 
             // Search for space until a large enough one is found.
             while (!foundSpace)
             {
                 // Use extended neighbors until a free space is found.
                 List<(Electrode, Direction?)> neighbors = activeEl[0].GetExtendedNeighbors();
+                seenElectrodes.Add(activeEl[0]);
                 activeEl.RemoveAt(0);
 
                 foreach ((Electrode e, Direction? dir) in neighbors)
                 {
+                    if (seenElectrodes.Contains(e))
+                    {
+                        continue;
+                    }
                     // If e is not a space that d can occupy, add it to the list
-                    if(e.Occupant != null)
+                    if (!CheckLegalMove(d, [e]).legalmove || e.Apparature != null)
                     {
                         activeEl.Add(e);
-                    }
-                    else
-                    {
-                        foreach (string contam in d.Contamintants)
-                        {
-                            if (e.GetContaminants().Contains(contam))
-                            {
-                                activeEl.Add(e);
-                            }
-                        }
                     }
 
                     // If e IS a space that d can occupy, check if the space is large enough.
@@ -1324,6 +1338,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         if (spaceCheck.Item1)
                         {
                             return spaceCheck.Item2;
+                        }
+                        else
+                        {
+                            activeEl.Add(e);
                         }
                     }
                 }
@@ -1351,22 +1369,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 foreach ((Electrode n, Direction? dir) in neighbors)
                 {
-                    if (n.Occupant == null)
+                    if (CheckLegalMove(d, [n]).legalmove && n.Apparature == null)
                     {
-                        bool contamOk = true;
-                        foreach (string contam in e.GetContaminants())
-                        {
-                            if (d.Contamintants.Contains(contam))
-                            {
-                                contamOk = false;
-                            }
-                        }
-                        if (contamOk)
-                        {
-                            checkingList.Add(n);
-                            clearList.Add(n);
-                        }
+                        clearList.Add(n);
+                        checkingList.Add(n);
                     }
+
                 }
             }
 

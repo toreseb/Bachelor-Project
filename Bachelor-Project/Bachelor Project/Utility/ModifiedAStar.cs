@@ -34,12 +34,15 @@ namespace Bachelor_Project.Utility
         }
 
 
-        public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal, List<string>? mergeDroplets = null, string? splitDroplet = null)
+        public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal, List<string>? mergeDroplets = null, string? splitDroplet = null, Electrode? start = null)
         {
 
 
             Func<Electrode, Electrode, double> h = Electrode.GetDistance;
-            Electrode start = goal.GetClosestElectrodeInList(d.Occupy);
+            if (start == null)
+            {
+                start = goal.GetClosestElectrodeInList(d.Occupy);
+            }
             List<Electrode> openSet = [start];
 
             Dictionary<Electrode, (Electrode,Direction)> cameFrom = [];
@@ -97,7 +100,7 @@ namespace Bachelor_Project.Utility
                     }
                     if (tentativeGScore < gScore[neighborT])
                     {
-                        if (d.Name == "drop3")
+                        if (d.Name == "Wat2")
                         {
                             neighborT.smallestGScore = tentativeGScore;
                         }
@@ -141,7 +144,7 @@ namespace Bachelor_Project.Utility
                     }
                 }
             }
-            if (d.Name == "drop3" && mergeDroplets != null)
+            if (d.Name == "Wat5")
             {
                 Electrode[,] electrodes = Program.C.board.Electrodes; 
                 int a = 2;

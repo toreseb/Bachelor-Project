@@ -53,6 +53,7 @@ namespace Bachelor_Project.Simulation
         public bool Removed = false;
 
         public int TriedMoveCounter = 0;
+        public int TriedResetCounter = 0;
 
         public Thread Thread;
 

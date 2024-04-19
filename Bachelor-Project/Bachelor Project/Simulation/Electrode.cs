@@ -100,13 +100,12 @@ namespace Bachelor_Project.Simulation
             }
         }
 
-        public List<(Electrode, Direction?)> GetExtendedNeighbors()
+        public List<(Electrode, Direction?)> GetExtendedNeighbors(Droplet? d = null, Droplet? source = null, bool splitPlacement = false) //TODO: Change so source is in there
         {
             List<(Electrode, Direction?)> neighbors = [];
-            bool upSeen = false;
-            bool rightSeen = false;
-            bool downSeen = false;
-            bool leftSeen = false;
+
+            List<bool> cBool = [];
+
             for (int i = 0; i < 4; i++)
             {
                 
@@ -117,22 +116,18 @@ namespace Bachelor_Project.Simulation
                 {
                     case 0:
                         yChange = -1;
-                        upSeen = true;
                         dir = Direction.UP;
                         break;
                     case 1:
                         xChange = 1;
-                        rightSeen = true;
                         dir = Direction.RIGHT;
                         break;
                     case 2:
                         yChange = 1;
-                        downSeen = true;
                         dir = Direction.DOWN;
                         break;
                     case 3:
                         xChange = -1;
-                        leftSeen = true;
                         dir = Direction.LEFT;
                         break;
                     default:
@@ -140,7 +135,22 @@ namespace Bachelor_Project.Simulation
                 }
                 if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange))
                 {
+                    if (d != null && d.Name == "Wat2")
+                    {
+                        int a = 2;
+                    }
+                    Electrode el = Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange];
+                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [el], source: source.Name, splitPlacement: splitPlacement).legalmove)
+                    {
+                        cBool.Add(false);
+                        continue;
+                    }
+                    cBool.Add(true);
                     neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange], dir));
+                }
+                else
+                {
+                    cBool.Add(false);
                 }
             }
             for(int i = 0; i < 4; i++)
@@ -148,22 +158,22 @@ namespace Bachelor_Project.Simulation
                 int xChange = 0;
                 int yChange = 0;
                 Direction? dir = null;
-                if (i == 0 && (upSeen || rightSeen))
+                if (i == 0 && (cBool[0] || cBool[1]))
                 {
                     xChange = 1;
                     yChange = -1;
                     dir = null;
-                }else if (i == 1 &&(rightSeen || downSeen))
+                }else if (i == 1 &&(cBool[1] || cBool[2]))
                 {
                     xChange = 1;
                     yChange = 1;
                     dir = null;
-                }else if (i == 2 && (downSeen || leftSeen))
+                }else if (i == 2 && (cBool[2] || cBool[3]))
                 {
                     xChange = -1;
                     yChange = 1;
                     dir = null;
-                }else if (i == 3 && (leftSeen || upSeen))
+                }else if (i == 3 && (cBool[3] || cBool[0]))
                 {
                     xChange = -1;
                     yChange = -1;
@@ -171,6 +181,10 @@ namespace Bachelor_Project.Simulation
                 }
                 if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange))
                 {
+                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange]]).legalmove)
+                    {
+                        continue;
+                    }
                     neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange], dir));
                 }
             }

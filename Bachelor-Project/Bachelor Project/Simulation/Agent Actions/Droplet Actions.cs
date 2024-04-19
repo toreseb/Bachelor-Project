@@ -203,7 +203,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     Printer.PrintLine(d.Name + " needed to find a new path");
                     d.TriedMoveCounter = 0;
-
+                    d.TriedResetCounter++;
+                    if (d.TriedResetCounter > 5)
+                    {
+                        throw new ArgumentException("Reset too many times");
+                    }
                 }
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination, mergeDroplets);
             }
@@ -276,6 +280,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     if (changed)
                     {
                         d.TriedMoveCounter = 0;
+                        d.TriedResetCounter = 0;
                     }
                     else
                     {
@@ -471,9 +476,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return CheckPlacement([d], temp, mergeDroplets: mergeDroplets);
         }
 
-        private static bool CheckPlacement(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null)
+        private static bool CheckPlacement(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null, string? splitDroplet = null)
         {
-            if (!CheckOtherDroplets(droplets, temp, mergeDroplets))
+            if (!CheckOtherDroplets(droplets, temp, mergeDroplets, splitDroplet))
             {
                 return false;
             }
@@ -489,11 +494,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             return CheckOtherDroplets([d], temp, mergeDroplets: mergeDroplets);
         }
-        public static bool CheckOtherDroplets(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null) // Returns false if there is a contamination that is not compatible with the droplet
+        public static bool CheckOtherDroplets(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null, string? splitDroplet = null) // Returns false if there is a contamination that is not compatible with the droplet
         {
             foreach (Electrode e in temp)
             {
-                if (!(e.Occupant == null || droplets.Contains(e.Occupant) || (mergeDroplets != null && mergeDroplets.Contains(e.Occupant.Name))))
+                if (!(e.Occupant == null || droplets.Contains(e.Occupant) || (mergeDroplets != null && mergeDroplets.Contains(e.Occupant.Name)) || (splitDroplet != null && e.Occupant.Name == splitDroplet)))
                 {
                     return false;
                 }
@@ -523,16 +528,20 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static (bool legalmove, Droplet? occupant) CheckLegalMove(Droplet d, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null)
+        public static (bool legalmove, Droplet? occupant) CheckLegalMove(Droplet d, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null, bool splitPlacement = false)
         {
+            if (splitPlacement)
+            {
+                return CheckLegalMove([d], temp, mergeDroplets: mergeDroplets, source: source, splitPlacement: splitPlacement);
+            }
             return CheckLegalMove([d], temp, mergeDroplets: mergeDroplets, source: source) ;
         }
 
-        public static (bool legalmove, Droplet? occupant) CheckLegalMove(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null)
+        public static (bool legalmove, Droplet? occupant) CheckLegalMove(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null, bool splitPlacement = false)
         {
             bool legalMove = true;
             (bool borderCheck, Droplet? occupant) = CheckBorder(droplets, temp, mergeDroplets, source);
-            if (!(borderCheck && CheckPlacement(droplets, temp, mergeDroplets))){
+            if (!(borderCheck && CheckPlacement(droplets, temp, mergeDroplets, splitPlacement ? null: source))){
                 legalMove = false;
             }
 
@@ -579,9 +588,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
 
-        private static bool SnekCheck(Electrode newHead)
+        private static bool SnekCheck(Electrode newHead, string? source = null)
         {
-            if (newHead.Occupant == null)
+            if (newHead.Occupant == null || newHead.Occupant.Name == source)
             {
                 return true;
             }
@@ -642,15 +651,21 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 // Do a snekcheck
                 // If move is legal, do the thing
-                if (CheckLegalMove(d, newHead, source: splitDroplet).legalmove && SnekCheck(newHead[0]))
+                if (CheckLegalMove(d, newHead, source: splitDroplet).legalmove && SnekCheck(newHead[0], source: splitDroplet))
                 {
 
                     Printer.PrintLine("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
                     Printer.PrintLine("Old head: " + head.ePosX + " " + head.ePosY);
 
-                    MoveOnElectrode(d, newHead[0]);
+                    if (splitDroplet != null && Program.C.board.Droplets[splitDroplet].Occupy.Contains(newHead[0]))
+                    {
+                        TakeOverElectrode(d, newHead[0]);
+                    }
+                    else
+                    {
+                        MoveOnElectrode(d, newHead[0]);
+                    }
 
-                    
                     Printer.PrintLine("Droplet moved");
                     Electrode movedOffElectrode = null;
                     if (remove)
@@ -1155,6 +1170,29 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Electrode dest = d.nextElectrodeDestination;
                 Electrode start = dest.GetClosestElectrodeInList(source.Occupy);
 
+                int destBuffer = Constants.DestBuff;
+
+                // If destination is in or too close to the source, set a destination to split to - d is tasked with going back later.
+                // MinDist = sqrt(d.size)
+                if (!CheckMinDistanceDrop(d.nextElectrodeDestination, d, Constants.SplitBuff, start: start))
+                {
+                    dest = FindFreeSpaceForSplit(d, source, d.Size);
+                    destBuffer = 1;
+                }
+
+                if (d.Name == "Wat5")
+                {
+                    int a = 2;
+                }
+
+                d.CurrentPath = ModifiedAStar.FindPath(d, dest, splitDroplet: source.Name, start: start);
+
+                while (d.CurrentPath.Value.path[1].Item1.Occupant == source)
+                {
+                    start = d.CurrentPath.Value.path[1].Item1;
+                    d.CurrentPath.Value.path.RemoveAt(0);
+                }
+
                 // Make tree from the closest electrode to dest.
                 Tree sourceTree = BuildTree(source, [], start);
 
@@ -1182,33 +1220,33 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     throw new Exception("Connected to hardware");
                 }
 
-                int destBuffer = Constants.DestBuff;
-
-                // If destination is in or too close to the source, set a destination to split to - d is tasked with going back later.
-                // MinDist = sqrt(d.size)
-                if (!CheckMinDistanceDrop(d.nextElectrodeDestination, d, Constants.SplitBuff))
-                {
-                    dest = FindFreeSpaceForSplit(d, source, d.Size);
-                    destBuffer = 0;
-                }
-
-                d.CurrentPath = ModifiedAStar.FindPath(d, dest, splitDroplet: source.Name);
 
                 // Move out the amount of spaces this splitter needs
                 int i = 1;
                 while (i < d.Size)
                 {
+
+                    if (d.Name == "Wat5")
+                    {
+                        int a = 2;
+                    }
+
                     if (d.CurrentPath.Value.path.Count > destBuffer)
                     {
+
+                        // Save source occupy
+                        List<Electrode> sourceEl = new(source.Occupy);
+
                         // Try to make move toward dest
-                        bool moved = MoveTowardDest(d, dest, splitDroplet: source.Name).Item1;
+                        bool moved = MoveTowardDest(d, dest, splitDroplet: source.Name, remove: false).Item1;
 
                         if (moved)
                         {
-                            // Turn on the electrode MoveTowardDest turned off.
-                            MoveOnElectrode(d, start, first: false);
-                            // Turn off the right electrode.
-                            sourceTree.RemoveLeaf();
+                            // Turn off the right electrode if not moving inside source
+                            if (!(d.Occupy.Intersect(sourceEl).Count() > 0))
+                            {
+                                sourceTree.RemoveLeaf();
+                            }
 
                             i++;
                         }
@@ -1216,13 +1254,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         {
                             d.Waiting = true;
                         }
+
                     }
                     else
                     {
                         int remainder = d.Size - i;
 
+                        Electrode head = d.SnekList.First.Value;
+
                         // Coil at dest and remove from source
-                        CoilWithoutRemoval(d, remainder); 
+                        CoilWithoutRemoval(d, remainder, source); 
 
                         // Remove the corresponding electrodes from the source tree
                         for (int j = 0; j < remainder; j++)
@@ -1231,7 +1272,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         }
 
                         // Normal coil to suck up tail
-                        CoilSnek(d, dest);
+                        CoilSnek(d, d.Occupy.Contains(dest) ? dest : head);
 
                         i += remainder;
                     }
@@ -1280,9 +1321,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         /// Used for input and split.
         /// </summary>
         /// <param name="d"></param>
-        public static void CoilWithoutRemoval(Droplet d, int remainder)
+        public static void CoilWithoutRemoval(Droplet d, int remainder, Droplet? source = null)
         {
-            List<Electrode> workingList = [d.Occupy[0]];
+            //List<Electrode> workingList = [d.Occupy[0]];
+            List<Electrode> workingList = [d.SnekList.First.Value];
             // Coil without removing
             int i = 0;
             while (i < remainder)
@@ -1290,11 +1332,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Electrode e = workingList[0];
                 workingList.Remove(e);
 
-                List<(Electrode, Direction?)> neighbors = e.GetExtendedNeighbors();
+                List<(Electrode, Direction?)> neighbors = e.GetExtendedNeighbors(d, source, splitPlacement: true);
 
                 foreach ((Electrode n, Direction? dir) in neighbors)
                 {
-                    if (CheckLegalMove(d, [n]).legalmove && e.Apparature == null)
+                    if (e.Apparature == null) // If apparature at each true neighbor, an unconnected corner may happen :(
                     {
                         MoveOnElectrode(d,n, first: false);
                         workingList.Add(n);
@@ -1388,14 +1430,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return (true, middle);
         }
 
-        public static bool CheckMinDistanceDrop(Electrode dest, Droplet d, int allowedDist)
+        public static bool CheckMinDistanceDrop(Electrode dest, Droplet d, int allowedDist, Electrode? start = null)
         {
-            foreach (Electrode e in d.Occupy)
+            if (start == null)
             {
-                if (Electrode.GetDistance(dest, e) < allowedDist)
-                {
-                    return false;
-                }
+                start = d.Occupy[0];
+            }
+            if (Electrode.GetDistance(dest, start) < allowedDist)
+            {
+                return false;
             }
             return true;
         }

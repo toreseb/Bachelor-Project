@@ -1190,7 +1190,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Electrodes[0,0].Occupant, w2);
             Assert.AreEqual(board.Electrodes[0,1].Occupant, w2);
 
-            Assert.AreEqual(board.Electrodes[0,5].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[0,5].Occupant, w3); // TODO: Major problem. There is a wat1 left and wat3 is only 2 on the board.
             Assert.AreEqual(board.Electrodes[0,6].Occupant, w3);
             Assert.AreEqual(board.Electrodes[0,7].Occupant, w3);
 
@@ -1261,17 +1261,17 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(2, w5.Occupy.Count);
 
             // Check placements
+            Assert.AreEqual(board.Electrodes[0, 0].Occupant, w2);
             Assert.AreEqual(board.Electrodes[1, 0].Occupant, w2);
-            Assert.AreEqual(board.Electrodes[2, 0].Occupant, w2);
 
+            Assert.AreEqual(board.Electrodes[0, 6].Occupant, w3);
             Assert.AreEqual(board.Electrodes[0, 7].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[0, 8].Occupant, w3);
 
-            Assert.AreEqual(board.Electrodes[1, 5].Occupant, w4);
-            Assert.AreEqual(board.Electrodes[2, 5].Occupant, w4);
+            Assert.AreEqual(board.Electrodes[3, 1].Occupant, w4);
+            Assert.AreEqual(board.Electrodes[3, 2].Occupant, w4);
 
-            Assert.AreEqual(board.Electrodes[0, 3].Occupant, w5);
             Assert.AreEqual(board.Electrodes[1, 3].Occupant, w5);
+            Assert.AreEqual(board.Electrodes[1, 4].Occupant, w5);
         }
 
         [TestMethod()]
@@ -1314,19 +1314,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(4, w3.Size);
 
             // Check positions
-            Assert.AreEqual(board.Electrodes[2, 0].Occupant, w2);
-            Assert.AreEqual(board.Electrodes[3, 0].Occupant, w2);
-            Assert.AreEqual(board.Electrodes[2, 1].Occupant, w2);
-            Assert.AreEqual(board.Electrodes[3, 1].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[3, 3].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[3, 4].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[4, 4].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[3, 5].Occupant, w2);
 
             Assert.AreEqual(board.Electrodes[0, 5].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[1, 3].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[1, 4].Occupant, w3);
             Assert.AreEqual(board.Electrodes[1, 5].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1, 4].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1, 3].Occupant, w3);
         }
 
         [TestMethod()]
-        public void splitDropletTest_DestInSource() // Gets stuck somewhere.
+        public void splitDropletTest_DestInSource()
         {
             Droplet w1 = new Droplet("Water", "Wat1");
             Droplet w2 = new Droplet("Water", "Wat2");
@@ -1365,21 +1365,83 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(4, w3.Size);
 
             // Check positions
-            Assert.AreEqual(board.Electrodes[2, 0].Occupant, w2);
-            Assert.AreEqual(board.Electrodes[3, 0].Occupant, w2);
-            Assert.AreEqual(board.Electrodes[2, 1].Occupant, w2);
-            Assert.AreEqual(board.Electrodes[3, 1].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[3, 3].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[3, 4].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[4, 4].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[3, 5].Occupant, w2);
 
             Assert.AreEqual(board.Electrodes[0, 5].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[1, 3].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[1, 4].Occupant, w3);
             Assert.AreEqual(board.Electrodes[1, 5].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1, 4].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1, 3].Occupant, w3);
         }
 
         [TestMethod()]
         public void splitDropletTest_WithObstacles()
         {
-            Assert.Fail();
+            Droplet w1 = new Droplet("Water", "Wat1");
+            Droplet w2 = new Droplet("Water", "Wat2");
+            Droplet w3 = new Droplet("Water", "Wat3");
+
+            board = Program.C.SetBoard(testBoardDataBigWithMoreHeatLocation);
+
+            board.Droplets.Add("Wat1", w1);
+            board.Droplets.Add("Wat2", w2);
+            board.Droplets.Add("Wat3", w3);
+
+            // Water is contaminated by blood
+            board.Droplets["Wat1"].Contamintants = ["Blood"];
+            board.Droplets["Wat2"].Contamintants = ["Blood"];
+            board.Droplets["Wat3"].Contamintants = ["Blood"];
+
+            w2.nextDestination = board.Actuators["heat1"];
+            w2.nextElectrodeDestination = board.Electrodes[7, 0];
+            w3.nextDestination = board.Actuators["heat2"];
+            w3.nextElectrodeDestination = board.Electrodes[7, 8];
+
+            Droplet_Actions.InputDroplet(w1, board.Input["in0"], 84);
+
+            // Artificially contaminate.
+            board.Electrodes[0, 1].Contaminate("Blood");
+            board.Electrodes[1, 1].Contaminate("Blood");
+            board.Electrodes[2, 1].Contaminate("Blood");
+            board.Electrodes[2, 2].Contaminate("Blood");
+            board.Electrodes[2, 4].Contaminate("Blood");
+            board.Electrodes[2, 5].Contaminate("Blood");
+            board.Electrodes[2, 6].Contaminate("Blood");
+            board.Electrodes[1, 6].Contaminate("Blood");
+
+            Dictionary<string, int> ratios = [];
+            ratios.Add(w2.Name, 50);
+            ratios.Add(w3.Name, 50);
+
+            List<string> OutputDroplets = [w2.Name, w3.Name];
+
+            Dictionary<string, double> correctRatios = Calc.Ratio(ratios, OutputDroplets);
+
+            Dictionary<string, UsefullSemaphore> sems = new Dictionary<string, UsefullSemaphore>();
+            sems.Add(w2.Name, new UsefullSemaphore(0, 1));
+            sems.Add(w3.Name, new UsefullSemaphore(0, 1));
+
+            Droplet_Actions.splitDroplet(w1, correctRatios, sems);
+
+            Printer.PrintBoard();
+
+            Assert.IsTrue(w1.Removed);
+            Assert.AreEqual(4, w2.Size);
+            Assert.AreEqual(4, w2.Occupy.Count);
+            Assert.AreEqual(4, w3.Size);
+            Assert.AreEqual(4, w3.Occupy.Count);
+
+            Assert.AreEqual(board.Electrodes[0, 7].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[0, 8].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[1, 8].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[2, 8].Occupant, w2);
+
+            Assert.AreEqual(board.Electrodes[1, 3].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[2, 3].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[3, 3].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[3, 2].Occupant, w3);
         }
 
         [TestMethod()]

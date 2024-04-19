@@ -62,11 +62,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 while (size > 0)
                 {
 
-                    MoveTowardDest(d, destElectrode);
-                    MoveOnElectrode(d, i.pointers[0], first: false);
+                    MoveTowardDest(d, destElectrode,remove: false);
 
                     size--;
-                    if (d.CurrentPath.Value.path.Count <= 4)
+                    if (d.CurrentPath.Value.path.Count <= Constants.DestBuff)
                     {
                         Electrode center = d.SnekList.First();
                         while (size > 0)
@@ -82,7 +81,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     d.CurrentPath = ModifiedAStar.FindPath(d, destElectrode);
                 }
-                while (d.CurrentPath.Value.path.Count > 4)
+                while (d.CurrentPath.Value.path.Count > Constants.DestBuff)
                 {
                     d.Waiting = true;
                     try
@@ -97,7 +96,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         return false;
                     }
 
-                    if (d.CurrentPath.Value.path.Count <= 4)
+                    if (d.CurrentPath.Value.path.Count <= Constants.DestBuff)
                     {
                         CoilSnek(d, d.SnekList.First());
                         return true;
@@ -143,6 +142,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     MoveTowardDest(d, destination, mergeDroplets);
                 }
+                Program.C.RemovePath(d);
             }catch (NullReferenceException ex)
             {
                 throw ex;
@@ -208,6 +208,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     {
                         throw new ArgumentException("Reset too many times");
                     }
+                    Program.C.RemovePath(d);
+                    Thread.Sleep(10);
                 }
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination, mergeDroplets);
             }
@@ -239,10 +241,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         legalMove = false; occupant = null;
                     }
 
-                }
-                if (d.MergeReady == true || (occupant != null && occupant.MergeReady == true))
-                {
-                    int a = 2;
                 }
                 if (d.Occupy.Contains(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value))) // if it goes through itself
                 {
@@ -794,7 +792,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // If snake already occupies destination, coil around dest.
             if (dest.Occupant != null && dest.Occupant.Equals(d))
             {
-                d.CurrentPath = null;
+                Program.C.RemovePath(d);
                 CoilSnek(d, dest);
                 if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
                 {
@@ -878,7 +876,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                     if (d.Occupy.Contains(dest) && !d.Important)
                     {
-                        int preCoilSize = d.Occupy.Count;
+                        Program.C.RemovePath(d);
                         CoilSnek(d, dest);
                         return;
                     }
@@ -943,10 +941,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors();
                 foreach (var item in neighbors)
                 {
-                    if (item.Item1.ePosX == 2 && item.Item1.ePosY == 4)
-                    {
-                        int a = 2;
-                    }
                     if (CheckLegalMove(d,[item.Item1]).legalmove && !seenElectrodes.Contains(item.Item1) && (app != null && ((app.CoilInto && item.Item1.Apparature == app)||(!app.CoilInto)) || (app == null && (item.Item1.Occupant == d || item.Item1.Apparature == null))))
                     {
                         activeBlob2.Add(item.Item1);
@@ -1057,7 +1051,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             else
             {
-                d.CurrentPath = null;
+                Program.C.RemovePath(d);
             }
             Printer.PrintLine(d.Name + " and " + mergeDroplet.Name + " has been merged");
 

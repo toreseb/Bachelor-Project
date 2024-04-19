@@ -48,6 +48,8 @@ namespace Bachelor_Project.Simulation
 
         private Queue<Task> TaskQueue = [];
 
+        public Task? ActiveTask;
+
         public bool Inputted = false;
 
         public bool Removed = false;
@@ -68,6 +70,7 @@ namespace Bachelor_Project.Simulation
 
             Thread = new Thread(new ThreadStart(StartAgent));
 
+            
             
 
         }
@@ -167,9 +170,9 @@ namespace Bachelor_Project.Simulation
                     // Do thing
                     while (TaskQueue.Count > 0)
                     {
-                        Task cTask = TaskQueue.Dequeue();
+                        ActiveTask = TaskQueue.Dequeue();
                         Printer.PrintLine("Droplet " + Name + " is doing work");
-                        cTask.Start();
+                        ActiveTask.Start();
                         if (Name == "drop4")
                         {
                             int a = 2;
@@ -177,16 +180,18 @@ namespace Bachelor_Project.Simulation
                         try
                         {
 
-                            cTask.Wait(cancellationToken);
+                            ActiveTask.Wait(cancellationToken);
+                            ActiveTask = null;
                         }
                         catch (Exception e)
                         {
                             Printer.PrintLine("Droplet " + Name + " has been stopped");
-
+                            ActiveTask = null;
                             return;
                         }
 
                         Printer.PrintLine("Droplet " + Name + " has done work");
+                        ActiveTask = null;
                     }
 
                 }

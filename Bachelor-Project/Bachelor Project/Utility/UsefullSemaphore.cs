@@ -49,6 +49,19 @@ namespace Bachelor_Project.Utility
                 count-= i;
             }
         }
+        /// <summary>
+        /// Waits until semaphore is free, but does not actually subtract from the semaphore
+        /// </summary>
+        public void Check()
+        {
+            lock (locker)
+            {
+                while (count == 0)
+                {
+                    Monitor.Wait(locker);
+                }
+            }
+        }
 
         public bool TryReleaseOne()
         {

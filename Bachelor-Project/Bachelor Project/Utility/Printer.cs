@@ -15,12 +15,14 @@ namespace Bachelor_Project.Utility
         private static ManualResetEventSlim PrintAvailableEvent = new ManualResetEventSlim(false);
 
         private static Queue<Task<bool>> PrintQueue = [];
+        public static Task<bool>? cTask;
         private static readonly object PrintEnqueue = new object();
 
         static Printer()
         {
             if (Settings.Printing)
             {
+                cTask = null;
                 cancellationTokenSource = new CancellationTokenSource();
                 StartAgent();
             }
@@ -50,7 +52,7 @@ namespace Bachelor_Project.Utility
                 {
                     lock (PrintEnqueue)
                     {
-                        Task<bool> cTask = PrintQueue.Dequeue();
+                        cTask = PrintQueue.Dequeue();
                         if (cTask.Status != TaskStatus.RanToCompletion)
                         {
                             cTask.RunSynchronously();
@@ -59,9 +61,11 @@ namespace Bachelor_Project.Utility
                         try
                         {
                             cTask.Wait(cancellationToken);
+                            cTask = null;
                         }
                         catch (Exception)
                         {
+                            cTask = null;
                             return;
                         }
                     }
@@ -119,6 +123,13 @@ namespace Bachelor_Project.Utility
         public static void PrintBoard()
         {
             GivePrint(new Task<bool>(Program.C.board.PrintBoardState));
+        }
+
+        public static bool CurrentlyDone()
+        {
+            return PrintQueue.Count == 0 && cTask == null;
+
+
         }
     }
 }

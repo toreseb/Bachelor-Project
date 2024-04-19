@@ -845,32 +845,60 @@
       "ID": 650,
       "inputID": 0,
       "positionX": 90,
-      "positionY": 0
+      "positionY": 30
     },
     {
       "name": "in1",
       "ID": 651,
       "inputID": 1,
+      "positionX": 150,
+      "positionY": 90
+    },
+    {
+      "name": "in2",
+      "ID": 651,
+      "inputID": 2,
+      "positionX": 90,
+      "positionY": 150
+    },
+    {
+      "name": "in3",
+      "ID": 651,
+      "inputID": 3,
+      "positionX": 30,
+      "positionY": 90
+    }
+  ],
+  "outputs": [
+    {
+      "name": "out0",
+      "ID": 652,
+      "outputID": 0,
+      "positionX": 90,
+      "positionY": 10
+    },
+    {
+      "name": "out1",
+      "ID": 652,
+      "outputID": 1,
+      "positionX": 170,
+      "positionY": 90
+    },
+    {
+      "name": "out2",
+      "ID": 652,
+      "outputID": 2,
       "positionX": 90,
       "positionY": 170
     },
     {
-      "name": "in2",
+      "name": "out3",
       "ID": 652,
-      "inputID": 2,
-      "positionX": 0,
+      "outputID": 3,
+      "positionX": 10,
       "positionY": 90
     }
   ],
-    "outputs": [
-      {
-        "name": "out0",
-        "ID": 652,
-        "outputID": 0,
-        "positionX": 170,
-        "positionY": 90
-      }
-    ],
     "droplets": null,
     "unclassified": null
 }

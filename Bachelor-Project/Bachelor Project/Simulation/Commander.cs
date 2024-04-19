@@ -3,6 +3,7 @@ using Bachelor_Project.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -20,6 +21,7 @@ namespace Bachelor_Project.Simulation
 
         public (List<Command> commands, Dictionary<string, string> dropletpairs, Dictionary<string, List<string>> contaminated, Dictionary<string, List<string>> contaminates)? data;
         public Board board;
+        public Dictionary<string, ((Point start, Point end)? path, UsefullSemaphore sem)> dropletPaths;
         List<Command> currentCommands = [];
 
         public Commander((List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>)? data, string boarddata)
@@ -27,6 +29,7 @@ namespace Bachelor_Project.Simulation
             this.data = data;
             string json = File.ReadAllText(boarddata);
             board = Board.ImportBoardData(json);
+            dropletPaths = [];
         }
 
         public void Setup()
@@ -206,8 +209,83 @@ namespace Bachelor_Project.Simulation
 
 
             //board.PrintBoardState();
+            bool finished = true;
+            do
+            {
+                Thread.Sleep(1000);
+                finished = Printer.CurrentlyDone();
+                foreach (Droplet item in board.Droplets.Values)
+                {
+                    if (!finished)
+                    {
+                        break;
+                    }
+                    if (item.GetWork().Count > 0 || !(item.ActiveTask == null || item.ActiveTask.IsCompleted))
+                    {
+                        finished = false;
+                        break;
+                    }
+                }
+            } while (!finished);
+        }
 
-            Thread.Sleep(100000000); //TODO: make it sleep until all commands have been executed
+        public void SetPath(Droplet d, int startPosX, int startPosY, int endPosX, int endPosY, List<string>? mergeDroplets = null)
+        {
+            Dictionary<string, ((Point start, Point end)? path, UsefullSemaphore sem)> oldPaths = new(dropletPaths);
+            foreach ((var key, var value) in oldPaths)
+            {
+                if (value.path == null || !dropletPaths.ContainsKey(d.Name) || key == d.Name || dropletPaths[d.Name].path == null) continue;
+                if (mergeDroplets != null && mergeDroplets.Contains(key)) continue;
+                if (d.Name == "drop2")
+                {
+                    int a = 2;
+                }
+                if (LineIntersection.IsIntersecting(dropletPaths[d.Name].path.Value.start, dropletPaths[d.Name].path.Value.end, value.path.Value.start, value.path.Value.end))
+                {
+                    var oldValue = dropletPaths[d.Name];
+                    dropletPaths[d.Name] = (null, dropletPaths[d.Name].sem);
+                    Monitor.Exit(ModifiedAStar.PathLock);
+                    value.sem.Check();
+                    Monitor.Enter(ModifiedAStar.PathLock);
+                    dropletPaths[d.Name] = oldValue;
+                }
+            }
+
+            if (dropletPaths.Keys.Contains(d.Name)){
+                dropletPaths[d.Name] = ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), dropletPaths[d.Name].sem);
+            }
+            else
+            {
+                dropletPaths.Add(d.Name, ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), new UsefullSemaphore(1,1)));
+            }
+            dropletPaths[d.Name].sem.TryReleaseOne();
+            dropletPaths[d.Name].sem.WaitOne();
+            
+
+
+        }
+
+        public void SetPath(Droplet d, Electrode start, Electrode end, List<string>? mergeDroplets = null)
+        {
+            SetPath(d, start.ePosX, start.ePosY, end.ePosX, end.ePosY, mergeDroplets);
+        }
+
+        public void RemovePath(Droplet d)
+        {
+            lock (ModifiedAStar.PathLock)
+            {
+                d.CurrentPath = null;
+                if (dropletPaths.Keys.Contains(d.Name))
+                {
+                    dropletPaths[d.Name] = (null, dropletPaths[d.Name].sem);
+                }
+                else
+                {
+                    dropletPaths.Add(d.Name, (null, new UsefullSemaphore(1, 1)));
+                }
+                dropletPaths[d.Name].sem.TryReleaseOne();
+            }
+            
 
         }
 

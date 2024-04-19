@@ -24,6 +24,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void OutputDroplet(Droplet droplet, Output output)
         {
             Printer.PrintLine(droplet.Name + " : OUTPUTTING");
+            Printer.PrintBoard();
             droplet.Important = true;
             Droplet_Actions.MoveToApparature(droplet, output);
             Droplet_Actions.Output(droplet, output);

@@ -1,0 +1,5 @@
+main:
+	SETEL 40;
+	TICK;
+	SETEL 41;
+	TICK;

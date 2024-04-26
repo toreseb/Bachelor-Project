@@ -70,7 +70,7 @@ namespace Bachelor_Project.Simulation
         {
             JObject jObject = JObject.Parse(json);
 
-            Information inf = jObject["information"][0].ToObject<Information>();
+            Information inf = jObject["information"].ToObject<Information>();
             Electrode[] eList = jObject["electrodes"].ToObject<Electrode[]>();
             inf.electrode_size = eList[0].SizeX;
             inf.eRow = inf.sizeX / inf.electrode_size; // Number of electrodes in a row
@@ -103,10 +103,10 @@ namespace Bachelor_Project.Simulation
 
                 int endX = ((int)item["positionX"] + (int)item["sizeX"]) / inf.electrode_size;
                 int endY = ((int)item["positionY"] + (int)item["sizeY"]) / inf.electrode_size;
-                int i = endX - startX;
+                int i = endX - startX - 1;
                 while (i >= 0)
                 {
-                    int j = endY - startY;
+                    int j = endY - startY - 1;
                     while (j >= 0)
                     {
                         actuators[item["name"].ToString()].pointers.Add(eArray[startX + i, startY + j]);

@@ -1,12 +1,12 @@
-
+// using https://json-generator.com
 {
-  information: [{
+  information: {
     platform_name: "4by3example",
     platform_type: "example",
     platform_ID: "012345678",
     sizeX: 180,
     sizeY: 180
-  }],
+  },
     electrodes: [
       '{{repeat(9*9)}}',
       {
@@ -29,42 +29,44 @@
           return y / 9 * 20;
         },
         sizeX: 20,
-        sizeY: 20
+        sizeY: 20,
+        status: 0,
+        corners: [],
+        subscriptions: [],
+        neighbours: []
       }
     ],
       actuators: [{
+        "valueActualTemperature": 0,
+        "valueDesiredTemperature": 10,
+        "valuePowerStatus": 0,
         name: "heat1",
-        ID: 8*8+ '{{index()}}',
-        actuator: '{{index()}}',
+        ID: 8*8+ '{{index()}}', // Size of board
+        actuatorID: '{{index()}}',
         type: "heater",
         positionX: 20,
         positionY: 0,
         sizeX: 20,
-        sizeY: 20,
-        actualTemperature: 0,
-        desiredTemperature: 10,
-        status: false,
-        nextDesiredTemperature: 0,
-        nextStatus: false,
-        corners: null
+        sizeY: 20
       }],
-        sensors: null,
+        sensors: [],
         inputs: [{
           name: "in" + '{{index()}}',
-          ID: 8*8+1+'{{index()}}',
+          ID: 8*8+1+'{{index()}}', // Size of board + heaters
           inputID: '{{index()}}',
           positionX: 10,
           positionY: 90
         }],
         outputs: [{
           name: "out" + '{{index()}}',
-          ID: 8*8+1+'{{index()}}',
+          ID: 8*8+1+1+'{{index()}}', // Size of board + heaters + inputs
           outputID: '{{index()}}',
           positionX: 170,
           positionY: 90
         }],
-        droplets: null,
-        unclassified: null
+        droplets: [],
+        bubbles: [],
+        unclassified: []
           
 }
 

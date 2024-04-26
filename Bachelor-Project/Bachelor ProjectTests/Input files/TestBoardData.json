@@ -1,184 +1,182 @@
 {
-    "information": [
-        {
-            "platform_name": "4by3example",
-            "platform_type": "example",
-            "platform_ID": "012345678",
-            "sizeX": 80,
-            "sizeY": 60
-        }
-    ],
-    "electrodes": [
-        {
-            "name": "el0",
-            "ID": 0,
-            "electrodeID": 0,
-            "driverID": -1,
-            "positionX": 0,
-            "positionY": 0,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el1",
-            "ID": 1,
-            "electrodeID": 1,
-            "driverID": -1,
-            "positionX": 20,
-            "positionY": 0,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el2",
-            "ID": 2,
-            "electrodeID": 2,
-            "driverID": -1,
-            "positionX": 40,
-            "positionY": 0,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el3",
-            "ID": 3,
-            "electrodeID": 3,
-            "driverID": -1,
-            "positionX": 60,
-            "positionY": 0,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el4",
-            "ID": 4,
-            "electrodeID": 4,
-            "driverID": -1,
-            "positionX": 0,
-            "positionY": 20,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el5",
-            "ID": 5,
-            "electrodeID": 5,
-            "driverID": -1,
-            "positionX": 20,
-            "positionY": 20,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el6",
-            "ID": 6,
-            "electrodeID": 6,
-            "driverID": -1,
-            "positionX": 40,
-            "positionY": 20,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el7",
-            "ID": 7,
-            "electrodeID": 7,
-            "driverID": -1,
-            "positionX": 60,
-            "positionY": 20,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el8",
-            "ID": 8,
-            "electrodeID": 8,
-            "driverID": -1,
-            "positionX": 0,
-            "positionY": 40,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el9",
-            "ID": 9,
-            "electrodeID": 9,
-            "driverID": -1,
-            "positionX": 20,
-            "positionY": 40,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el10",
-            "ID": 10,
-            "electrodeID": 10,
-            "driverID": -1,
-            "positionX": 40,
-            "positionY": 40,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        },
-        {
-            "name": "el11",
-            "ID": 11,
-            "electrodeID": 11,
-            "driverID": -1,
-            "positionX": 60,
-            "positionY": 40,
-            "sizeX": 20,
-            "sizeY": 20,
-            "status": 0
-        }
-    ],
-    "actuators": [
-        {
-            "name": "heat1",
-            "ID": 2,
-            "actuatorID": 30,
-            "type": "heater",
-            "positionX": 20,
-            "positionY": 0,
-            "sizeX": 20,
-            "sizeY": 20,
-            "actualTemperature": 0,
-            "desiredTemperature": 10,
-            "status": false,
-            "nextDesiredTemperature": 0,
-            "nextStatus": false,
-            "corners": null
-        }
-    ],
-    "sensors": null,
-    "inputs": [
-        {
-            "name": "in0",
-            "ID": 12,
-            "inputID": 0,
-            "positionX": 10,
-            "positionY": 30
-        }
-    ],
-    "outputs": [
-        {
-            "name": "out0",
-            "ID": 13,
-            "outputID": 0,
-            "positionX": 70,
-            "positionY": 30
-        }
-    ],
-    "droplets": null,
-    "unclassified": null
+  "information": {
+    "platform_name": "4by3example",
+    "platform_type": "example",
+    "platform_ID": "012345678",
+    "sizeX": 80,
+    "sizeY": 60
+  },
+  "electrodes": [
+    {
+      "name": "el0",
+      "ID": 0,
+      "electrodeID": 0,
+      "driverID": -1,
+      "positionX": 0,
+      "positionY": 0,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el1",
+      "ID": 1,
+      "electrodeID": 1,
+      "driverID": -1,
+      "positionX": 20,
+      "positionY": 0,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el2",
+      "ID": 2,
+      "electrodeID": 2,
+      "driverID": -1,
+      "positionX": 40,
+      "positionY": 0,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el3",
+      "ID": 3,
+      "electrodeID": 3,
+      "driverID": -1,
+      "positionX": 60,
+      "positionY": 0,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el4",
+      "ID": 4,
+      "electrodeID": 4,
+      "driverID": -1,
+      "positionX": 0,
+      "positionY": 20,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el5",
+      "ID": 5,
+      "electrodeID": 5,
+      "driverID": -1,
+      "positionX": 20,
+      "positionY": 20,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el6",
+      "ID": 6,
+      "electrodeID": 6,
+      "driverID": -1,
+      "positionX": 40,
+      "positionY": 20,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el7",
+      "ID": 7,
+      "electrodeID": 7,
+      "driverID": -1,
+      "positionX": 60,
+      "positionY": 20,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el8",
+      "ID": 8,
+      "electrodeID": 8,
+      "driverID": -1,
+      "positionX": 0,
+      "positionY": 40,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el9",
+      "ID": 9,
+      "electrodeID": 9,
+      "driverID": -1,
+      "positionX": 20,
+      "positionY": 40,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el10",
+      "ID": 10,
+      "electrodeID": 10,
+      "driverID": -1,
+      "positionX": 40,
+      "positionY": 40,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    },
+    {
+      "name": "el11",
+      "ID": 11,
+      "electrodeID": 11,
+      "driverID": -1,
+      "positionX": 60,
+      "positionY": 40,
+      "sizeX": 20,
+      "sizeY": 20,
+      "status": 0
+    }
+  ],
+  "actuators": [
+    {
+      "name": "heat1",
+      "ID": 2,
+      "actuatorID": 30,
+      "type": "heater",
+      "positionX": 20,
+      "positionY": 0,
+      "sizeX": 20,
+      "sizeY": 20,
+      "actualTemperature": 0,
+      "desiredTemperature": 10,
+      "status": false,
+      "nextDesiredTemperature": 0,
+      "nextStatus": false,
+      "corners": null
+    }
+  ],
+  "sensors": null,
+  "inputs": [
+    {
+      "name": "in0",
+      "ID": 12,
+      "inputID": 0,
+      "positionX": 10,
+      "positionY": 30
+    }
+  ],
+  "outputs": [
+    {
+      "name": "out0",
+      "ID": 13,
+      "outputID": 0,
+      "positionX": 70,
+      "positionY": 30
+    }
+  ],
+  "droplets": null,
+  "unclassified": null
 }

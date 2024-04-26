@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Bachelor_Project.Utility;
 using Antlr4.Runtime;
+using Bachelor_Project.Electrode_Types;
+using Bachelor_Project.Electrode_Types.Actuator_Types;
 
 namespace Bachelor_Project.Parsing.Tests
 {
@@ -56,7 +58,7 @@ namespace Bachelor_Project.Parsing.Tests
 
             //Test output
             command = data.commands[3];
-            Assert.IsTrue(command.Type == "output" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 0 && (string)command.ActionValue[0] == "out0");
+            Assert.IsTrue(command.Type == "output" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 0 && command.NextName == "out0" && command.NextType == typeof(Output));
 
             //Test contam
             Assert.AreEqual(data.contaminated["water"][0], "blood");
@@ -78,13 +80,13 @@ namespace Bachelor_Project.Parsing.Tests
 
             //Test temp
             command = data.commands[6];
-            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "20" && (string)command.ActionValue[1] == "water");
+            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "water" && (string)command.ActionValue[1] == "20" && command.NextName == "heat1" && command.NextType == typeof(Heater));
             command = data.commands[7];
-            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "30" && (string)command.ActionValue[1] == "heatedwater");
+            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "heatedwater" && (string)command.ActionValue[1] == "30" && command.NextName == "heat1" && command.NextType == typeof(Heater));
 
             //Test sense
             command = data.commands[8];
-            Assert.IsTrue(command.Type == "sense" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "rgb");
+            Assert.IsTrue(command.Type == "sense" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && command.NextName == "sens0" && command.NextType == typeof(Sensor));
 
         }
     }

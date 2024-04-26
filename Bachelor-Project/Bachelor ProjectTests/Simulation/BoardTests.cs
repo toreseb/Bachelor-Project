@@ -60,8 +60,8 @@ namespace Bachelor_Project.Simulation.Tests
             Assert.AreEqual("heater", a.Type);
             Assert.AreEqual(20, a.PositionX);
             Assert.AreEqual(0, a.PositionY);
-            Assert.AreEqual(20, a.SizeX);
-            Assert.AreEqual(20, a.SizeY);
+            Assert.AreEqual(40, a.SizeX);
+            Assert.AreEqual(40, a.SizeY);
             Assert.AreEqual(0, a.ActualTemperature);
             Assert.AreEqual(10, a.DesiredTemperature);
             Assert.AreEqual(false, a.Status);

@@ -1,10 +1,10 @@
 input drop1 water in0 24;
-contam water blood;
+contam blood water;
 split drop1 drop2 drop3 drop4;
 merge drop5 water drop2 drop3;
 output drop5 out0;
 mix drop4 square;
 mix drop4 square mixedwater;
-temp drop4 20;
-temp drop4 30 heatedwater;
-sense drop4 rgb;
+temp drop4 heat1 20;
+temp drop4 heat1 30 heatedwater;
+sense drop4 sens0;

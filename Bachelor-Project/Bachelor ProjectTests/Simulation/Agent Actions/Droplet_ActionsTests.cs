@@ -1190,9 +1190,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Electrodes[0,0].Occupant, w2);
             Assert.AreEqual(board.Electrodes[0,1].Occupant, w2);
 
-            Assert.AreEqual(board.Electrodes[0,5].Occupant, w3); // TODO: Major problem. There is a wat1 left and wat3 is only 2 on the board.
-            Assert.AreEqual(board.Electrodes[0,6].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[0,7].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1,3].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1,4].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1,5].Occupant, w3);
 
 
             Droplet_Actions.MoveToApparature(w2, board.Actuators["heat1"]);
@@ -1320,9 +1320,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Electrodes[3, 5].Occupant, w2);
 
             Assert.AreEqual(board.Electrodes[0, 5].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[1, 5].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[0, 6].Occupant, w3);
             Assert.AreEqual(board.Electrodes[1, 4].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[1, 3].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1, 5].Occupant, w3);
         }
 
         [TestMethod()]
@@ -1371,9 +1371,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Electrodes[3, 5].Occupant, w2);
 
             Assert.AreEqual(board.Electrodes[0, 5].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[1, 5].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[0, 6].Occupant, w3);
             Assert.AreEqual(board.Electrodes[1, 4].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[1, 3].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1, 5].Occupant, w3);
         }
 
         [TestMethod()]
@@ -1439,9 +1439,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Electrodes[2, 8].Occupant, w2);
 
             Assert.AreEqual(board.Electrodes[1, 3].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1, 4].Occupant, w3);
             Assert.AreEqual(board.Electrodes[2, 3].Occupant, w3);
             Assert.AreEqual(board.Electrodes[3, 3].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[3, 2].Occupant, w3);
         }
 
         [TestMethod()]

@@ -101,7 +101,8 @@ namespace Bachelor_Project.Utility
                     Printer.PrintLine("Split");
                     Dictionary<string, double> ratios = [];
 
-                    ratios = Calc.Ratio((Dictionary<string, int>)ActionValue[0], OutputDroplets);
+
+                    ratios = Calc.Ratio(ActionValue.Length > 0 ? (Dictionary<string, int>)ActionValue[0] : null, OutputDroplets);
 
                     Dictionary<string, UsefullSemaphore> dropSem = new Dictionary<string, UsefullSemaphore>();
 

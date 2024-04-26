@@ -1153,13 +1153,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             source.Waiting = false;
 
+            bool fixStart = false;
+
             foreach ((string dName, double ratio) in ratios)
             {
                 Droplet d = Program.C.board.Droplets[dName];
                 d.Waiting = false;
+                fixStart = true;
 
                 // Find electrode in source closest to where splitter needs to go. nextElectrodeDestination is not set, so we do it here.
-                d.SetNextElectrodeDestination(); 
+                d.SetNextElectrodeDestination();
 
                 Electrode dest = d.nextElectrodeDestination;
                 Electrode start = dest.GetClosestElectrodeInList(source.Occupy);
@@ -1172,11 +1175,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     dest = FindFreeSpaceForSplit(d, source, d.Size);
                     destBuffer = 1;
-                }
-
-                if (d.Name == "Wat5")
-                {
-                    int a = 2;
                 }
 
                 d.CurrentPath = ModifiedAStar.FindPath(d, dest, splitDroplet: source.Name, start: start);
@@ -1194,6 +1192,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 d.SnekList = [];
 
                 // Find path split droplet needs to follow.
+                Printer.PrintLine(start.Name);
                 TakeOverElectrode(d, start);
 
                 Printer.PrintBoard();
@@ -1219,12 +1218,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 int i = 1;
                 while (i < d.Size)
                 {
-
-                    if (d.Name == "Wat5")
-                    {
-                        int a = 2;
-                    }
-
                     if (d.CurrentPath.Value.path.Count > destBuffer)
                     {
 
@@ -1257,7 +1250,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         Electrode head = d.SnekList.First.Value;
 
                         // Coil at dest and remove from source
-                        CoilWithoutRemoval(d, remainder, source); 
+                        CoilWithoutRemoval(d, remainder, source);
 
                         // Remove the corresponding electrodes from the source tree
                         for (int j = 0; j < remainder; j++)
@@ -1265,14 +1258,17 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                             sourceTree.RemoveLeaf();
                         }
 
+                        // Move away and replenish start TODO: Maybe put a moved on here
+                        TakeOverElectrode(source, start);
                         // Normal coil to suck up tail
-                        CoilSnek(d, d.Occupy.Contains(dest) ? dest : head);
+                        CoilSnek(d, d.Occupy.Contains(dest) ? dest : head, input: true); // Input: true adds one more to the droplet
+                        sourceTree.RemoveLeaf();
+                        fixStart = false;
 
                         i += remainder;
                     }
 
                     Printer.PrintBoard();
-                    // TODO: What if destination is not far enough to have the snake completely split from the source?
                 }
 
                 // Move all the way away
@@ -1283,6 +1279,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     {
                         bool moved = MoveTowardDest(d, dest, splitDroplet: source.Name).Item1;
 
+                        // Give start back to source to keep it connected.
+                        if (fixStart && moved)
+                        {
+                            fixStart = false;
+                            MoveOnElectrode(source, start);
+                            sourceTree.RemoveLeaf();
+                        }
+
                         if (!moved && d.Waiting == false)
                         {
                             d.Waiting = true;
@@ -1290,26 +1294,26 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                     else
                     {
-                        CoilSnek(d, center: dest); // TODO: d.nextDestination or dest?
-                        // TODO: This could be an issue if we are not far enough removed from source and its boarder.
-                        // Actually, I think it can handle it.
+                        CoilSnek(d, center: dest);
                     }
-                }
 
+                }
 
                 d.Waiting = true;
                 d.Important = false;
+
+                Program.C.RemovePath(d);
 
                 // Give d the task of moving.
                 dropSem[d.Name].TryReleaseOne();
 
                 Printer.PrintBoard();
                 Printer.PrintLine(dName + " DONE!!");
-            }
 
+            }
             source.RemoveFromBoard();
         }
-        
+
         /// <summary>
         /// Coils around head without removing from tail.
         /// Used for input and split.

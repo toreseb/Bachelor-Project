@@ -119,11 +119,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Wat3.Thread.Start();
             Wat4.Thread.Start();
 
-            Task input1 = new(() => Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 11));
+            Task input1 = new(() => Mission_Tasks.InputDroplet(Wat1, board.Input["in0"], 11));
             Wat1.GiveWork(input1);
-            Task input2 = new(() => Droplet_Actions.InputDroplet(Wat2, board.Input["in1"], 11));
+            Task input2 = new(() => Mission_Tasks.InputDroplet(Wat2, board.Input["in1"], 11));
             Wat2.GiveWork(input2);
-            Task input3 = new(() => Droplet_Actions.InputDroplet(Wat3, board.Input["in2"], 11));
+            Task input3 = new(() => Mission_Tasks.InputDroplet(Wat3, board.Input["in2"], 11));
             Wat3.GiveWork(input3);
 
             input1.Wait();
@@ -226,5 +226,44 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual("FFFF00", (string)board.Sensors["sens0"].value[0]);
 
         }
+        /*
+        [TestMethod()]
+        public void SplitDropletTest()
+        {
+            Assert.Fail();
+
+
+            // Create board and both droplets
+            board = Program.C.SetBoard(specialBoardDataLocation + "//TestBoardDataBigWithMoreHeat.json");
+            Droplet Wat1 = new("Water", "Wat1");
+            Droplet Wat2 = new("Water", "Wat2");
+            Droplet Wat3 = new("Water", "Wat3");
+            Droplet Wat4 = new("Water", "Wat4");
+            board.Droplets.Add("Wat1", Wat1);
+            board.Droplets.Add("Wat2", Wat2);
+            board.Droplets.Add("Wat3", Wat3);
+            board.Droplets.Add("Wat4", Wat4);
+            Wat1.Thread.Start();
+            Wat2.Thread.Start();
+            Wat3.Thread.Start();
+            Wat4.Thread.Start();
+
+            Task input = new(() => Mission_Tasks.InputDroplet(Wat1, board.Input["in0"], 60));
+            Wat1.GiveWork(input);
+            Task move1 = new(() => )
+
+            Dictionary<string, int> ratios = new Dictionary<string, int>();
+            ratios.Add("Wat2", 50);
+            ratios.Add("Wat3", 50);
+            ratios.Add("Wat4", 50);
+            Dictionary<string, UsefullSemaphore> dropSem = new Dictionary<string, UsefullSemaphore>();
+            dropSem.Add("Wat2", new UsefullSemaphore(0, 1));
+            dropSem.Add("Wat3", new UsefullSemaphore(0, 1));
+            dropSem.Add("Wat4", new UsefullSemaphore(0, 1));
+
+            Task split = new(() => Mission_Tasks.SplitDroplet(Wat1, [Wat2, Wat3, Wat4], ratios, dropSem)); //needs dest
+
+
+        }*/
     }
 }

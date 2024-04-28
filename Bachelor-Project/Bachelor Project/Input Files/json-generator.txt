@@ -20,6 +20,7 @@
             return 1;
           }
         },
+        shape: 0,
         positionX: function (tags){
           return tags.index() % 9 * 20;
         },

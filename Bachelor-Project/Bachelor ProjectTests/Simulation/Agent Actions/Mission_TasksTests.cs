@@ -226,13 +226,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual("FFFF00", (string)board.Sensors["sens0"].value[0]);
 
         }
-        /*
+        
         [TestMethod()]
         public void SplitDropletTest()
         {
-            Assert.Fail();
-
-
             // Create board and both droplets
             board = Program.C.SetBoard(specialBoardDataLocation + "//TestBoardDataBigWithMoreHeat.json");
             Droplet Wat1 = new("Water", "Wat1");
@@ -248,22 +245,54 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Wat3.Thread.Start();
             Wat4.Thread.Start();
 
+            int time = 1;
+
             Task input = new(() => Mission_Tasks.InputDroplet(Wat1, board.Input["in0"], 60));
             Wat1.GiveWork(input);
-            Task move1 = new(() => )
 
-            Dictionary<string, int> ratios = new Dictionary<string, int>();
-            ratios.Add("Wat2", 50);
-            ratios.Add("Wat3", 50);
-            ratios.Add("Wat4", 50);
+            input.Wait();
+
+            Apparature dest = Wat2.nextDestination;
+
+            Dictionary<string, int> dropRat = new Dictionary<string, int>();
+            dropRat.Add(Wat2.Name, 50);
+            dropRat.Add(Wat3.Name, 50);
+            dropRat.Add(Wat4.Name, 50);
+
+            List<string> outDrops = [Wat2.Name, Wat3.Name, Wat4.Name];
+
+            Dictionary<string, double> ratios = Calc.Ratio(dropRat, outDrops);
             Dictionary<string, UsefullSemaphore> dropSem = new Dictionary<string, UsefullSemaphore>();
             dropSem.Add("Wat2", new UsefullSemaphore(0, 1));
             dropSem.Add("Wat3", new UsefullSemaphore(0, 1));
             dropSem.Add("Wat4", new UsefullSemaphore(0, 1));
 
-            Task split = new(() => Mission_Tasks.SplitDroplet(Wat1, [Wat2, Wat3, Wat4], ratios, dropSem)); //needs dest
+            Wat2.nextDestination = board.Actuators["heat1"];
+            Wat3.nextDestination = board.Actuators["heat2"];
+            Wat4.nextDestination = board.Output["out0"];
 
+            Task split = new(() => Mission_Tasks.SplitDroplet(Wat1, ["Wat2", "Wat3", "Wat4"], ratios, dropSem, dest));
+            Wat1.GiveWork(split);
 
-        }*/
+            Task split2 = new(() => Mission_Tasks.AwaitSplitWork(Wat2, "Wat1", Wat2.nextDestination, dropSem[Wat2.Name]));
+            Task split3 = new(() => Mission_Tasks.AwaitSplitWork(Wat3, "Wat1", Wat3.nextDestination, dropSem[Wat3.Name]));
+            Task split4 = new(() => Mission_Tasks.AwaitSplitWork(Wat4, "Wat1", Wat4.nextDestination, dropSem[Wat4.Name]));
+            Wat2.GiveWork(split2);
+            Wat3.GiveWork(split3);
+            Wat4.GiveWork(split4);
+
+            split.Wait();
+
+            Printer.PrintBoard();
+
+            // Check that sizes are right
+            Assert.IsTrue(Wat1.Removed);
+            Assert.AreEqual(2, Wat2.Size);
+            Assert.AreEqual(2, Wat3.Size);
+            Assert.AreEqual(2, Wat4.Size);
+            Assert.IsTrue(19.5 < Wat2.Volume && Wat2.Volume < 20.5);
+            Assert.IsTrue(19.5 < Wat3.Volume && Wat3.Volume < 20.5);
+            Assert.IsTrue(19.5 < Wat4.Volume && Wat4.Volume < 20.5);
+        }
     }
 }

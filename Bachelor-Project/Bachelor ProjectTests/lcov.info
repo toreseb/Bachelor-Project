@@ -1,0 +1,5551 @@
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Parser\Test Parser\ProgramBaseListener.cs
+FN:42,System.Void ProgramBaseListener::EnterProgram(ProgramParser/ProgramContext)
+FNDA:0,System.Void ProgramBaseListener::EnterProgram(ProgramParser/ProgramContext)
+DA:43,0
+FN:48,System.Void ProgramBaseListener::ExitProgram(ProgramParser/ProgramContext)
+FNDA:0,System.Void ProgramBaseListener::ExitProgram(ProgramParser/ProgramContext)
+DA:49,0
+FN:54,System.Void ProgramBaseListener::EnterDropletname(ProgramParser/DropletnameContext)
+FNDA:0,System.Void ProgramBaseListener::EnterDropletname(ProgramParser/DropletnameContext)
+DA:55,0
+FN:60,System.Void ProgramBaseListener::ExitDropletname(ProgramParser/DropletnameContext)
+FNDA:0,System.Void ProgramBaseListener::ExitDropletname(ProgramParser/DropletnameContext)
+DA:61,0
+FN:66,System.Void ProgramBaseListener::EnterDroplettype(ProgramParser/DroplettypeContext)
+FNDA:0,System.Void ProgramBaseListener::EnterDroplettype(ProgramParser/DroplettypeContext)
+DA:67,0
+FN:72,System.Void ProgramBaseListener::ExitDroplettype(ProgramParser/DroplettypeContext)
+FNDA:0,System.Void ProgramBaseListener::ExitDroplettype(ProgramParser/DroplettypeContext)
+DA:73,0
+FN:78,System.Void ProgramBaseListener::EnterNumber(ProgramParser/NumberContext)
+FNDA:0,System.Void ProgramBaseListener::EnterNumber(ProgramParser/NumberContext)
+DA:79,0
+FN:84,System.Void ProgramBaseListener::ExitNumber(ProgramParser/NumberContext)
+FNDA:0,System.Void ProgramBaseListener::ExitNumber(ProgramParser/NumberContext)
+DA:85,0
+FN:90,System.Void ProgramBaseListener::EnterShape(ProgramParser/ShapeContext)
+FNDA:0,System.Void ProgramBaseListener::EnterShape(ProgramParser/ShapeContext)
+DA:91,0
+FN:96,System.Void ProgramBaseListener::ExitShape(ProgramParser/ShapeContext)
+FNDA:0,System.Void ProgramBaseListener::ExitShape(ProgramParser/ShapeContext)
+DA:97,0
+FN:102,System.Void ProgramBaseListener::EnterTileentity(ProgramParser/TileentityContext)
+FNDA:0,System.Void ProgramBaseListener::EnterTileentity(ProgramParser/TileentityContext)
+DA:103,0
+FN:108,System.Void ProgramBaseListener::ExitTileentity(ProgramParser/TileentityContext)
+FNDA:0,System.Void ProgramBaseListener::ExitTileentity(ProgramParser/TileentityContext)
+DA:109,0
+FN:114,System.Void ProgramBaseListener::EnterCommand(ProgramParser/CommandContext)
+FNDA:0,System.Void ProgramBaseListener::EnterCommand(ProgramParser/CommandContext)
+DA:115,0
+FN:120,System.Void ProgramBaseListener::ExitCommand(ProgramParser/CommandContext)
+FNDA:0,System.Void ProgramBaseListener::ExitCommand(ProgramParser/CommandContext)
+DA:121,0
+FN:124,System.Void ProgramBaseListener::EnterEveryRule(Antlr4.Runtime.ParserRuleContext)
+FNDA:0,System.Void ProgramBaseListener::EnterEveryRule(Antlr4.Runtime.ParserRuleContext)
+DA:125,0
+FN:127,System.Void ProgramBaseListener::ExitEveryRule(Antlr4.Runtime.ParserRuleContext)
+FNDA:0,System.Void ProgramBaseListener::ExitEveryRule(Antlr4.Runtime.ParserRuleContext)
+DA:128,0
+FN:130,System.Void ProgramBaseListener::VisitTerminal(Antlr4.Runtime.Tree.ITerminalNode)
+FNDA:0,System.Void ProgramBaseListener::VisitTerminal(Antlr4.Runtime.Tree.ITerminalNode)
+DA:131,0
+FN:133,System.Void ProgramBaseListener::VisitErrorNode(Antlr4.Runtime.Tree.IErrorNode)
+FNDA:0,System.Void ProgramBaseListener::VisitErrorNode(Antlr4.Runtime.Tree.IErrorNode)
+DA:134,0
+LF:18
+LH:0
+BRF:0
+BRH:0
+FNF:18
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Parser\Test Parser\ProgramLexer.cs
+FN:74,Antlr4.Runtime.IVocabulary ProgramLexer::get_Vocabulary()
+FNDA:0,Antlr4.Runtime.IVocabulary ProgramLexer::get_Vocabulary()
+DA:75,0
+DA:76,0
+DA:77,0
+FN:79,System.String ProgramLexer::get_GrammarFileName()
+FNDA:0,System.String ProgramLexer::get_GrammarFileName()
+DA:80,0
+FN:81,System.String[] ProgramLexer::get_RuleNames()
+FNDA:0,System.String[] ProgramLexer::get_RuleNames()
+DA:82,0
+FN:83,System.String[] ProgramLexer::get_ChannelNames()
+FNDA:0,System.String[] ProgramLexer::get_ChannelNames()
+DA:84,0
+FN:85,System.String[] ProgramLexer::get_ModeNames()
+FNDA:0,System.String[] ProgramLexer::get_ModeNames()
+DA:86,0
+FN:87,System.Int32[] ProgramLexer::get_SerializedAtn()
+FNDA:0,System.Int32[] ProgramLexer::get_SerializedAtn()
+DA:88,0
+FN:52,System.Void ProgramLexer::.ctor(Antlr4.Runtime.ICharStream)
+FNDA:0,System.Void ProgramLexer::.ctor(Antlr4.Runtime.ICharStream)
+DA:53,0
+FN:55,System.Void ProgramLexer::.ctor(Antlr4.Runtime.ICharStream,System.IO.TextWriter,System.IO.TextWriter)
+FNDA:0,System.Void ProgramLexer::.ctor(Antlr4.Runtime.ICharStream,System.IO.TextWriter,System.IO.TextWriter)
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+FN:33,System.Void ProgramLexer::.cctor()
+FNDA:0,System.Void ProgramLexer::.cctor()
+DA:34,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:90,0
+DA:91,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:133,0
+DA:134,0
+DA:136,0
+DA:137,0
+BRDA:92,576,1,0
+BRDA:92,576,0,0
+LF:80
+LH:0
+BRF:2
+BRH:0
+FNF:9
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Parser\Test Parser\ProgramListener.cs
+FN:108,System.Void ProgramDecoder::ExitCommand(ProgramParser/CommandContext)
+FNDA:0,System.Void ProgramDecoder::ExitCommand(ProgramParser/CommandContext)
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+FN:117,System.Void ErrorListener::SyntaxError(System.IO.TextWriter,Antlr4.Runtime.IRecognizer,Antlr4.Runtime.IToken,System.Int32,System.Int32,System.String,Antlr4.Runtime.RecognitionException)
+FNDA:0,System.Void ErrorListener::SyntaxError(System.IO.TextWriter,Antlr4.Runtime.IRecognizer,Antlr4.Runtime.IToken,System.Int32,System.Int32,System.String,Antlr4.Runtime.RecognitionException)
+DA:118,0
+DA:119,0
+LF:6
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Parser\Test Parser\ProgramParser.cs
+FN:62,Antlr4.Runtime.IVocabulary ProgramParser::get_Vocabulary()
+FNDA:0,Antlr4.Runtime.IVocabulary ProgramParser::get_Vocabulary()
+DA:63,0
+DA:64,0
+DA:65,0
+FN:67,System.String ProgramParser::get_GrammarFileName()
+FNDA:0,System.String ProgramParser::get_GrammarFileName()
+DA:68,0
+FN:69,System.String[] ProgramParser::get_RuleNames()
+FNDA:0,System.String[] ProgramParser::get_RuleNames()
+DA:70,0
+FN:71,System.Int32[] ProgramParser::get_SerializedAtn()
+FNDA:0,System.Int32[] ProgramParser::get_SerializedAtn()
+DA:72,0
+FN:117,ProgramParser/ProgramContext ProgramParser::program()
+FNDA:0,ProgramParser/ProgramContext ProgramParser::program()
+DA:118,0
+DA:119,0
+DA:120,0
+DA:122,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:133,0
+DA:134,0
+DA:135,0
+DA:136,0
+DA:137,0
+DA:138,0
+DA:139,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:146,0
+DA:147,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:160,0
+DA:161,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:165,0
+DA:166,0
+DA:167,0
+DA:168,0
+DA:169,0
+DA:170,0
+DA:171,0
+BRDA:129,218,1,0
+BRDA:130,96,0,0
+BRDA:130,96,1,0
+BRDA:129,205,0,0
+BRDA:129,205,1,0
+BRDA:129,218,0,0
+BRDA:153,300,0,0
+BRDA:153,300,1,0
+FN:192,ProgramParser/DropletnameContext ProgramParser::dropletname()
+FNDA:0,ProgramParser/DropletnameContext ProgramParser::dropletname()
+DA:193,0
+DA:194,0
+DA:195,0
+DA:196,0
+DA:197,0
+DA:198,0
+DA:199,0
+DA:200,0
+DA:201,0
+DA:202,0
+DA:203,0
+DA:204,0
+DA:205,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:209,0
+DA:210,0
+DA:211,0
+DA:212,0
+FN:233,ProgramParser/DroplettypeContext ProgramParser::droplettype()
+FNDA:0,ProgramParser/DroplettypeContext ProgramParser::droplettype()
+DA:234,0
+DA:235,0
+DA:236,0
+DA:237,0
+DA:238,0
+DA:239,0
+DA:240,0
+DA:241,0
+DA:242,0
+DA:243,0
+DA:244,0
+DA:245,0
+DA:246,0
+DA:247,0
+DA:248,0
+DA:249,0
+DA:250,0
+DA:251,0
+DA:252,0
+DA:253,0
+FN:274,ProgramParser/NumberContext ProgramParser::number()
+FNDA:0,ProgramParser/NumberContext ProgramParser::number()
+DA:275,0
+DA:276,0
+DA:277,0
+DA:278,0
+DA:279,0
+DA:280,0
+DA:281,0
+DA:282,0
+DA:283,0
+DA:284,0
+DA:285,0
+DA:286,0
+DA:287,0
+DA:288,0
+DA:289,0
+DA:290,0
+DA:291,0
+DA:292,0
+DA:293,0
+DA:294,0
+FN:314,ProgramParser/ShapeContext ProgramParser::shape()
+FNDA:0,ProgramParser/ShapeContext ProgramParser::shape()
+DA:315,0
+DA:316,0
+DA:317,0
+DA:319,0
+DA:320,0
+DA:321,0
+DA:322,0
+DA:323,0
+DA:324,0
+DA:325,0
+DA:326,0
+DA:327,0
+DA:328,0
+DA:329,0
+DA:330,0
+DA:331,0
+DA:332,0
+DA:333,0
+DA:334,0
+DA:335,0
+DA:336,0
+DA:337,0
+DA:338,0
+DA:339,0
+DA:340,0
+DA:341,0
+DA:342,0
+BRDA:324,64,0,0
+BRDA:324,64,1,0
+BRDA:324,78,0,0
+BRDA:324,78,1,0
+FN:363,ProgramParser/TileentityContext ProgramParser::tileentity()
+FNDA:0,ProgramParser/TileentityContext ProgramParser::tileentity()
+DA:364,0
+DA:365,0
+DA:366,0
+DA:367,0
+DA:368,0
+DA:369,0
+DA:370,0
+DA:371,0
+DA:372,0
+DA:373,0
+DA:374,0
+DA:375,0
+DA:376,0
+DA:377,0
+DA:378,0
+DA:379,0
+DA:380,0
+DA:381,0
+DA:382,0
+DA:383,0
+FN:436,ProgramParser/CommandContext ProgramParser::command()
+FNDA:0,ProgramParser/CommandContext ProgramParser::command()
+DA:437,0
+DA:438,0
+DA:439,0
+DA:441,0
+DA:442,0
+DA:443,0
+DA:444,0
+DA:446,0
+DA:447,0
+DA:448,0
+DA:449,0
+DA:450,0
+DA:451,0
+DA:452,0
+DA:453,0
+DA:454,0
+DA:455,0
+DA:456,0
+DA:457,0
+DA:458,0
+DA:459,0
+DA:460,0
+DA:461,0
+DA:462,0
+DA:463,0
+DA:464,0
+DA:465,0
+DA:466,0
+DA:467,0
+DA:469,0
+DA:470,0
+DA:471,0
+DA:472,0
+DA:473,0
+DA:474,0
+DA:475,0
+DA:476,0
+DA:477,0
+DA:478,0
+DA:479,0
+DA:480,0
+DA:481,0
+DA:482,0
+DA:484,0
+DA:485,0
+DA:486,0
+DA:487,0
+DA:488,0
+DA:489,0
+DA:490,0
+DA:491,0
+DA:492,0
+DA:493,0
+DA:495,0
+DA:496,0
+DA:497,0
+DA:498,0
+DA:499,0
+DA:500,0
+DA:501,0
+DA:502,0
+DA:503,0
+DA:504,0
+DA:505,0
+DA:506,0
+DA:507,0
+DA:508,0
+DA:509,0
+DA:510,0
+DA:511,0
+DA:512,0
+DA:513,0
+DA:514,0
+DA:515,0
+DA:516,0
+DA:517,0
+DA:518,0
+DA:519,0
+DA:520,0
+DA:522,0
+DA:523,0
+DA:524,0
+DA:525,0
+DA:526,0
+DA:527,0
+DA:528,0
+DA:529,0
+DA:530,0
+DA:531,0
+DA:532,0
+DA:533,0
+DA:534,0
+DA:535,0
+DA:536,0
+DA:537,0
+DA:538,0
+DA:539,0
+DA:540,0
+DA:541,0
+DA:542,0
+DA:543,0
+DA:544,0
+DA:545,0
+DA:546,0
+DA:547,0
+DA:548,0
+DA:549,0
+DA:550,0
+DA:551,0
+DA:552,0
+DA:553,0
+DA:554,0
+DA:555,0
+DA:556,0
+DA:557,0
+DA:558,0
+DA:559,0
+DA:561,0
+DA:562,0
+DA:563,0
+DA:564,0
+DA:565,0
+DA:566,0
+DA:567,0
+DA:568,0
+DA:569,0
+DA:570,0
+DA:571,0
+DA:572,0
+DA:573,0
+DA:574,0
+DA:575,0
+DA:577,0
+DA:578,0
+DA:579,0
+DA:580,0
+DA:581,0
+DA:582,0
+DA:583,0
+DA:585,0
+DA:586,0
+DA:587,0
+DA:588,0
+DA:589,0
+DA:590,0
+DA:591,0
+DA:593,0
+DA:594,0
+DA:595,0
+DA:596,0
+DA:597,0
+DA:598,0
+DA:599,0
+DA:601,0
+DA:602,0
+DA:603,0
+DA:604,0
+DA:605,0
+DA:606,0
+DA:607,0
+DA:608,0
+DA:609,0
+DA:610,0
+DA:611,0
+DA:612,0
+DA:613,0
+DA:615,0
+DA:616,0
+DA:617,0
+DA:618,0
+DA:619,0
+DA:620,0
+DA:621,0
+DA:623,0
+DA:624,0
+DA:625,0
+DA:626,0
+DA:627,0
+DA:628,0
+DA:629,0
+DA:630,0
+DA:632,0
+DA:633,0
+DA:634,0
+DA:635,0
+DA:636,0
+DA:637,0
+DA:638,0
+DA:639,0
+DA:640,0
+DA:641,0
+DA:642,0
+DA:643,0
+DA:644,0
+DA:645,0
+DA:646,0
+DA:647,0
+DA:648,0
+DA:649,0
+DA:650,0
+DA:651,0
+DA:652,0
+DA:653,0
+DA:654,0
+DA:656,0
+DA:657,0
+DA:659,0
+DA:660,0
+DA:661,0
+DA:662,0
+DA:663,0
+DA:664,0
+DA:665,0
+DA:666,0
+DA:667,0
+DA:668,0
+DA:669,0
+DA:670,0
+DA:671,0
+DA:672,0
+DA:673,0
+DA:674,0
+DA:675,0
+DA:676,0
+DA:677,0
+DA:678,0
+DA:679,0
+DA:680,0
+DA:681,0
+DA:682,0
+DA:683,0
+DA:684,0
+DA:685,0
+DA:687,0
+DA:688,0
+DA:690,0
+DA:691,0
+DA:692,0
+DA:693,0
+DA:694,0
+DA:695,0
+DA:696,0
+DA:697,0
+DA:698,0
+DA:699,0
+DA:700,0
+DA:701,0
+DA:702,0
+DA:703,0
+DA:705,0
+DA:707,0
+DA:708,0
+DA:709,0
+DA:710,0
+DA:711,0
+DA:712,0
+DA:713,0
+DA:714,0
+DA:715,0
+DA:716,0
+DA:717,0
+BRDA:444,74,1,0
+BRDA:444,74,2,0
+BRDA:444,74,3,0
+BRDA:444,74,4,0
+BRDA:506,629,1,0
+BRDA:506,629,0,0
+BRDA:444,74,5,0
+BRDA:545,916,1,0
+BRDA:545,916,0,0
+BRDA:444,74,6,0
+BRDA:575,1073,1,0
+BRDA:575,1073,0,0
+BRDA:591,1202,1,0
+BRDA:591,1202,0,0
+BRDA:604,1461,1,0
+BRDA:613,1374,1,0
+BRDA:613,1374,0,0
+BRDA:604,1461,0,0
+BRDA:444,74,7,0
+BRDA:647,1609,0,0
+BRDA:647,1609,1,0
+BRDA:444,74,8,0
+BRDA:678,1824,0,0
+BRDA:678,1824,1,0
+BRDA:444,74,9,0
+BRDA:444,74,0,0
+FN:36,System.Void ProgramParser::.cctor()
+FNDA:0,System.Void ProgramParser::.cctor()
+DA:37,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+DA:719,0
+DA:720,0
+DA:721,0
+DA:722,0
+DA:723,0
+DA:724,0
+DA:725,0
+DA:726,0
+DA:727,0
+DA:728,0
+DA:729,0
+DA:730,0
+DA:731,0
+DA:732,0
+DA:733,0
+DA:734,0
+DA:735,0
+DA:736,0
+DA:737,0
+DA:738,0
+DA:739,0
+DA:740,0
+DA:741,0
+DA:742,0
+DA:743,0
+DA:744,0
+DA:745,0
+DA:746,0
+DA:747,0
+DA:748,0
+DA:749,0
+DA:750,0
+DA:751,0
+DA:752,0
+DA:753,0
+DA:754,0
+DA:755,0
+DA:756,0
+DA:757,0
+DA:758,0
+DA:759,0
+DA:760,0
+DA:761,0
+DA:763,0
+DA:764,0
+BRDA:76,450,1,0
+BRDA:76,450,0,0
+FN:80,System.Void ProgramParser::.ctor(Antlr4.Runtime.ITokenStream)
+FNDA:0,System.Void ProgramParser::.ctor(Antlr4.Runtime.ITokenStream)
+DA:81,0
+FN:83,System.Void ProgramParser::.ctor(Antlr4.Runtime.ITokenStream,System.IO.TextWriter,System.IO.TextWriter)
+FNDA:0,System.Void ProgramParser::.ctor(Antlr4.Runtime.ITokenStream,System.IO.TextWriter,System.IO.TextWriter)
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+FN:89,ProgramParser/CommandContext[] ProgramParser/ProgramContext::command()
+FNDA:0,ProgramParser/CommandContext[] ProgramParser/ProgramContext::command()
+DA:90,0
+DA:91,0
+DA:92,0
+FN:92,ProgramParser/CommandContext ProgramParser/ProgramContext::command(System.Int32)
+FNDA:0,ProgramParser/CommandContext ProgramParser/ProgramContext::command(System.Int32)
+DA:93,0
+DA:94,0
+DA:95,0
+FN:95,Antlr4.Runtime.Tree.ITerminalNode[] ProgramParser/ProgramContext::NEWLINE()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode[] ProgramParser/ProgramContext::NEWLINE()
+DA:96,0
+FN:96,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/ProgramContext::NEWLINE(System.Int32)
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/ProgramContext::NEWLINE(System.Int32)
+DA:97,0
+DA:98,0
+DA:99,0
+FN:103,System.Int32 ProgramParser/ProgramContext::get_RuleIndex()
+FNDA:0,System.Int32 ProgramParser/ProgramContext::get_RuleIndex()
+DA:104,0
+FN:105,System.Void ProgramParser/ProgramContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/ProgramContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+BRDA:108,14,0,0
+BRDA:108,14,1,0
+FN:110,System.Void ProgramParser/ProgramContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/ProgramContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+BRDA:113,14,0,0
+BRDA:113,14,1,0
+FN:100,System.Void ProgramParser/ProgramContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+FNDA:0,System.Void ProgramParser/ProgramContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+DA:101,0
+DA:102,0
+DA:103,0
+FN:173,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/DropletnameContext::STRING()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/DropletnameContext::STRING()
+DA:174,0
+FN:178,System.Int32 ProgramParser/DropletnameContext::get_RuleIndex()
+FNDA:0,System.Int32 ProgramParser/DropletnameContext::get_RuleIndex()
+DA:179,0
+FN:180,System.Void ProgramParser/DropletnameContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/DropletnameContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:181,0
+DA:182,0
+DA:183,0
+DA:184,0
+BRDA:183,14,0,0
+BRDA:183,14,1,0
+FN:185,System.Void ProgramParser/DropletnameContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/DropletnameContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:186,0
+DA:187,0
+DA:188,0
+DA:189,0
+BRDA:188,14,0,0
+BRDA:188,14,1,0
+FN:175,System.Void ProgramParser/DropletnameContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+FNDA:0,System.Void ProgramParser/DropletnameContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+DA:176,0
+DA:177,0
+DA:178,0
+FN:214,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/DroplettypeContext::STRING()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/DroplettypeContext::STRING()
+DA:215,0
+FN:219,System.Int32 ProgramParser/DroplettypeContext::get_RuleIndex()
+FNDA:0,System.Int32 ProgramParser/DroplettypeContext::get_RuleIndex()
+DA:220,0
+FN:221,System.Void ProgramParser/DroplettypeContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/DroplettypeContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:222,0
+DA:223,0
+DA:224,0
+DA:225,0
+BRDA:224,14,0,0
+BRDA:224,14,1,0
+FN:226,System.Void ProgramParser/DroplettypeContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/DroplettypeContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:227,0
+DA:228,0
+DA:229,0
+DA:230,0
+BRDA:229,14,0,0
+BRDA:229,14,1,0
+FN:216,System.Void ProgramParser/DroplettypeContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+FNDA:0,System.Void ProgramParser/DroplettypeContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+DA:217,0
+DA:218,0
+DA:219,0
+FN:255,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/NumberContext::INT()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/NumberContext::INT()
+DA:256,0
+FN:260,System.Int32 ProgramParser/NumberContext::get_RuleIndex()
+FNDA:0,System.Int32 ProgramParser/NumberContext::get_RuleIndex()
+DA:261,0
+FN:262,System.Void ProgramParser/NumberContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/NumberContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:263,0
+DA:264,0
+DA:265,0
+DA:266,0
+BRDA:265,14,0,0
+BRDA:265,14,1,0
+FN:267,System.Void ProgramParser/NumberContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/NumberContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:268,0
+DA:269,0
+DA:270,0
+DA:271,0
+BRDA:270,14,0,0
+BRDA:270,14,1,0
+FN:257,System.Void ProgramParser/NumberContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+FNDA:0,System.Void ProgramParser/NumberContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+DA:258,0
+DA:259,0
+DA:260,0
+FN:300,System.Int32 ProgramParser/ShapeContext::get_RuleIndex()
+FNDA:0,System.Int32 ProgramParser/ShapeContext::get_RuleIndex()
+DA:301,0
+FN:302,System.Void ProgramParser/ShapeContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/ShapeContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:303,0
+DA:304,0
+DA:305,0
+DA:306,0
+BRDA:305,14,0,0
+BRDA:305,14,1,0
+FN:307,System.Void ProgramParser/ShapeContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/ShapeContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:308,0
+DA:309,0
+DA:310,0
+DA:311,0
+BRDA:310,14,0,0
+BRDA:310,14,1,0
+FN:297,System.Void ProgramParser/ShapeContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+FNDA:0,System.Void ProgramParser/ShapeContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+DA:298,0
+DA:299,0
+DA:300,0
+FN:344,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/TileentityContext::STRING()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/TileentityContext::STRING()
+DA:345,0
+FN:349,System.Int32 ProgramParser/TileentityContext::get_RuleIndex()
+FNDA:0,System.Int32 ProgramParser/TileentityContext::get_RuleIndex()
+DA:350,0
+FN:351,System.Void ProgramParser/TileentityContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/TileentityContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:352,0
+DA:353,0
+DA:354,0
+DA:355,0
+BRDA:354,14,0,0
+BRDA:354,14,1,0
+FN:356,System.Void ProgramParser/TileentityContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/TileentityContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:357,0
+DA:358,0
+DA:359,0
+DA:360,0
+BRDA:359,14,0,0
+BRDA:359,14,1,0
+FN:346,System.Void ProgramParser/TileentityContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+FNDA:0,System.Void ProgramParser/TileentityContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+DA:347,0
+DA:348,0
+DA:349,0
+FN:385,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::INPUT()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::INPUT()
+DA:386,0
+FN:386,ProgramParser/DropletnameContext[] ProgramParser/CommandContext::dropletname()
+FNDA:0,ProgramParser/DropletnameContext[] ProgramParser/CommandContext::dropletname()
+DA:387,0
+DA:388,0
+DA:389,0
+FN:389,ProgramParser/DropletnameContext ProgramParser/CommandContext::dropletname(System.Int32)
+FNDA:0,ProgramParser/DropletnameContext ProgramParser/CommandContext::dropletname(System.Int32)
+DA:390,0
+DA:391,0
+DA:392,0
+FN:392,ProgramParser/DroplettypeContext[] ProgramParser/CommandContext::droplettype()
+FNDA:0,ProgramParser/DroplettypeContext[] ProgramParser/CommandContext::droplettype()
+DA:393,0
+DA:394,0
+DA:395,0
+FN:395,ProgramParser/DroplettypeContext ProgramParser/CommandContext::droplettype(System.Int32)
+FNDA:0,ProgramParser/DroplettypeContext ProgramParser/CommandContext::droplettype(System.Int32)
+DA:396,0
+DA:397,0
+DA:398,0
+FN:398,ProgramParser/TileentityContext ProgramParser/CommandContext::tileentity()
+FNDA:0,ProgramParser/TileentityContext ProgramParser/CommandContext::tileentity()
+DA:399,0
+DA:400,0
+DA:401,0
+FN:401,ProgramParser/NumberContext[] ProgramParser/CommandContext::number()
+FNDA:0,ProgramParser/NumberContext[] ProgramParser/CommandContext::number()
+DA:402,0
+DA:403,0
+DA:404,0
+FN:404,ProgramParser/NumberContext ProgramParser/CommandContext::number(System.Int32)
+FNDA:0,ProgramParser/NumberContext ProgramParser/CommandContext::number(System.Int32)
+DA:405,0
+DA:406,0
+DA:407,0
+FN:407,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::OUTPUT()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::OUTPUT()
+DA:408,0
+FN:408,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::WASTE()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::WASTE()
+DA:409,0
+FN:409,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::CONTAMINATE()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::CONTAMINATE()
+DA:410,0
+FN:410,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::MERGE()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::MERGE()
+DA:411,0
+FN:411,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::SPLIT()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::SPLIT()
+DA:412,0
+FN:412,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::MIX()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::MIX()
+DA:413,0
+FN:413,ProgramParser/ShapeContext ProgramParser/CommandContext::shape()
+FNDA:0,ProgramParser/ShapeContext ProgramParser/CommandContext::shape()
+DA:414,0
+DA:415,0
+DA:416,0
+FN:416,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::TEMP()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::TEMP()
+DA:417,0
+FN:417,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::SENSE()
+FNDA:0,Antlr4.Runtime.Tree.ITerminalNode ProgramParser/CommandContext::SENSE()
+DA:418,0
+FN:422,System.Int32 ProgramParser/CommandContext::get_RuleIndex()
+FNDA:0,System.Int32 ProgramParser/CommandContext::get_RuleIndex()
+DA:423,0
+FN:424,System.Void ProgramParser/CommandContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/CommandContext::EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:425,0
+DA:426,0
+DA:427,0
+DA:428,0
+BRDA:427,14,0,0
+BRDA:427,14,1,0
+FN:429,System.Void ProgramParser/CommandContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+FNDA:0,System.Void ProgramParser/CommandContext::ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)
+DA:430,0
+DA:431,0
+DA:432,0
+DA:433,0
+BRDA:432,14,0,0
+BRDA:432,14,1,0
+FN:419,System.Void ProgramParser/CommandContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+FNDA:0,System.Void ProgramParser/CommandContext::.ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)
+DA:420,0
+DA:421,0
+DA:422,0
+LF:626
+LH:0
+BRF:68
+BRH:0
+FNF:67
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Program.cs
+FN:22,System.Void Program::Main(System.String[])
+FNDA:0,System.Void Program::Main(System.String[])
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:41,0
+LF:13
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Electrode Types\Actuator.cs
+FN:11,System.Int32 Bachelor_Project.Actuator::get_ActuatorID()
+FNDA:0,System.Int32 Bachelor_Project.Actuator::get_ActuatorID()
+DA:12,0
+FN:12,System.Boolean Bachelor_Project.Actuator::get_Status()
+FNDA:0,System.Boolean Bachelor_Project.Actuator::get_Status()
+DA:13,0
+FN:13,System.Boolean Bachelor_Project.Actuator::get_NextStatus()
+FNDA:0,System.Boolean Bachelor_Project.Actuator::get_NextStatus()
+DA:14,0
+FN:15,System.Boolean Bachelor_Project.Actuator::get_CoilInto()
+FNDA:0,System.Boolean Bachelor_Project.Actuator::get_CoilInto()
+DA:16,0
+FN:9,System.Void Bachelor_Project.Actuator::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
+FNDA:0,System.Void Bachelor_Project.Actuator::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
+DA:10,0
+LF:5
+LH:0
+BRF:0
+BRH:0
+FNF:5
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Utility\Calc.cs
+FN:11,System.Collections.Generic.Dictionary`2<System.String,System.Double> Bachelor_Project.Utility.Calc::Ratio(System.Collections.Generic.Dictionary`2<System.String,System.Int32>,System.Collections.Generic.List`1<System.String>)
+FNDA:0,System.Collections.Generic.Dictionary`2<System.String,System.Double> Bachelor_Project.Utility.Calc::Ratio(System.Collections.Generic.Dictionary`2<System.String,System.Int32>,System.Collections.Generic.List`1<System.String>)
+DA:12,0
+DA:13,0
+DA:14,0
+DA:15,0
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:22,0
+DA:23,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:36,0
+DA:37,0
+BRDA:14,13,0,0
+BRDA:16,61,1,0
+BRDA:16,61,0,0
+BRDA:14,13,1,0
+BRDA:25,141,1,0
+BRDA:25,141,0,0
+BRDA:30,220,1,0
+BRDA:30,220,0,0
+LF:22
+LH:0
+BRF:8
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Utility\Command.cs
+FN:16,System.String Bachelor_Project.Utility.Command::get_Type()
+FNDA:0,System.String Bachelor_Project.Utility.Command::get_Type()
+DA:17,0
+FN:24,System.Object[] Bachelor_Project.Utility.Command::get_ActionValue()
+FNDA:0,System.Object[] Bachelor_Project.Utility.Command::get_ActionValue()
+DA:25,0
+FN:27,System.Void Bachelor_Project.Utility.Command::SetDest()
+FNDA:0,System.Void Bachelor_Project.Utility.Command::SetDest()
+DA:28,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:48,0
+DA:49,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:57,0
+BRDA:31,14,0,0
+BRDA:31,14,1,0
+BRDA:31,30,0,0
+BRDA:31,30,1,0
+BRDA:35,61,0,0
+BRDA:35,61,1,0
+BRDA:39,125,0,0
+BRDA:39,125,1,0
+BRDA:43,186,0,0
+BRDA:43,186,1,0
+FN:59,System.Void Bachelor_Project.Utility.Command::ExecuteCommand()
+FNDA:0,System.Void Bachelor_Project.Utility.Command::ExecuteCommand()
+DA:60,0
+DA:61,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:83,0
+DA:85,0
+DA:86,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:96,0
+DA:99,0
+DA:101,0
+DA:102,0
+DA:105,0
+DA:107,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:129,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:134,0
+DA:135,0
+DA:136,0
+DA:137,0
+DA:139,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:146,0
+DA:147,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:154,0
+BRDA:61,57,0,0
+BRDA:61,75,3,0
+BRDA:61,116,5,0
+BRDA:61,116,8,0
+BRDA:61,116,7,0
+BRDA:61,116,1,0
+BRDA:61,116,3,0
+BRDA:61,75,4,0
+BRDA:61,75,1,0
+BRDA:61,75,2,0
+BRDA:61,170,1,0
+BRDA:61,280,1,0
+BRDA:61,192,1,0
+BRDA:61,214,1,0
+BRDA:89,767,1,0
+BRDA:89,767,0,0
+BRDA:61,236,1,0
+BRDA:105,881,0,0
+BRDA:105,881,1,0
+BRDA:109,985,1,0
+BRDA:109,985,0,0
+BRDA:117,1180,1,0
+BRDA:117,1180,0,0
+BRDA:61,302,1,0
+BRDA:61,324,1,0
+BRDA:61,258,1,0
+BRDA:61,57,1,0
+BRDA:61,75,0,0
+BRDA:61,116,0,0
+BRDA:61,116,2,0
+BRDA:61,116,4,0
+BRDA:61,116,6,0
+BRDA:61,170,0,0
+BRDA:61,192,0,0
+BRDA:61,214,0,0
+BRDA:61,236,0,0
+BRDA:61,258,0,0
+BRDA:61,280,0,0
+BRDA:61,302,0,0
+BRDA:61,324,0,0
+BRDA:142,1515,1,0
+BRDA:142,1515,0,0
+BRDA:147,1597,1,0
+BRDA:147,1597,0,0
+FN:156,System.String Bachelor_Project.Utility.Command::ToString()
+FNDA:0,System.String Bachelor_Project.Utility.Command::ToString()
+DA:157,0
+DA:158,0
+DA:159,0
+FN:161,Bachelor_Project.Simulation.Apparature Bachelor_Project.Utility.Command::FindDest()
+FNDA:0,Bachelor_Project.Simulation.Apparature Bachelor_Project.Utility.Command::FindDest()
+DA:162,0
+DA:163,0
+DA:164,0
+DA:165,0
+DA:166,0
+DA:167,0
+DA:170,0
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:179,0
+BRDA:163,95,1,0
+BRDA:165,36,0,0
+BRDA:165,36,1,0
+BRDA:172,74,0,0
+BRDA:172,74,1,0
+BRDA:163,95,0,0
+FN:13,System.Void Bachelor_Project.Utility.Command::.ctor(System.String,System.Collections.Generic.List`1<System.String>,System.Collections.Generic.List`1<System.String>,System.String,System.Type,System.Object[])
+FNDA:0,System.Void Bachelor_Project.Utility.Command::.ctor(System.String,System.Collections.Generic.List`1<System.String>,System.Collections.Generic.List`1<System.String>,System.String,System.Type,System.Object[])
+DA:14,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+LF:120
+LH:0
+BRF:60
+BRH:0
+FNF:7
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Utility\Constants.cs
+FN:10,System.Void Bachelor_Project.Utility.Constants::.cctor()
+FNDA:0,System.Void Bachelor_Project.Utility.Constants::.cctor()
+DA:11,0
+DA:12,0
+LF:2
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Utility\CustomExceptions.cs
+FN:8,System.Void Bachelor_Project.Utility.IllegalMoveException::.ctor(System.String)
+FNDA:0,System.Void Bachelor_Project.Utility.IllegalMoveException::.ctor(System.String)
+DA:9,0
+FN:11,System.Void Bachelor_Project.Utility.NewWorkException::.ctor(System.String)
+FNDA:0,System.Void Bachelor_Project.Utility.NewWorkException::.ctor(System.String)
+DA:12,0
+LF:2
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Utility\LineIntersection.cs
+FN:17,System.Boolean Bachelor_Project.Utility.LineIntersection::IsIntersecting(System.Drawing.Point,System.Drawing.Point,System.Drawing.Point,System.Drawing.Point)
+FNDA:0,System.Boolean Bachelor_Project.Utility.LineIntersection::IsIntersecting(System.Drawing.Point,System.Drawing.Point,System.Drawing.Point,System.Drawing.Point)
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:24,0
+DA:26,0
+DA:27,0
+DA:29,0
+DA:30,0
+BRDA:24,208,0,0
+BRDA:24,216,0,0
+BRDA:24,216,1,0
+BRDA:24,208,1,0
+BRDA:29,248,0,0
+BRDA:29,256,0,0
+BRDA:29,265,0,0
+BRDA:29,265,1,0
+BRDA:29,248,1,0
+BRDA:29,256,1,0
+LF:9
+LH:0
+BRF:10
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Utility\ModifiedAStar.cs
+FN:21,System.ValueTuple`2<System.Collections.Generic.List`1<System.ValueTuple`2<Bachelor_Project.Simulation.Electrode,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>>>,System.Int32> Bachelor_Project.Utility.ModifiedAStar::ReconstructPath(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.Dictionary`2<Bachelor_Project.Simulation.Electrode,System.ValueTuple`2<Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Agent_Actions.Direction>>,Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.ValueTuple`2<System.Collections.Generic.List`1<System.ValueTuple`2<Bachelor_Project.Simulation.Electrode,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>>>,System.Int32> Bachelor_Project.Utility.ModifiedAStar::ReconstructPath(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.Dictionary`2<Bachelor_Project.Simulation.Electrode,System.ValueTuple`2<Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Agent_Actions.Direction>>,Bachelor_Project.Simulation.Electrode)
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+BRDA:26,151,1,0
+BRDA:33,131,0,0
+BRDA:33,131,1,0
+BRDA:26,151,0,0
+FN:42,System.ValueTuple`2<System.Collections.Generic.List`1<System.ValueTuple`2<Bachelor_Project.Simulation.Electrode,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>>>,System.Int32> Bachelor_Project.Utility.ModifiedAStar::FindPath(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>,System.String,Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.ValueTuple`2<System.Collections.Generic.List`1<System.ValueTuple`2<Bachelor_Project.Simulation.Electrode,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>>>,System.Int32> Bachelor_Project.Utility.ModifiedAStar::FindPath(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>,System.String,Bachelor_Project.Simulation.Electrode)
+DA:43,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:53,0
+DA:55,0
+DA:56,0
+DA:58,0
+DA:59,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:89,0
+DA:91,0
+DA:93,0
+DA:94,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:101,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:133,0
+DA:134,0
+DA:135,0
+DA:138,0
+DA:139,0
+DA:141,0
+BRDA:47,38,0,0
+BRDA:47,38,1,0
+BRDA:61,822,1,0
+BRDA:65,248,1,0
+BRDA:68,208,0,0
+BRDA:68,208,1,0
+BRDA:65,248,0,0
+BRDA:74,259,0,0
+BRDA:74,259,1,0
+BRDA:80,301,0,0
+BRDA:80,301,1,0
+BRDA:93,786,1,0
+BRDA:97,431,0,0
+BRDA:97,431,1,0
+BRDA:97,455,0,0
+BRDA:97,455,1,0
+BRDA:102,508,0,0
+BRDA:105,549,0,0
+BRDA:105,549,1,0
+BRDA:102,508,1,0
+BRDA:112,591,0,0
+BRDA:114,617,0,0
+BRDA:114,617,1,0
+BRDA:121,685,0,0
+BRDA:121,685,1,0
+BRDA:130,764,0,0
+BRDA:130,764,1,0
+BRDA:112,591,1,0
+BRDA:93,786,0,0
+BRDA:61,822,0,0
+FN:142,System.Double Bachelor_Project.Utility.ModifiedAStar::dfunc(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Agent_Actions.Direction,System.Collections.Generic.List`1<System.String>,System.String)
+FNDA:0,System.Double Bachelor_Project.Utility.ModifiedAStar::dfunc(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Agent_Actions.Direction,System.Collections.Generic.List`1<System.String>,System.String)
+DA:143,0
+DA:144,0
+DA:145,0
+DA:146,0
+DA:147,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:159,0
+DA:160,0
+DA:161,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:166,0
+DA:167,0
+DA:168,0
+DA:169,0
+DA:170,0
+DA:171,0
+DA:173,0
+DA:187,0
+BRDA:147,98,0,0
+BRDA:149,183,1,0
+BRDA:152,162,0,0
+BRDA:152,162,1,0
+BRDA:149,183,0,0
+BRDA:147,98,1,0
+BRDA:158,228,0,0
+BRDA:158,228,1,0
+BRDA:163,316,0,0
+BRDA:163,316,1,0
+BRDA:167,340,0,0
+BRDA:167,340,1,0
+BRDA:167,374,0,0
+BRDA:167,374,1,0
+BRDA:170,411,0,0
+BRDA:170,411,1,0
+BRDA:170,446,0,0
+BRDA:170,446,1,0
+FN:189,System.ValueTuple`2<System.Boolean,System.Int32> Bachelor_Project.Utility.ModifiedAStar::CheckSquare(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Agent_Actions.Direction)
+FNDA:0,System.ValueTuple`2<System.Boolean,System.Int32> Bachelor_Project.Utility.ModifiedAStar::CheckSquare(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Agent_Actions.Direction)
+DA:190,0
+DA:191,0
+DA:192,0
+DA:193,0
+DA:194,0
+DA:195,0
+DA:196,0
+DA:198,0
+DA:200,0
+DA:201,0
+DA:203,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:210,0
+DA:211,0
+DA:212,0
+DA:214,0
+DA:215,0
+DA:216,0
+DA:218,0
+DA:219,0
+DA:220,0
+DA:222,0
+DA:224,0
+DA:225,0
+DA:226,0
+DA:227,0
+DA:228,0
+DA:229,0
+DA:230,0
+DA:231,0
+DA:232,0
+DA:233,0
+DA:235,0
+DA:237,0
+DA:238,0
+DA:239,0
+DA:240,0
+DA:242,0
+DA:243,0
+DA:244,0
+DA:245,0
+DA:247,0
+BRDA:191,21,0,0
+BRDA:191,21,1,0
+BRDA:191,51,0,0
+BRDA:194,88,0,0
+BRDA:194,88,1,0
+BRDA:194,120,0,0
+BRDA:194,120,1,0
+BRDA:191,51,1,0
+BRDA:203,170,4,0
+BRDA:203,170,1,0
+BRDA:203,170,2,0
+BRDA:203,170,3,0
+BRDA:203,170,0,0
+BRDA:224,510,1,0
+BRDA:227,489,1,0
+BRDA:229,260,0,0
+BRDA:231,344,0,0
+BRDA:231,344,1,0
+BRDA:229,260,1,0
+BRDA:238,452,0,0
+BRDA:238,452,1,0
+BRDA:227,489,0,0
+BRDA:224,510,0,0
+FN:249,System.ValueTuple`2<System.Nullable`1<System.Int32>,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>> Bachelor_Project.Utility.ModifiedAStar::FindSquare(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.ValueTuple`2<System.Nullable`1<System.Int32>,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>> Bachelor_Project.Utility.ModifiedAStar::FindSquare(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode)
+DA:250,0
+DA:251,0
+DA:252,0
+DA:253,0
+DA:254,0
+DA:255,0
+DA:256,0
+DA:258,0
+DA:261,0
+DA:262,0
+DA:263,0
+DA:265,0
+DA:266,0
+DA:267,0
+DA:269,0
+DA:270,0
+DA:271,0
+DA:273,0
+DA:274,0
+DA:275,0
+DA:277,0
+DA:279,0
+DA:280,0
+DA:281,0
+DA:283,0
+DA:284,0
+DA:285,0
+DA:287,0
+BRDA:251,229,1,0
+BRDA:253,211,1,0
+BRDA:258,30,1,0
+BRDA:258,30,2,0
+BRDA:258,30,3,0
+BRDA:258,30,4,0
+BRDA:258,30,0,0
+BRDA:279,173,0,0
+BRDA:279,173,1,0
+BRDA:253,211,0,0
+BRDA:251,229,0,0
+FN:18,System.Void Bachelor_Project.Utility.ModifiedAStar::.cctor()
+FNDA:0,System.Void Bachelor_Project.Utility.ModifiedAStar::.cctor()
+DA:19,0
+LF:196
+LH:0
+BRF:86
+BRH:0
+FNF:6
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Utility\Printer.cs
+FN:80,System.Void Bachelor_Project.Utility.Printer::GivePrint(System.Threading.Tasks.Task`1<System.Boolean>)
+FNDA:0,System.Void Bachelor_Project.Utility.Printer::GivePrint(System.Threading.Tasks.Task`1<System.Boolean>)
+DA:81,0
+DA:82,0
+DA:83,0
+DA:85,0
+DA:87,0
+DA:88,0
+DA:90,0
+FN:92,System.Void Bachelor_Project.Utility.Printer::Print(System.Object)
+FNDA:0,System.Void Bachelor_Project.Utility.Printer::Print(System.Object)
+DA:93,0
+DA:94,0
+DA:95,0
+FN:97,System.Void Bachelor_Project.Utility.Printer::PrintLine(System.Object)
+FNDA:0,System.Void Bachelor_Project.Utility.Printer::PrintLine(System.Object)
+DA:98,0
+DA:99,0
+DA:100,0
+FN:102,System.Boolean Bachelor_Project.Utility.Printer::PrintCommand(System.Object,System.Boolean)
+FNDA:0,System.Boolean Bachelor_Project.Utility.Printer::PrintCommand(System.Object,System.Boolean)
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:119,0
+DA:120,0
+DA:121,0
+BRDA:104,2,0,0
+BRDA:104,2,1,0
+BRDA:104,10,0,0
+BRDA:104,10,1,0
+BRDA:110,26,0,0
+BRDA:110,26,1,0
+FN:123,System.Void Bachelor_Project.Utility.Printer::PrintBoard()
+FNDA:0,System.Void Bachelor_Project.Utility.Printer::PrintBoard()
+DA:124,0
+DA:125,0
+DA:126,0
+FN:128,System.Boolean Bachelor_Project.Utility.Printer::CurrentlyDone()
+FNDA:0,System.Boolean Bachelor_Project.Utility.Printer::CurrentlyDone()
+DA:129,0
+DA:130,0
+DA:133,0
+BRDA:130,11,0,0
+BRDA:130,11,1,0
+FN:14,System.Void Bachelor_Project.Utility.Printer::.cctor()
+FNDA:0,System.Void Bachelor_Project.Utility.Printer::.cctor()
+DA:15,0
+DA:17,0
+DA:19,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+FN:32,System.Void Bachelor_Project.Utility.Printer/<>c::<StartAgent>b__6_0()
+FNDA:0,System.Void Bachelor_Project.Utility.Printer/<>c::<StartAgent>b__6_0()
+DA:33,0
+FN:36,System.Void Bachelor_Project.Utility.Printer/<RunAgent>d__7::MoveNext()
+FNDA:0,System.Void Bachelor_Project.Utility.Printer/<RunAgent>d__7::MoveNext()
+DA:37,0
+DA:40,0
+DA:41,0
+DA:45,0
+DA:48,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:71,0
+DA:75,0
+DA:77,0
+DA:78,0
+BRDA:40,244,1,0
+BRDA:51,222,1,0
+BRDA:56,118,0,0
+BRDA:56,118,1,0
+BRDA:51,222,0,0
+BRDA:40,244,0,0
+FN:31,System.Void Bachelor_Project.Utility.Printer/<StartAgent>d__6::MoveNext()
+FNDA:0,System.Void Bachelor_Project.Utility.Printer/<StartAgent>d__6::MoveNext()
+DA:32,0
+DA:34,0
+LF:75
+LH:0
+BRF:14
+BRH:0
+FNF:10
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Utility\Tree.cs
+FN:33,System.Void Bachelor_Project.Utility.Tree::BuildTree()
+FNDA:0,System.Void Bachelor_Project.Utility.Tree::BuildTree()
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+BRDA:35,362,1,0
+BRDA:67,328,0,0
+BRDA:67,328,1,0
+BRDA:35,362,0,0
+FN:73,System.Void Bachelor_Project.Utility.Tree::RemoveLeaf(System.Boolean)
+FNDA:0,System.Void Bachelor_Project.Utility.Tree::RemoveLeaf(System.Boolean)
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:92,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+BRDA:76,20,0,0
+BRDA:76,20,1,0
+BRDA:76,28,0,0
+BRDA:78,56,0,0
+BRDA:78,56,1,0
+BRDA:84,116,0,0
+BRDA:88,155,0,0
+BRDA:88,155,1,0
+BRDA:84,116,1,0
+BRDA:76,28,1,0
+FN:102,System.Void Bachelor_Project.Utility.Tree::RemoveTree(System.Boolean)
+FNDA:0,System.Void Bachelor_Project.Utility.Tree::RemoveTree(System.Boolean)
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:108,0
+DA:109,0
+BRDA:104,29,1,0
+BRDA:104,29,0,0
+FN:112,System.Void Bachelor_Project.Utility.Tree::CheckAddElectrode(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Utility.Node,Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.Void Bachelor_Project.Utility.Tree::CheckAddElectrode(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Utility.Node,Bachelor_Project.Simulation.Electrode)
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+BRDA:114,13,0,0
+BRDA:114,13,1,0
+BRDA:114,35,0,0
+BRDA:114,35,1,0
+FN:125,Bachelor_Project.Simulation.Electrode Bachelor_Project.Utility.Tree::FindClosestElectrode(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,Bachelor_Project.Simulation.Electrode)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Utility.Tree::FindClosestElectrode(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,Bachelor_Project.Simulation.Electrode)
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:133,0
+DA:134,0
+DA:135,0
+DA:136,0
+DA:137,0
+DA:138,0
+DA:139,0
+BRDA:129,122,1,0
+BRDA:132,105,0,0
+BRDA:132,105,1,0
+BRDA:129,122,0,0
+FN:19,System.Void Bachelor_Project.Utility.Tree::.ctor(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.Void Bachelor_Project.Utility.Tree::.ctor(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,Bachelor_Project.Simulation.Electrode)
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+FN:153,System.Void Bachelor_Project.Utility.Node::AddChild(Bachelor_Project.Utility.Node)
+FNDA:0,System.Void Bachelor_Project.Utility.Node::AddChild(Bachelor_Project.Utility.Node)
+DA:154,0
+DA:155,0
+DA:156,0
+FN:157,System.Void Bachelor_Project.Utility.Node::RemoveChild(Bachelor_Project.Utility.Node)
+FNDA:0,System.Void Bachelor_Project.Utility.Node::RemoveChild(Bachelor_Project.Utility.Node)
+DA:158,0
+DA:159,0
+DA:160,0
+FN:161,System.String Bachelor_Project.Utility.Node::ToString()
+FNDA:0,System.String Bachelor_Project.Utility.Node::ToString()
+DA:162,0
+DA:163,0
+DA:164,0
+FN:146,System.Void Bachelor_Project.Utility.Node::.ctor(Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.Void Bachelor_Project.Utility.Node::.ctor(Bachelor_Project.Simulation.Electrode)
+DA:147,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+LF:110
+LH:0
+BRF:24
+BRH:0
+FNF:10
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Utility\UsefullSemaphore.cs
+FN:29,System.Void Bachelor_Project.Utility.UsefullSemaphore::WaitOne()
+FNDA:0,System.Void Bachelor_Project.Utility.UsefullSemaphore::WaitOne()
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+BRDA:33,47,1,0
+BRDA:33,47,0,0
+FN:41,System.Void Bachelor_Project.Utility.UsefullSemaphore::Wait(System.Int32)
+FNDA:0,System.Void Bachelor_Project.Utility.UsefullSemaphore::Wait(System.Int32)
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+BRDA:45,49,1,0
+BRDA:45,49,0,0
+FN:55,System.Void Bachelor_Project.Utility.UsefullSemaphore::Check()
+FNDA:0,System.Void Bachelor_Project.Utility.UsefullSemaphore::Check()
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+BRDA:59,47,1,0
+BRDA:59,47,0,0
+FN:66,System.Boolean Bachelor_Project.Utility.UsefullSemaphore::TryReleaseOne()
+FNDA:0,System.Boolean Bachelor_Project.Utility.UsefullSemaphore::TryReleaseOne()
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:76,0
+DA:78,0
+BRDA:70,36,0,0
+BRDA:70,36,1,0
+FN:80,System.Boolean Bachelor_Project.Utility.UsefullSemaphore::TryRelease(System.Int32)
+FNDA:0,System.Boolean Bachelor_Project.Utility.UsefullSemaphore::TryRelease(System.Int32)
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:90,0
+DA:92,0
+BRDA:84,41,0,0
+BRDA:84,41,1,0
+FN:12,System.Void Bachelor_Project.Utility.UsefullSemaphore::.ctor(System.Int32,System.Int32)
+FNDA:0,System.Void Bachelor_Project.Utility.UsefullSemaphore::.ctor(System.Int32,System.Int32)
+DA:13,0
+DA:14,0
+DA:15,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+FN:22,System.Void Bachelor_Project.Utility.UsefullSemaphore::.ctor(System.Int32)
+FNDA:0,System.Void Bachelor_Project.Utility.UsefullSemaphore::.ctor(System.Int32)
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+LF:62
+LH:0
+BRF:10
+BRH:0
+FNF:7
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Electrode Types\Accessor Types\Input.cs
+FN:9,System.Void Bachelor_Project.Electrode_Types.Input::.ctor(System.Int32,System.Int32)
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Input::.ctor(System.Int32,System.Int32)
+DA:10,0
+FN:13,System.Void Bachelor_Project.Electrode_Types.Input::.ctor()
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Input::.ctor()
+DA:14,0
+DA:15,0
+DA:16,0
+LF:4
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Electrode Types\Accessor Types\Output.cs
+FN:8,System.Void Bachelor_Project.Electrode_Types.Output::.ctor(System.Int32,System.Int32)
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Output::.ctor(System.Int32,System.Int32)
+DA:9,0
+FN:11,System.Void Bachelor_Project.Electrode_Types.Output::.ctor()
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Output::.ctor()
+DA:12,0
+DA:13,0
+DA:15,0
+LF:4
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Electrode Types\Accessor.cs
+FN:12,System.Boolean Bachelor_Project.Electrode_Types.Accessor::get_CoilInto()
+FNDA:0,System.Boolean Bachelor_Project.Electrode_Types.Accessor::get_CoilInto()
+DA:13,0
+FN:10,System.Void Bachelor_Project.Electrode_Types.Accessor::.ctor(System.Int32,System.Int32)
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Accessor::.ctor(System.Int32,System.Int32)
+DA:11,0
+LF:2
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Electrode Types\Sensor.cs
+FN:17,System.Boolean Bachelor_Project.Electrode_Types.Sensor::get_CoilInto()
+FNDA:0,System.Boolean Bachelor_Project.Electrode_Types.Sensor::get_CoilInto()
+DA:18,0
+FN:22,System.Object[] Bachelor_Project.Electrode_Types.Sensor::Sense()
+FNDA:0,System.Object[] Bachelor_Project.Electrode_Types.Sensor::Sense()
+DA:23,0
+DA:24,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:35,0
+FN:11,System.Void Bachelor_Project.Electrode_Types.Sensor::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Sensor::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
+DA:12,0
+LF:8
+LH:0
+BRF:0
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Electrode Types\Sensor Types\RGB-Sensor.cs
+FN:13,System.String Bachelor_Project.Electrode_Types.Sensor_Types.RGBSensor::get_Type()
+FNDA:0,System.String Bachelor_Project.Electrode_Types.Sensor_Types.RGBSensor::get_Type()
+DA:14,0
+FN:15,System.Object[] Bachelor_Project.Electrode_Types.Sensor_Types.RGBSensor::SenseFunc()
+FNDA:0,System.Object[] Bachelor_Project.Electrode_Types.Sensor_Types.RGBSensor::SenseFunc()
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:21,0
+DA:22,0
+BRDA:17,23,0,0
+BRDA:17,23,1,0
+FN:10,System.Void Bachelor_Project.Electrode_Types.Sensor_Types.RGBSensor::.ctor(System.Int32,System.Int32,System.Int32,System.Int32)
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Sensor_Types.RGBSensor::.ctor(System.Int32,System.Int32,System.Int32,System.Int32)
+DA:11,0
+LF:8
+LH:0
+BRF:2
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Electrode Types\Sensor Types\SizeSensor.cs
+FN:11,System.String Bachelor_Project.Electrode_Types.Sensor_Types.SizeSensor::get_Type()
+FNDA:0,System.String Bachelor_Project.Electrode_Types.Sensor_Types.SizeSensor::get_Type()
+DA:12,0
+FN:13,System.Object[] Bachelor_Project.Electrode_Types.Sensor_Types.SizeSensor::SenseFunc()
+FNDA:0,System.Object[] Bachelor_Project.Electrode_Types.Sensor_Types.SizeSensor::SenseFunc()
+DA:14,0
+DA:15,0
+DA:16,0
+DA:17,0
+DA:19,0
+DA:20,0
+BRDA:15,23,0,0
+BRDA:15,23,1,0
+FN:8,System.Void Bachelor_Project.Electrode_Types.Sensor_Types.SizeSensor::.ctor(System.Int32,System.Int32,System.Int32,System.Int32)
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Sensor_Types.SizeSensor::.ctor(System.Int32,System.Int32,System.Int32,System.Int32)
+DA:9,0
+LF:8
+LH:0
+BRF:2
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Electrode Types\Actuator Types\Heater.cs
+FN:10,System.String Bachelor_Project.Electrode_Types.Actuator_Types.Heater::get_Type()
+FNDA:0,System.String Bachelor_Project.Electrode_Types.Actuator_Types.Heater::get_Type()
+DA:11,0
+FN:11,System.Int32 Bachelor_Project.Electrode_Types.Actuator_Types.Heater::get_ActualTemperature()
+FNDA:0,System.Int32 Bachelor_Project.Electrode_Types.Actuator_Types.Heater::get_ActualTemperature()
+DA:12,0
+FN:12,System.Int32 Bachelor_Project.Electrode_Types.Actuator_Types.Heater::get_DesiredTemperature()
+FNDA:0,System.Int32 Bachelor_Project.Electrode_Types.Actuator_Types.Heater::get_DesiredTemperature()
+DA:13,0
+FN:13,System.Int32 Bachelor_Project.Electrode_Types.Actuator_Types.Heater::get_NextDesiredTemperature()
+FNDA:0,System.Int32 Bachelor_Project.Electrode_Types.Actuator_Types.Heater::get_NextDesiredTemperature()
+DA:14,0
+FN:8,System.Void Bachelor_Project.Electrode_Types.Actuator_Types.Heater::.ctor(System.Int32,System.Int32,System.Int32,System.Int32)
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Actuator_Types.Heater::.ctor(System.Int32,System.Int32,System.Int32,System.Int32)
+DA:9,0
+FN:15,System.Void Bachelor_Project.Electrode_Types.Actuator_Types.Heater::.ctor()
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Actuator_Types.Heater::.ctor()
+DA:16,0
+DA:17,0
+DA:18,0
+LF:8
+LH:0
+BRF:0
+BRH:0
+FNF:6
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Electrode Types\Accessor Types\Trash.cs
+FN:9,System.Void Bachelor_Project.Electrode_Types.Accessor_Types.Trash::.ctor(System.Int32,System.Int32)
+FNDA:0,System.Void Bachelor_Project.Electrode_Types.Accessor_Types.Trash::.ctor(System.Int32,System.Int32)
+DA:10,0
+LF:1
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Apparature.cs
+FN:9,System.Void Bachelor_Project.Simulation.Apparature::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
+FNDA:0,System.Void Bachelor_Project.Simulation.Apparature::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
+DA:10,0
+DA:12,0
+LF:2
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Board.cs
+FN:18,Bachelor_Project.Simulation.Electrode[0...,0...] Bachelor_Project.Simulation.Board::get_Electrodes()
+FNDA:0,Bachelor_Project.Simulation.Electrode[0...,0...] Bachelor_Project.Simulation.Board::get_Electrodes()
+DA:19,0
+FN:19,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Actuator> Bachelor_Project.Simulation.Board::get_Actuators()
+FNDA:0,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Actuator> Bachelor_Project.Simulation.Board::get_Actuators()
+DA:20,0
+FN:20,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Sensor> Bachelor_Project.Simulation.Board::get_Sensors()
+FNDA:0,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Sensor> Bachelor_Project.Simulation.Board::get_Sensors()
+DA:21,0
+FN:21,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Input> Bachelor_Project.Simulation.Board::get_Input()
+FNDA:0,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Input> Bachelor_Project.Simulation.Board::get_Input()
+DA:22,0
+FN:22,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Output> Bachelor_Project.Simulation.Board::get_Output()
+FNDA:0,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Output> Bachelor_Project.Simulation.Board::get_Output()
+DA:23,0
+FN:23,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Simulation.Droplet> Bachelor_Project.Simulation.Board::get_Droplets()
+FNDA:0,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Simulation.Droplet> Bachelor_Project.Simulation.Board::get_Droplets()
+DA:24,0
+FN:24,Bachelor_Project.Simulation.Information Bachelor_Project.Simulation.Board::get_Information()
+FNDA:0,Bachelor_Project.Simulation.Information Bachelor_Project.Simulation.Board::get_Information()
+DA:25,0
+FN:25,System.String[] Bachelor_Project.Simulation.Board::get_Unclassified()
+FNDA:0,System.String[] Bachelor_Project.Simulation.Board::get_Unclassified()
+DA:26,0
+FN:44,Bachelor_Project.Simulation.Electrode[0...,0...] Bachelor_Project.Simulation.Board::GetElectrodes()
+FNDA:0,Bachelor_Project.Simulation.Electrode[0...,0...] Bachelor_Project.Simulation.Board::GetElectrodes()
+DA:45,0
+DA:46,0
+DA:47,0
+FN:49,System.Int32 Bachelor_Project.Simulation.Board::GetWidth()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Board::GetWidth()
+DA:50,0
+DA:51,0
+DA:52,0
+FN:54,System.Int32 Bachelor_Project.Simulation.Board::GetHeight()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Board::GetHeight()
+DA:55,0
+DA:56,0
+DA:57,0
+FN:59,System.Int32 Bachelor_Project.Simulation.Board::GetXElectrodes()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Board::GetXElectrodes()
+DA:60,0
+DA:61,0
+DA:62,0
+FN:64,System.Int32 Bachelor_Project.Simulation.Board::GetYElectrodes()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Board::GetYElectrodes()
+DA:65,0
+DA:66,0
+DA:67,0
+FN:69,Bachelor_Project.Simulation.Board Bachelor_Project.Simulation.Board::ImportBoardData(System.String)
+FNDA:0,Bachelor_Project.Simulation.Board Bachelor_Project.Simulation.Board::ImportBoardData(System.String)
+DA:70,0
+DA:71,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:86,0
+DA:87,0
+DA:89,0
+DA:91,0
+DA:92,0
+DA:95,0
+DA:96,0
+DA:98,0
+DA:99,0
+DA:101,0
+DA:102,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:127,0
+DA:130,0
+DA:131,0
+DA:133,0
+DA:134,0
+DA:136,0
+DA:137,0
+DA:139,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:146,0
+DA:147,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:159,0
+DA:160,0
+DA:161,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:165,0
+DA:167,0
+DA:168,0
+BRDA:79,205,1,0
+BRDA:79,205,0,0
+BRDA:86,225,0,0
+BRDA:86,225,1,0
+BRDA:89,686,1,0
+BRDA:92,319,1,0
+BRDA:92,319,0,0
+BRDA:107,673,1,0
+BRDA:110,652,1,0
+BRDA:110,652,0,0
+BRDA:107,673,0,0
+BRDA:89,686,0,0
+BRDA:122,724,0,0
+BRDA:122,724,1,0
+BRDA:124,998,1,0
+BRDA:127,818,0,0
+BRDA:127,818,1,0
+BRDA:127,832,1,0
+BRDA:127,832,0,0
+BRDA:124,998,0,0
+BRDA:143,1036,0,0
+BRDA:143,1036,1,0
+BRDA:145,1206,1,0
+BRDA:145,1206,0,0
+BRDA:151,1226,0,0
+BRDA:151,1226,1,0
+BRDA:153,1396,1,0
+BRDA:153,1396,0,0
+BRDA:159,1416,0,0
+BRDA:159,1416,1,0
+BRDA:161,1498,1,0
+BRDA:161,1498,0,0
+BRDA:165,1518,0,0
+BRDA:165,1518,1,0
+FN:170,System.Boolean Bachelor_Project.Simulation.Board::PrintBoardState()
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Board::PrintBoardState()
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:175,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:179,0
+DA:180,0
+DA:181,0
+DA:183,0
+DA:185,0
+DA:187,0
+DA:189,0
+DA:190,0
+DA:192,0
+DA:193,0
+DA:194,0
+DA:195,0
+DA:196,0
+DA:197,0
+DA:198,0
+DA:199,0
+BRDA:173,124,1,0
+BRDA:176,99,1,0
+BRDA:176,99,0,0
+BRDA:173,124,0,0
+BRDA:192,389,1,0
+BRDA:192,389,0,0
+FN:201,System.String Bachelor_Project.Simulation.Board::BuildPrintLine(System.Collections.Generic.List`1<Bachelor_Project.Simulation.TileEntity>[],System.Int32)
+FNDA:0,System.String Bachelor_Project.Simulation.Board::BuildPrintLine(System.Collections.Generic.List`1<Bachelor_Project.Simulation.TileEntity>[],System.Int32)
+DA:202,0
+DA:204,0
+DA:205,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:209,0
+DA:210,0
+DA:211,0
+DA:212,0
+DA:214,0
+DA:215,0
+DA:216,0
+DA:217,0
+DA:218,0
+DA:221,0
+DA:222,0
+DA:224,0
+DA:225,0
+DA:226,0
+DA:227,0
+DA:229,0
+DA:230,0
+DA:231,0
+DA:232,0
+DA:233,0
+DA:234,0
+DA:235,0
+DA:236,0
+DA:237,0
+DA:238,0
+DA:239,0
+DA:240,0
+DA:241,0
+DA:242,0
+DA:243,0
+DA:247,0
+DA:248,0
+DA:250,0
+DA:251,0
+DA:252,0
+DA:253,0
+DA:255,0
+DA:256,0
+DA:257,0
+DA:258,0
+DA:259,0
+DA:260,0
+DA:261,0
+DA:262,0
+DA:263,0
+DA:264,0
+DA:266,0
+DA:269,0
+DA:270,0
+DA:271,0
+DA:272,0
+DA:274,0
+DA:275,0
+DA:276,0
+DA:279,0
+DA:280,0
+DA:281,0
+DA:282,0
+DA:283,0
+DA:284,0
+DA:285,0
+DA:286,0
+DA:287,0
+DA:289,0
+DA:290,0
+BRDA:208,877,1,0
+BRDA:214,77,0,0
+BRDA:214,77,1,0
+BRDA:221,376,1,0
+BRDA:224,205,0,0
+BRDA:224,205,1,0
+BRDA:233,269,0,0
+BRDA:233,269,1,0
+BRDA:233,295,0,0
+BRDA:233,295,1,0
+BRDA:238,343,0,0
+BRDA:238,343,1,0
+BRDA:221,376,0,0
+BRDA:247,423,0,0
+BRDA:250,469,0,0
+BRDA:250,469,1,0
+BRDA:247,423,1,0
+BRDA:260,596,0,0
+BRDA:260,596,1,0
+BRDA:269,682,0,0
+BRDA:269,682,1,0
+BRDA:208,877,0,0
+FN:28,System.Void Bachelor_Project.Simulation.Board::.ctor(Bachelor_Project.Simulation.Information,Bachelor_Project.Simulation.Electrode[0...,0...],System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Actuator>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Sensor>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Input>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Output>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Simulation.Droplet>,System.String[])
+FNDA:0,System.Void Bachelor_Project.Simulation.Board::.ctor(Bachelor_Project.Simulation.Information,Bachelor_Project.Simulation.Electrode[0...,0...],System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Actuator>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Sensor>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Input>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Electrode_Types.Output>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Simulation.Droplet>,System.String[])
+DA:29,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:42,0
+LF:210
+LH:0
+BRF:62
+BRH:0
+FNF:17
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Commander.cs
+FN:35,System.Void Bachelor_Project.Simulation.Commander::Setup()
+FNDA:0,System.Void Bachelor_Project.Simulation.Commander::Setup()
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:68,0
+DA:69,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:76,0
+DA:77,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:101,0
+DA:102,0
+BRDA:38,25,0,0
+BRDA:38,25,1,0
+BRDA:43,357,1,0
+BRDA:46,133,0,0
+BRDA:46,133,1,0
+BRDA:54,195,0,0
+BRDA:54,195,1,0
+BRDA:58,238,0,0
+BRDA:58,238,1,0
+BRDA:43,357,0,0
+BRDA:71,538,1,0
+BRDA:71,538,0,0
+BRDA:76,799,1,0
+BRDA:80,769,1,0
+BRDA:82,609,0,0
+BRDA:82,625,0,0
+BRDA:82,609,1,0
+BRDA:82,625,1,0
+BRDA:82,651,0,0
+BRDA:84,741,1,0
+BRDA:86,699,0,0
+BRDA:86,699,1,0
+BRDA:84,741,0,0
+BRDA:82,651,1,0
+BRDA:80,769,0,0
+BRDA:76,799,0,0
+BRDA:95,974,1,0
+BRDA:97,943,0,0
+BRDA:97,943,1,0
+BRDA:95,974,0,0
+FN:104,Bachelor_Project.Simulation.Board Bachelor_Project.Simulation.Commander::SetBoard(System.String)
+FNDA:0,Bachelor_Project.Simulation.Board Bachelor_Project.Simulation.Commander::SetBoard(System.String)
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+FN:111,System.Void Bachelor_Project.Simulation.Commander::Start()
+FNDA:0,System.Void Bachelor_Project.Simulation.Commander::Start()
+DA:112,0
+DA:114,0
+DA:115,0
+DA:117,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:133,0
+DA:212,0
+DA:214,0
+DA:215,0
+DA:216,0
+DA:217,0
+DA:218,0
+DA:219,0
+DA:220,0
+DA:221,0
+DA:223,0
+DA:224,0
+DA:225,0
+DA:226,0
+DA:228,0
+DA:229,0
+DA:230,0
+BRDA:114,237,1,0
+BRDA:120,68,0,0
+BRDA:120,68,1,0
+BRDA:121,110,0,0
+BRDA:121,110,1,0
+BRDA:114,237,0,0
+BRDA:229,403,1,0
+BRDA:217,375,1,0
+BRDA:219,306,0,0
+BRDA:219,306,1,0
+BRDA:223,324,0,0
+BRDA:223,333,0,0
+BRDA:223,333,1,0
+BRDA:223,324,1,0
+BRDA:223,360,0,0
+BRDA:223,360,1,0
+BRDA:217,375,0,0
+BRDA:229,403,0,0
+FN:232,System.Void Bachelor_Project.Simulation.Commander::SetPath(Bachelor_Project.Simulation.Droplet,System.Int32,System.Int32,System.Int32,System.Int32,System.Collections.Generic.List`1<System.String>)
+FNDA:0,System.Void Bachelor_Project.Simulation.Commander::SetPath(Bachelor_Project.Simulation.Droplet,System.Int32,System.Int32,System.Int32,System.Int32,System.Collections.Generic.List`1<System.String>)
+DA:233,0
+DA:234,0
+DA:235,0
+DA:236,0
+DA:237,0
+DA:238,0
+DA:239,0
+DA:240,0
+DA:241,0
+DA:242,0
+DA:243,0
+DA:244,0
+DA:245,0
+DA:246,0
+DA:247,0
+DA:248,0
+DA:249,0
+DA:250,0
+DA:251,0
+DA:252,0
+DA:254,0
+DA:255,0
+DA:256,0
+DA:258,0
+DA:259,0
+DA:260,0
+DA:261,0
+DA:262,0
+DA:266,0
+BRDA:235,460,1,0
+BRDA:237,66,0,0
+BRDA:237,85,0,0
+BRDA:237,99,0,0
+BRDA:237,66,1,0
+BRDA:237,85,1,0
+BRDA:237,99,1,0
+BRDA:237,142,1,0
+BRDA:238,151,0,0
+BRDA:238,151,1,0
+BRDA:238,168,1,0
+BRDA:239,195,0,0
+BRDA:239,195,1,0
+BRDA:243,317,0,0
+BRDA:243,317,1,0
+BRDA:237,142,0,0
+BRDA:238,168,0,0
+BRDA:235,460,0,0
+BRDA:254,508,0,0
+BRDA:254,508,1,0
+FN:268,System.Void Bachelor_Project.Simulation.Commander::SetPath(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>)
+FNDA:0,System.Void Bachelor_Project.Simulation.Commander::SetPath(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>)
+DA:269,0
+DA:270,0
+DA:271,0
+FN:273,System.Void Bachelor_Project.Simulation.Commander::RemovePath(Bachelor_Project.Simulation.Droplet)
+FNDA:0,System.Void Bachelor_Project.Simulation.Commander::RemovePath(Bachelor_Project.Simulation.Droplet)
+DA:274,0
+DA:275,0
+DA:276,0
+DA:277,0
+DA:278,0
+DA:279,0
+DA:280,0
+DA:281,0
+DA:283,0
+DA:284,0
+DA:285,0
+DA:286,0
+DA:287,0
+DA:290,0
+BRDA:278,55,0,0
+BRDA:278,55,1,0
+FN:292,Bachelor_Project.Simulation.Board Bachelor_Project.Simulation.Commander::GetBoard()
+FNDA:0,Bachelor_Project.Simulation.Board Bachelor_Project.Simulation.Commander::GetBoard()
+DA:293,0
+DA:294,0
+DA:295,0
+FN:24,System.Void Bachelor_Project.Simulation.Commander::.ctor(System.Nullable`1<System.ValueTuple`4<System.Collections.Generic.List`1<Bachelor_Project.Utility.Command>,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>>>,System.String)
+FNDA:0,System.Void Bachelor_Project.Simulation.Commander::.ctor(System.Nullable`1<System.ValueTuple`4<System.Collections.Generic.List`1<Bachelor_Project.Utility.Command>,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>>>,System.String)
+DA:25,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+FN:16,System.Void Bachelor_Project.Simulation.Commander::.cctor()
+FNDA:0,System.Void Bachelor_Project.Simulation.Commander::.cctor()
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+LF:158
+LH:0
+BRF:72
+BRH:0
+FNF:9
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Droplet.cs
+FN:23,System.String Bachelor_Project.Simulation.Droplet::get_Substance_Name()
+FNDA:0,System.String Bachelor_Project.Simulation.Droplet::get_Substance_Name()
+DA:24,0
+FN:24,System.String Bachelor_Project.Simulation.Droplet::get_Color()
+FNDA:0,System.String Bachelor_Project.Simulation.Droplet::get_Color()
+DA:25,0
+FN:25,System.Single Bachelor_Project.Simulation.Droplet::get_Temperature()
+FNDA:0,System.Single Bachelor_Project.Simulation.Droplet::get_Temperature()
+DA:26,0
+FN:27,System.Int32 Bachelor_Project.Simulation.Droplet::get_Size()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Droplet::get_Size()
+DA:28,0
+FN:28,System.Double Bachelor_Project.Simulation.Droplet::get_Volume()
+FNDA:0,System.Double Bachelor_Project.Simulation.Droplet::get_Volume()
+DA:29,0
+FN:29,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Droplet::get_Occupy()
+FNDA:0,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Droplet::get_Occupy()
+DA:30,0
+FN:30,System.Collections.Generic.LinkedList`1<Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Droplet::get_SnekList()
+FNDA:0,System.Collections.Generic.LinkedList`1<Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Droplet::get_SnekList()
+DA:31,0
+FN:32,System.Collections.Generic.List`1<System.String> Bachelor_Project.Simulation.Droplet::get_Contamintants()
+FNDA:0,System.Collections.Generic.List`1<System.String> Bachelor_Project.Simulation.Droplet::get_Contamintants()
+DA:33,0
+FN:33,System.Int32 Bachelor_Project.Simulation.Droplet::get_ContamLevel()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Droplet::get_ContamLevel()
+DA:34,0
+FN:35,System.ValueTuple`2<System.Nullable`1<System.Int32>,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>> Bachelor_Project.Simulation.Droplet::get_SquareInfo()
+FNDA:0,System.ValueTuple`2<System.Nullable`1<System.Int32>,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>> Bachelor_Project.Simulation.Droplet::get_SquareInfo()
+DA:36,0
+FN:78,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestPartToApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestPartToApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:98,0
+DA:99,0
+BRDA:83,106,1,0
+BRDA:86,88,0,0
+BRDA:86,88,1,0
+BRDA:83,106,0,0
+BRDA:93,133,0,0
+BRDA:93,133,1,0
+FN:101,System.Void Bachelor_Project.Simulation.Droplet::SetNextElectrodeDestination()
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet::SetNextElectrodeDestination()
+DA:102,0
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:112,0
+DA:114,0
+BRDA:103,12,0,0
+BRDA:103,12,1,0
+BRDA:107,47,0,0
+BRDA:107,47,1,0
+FN:116,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestFreePointer(Bachelor_Project.Simulation.Apparature)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestFreePointer(Bachelor_Project.Simulation.Apparature)
+DA:117,0
+DA:118,0
+DA:119,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:133,0
+DA:135,0
+DA:136,0
+DA:137,0
+DA:138,0
+DA:139,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:146,0
+DA:147,0
+BRDA:121,21,0,0
+BRDA:121,21,1,0
+BRDA:129,172,1,0
+BRDA:131,130,0,0
+BRDA:131,130,1,0
+BRDA:136,154,0,0
+BRDA:136,154,1,0
+BRDA:129,172,0,0
+BRDA:142,199,0,0
+BRDA:142,199,1,0
+FN:210,System.Void Bachelor_Project.Simulation.Droplet::GiveWork(System.Threading.Tasks.Task)
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet::GiveWork(System.Threading.Tasks.Task)
+DA:211,0
+DA:213,0
+DA:215,0
+DA:216,0
+FN:218,System.Collections.Generic.List`1<System.Threading.Tasks.Task> Bachelor_Project.Simulation.Droplet::GetWork()
+FNDA:0,System.Collections.Generic.List`1<System.Threading.Tasks.Task> Bachelor_Project.Simulation.Droplet::GetWork()
+DA:219,0
+DA:220,0
+DA:221,0
+FN:223,System.Void Bachelor_Project.Simulation.Droplet::Stop()
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet::Stop()
+DA:224,0
+DA:225,0
+DA:226,0
+FN:228,System.String Bachelor_Project.Simulation.Droplet::GetColor(System.String)
+FNDA:0,System.String Bachelor_Project.Simulation.Droplet::GetColor(System.String)
+DA:229,0
+DA:230,0
+DA:231,0
+FN:234,System.Void Bachelor_Project.Simulation.Droplet::SetSizes(System.Double)
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet::SetSizes(System.Double)
+DA:235,0
+DA:236,0
+DA:237,0
+DA:238,0
+FN:240,System.Void Bachelor_Project.Simulation.Droplet::SetContam(System.Collections.Generic.List`1<System.String>)
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet::SetContam(System.Collections.Generic.List`1<System.String>)
+DA:241,0
+DA:242,0
+DA:243,0
+FN:244,System.String Bachelor_Project.Simulation.Droplet::ToString()
+FNDA:0,System.String Bachelor_Project.Simulation.Droplet::ToString()
+DA:245,0
+DA:246,0
+DA:247,0
+FN:249,System.Void Bachelor_Project.Simulation.Droplet::ChangeType(System.String)
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet::ChangeType(System.String)
+DA:250,0
+DA:251,0
+DA:252,0
+DA:253,0
+DA:254,0
+DA:255,0
+DA:257,0
+DA:258,0
+DA:259,0
+DA:261,0
+BRDA:252,24,0,0
+BRDA:252,24,1,0
+BRDA:252,57,0,0
+BRDA:252,57,1,0
+FN:263,System.Void Bachelor_Project.Simulation.Droplet::RemoveFromBoard()
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet::RemoveFromBoard()
+DA:264,0
+DA:266,0
+DA:267,0
+DA:268,0
+DA:269,0
+DA:271,0
+DA:272,0
+DA:273,0
+DA:274,0
+DA:275,0
+DA:276,0
+DA:277,0
+BRDA:267,48,1,0
+BRDA:267,48,0,0
+FN:284,System.Void Bachelor_Project.Simulation.Droplet::TakeOver(Bachelor_Project.Simulation.Droplet)
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet::TakeOver(Bachelor_Project.Simulation.Droplet)
+DA:285,0
+DA:286,0
+DA:287,0
+DA:288,0
+DA:289,0
+DA:290,0
+DA:291,0
+DA:292,0
+DA:293,0
+BRDA:288,56,1,0
+BRDA:288,56,0,0
+FN:31,System.Void Bachelor_Project.Simulation.Droplet::.ctor(System.String,System.String)
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet::.ctor(System.String,System.String)
+DA:32,0
+DA:35,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:42,0
+DA:43,0
+DA:47,0
+DA:49,0
+DA:53,0
+DA:55,0
+DA:57,0
+DA:58,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:69,0
+DA:71,0
+DA:76,0
+FN:155,System.Void Bachelor_Project.Simulation.Droplet/<RunAgent>d__61::MoveNext()
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet/<RunAgent>d__61::MoveNext()
+DA:156,0
+DA:158,0
+DA:160,0
+DA:161,0
+DA:165,0
+DA:168,0
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:175,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:179,0
+DA:181,0
+DA:183,0
+DA:184,0
+DA:185,0
+DA:186,0
+DA:187,0
+DA:188,0
+DA:189,0
+DA:190,0
+DA:193,0
+DA:194,0
+DA:195,0
+DA:197,0
+DA:198,0
+DA:199,0
+DA:200,0
+DA:202,0
+DA:203,0
+DA:204,0
+DA:206,0
+DA:208,0
+BRDA:160,359,1,0
+BRDA:171,335,1,0
+BRDA:176,160,0,0
+BRDA:176,160,1,0
+BRDA:171,335,0,0
+BRDA:160,359,0,0
+FN:150,System.Void Bachelor_Project.Simulation.Droplet/<StartAgent>d__60::MoveNext()
+FNDA:0,System.Void Bachelor_Project.Simulation.Droplet/<StartAgent>d__60::MoveNext()
+DA:151,0
+DA:152,0
+DA:153,0
+LF:179
+LH:0
+BRF:34
+BRH:0
+FNF:26
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Electrode.cs
+FN:11,System.Int32 Bachelor_Project.Simulation.Electrode::get_ElectrodeID()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Electrode::get_ElectrodeID()
+DA:12,0
+FN:12,System.Int32 Bachelor_Project.Simulation.Electrode::get_DriverID()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Electrode::get_DriverID()
+DA:13,0
+FN:13,System.Int32 Bachelor_Project.Simulation.Electrode::get_Status()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Electrode::get_Status()
+DA:14,0
+FN:14,System.Int32 Bachelor_Project.Simulation.Electrode::get_ePosX()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Electrode::get_ePosX()
+DA:15,0
+FN:15,System.Int32 Bachelor_Project.Simulation.Electrode::get_ePosY()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Electrode::get_ePosY()
+DA:16,0
+FN:17,System.Collections.Generic.List`1<System.String> Bachelor_Project.Simulation.Electrode::get_Contaminants()
+FNDA:0,System.Collections.Generic.List`1<System.String> Bachelor_Project.Simulation.Electrode::get_Contaminants()
+DA:18,0
+FN:28,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Electrode::GetClosestElectrodeInList(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Electrode::GetClosestElectrodeInList(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>)
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:45,0
+DA:46,0
+BRDA:32,67,1,0
+BRDA:35,50,0,0
+BRDA:35,50,1,0
+BRDA:32,67,0,0
+BRDA:41,94,0,0
+BRDA:41,94,1,0
+FN:48,System.Collections.Generic.List`1<System.ValueTuple`2<Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Agent_Actions.Direction>> Bachelor_Project.Simulation.Electrode::GetTrueNeighbors()
+FNDA:0,System.Collections.Generic.List`1<System.ValueTuple`2<Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Agent_Actions.Direction>> Bachelor_Project.Simulation.Electrode::GetTrueNeighbors()
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:56,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:75,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+BRDA:51,182,1,0
+BRDA:56,28,1,0
+BRDA:56,28,2,0
+BRDA:56,28,3,0
+BRDA:56,28,4,0
+BRDA:56,28,0,0
+BRDA:78,115,0,0
+BRDA:78,115,1,0
+BRDA:51,182,0,0
+FN:86,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Electrode::ElectrodeStep(Bachelor_Project.Simulation.Agent_Actions.Direction)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Electrode::ElectrodeStep(Bachelor_Project.Simulation.Agent_Actions.Direction)
+DA:87,0
+DA:88,0
+DA:91,0
+DA:93,0
+DA:95,0
+DA:97,0
+DA:99,0
+DA:101,0
+BRDA:88,6,1,0
+BRDA:88,6,2,0
+BRDA:88,6,3,0
+BRDA:88,6,4,0
+BRDA:88,6,0,0
+FN:103,System.Collections.Generic.List`1<System.ValueTuple`2<Bachelor_Project.Simulation.Electrode,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>>> Bachelor_Project.Simulation.Electrode::GetExtendedNeighbors(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Droplet,System.Boolean)
+FNDA:0,System.Collections.Generic.List`1<System.ValueTuple`2<Bachelor_Project.Simulation.Electrode,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>>> Bachelor_Project.Simulation.Electrode::GetExtendedNeighbors(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Droplet,System.Boolean)
+DA:104,0
+DA:105,0
+DA:107,0
+DA:109,0
+DA:110,0
+DA:112,0
+DA:113,0
+DA:115,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:134,0
+DA:136,0
+DA:137,0
+DA:138,0
+DA:139,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:146,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:159,0
+DA:160,0
+DA:161,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:165,0
+DA:166,0
+DA:167,0
+DA:168,0
+DA:169,0
+DA:170,0
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:175,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:179,0
+DA:180,0
+DA:181,0
+DA:182,0
+DA:183,0
+DA:184,0
+DA:185,0
+DA:186,0
+DA:188,0
+DA:189,0
+DA:190,0
+DA:191,0
+DA:192,0
+BRDA:109,395,1,0
+BRDA:115,35,1,0
+BRDA:115,35,2,0
+BRDA:115,35,3,0
+BRDA:115,35,4,0
+BRDA:115,35,0,0
+BRDA:136,145,0,0
+BRDA:138,152,0,0
+BRDA:138,152,1,0
+BRDA:138,177,0,0
+BRDA:138,177,1,0
+BRDA:143,224,0,0
+BRDA:143,224,1,0
+BRDA:143,297,0,0
+BRDA:143,297,1,0
+BRDA:136,145,1,0
+BRDA:109,395,0,0
+BRDA:156,839,1,0
+BRDA:161,425,0,0
+BRDA:161,434,0,0
+BRDA:161,434,1,0
+BRDA:161,425,1,0
+BRDA:161,453,0,0
+BRDA:161,453,1,0
+BRDA:166,479,0,0
+BRDA:166,488,0,0
+BRDA:166,488,1,0
+BRDA:166,479,1,0
+BRDA:166,507,0,0
+BRDA:166,507,1,0
+BRDA:171,530,0,0
+BRDA:171,539,0,0
+BRDA:171,539,1,0
+BRDA:171,530,1,0
+BRDA:171,558,0,0
+BRDA:171,558,1,0
+BRDA:176,581,0,0
+BRDA:176,590,0,0
+BRDA:176,590,1,0
+BRDA:176,581,1,0
+BRDA:176,609,0,0
+BRDA:176,609,1,0
+BRDA:182,654,0,0
+BRDA:184,661,0,0
+BRDA:184,661,1,0
+BRDA:184,765,0,0
+BRDA:184,765,1,0
+BRDA:182,654,1,0
+BRDA:156,839,0,0
+FN:194,System.Double Bachelor_Project.Simulation.Electrode::GetDistance(Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.Double Bachelor_Project.Simulation.Electrode::GetDistance(Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Electrode)
+DA:195,0
+DA:196,0
+DA:197,0
+FN:199,System.Int32 Bachelor_Project.Simulation.Electrode::GetDistanceToBorder()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Electrode::GetDistanceToBorder()
+DA:200,0
+DA:201,0
+DA:202,0
+DA:203,0
+DA:204,0
+DA:205,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:209,0
+DA:210,0
+DA:212,0
+DA:215,0
+BRDA:202,42,0,0
+BRDA:202,42,1,0
+BRDA:207,117,0,0
+BRDA:207,117,1,0
+FN:217,System.Void Bachelor_Project.Simulation.Electrode::Contaminate(System.String)
+FNDA:0,System.Void Bachelor_Project.Simulation.Electrode::Contaminate(System.String)
+DA:218,0
+DA:219,0
+DA:220,0
+FN:222,System.Collections.Generic.List`1<System.String> Bachelor_Project.Simulation.Electrode::GetContaminants()
+FNDA:0,System.Collections.Generic.List`1<System.String> Bachelor_Project.Simulation.Electrode::GetContaminants()
+DA:223,0
+DA:224,0
+DA:225,0
+FN:227,System.Int32 Bachelor_Project.Simulation.Electrode::GetStatus()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Electrode::GetStatus()
+DA:228,0
+DA:229,0
+DA:230,0
+FN:232,System.String Bachelor_Project.Simulation.Electrode::ToString()
+FNDA:0,System.String Bachelor_Project.Simulation.Electrode::ToString()
+DA:233,0
+DA:234,0
+DA:235,0
+FN:9,System.Void Bachelor_Project.Simulation.Electrode::.ctor(System.Int32,System.Int32,System.String)
+FNDA:0,System.Void Bachelor_Project.Simulation.Electrode::.ctor(System.Int32,System.Int32,System.String)
+DA:10,0
+DA:22,0
+FN:23,System.Void Bachelor_Project.Simulation.Electrode::.ctor()
+FNDA:0,System.Void Bachelor_Project.Simulation.Electrode::.ctor()
+DA:24,0
+DA:25,0
+DA:26,0
+LF:166
+LH:0
+BRF:73
+BRH:0
+FNF:18
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Information.cs
+FN:10,System.String Bachelor_Project.Simulation.Information::get_platform_name()
+FNDA:0,System.String Bachelor_Project.Simulation.Information::get_platform_name()
+DA:11,0
+FN:11,System.String Bachelor_Project.Simulation.Information::get_platform_type()
+FNDA:0,System.String Bachelor_Project.Simulation.Information::get_platform_type()
+DA:12,0
+FN:12,System.String Bachelor_Project.Simulation.Information::get_platform_ID()
+FNDA:0,System.String Bachelor_Project.Simulation.Information::get_platform_ID()
+DA:13,0
+FN:13,System.Int32 Bachelor_Project.Simulation.Information::get_sizeX()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Information::get_sizeX()
+DA:14,0
+FN:14,System.Int32 Bachelor_Project.Simulation.Information::get_sizeY()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Information::get_sizeY()
+DA:15,0
+FN:16,System.Int32 Bachelor_Project.Simulation.Information::get_electrode_size()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Information::get_electrode_size()
+DA:17,0
+FN:17,System.Int32 Bachelor_Project.Simulation.Information::get_eRow()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Information::get_eRow()
+DA:18,0
+FN:18,System.Int32 Bachelor_Project.Simulation.Information::get_eCol()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.Information::get_eCol()
+DA:19,0
+LF:8
+LH:0
+BRF:0
+BRH:0
+FNF:8
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Test.cs
+FN:10,Bachelor_Project.Simulation.Electrode[] Bachelor_Project.Simulation.Test::get_Electrodes()
+FNDA:0,Bachelor_Project.Simulation.Electrode[] Bachelor_Project.Simulation.Test::get_Electrodes()
+DA:11,0
+LF:1
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\TileEntity.cs
+FN:10,System.String Bachelor_Project.Simulation.TileEntity::get_Name()
+FNDA:0,System.String Bachelor_Project.Simulation.TileEntity::get_Name()
+DA:11,0
+FN:11,System.Int32 Bachelor_Project.Simulation.TileEntity::get_ID()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.TileEntity::get_ID()
+DA:12,0
+FN:12,System.Int32 Bachelor_Project.Simulation.TileEntity::get_PositionX()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.TileEntity::get_PositionX()
+DA:13,0
+FN:13,System.Int32 Bachelor_Project.Simulation.TileEntity::get_PositionY()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.TileEntity::get_PositionY()
+DA:14,0
+FN:14,System.Int32 Bachelor_Project.Simulation.TileEntity::get_SizeX()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.TileEntity::get_SizeX()
+DA:15,0
+FN:15,System.Int32 Bachelor_Project.Simulation.TileEntity::get_SizeY()
+FNDA:0,System.Int32 Bachelor_Project.Simulation.TileEntity::get_SizeY()
+DA:16,0
+FN:32,System.ValueTuple`2<System.Int32,System.Int32> Bachelor_Project.Simulation.TileEntity::GetCenter()
+FNDA:0,System.ValueTuple`2<System.Int32,System.Int32> Bachelor_Project.Simulation.TileEntity::GetCenter()
+DA:33,0
+DA:34,0
+DA:35,0
+FN:37,System.String Bachelor_Project.Simulation.TileEntity::getName()
+FNDA:0,System.String Bachelor_Project.Simulation.TileEntity::getName()
+DA:38,0
+DA:39,0
+DA:40,0
+FN:20,System.Void Bachelor_Project.Simulation.TileEntity::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
+FNDA:0,System.Void Bachelor_Project.Simulation.TileEntity::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
+DA:21,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+LF:21
+LH:0
+BRF:0
+BRH:0
+FNF:9
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Agent Actions\Direction.cs
+FN:18,Bachelor_Project.Simulation.Agent_Actions.Direction Bachelor_Project.Simulation.Agent_Actions.DirectionUtils::GetOppositeDirection(Bachelor_Project.Simulation.Agent_Actions.Direction)
+FNDA:0,Bachelor_Project.Simulation.Agent_Actions.Direction Bachelor_Project.Simulation.Agent_Actions.DirectionUtils::GetOppositeDirection(Bachelor_Project.Simulation.Agent_Actions.Direction)
+DA:19,0
+DA:20,0
+DA:21,0
+LF:3
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Agent Actions\Droplet Actions.cs
+FN:21,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparature)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparature)
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:39,0
+DA:40,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:59,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:65,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:110,0
+BRDA:24,16,0,0
+BRDA:24,16,1,0
+BRDA:35,92,0,0
+BRDA:35,92,1,0
+BRDA:42,135,0,0
+BRDA:42,135,1,0
+BRDA:50,186,0,0
+BRDA:53,233,1,0
+BRDA:53,233,0,0
+BRDA:50,186,1,0
+BRDA:62,364,1,0
+BRDA:68,295,0,0
+BRDA:71,338,1,0
+BRDA:71,338,0,0
+BRDA:68,295,1,0
+BRDA:62,364,0,0
+BRDA:80,374,0,0
+BRDA:84,547,1,0
+BRDA:99,486,0,0
+BRDA:99,486,1,0
+BRDA:80,374,1,0
+BRDA:84,547,0,0
+FN:112,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveToApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveToApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+DA:113,0
+DA:114,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:128,0
+DA:130,0
+DA:131,0
+FN:133,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveToDest(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveToDest(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>)
+DA:134,0
+DA:135,0
+DA:136,0
+DA:137,0
+DA:138,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:146,0
+DA:147,0
+DA:148,0
+DA:150,0
+DA:151,0
+BRDA:135,12,0,0
+BRDA:135,35,0,0
+BRDA:135,12,1,0
+BRDA:135,35,1,0
+BRDA:135,82,0,0
+BRDA:135,82,1,0
+BRDA:141,166,1,0
+BRDA:141,135,0,0
+BRDA:141,135,1,0
+BRDA:141,166,0,0
+FN:153,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveTowardApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveTowardApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+FN:160,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveTowardDest(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>,System.String,System.Boolean)
+FNDA:0,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveTowardDest(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>,System.String,System.Boolean)
+DA:161,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:165,0
+DA:169,0
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:175,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:179,0
+DA:182,0
+DA:183,0
+DA:184,0
+DA:185,0
+DA:186,0
+DA:188,0
+DA:189,0
+DA:190,0
+DA:191,0
+DA:192,0
+DA:193,0
+DA:194,0
+DA:196,0
+DA:198,0
+DA:200,0
+DA:201,0
+DA:202,0
+DA:203,0
+DA:204,0
+DA:205,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:209,0
+DA:211,0
+DA:212,0
+DA:213,0
+DA:214,0
+DA:215,0
+DA:216,0
+DA:217,0
+DA:218,0
+DA:219,0
+DA:220,0
+DA:222,0
+DA:223,0
+DA:224,0
+DA:225,0
+DA:226,0
+DA:227,0
+DA:229,0
+DA:231,0
+DA:232,0
+DA:233,0
+DA:235,0
+DA:236,0
+DA:237,0
+DA:238,0
+DA:239,0
+DA:241,0
+DA:242,0
+DA:244,0
+DA:245,0
+DA:246,0
+DA:247,0
+DA:248,0
+DA:249,0
+DA:250,0
+DA:251,0
+DA:252,0
+DA:253,0
+DA:254,0
+DA:255,0
+DA:256,0
+DA:257,0
+DA:258,0
+DA:259,0
+DA:260,0
+DA:261,0
+DA:263,0
+DA:264,0
+DA:265,0
+DA:266,0
+DA:267,0
+DA:268,0
+DA:269,0
+DA:271,0
+DA:275,0
+DA:276,0
+DA:277,0
+DA:278,0
+DA:279,0
+DA:280,0
+DA:281,0
+DA:282,0
+DA:284,0
+DA:285,0
+DA:286,0
+DA:287,0
+DA:288,0
+DA:289,0
+DA:291,0
+DA:292,0
+DA:293,0
+DA:294,0
+DA:295,0
+DA:296,0
+DA:297,0
+DA:299,0
+DA:302,0
+BRDA:163,18,0,0
+BRDA:163,18,1,0
+BRDA:175,60,0,0
+BRDA:175,68,0,0
+BRDA:175,60,1,0
+BRDA:175,68,1,0
+BRDA:175,86,0,0
+BRDA:175,86,1,0
+BRDA:182,125,0,0
+BRDA:182,125,1,0
+BRDA:182,148,0,0
+BRDA:184,164,0,0
+BRDA:184,164,1,0
+BRDA:190,208,0,0
+BRDA:192,223,0,0
+BRDA:192,223,1,0
+BRDA:192,254,0,0
+BRDA:192,254,1,0
+BRDA:190,208,1,0
+BRDA:182,148,1,0
+BRDA:200,294,0,0
+BRDA:200,317,0,0
+BRDA:200,294,1,0
+BRDA:200,317,1,0
+BRDA:200,336,0,0
+BRDA:202,356,0,0
+BRDA:207,415,0,0
+BRDA:207,415,1,0
+BRDA:202,356,1,0
+BRDA:200,336,1,0
+BRDA:218,503,0,0
+BRDA:218,503,1,0
+BRDA:222,555,0,0
+BRDA:225,593,0,0
+BRDA:225,593,1,0
+BRDA:225,624,0,0
+BRDA:225,624,1,0
+BRDA:222,555,1,0
+BRDA:232,668,0,0
+BRDA:232,668,1,0
+BRDA:245,893,0,0
+BRDA:248,984,0,0
+BRDA:248,984,1,0
+BRDA:245,893,1,0
+BRDA:256,1210,0,0
+BRDA:256,1214,0,0
+BRDA:256,1217,0,0
+BRDA:256,1232,0,0
+BRDA:256,1240,0,0
+BRDA:256,1210,1,0
+BRDA:256,1214,1,0
+BRDA:256,1217,1,0
+BRDA:256,1232,1,0
+BRDA:256,1240,1,0
+BRDA:256,1256,0,0
+BRDA:259,1279,0,0
+BRDA:259,1279,1,0
+BRDA:264,1372,0,0
+BRDA:264,1372,1,0
+BRDA:256,1256,1,0
+BRDA:278,1533,0,0
+BRDA:278,1533,1,0
+BRDA:291,1579,0,0
+BRDA:291,1579,1,0
+BRDA:295,1608,0,0
+BRDA:295,1608,1,0
+BRDA:295,1622,0,0
+BRDA:295,1626,0,0
+BRDA:295,1630,0,0
+BRDA:295,1622,1,0
+BRDA:295,1646,0,0
+BRDA:295,1626,1,0
+BRDA:295,1630,1,0
+BRDA:295,1646,1,0
+BRDA:295,1677,0,0
+BRDA:295,1677,1,0
+FN:304,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Agent_Actions.Direction)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Agent_Actions.Direction)
+DA:305,0
+DA:306,0
+DA:307,0
+DA:309,0
+DA:310,0
+DA:311,0
+DA:314,0
+DA:316,0
+DA:318,0
+DA:320,0
+DA:322,0
+DA:324,0
+DA:326,0
+DA:328,0
+DA:332,0
+DA:333,0
+DA:335,0
+DA:336,0
+DA:337,0
+DA:338,0
+DA:340,0
+DA:341,0
+DA:342,0
+DA:344,0
+DA:347,0
+DA:348,0
+DA:350,0
+DA:351,0
+DA:352,0
+DA:353,0
+DA:354,0
+DA:355,0
+DA:356,0
+DA:357,0
+DA:359,0
+DA:360,0
+DA:361,0
+DA:362,0
+DA:363,0
+DA:364,0
+DA:365,0
+DA:367,0
+DA:368,0
+DA:369,0
+DA:370,0
+DA:371,0
+DA:372,0
+DA:373,0
+DA:374,0
+DA:376,0
+DA:377,0
+DA:379,0
+DA:381,0
+DA:382,0
+DA:383,0
+BRDA:311,22,1,0
+BRDA:311,22,4,0
+BRDA:311,22,3,0
+BRDA:311,22,2,0
+BRDA:311,22,0,0
+BRDA:332,232,1,0
+BRDA:335,168,0,0
+BRDA:335,168,1,0
+BRDA:332,232,0,0
+BRDA:347,259,0,0
+BRDA:350,322,1,0
+BRDA:352,300,0,0
+BRDA:352,300,1,0
+BRDA:350,322,0,0
+BRDA:359,428,1,0
+BRDA:362,389,0,0
+BRDA:362,389,1,0
+BRDA:367,406,0,0
+BRDA:367,406,1,0
+BRDA:359,428,0,0
+BRDA:371,486,1,0
+BRDA:371,486,0,0
+BRDA:347,259,1,0
+FN:386,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Droplet> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckBorder(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String)
+FNDA:0,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Droplet> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckBorder(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String)
+DA:387,0
+DA:388,0
+DA:389,0
+FN:393,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Droplet> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckBorder(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String)
+FNDA:0,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Droplet> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckBorder(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String)
+DA:394,0
+DA:395,0
+DA:397,0
+DA:398,0
+DA:399,0
+DA:403,0
+DA:404,0
+DA:405,0
+DA:406,0
+DA:407,0
+DA:410,0
+DA:411,0
+DA:412,0
+DA:414,0
+DA:415,0
+DA:417,0
+DA:418,0
+DA:420,0
+DA:421,0
+DA:422,0
+DA:424,0
+DA:425,0
+DA:427,0
+DA:428,0
+DA:429,0
+DA:431,0
+DA:432,0
+DA:434,0
+DA:435,0
+DA:437,0
+DA:438,0
+DA:439,0
+DA:440,0
+DA:441,0
+DA:442,0
+DA:443,0
+DA:444,0
+DA:445,0
+DA:446,0
+DA:447,0
+DA:448,0
+DA:449,0
+DA:450,0
+DA:451,0
+DA:452,0
+DA:454,0
+DA:455,0
+DA:456,0
+DA:458,0
+DA:459,0
+DA:461,0
+DA:462,0
+DA:463,0
+DA:464,0
+DA:465,0
+BRDA:398,430,1,0
+BRDA:405,417,1,0
+BRDA:407,64,1,0
+BRDA:407,64,2,0
+BRDA:407,64,3,0
+BRDA:407,64,4,0
+BRDA:407,64,5,0
+BRDA:407,64,6,0
+BRDA:407,64,7,0
+BRDA:407,64,8,0
+BRDA:407,64,0,0
+BRDA:437,207,0,0
+BRDA:437,231,0,0
+BRDA:437,207,1,0
+BRDA:437,231,1,0
+BRDA:437,244,0,0
+BRDA:437,244,1,0
+BRDA:441,264,0,0
+BRDA:444,301,0,0
+BRDA:444,301,1,0
+BRDA:444,320,0,0
+BRDA:446,324,0,0
+BRDA:446,324,1,0
+BRDA:446,337,0,0
+BRDA:448,352,0,0
+BRDA:448,355,0,0
+BRDA:448,355,1,0
+BRDA:448,352,1,0
+BRDA:448,382,0,0
+BRDA:448,382,1,0
+BRDA:446,337,1,0
+BRDA:444,320,1,0
+BRDA:441,264,1,0
+BRDA:405,417,0,0
+BRDA:398,430,0,0
+FN:467,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckBoardEdge(System.Int32,System.Int32)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckBoardEdge(System.Int32,System.Int32)
+DA:468,0
+DA:469,0
+DA:470,0
+BRDA:469,3,0,0
+BRDA:469,21,0,0
+BRDA:469,25,0,0
+BRDA:469,3,1,0
+BRDA:469,21,1,0
+BRDA:469,25,1,0
+FN:472,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckPlacement(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckPlacement(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>)
+DA:473,0
+DA:474,0
+DA:475,0
+FN:477,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckPlacement(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckPlacement(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String)
+DA:478,0
+DA:479,0
+DA:480,0
+DA:481,0
+DA:483,0
+DA:484,0
+DA:485,0
+DA:488,0
+DA:489,0
+BRDA:479,15,0,0
+BRDA:479,15,1,0
+BRDA:483,34,0,0
+BRDA:483,34,1,0
+FN:491,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckOtherDroplets(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckOtherDroplets(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>)
+DA:492,0
+DA:493,0
+DA:494,0
+FN:495,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckOtherDroplets(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckOtherDroplets(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String)
+DA:496,0
+DA:497,0
+DA:498,0
+DA:499,0
+DA:500,0
+DA:501,0
+DA:503,0
+DA:504,0
+DA:505,0
+BRDA:497,110,1,0
+BRDA:499,26,0,0
+BRDA:499,40,0,0
+BRDA:499,43,0,0
+BRDA:499,43,1,0
+BRDA:499,62,0,0
+BRDA:499,65,0,0
+BRDA:499,65,1,0
+BRDA:499,26,1,0
+BRDA:499,40,1,0
+BRDA:499,62,1,0
+BRDA:499,95,0,0
+BRDA:499,95,1,0
+BRDA:497,110,0,0
+FN:506,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckContaminations(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckContaminations(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>)
+DA:507,0
+DA:508,0
+DA:509,0
+FN:511,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckContaminations(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckContaminations(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>)
+DA:512,0
+DA:513,0
+DA:514,0
+DA:516,0
+DA:517,0
+DA:518,0
+DA:519,0
+DA:520,0
+DA:521,0
+DA:523,0
+DA:524,0
+DA:525,0
+DA:526,0
+DA:527,0
+BRDA:513,155,1,0
+BRDA:516,128,1,0
+BRDA:518,101,1,0
+BRDA:520,85,0,0
+BRDA:520,85,1,0
+BRDA:518,101,0,0
+BRDA:516,128,0,0
+BRDA:513,155,0,0
+FN:529,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Droplet> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckLegalMove(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String,System.Boolean)
+FNDA:0,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Droplet> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckLegalMove(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String,System.Boolean)
+DA:530,0
+DA:531,0
+DA:532,0
+DA:533,0
+DA:535,0
+DA:536,0
+BRDA:531,5,0,0
+BRDA:531,5,1,0
+FN:538,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Droplet> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckLegalMove(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String,System.Boolean)
+FNDA:0,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Droplet> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckLegalMove(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.Collections.Generic.List`1<System.String>,System.String,System.Boolean)
+DA:539,0
+DA:540,0
+DA:541,0
+DA:542,0
+DA:543,0
+DA:544,0
+DA:546,0
+DA:547,0
+BRDA:542,26,0,0
+BRDA:542,33,0,0
+BRDA:542,33,1,0
+BRDA:542,26,1,0
+BRDA:542,52,0,0
+BRDA:542,52,1,0
+FN:549,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckLegalPosition(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<System.ValueTuple`2<System.Int32,System.Int32>>,System.String)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckLegalPosition(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<System.ValueTuple`2<System.Int32,System.Int32>>,System.String)
+DA:550,0
+DA:551,0
+DA:554,0
+DA:555,0
+DA:556,0
+DA:557,0
+DA:558,0
+DA:559,0
+DA:561,0
+DA:562,0
+DA:564,0
+DA:567,0
+DA:568,0
+BRDA:554,141,1,0
+BRDA:556,54,0,0
+BRDA:556,58,0,0
+BRDA:556,76,0,0
+BRDA:556,54,1,0
+BRDA:556,58,1,0
+BRDA:556,76,1,0
+BRDA:556,92,0,0
+BRDA:556,92,1,0
+BRDA:554,141,0,0
+FN:571,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::AwaitLegalMove(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.String)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::AwaitLegalMove(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,System.String)
+DA:572,0
+DA:573,0
+DA:574,0
+DA:575,0
+DA:576,0
+DA:577,0
+DA:578,0
+DA:579,0
+DA:580,0
+DA:582,0
+DA:583,0
+DA:584,0
+DA:585,0
+BRDA:574,104,1,0
+BRDA:577,35,0,0
+BRDA:577,35,1,0
+BRDA:574,104,0,0
+FN:589,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::SnekCheck(Bachelor_Project.Simulation.Electrode,System.String)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::SnekCheck(Bachelor_Project.Simulation.Electrode,System.String)
+DA:590,0
+DA:591,0
+DA:592,0
+DA:593,0
+DA:596,0
+DA:597,0
+DA:599,0
+BRDA:591,7,0,0
+BRDA:591,7,1,0
+BRDA:591,31,0,0
+BRDA:591,31,1,0
+FN:602,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::SnekMove(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Agent_Actions.Direction,System.String,System.Boolean)
+FNDA:0,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::SnekMove(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Agent_Actions.Direction,System.String,System.Boolean)
+DA:603,0
+DA:604,0
+DA:605,0
+FN:609,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::SnekMove(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,Bachelor_Project.Simulation.Agent_Actions.Direction,System.String,System.Boolean)
+FNDA:0,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::SnekMove(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,Bachelor_Project.Simulation.Agent_Actions.Direction,System.String,System.Boolean)
+DA:610,0
+DA:611,0
+DA:612,0
+DA:613,0
+DA:615,0
+DA:616,0
+DA:617,0
+DA:618,0
+DA:620,0
+DA:621,0
+DA:625,0
+DA:626,0
+DA:629,0
+DA:630,0
+DA:632,0
+DA:633,0
+DA:635,0
+DA:636,0
+DA:638,0
+DA:639,0
+DA:641,0
+DA:642,0
+DA:643,0
+DA:644,0
+DA:645,0
+DA:648,0
+DA:649,0
+DA:652,0
+DA:653,0
+DA:655,0
+DA:656,0
+DA:658,0
+DA:659,0
+DA:660,0
+DA:661,0
+DA:663,0
+DA:664,0
+DA:665,0
+DA:667,0
+DA:668,0
+DA:669,0
+DA:670,0
+DA:671,0
+DA:672,0
+DA:673,0
+DA:676,0
+DA:677,0
+DA:678,0
+DA:682,0
+BRDA:615,56,0,0
+BRDA:615,56,1,0
+BRDA:626,97,1,0
+BRDA:626,97,4,0
+BRDA:626,97,3,0
+BRDA:626,97,2,0
+BRDA:626,97,0,0
+BRDA:652,365,0,0
+BRDA:652,365,1,0
+BRDA:652,387,0,0
+BRDA:658,508,0,0
+BRDA:658,508,1,0
+BRDA:658,555,0,0
+BRDA:658,555,1,0
+BRDA:669,613,0,0
+BRDA:669,613,1,0
+BRDA:652,387,1,0
+FN:683,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::TakeOverElectrode(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Boolean)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::TakeOverElectrode(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Boolean)
+DA:684,0
+DA:685,0
+DA:686,0
+DA:687,0
+DA:688,0
+DA:689,0
+DA:690,0
+DA:691,0
+DA:692,0
+DA:693,0
+DA:695,0
+DA:696,0
+DA:697,0
+DA:698,0
+DA:700,0
+DA:701,0
+DA:702,0
+DA:703,0
+DA:704,0
+DA:705,0
+DA:706,0
+DA:707,0
+DA:709,0
+DA:710,0
+DA:711,0
+DA:712,0
+DA:713,0
+DA:714,0
+DA:715,0
+BRDA:688,34,0,0
+BRDA:690,43,0,0
+BRDA:690,43,1,0
+BRDA:690,62,0,0
+BRDA:690,62,1,0
+BRDA:695,89,0,0
+BRDA:695,89,1,0
+BRDA:688,34,1,0
+BRDA:704,137,0,0
+BRDA:704,137,1,0
+FN:717,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveOnElectrode(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Boolean)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveOnElectrode(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Boolean)
+DA:718,0
+DA:719,0
+DA:720,0
+DA:721,0
+DA:722,0
+DA:723,0
+DA:724,0
+DA:725,0
+DA:726,0
+DA:727,0
+DA:729,0
+DA:730,0
+DA:731,0
+DA:733,0
+DA:734,0
+DA:735,0
+DA:736,0
+DA:738,0
+BRDA:722,34,0,0
+BRDA:724,40,0,0
+BRDA:724,40,1,0
+BRDA:722,34,1,0
+FN:740,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveOffElectrode(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveOffElectrode(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode)
+DA:741,0
+DA:742,0
+DA:743,0
+DA:744,0
+DA:745,0
+DA:747,0
+DA:748,0
+DA:749,0
+DA:750,0
+DA:751,0
+DA:752,0
+DA:753,0
+DA:754,0
+DA:755,0
+DA:756,0
+DA:757,0
+DA:758,0
+DA:759,0
+BRDA:742,7,0,0
+BRDA:742,7,1,0
+BRDA:748,53,0,0
+BRDA:748,53,1,0
+BRDA:752,78,0,0
+BRDA:752,78,1,0
+FN:763,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::SnekReversal(Bachelor_Project.Simulation.Droplet)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::SnekReversal(Bachelor_Project.Simulation.Droplet)
+DA:764,0
+DA:765,0
+DA:767,0
+DA:768,0
+DA:769,0
+DA:771,0
+DA:773,0
+DA:774,0
+DA:776,0
+DA:778,0
+BRDA:768,49,1,0
+BRDA:768,49,0,0
+FN:785,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::UncoilSnek(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::UncoilSnek(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>)
+DA:786,0
+DA:787,0
+DA:790,0
+DA:793,0
+DA:794,0
+DA:795,0
+DA:796,0
+DA:797,0
+DA:798,0
+DA:799,0
+DA:801,0
+DA:805,0
+DA:806,0
+DA:807,0
+DA:808,0
+DA:809,0
+DA:810,0
+DA:811,0
+DA:812,0
+DA:813,0
+DA:814,0
+DA:815,0
+DA:816,0
+DA:818,0
+DA:819,0
+DA:820,0
+DA:821,0
+DA:822,0
+DA:823,0
+DA:824,0
+DA:825,0
+DA:826,0
+DA:827,0
+DA:829,0
+DA:833,0
+DA:834,0
+DA:835,0
+DA:836,0
+DA:839,0
+DA:840,0
+DA:841,0
+DA:842,0
+DA:843,0
+DA:844,0
+DA:845,0
+DA:849,0
+DA:850,0
+DA:851,0
+DA:852,0
+DA:854,0
+DA:861,0
+DA:862,0
+DA:863,0
+DA:865,0
+DA:866,0
+DA:867,0
+DA:868,0
+DA:869,0
+DA:870,0
+DA:871,0
+DA:872,0
+DA:873,0
+DA:874,0
+DA:875,0
+DA:877,0
+DA:878,0
+DA:879,0
+DA:880,0
+DA:881,0
+DA:883,0
+DA:885,0
+DA:886,0
+DA:890,0
+DA:891,0
+DA:892,0
+DA:893,0
+DA:894,0
+DA:895,0
+DA:896,0
+DA:897,0
+DA:899,0
+BRDA:793,26,0,0
+BRDA:793,26,1,0
+BRDA:793,47,0,0
+BRDA:797,84,0,0
+BRDA:797,84,1,0
+BRDA:797,115,0,0
+BRDA:793,47,1,0
+BRDA:811,420,1,0
+BRDA:813,281,0,0
+BRDA:813,281,1,0
+BRDA:819,320,0,0
+BRDA:819,320,1,0
+BRDA:811,392,0,0
+BRDA:811,392,1,0
+BRDA:811,420,0,0
+BRDA:886,806,1,0
+BRDA:834,469,0,0
+BRDA:834,469,1,0
+BRDA:841,508,0,0
+BRDA:841,508,1,0
+BRDA:850,552,0,0
+BRDA:850,552,1,0
+BRDA:861,589,0,0
+BRDA:866,634,0,0
+BRDA:866,634,1,0
+BRDA:861,589,1,0
+BRDA:871,661,0,0
+BRDA:871,661,1,0
+BRDA:877,691,0,0
+BRDA:877,691,1,0
+BRDA:877,709,0,0
+BRDA:877,709,1,0
+BRDA:886,773,0,0
+BRDA:886,773,1,0
+BRDA:886,806,0,0
+BRDA:890,823,0,0
+BRDA:890,823,1,0
+BRDA:890,841,0,0
+BRDA:890,841,1,0
+BRDA:895,874,0,0
+BRDA:895,874,1,0
+BRDA:895,905,0,0
+BRDA:797,115,1,0
+BRDA:895,905,1,0
+FN:903,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CoilSnek(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Apparature,System.Boolean)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CoilSnek(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Apparature,System.Boolean)
+DA:904,0
+DA:905,0
+DA:908,0
+DA:910,0
+DA:911,0
+DA:912,0
+DA:913,0
+DA:914,0
+DA:915,0
+DA:917,0
+DA:918,0
+DA:919,0
+DA:920,0
+DA:921,0
+DA:925,0
+DA:926,0
+DA:927,0
+DA:928,0
+DA:929,0
+DA:930,0
+DA:931,0
+DA:932,0
+DA:933,0
+DA:934,0
+DA:936,0
+DA:937,0
+DA:938,0
+DA:940,0
+DA:941,0
+DA:942,0
+DA:943,0
+DA:944,0
+DA:945,0
+DA:946,0
+DA:947,0
+DA:948,0
+DA:949,0
+DA:950,0
+DA:951,0
+DA:952,0
+DA:954,0
+DA:955,0
+DA:957,0
+DA:958,0
+DA:959,0
+DA:960,0
+DA:961,0
+DA:962,0
+DA:963,0
+DA:964,0
+DA:965,0
+DA:966,0
+DA:967,0
+DA:969,0
+DA:970,0
+DA:971,0
+DA:972,0
+DA:973,0
+DA:974,0
+DA:976,0
+DA:978,0
+DA:979,0
+DA:980,0
+DA:981,0
+DA:982,0
+DA:984,0
+DA:985,0
+DA:988,0
+DA:989,0
+DA:990,0
+DA:991,0
+DA:994,0
+DA:997,0
+DA:998,0
+DA:1000,0
+DA:1001,0
+DA:1003,0
+DA:1004,0
+DA:1005,0
+DA:1008,0
+BRDA:910,28,0,0
+BRDA:910,28,1,0
+BRDA:917,65,0,0
+BRDA:917,65,1,0
+BRDA:918,104,0,0
+BRDA:918,104,1,0
+BRDA:930,659,1,0
+BRDA:932,270,0,0
+BRDA:932,270,1,0
+BRDA:936,295,0,0
+BRDA:936,295,1,0
+BRDA:942,587,1,0
+BRDA:944,410,0,0
+BRDA:944,426,0,0
+BRDA:944,429,0,0
+BRDA:944,437,0,0
+BRDA:944,437,1,0
+BRDA:944,452,0,0
+BRDA:944,429,1,0
+BRDA:944,460,0,0
+BRDA:944,463,0,0
+BRDA:944,478,0,0
+BRDA:944,478,1,0
+BRDA:944,463,1,0
+BRDA:944,452,1,0
+BRDA:944,460,1,0
+BRDA:944,410,1,0
+BRDA:944,426,1,0
+BRDA:944,511,0,0
+BRDA:950,573,0,0
+BRDA:950,573,1,0
+BRDA:944,511,1,0
+BRDA:942,587,0,0
+BRDA:958,631,0,0
+BRDA:958,631,1,0
+BRDA:930,659,0,0
+BRDA:965,675,0,0
+BRDA:965,675,1,0
+BRDA:969,697,0,0
+BRDA:969,697,1,0
+BRDA:980,780,0,0
+BRDA:980,780,1,0
+BRDA:984,857,1,0
+BRDA:988,835,0,0
+BRDA:988,835,1,0
+BRDA:984,857,0,0
+BRDA:998,895,0,0
+BRDA:998,895,1,0
+BRDA:1003,926,0,0
+BRDA:1003,940,0,0
+BRDA:1003,926,1,0
+BRDA:1003,940,1,0
+BRDA:1003,959,0,0
+BRDA:1003,962,0,0
+BRDA:1003,962,1,0
+BRDA:1003,959,1,0
+BRDA:1003,993,0,0
+BRDA:1003,993,1,0
+FN:1010,Bachelor_Project.Utility.Tree Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::BuildTree(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,Bachelor_Project.Simulation.Electrode)
+FNDA:0,Bachelor_Project.Utility.Tree Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::BuildTree(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>,Bachelor_Project.Simulation.Electrode)
+DA:1011,0
+DA:1012,0
+DA:1013,0
+FN:1015,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::Output(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Output)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::Output(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Output)
+DA:1016,0
+DA:1017,0
+DA:1018,0
+DA:1019,0
+DA:1020,0
+DA:1021,0
+DA:1022,0
+FN:1024,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MergeCalc(System.Collections.Generic.List`1<System.String>,Bachelor_Project.Simulation.Droplet,Bachelor_Project.Utility.UsefullSemaphore)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MergeCalc(System.Collections.Generic.List`1<System.String>,Bachelor_Project.Simulation.Droplet,Bachelor_Project.Utility.UsefullSemaphore)
+DA:1025,0
+DA:1027,0
+DA:1028,0
+DA:1029,0
+FN:1031,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::Merge(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::Merge(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Collections.Generic.List`1<System.String>)
+DA:1032,0
+DA:1034,0
+DA:1036,0
+DA:1037,0
+DA:1038,0
+DA:1039,0
+DA:1040,0
+DA:1041,0
+DA:1042,0
+DA:1043,0
+DA:1044,0
+DA:1046,0
+DA:1047,0
+DA:1048,0
+DA:1049,0
+DA:1050,0
+DA:1051,0
+DA:1053,0
+DA:1054,0
+DA:1055,0
+DA:1056,0
+DA:1058,0
+BRDA:1040,106,1,0
+BRDA:1040,106,0,0
+BRDA:1048,138,0,0
+BRDA:1048,138,1,0
+FN:1069,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MergeMove(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MergeMove(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<Bachelor_Project.Simulation.Droplet>,Bachelor_Project.Simulation.Electrode)
+DA:1070,0
+DA:1077,0
+DA:1078,0
+DA:1079,0
+DA:1080,0
+DA:1081,0
+DA:1083,0
+DA:1086,0
+DA:1087,0
+DA:1089,0
+DA:1090,0
+DA:1091,0
+DA:1092,0
+DA:1093,0
+DA:1095,0
+DA:1096,0
+DA:1099,0
+DA:1100,0
+DA:1102,0
+DA:1104,0
+DA:1105,0
+DA:1106,0
+DA:1107,0
+DA:1108,0
+DA:1110,0
+DA:1113,0
+DA:1114,0
+DA:1115,0
+DA:1117,0
+DA:1118,0
+DA:1119,0
+DA:1120,0
+DA:1121,0
+DA:1122,0
+DA:1123,0
+DA:1124,0
+DA:1126,0
+DA:1129,0
+DA:1130,0
+DA:1131,0
+DA:1132,0
+DA:1134,0
+DA:1135,0
+DA:1136,0
+DA:1137,0
+DA:1140,0
+DA:1141,0
+DA:1143,0
+BRDA:1078,49,1,0
+BRDA:1078,49,0,0
+BRDA:1089,349,1,0
+BRDA:1091,143,0,0
+BRDA:1091,143,1,0
+BRDA:1099,234,0,0
+BRDA:1104,310,1,0
+BRDA:1104,310,0,0
+BRDA:1099,234,1,0
+BRDA:1089,349,0,0
+BRDA:1113,478,1,0
+BRDA:1117,451,1,0
+BRDA:1119,424,0,0
+BRDA:1119,424,1,0
+BRDA:1117,451,0,0
+BRDA:1113,478,0,0
+BRDA:1129,611,1,0
+BRDA:1134,595,1,0
+BRDA:1134,595,0,0
+BRDA:1129,611,0,0
+FN:1146,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::splitDroplet(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.Dictionary`2<System.String,System.Double>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Utility.UsefullSemaphore>)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::splitDroplet(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.Dictionary`2<System.String,System.Double>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Utility.UsefullSemaphore>)
+DA:1147,0
+DA:1152,0
+DA:1154,0
+DA:1156,0
+DA:1158,0
+DA:1159,0
+DA:1160,0
+DA:1161,0
+DA:1162,0
+DA:1165,0
+DA:1167,0
+DA:1168,0
+DA:1170,0
+DA:1174,0
+DA:1175,0
+DA:1176,0
+DA:1177,0
+DA:1178,0
+DA:1180,0
+DA:1182,0
+DA:1183,0
+DA:1184,0
+DA:1185,0
+DA:1186,0
+DA:1189,0
+DA:1191,0
+DA:1192,0
+DA:1195,0
+DA:1196,0
+DA:1198,0
+DA:1200,0
+DA:1203,0
+DA:1204,0
+DA:1205,0
+DA:1206,0
+DA:1207,0
+DA:1208,0
+DA:1210,0
+DA:1218,0
+DA:1219,0
+DA:1220,0
+DA:1221,0
+DA:1222,0
+DA:1225,0
+DA:1228,0
+DA:1230,0
+DA:1231,0
+DA:1233,0
+DA:1234,0
+DA:1235,0
+DA:1236,0
+DA:1238,0
+DA:1239,0
+DA:1240,0
+DA:1241,0
+DA:1242,0
+DA:1243,0
+DA:1245,0
+DA:1247,0
+DA:1248,0
+DA:1250,0
+DA:1253,0
+DA:1256,0
+DA:1257,0
+DA:1258,0
+DA:1259,0
+DA:1262,0
+DA:1264,0
+DA:1265,0
+DA:1266,0
+DA:1268,0
+DA:1269,0
+DA:1271,0
+DA:1272,0
+DA:1276,0
+DA:1277,0
+DA:1278,0
+DA:1279,0
+DA:1280,0
+DA:1283,0
+DA:1284,0
+DA:1285,0
+DA:1286,0
+DA:1287,0
+DA:1288,0
+DA:1290,0
+DA:1291,0
+DA:1292,0
+DA:1293,0
+DA:1294,0
+DA:1296,0
+DA:1297,0
+DA:1298,0
+DA:1300,0
+DA:1302,0
+DA:1303,0
+DA:1305,0
+DA:1308,0
+DA:1310,0
+DA:1311,0
+DA:1313,0
+DA:1314,0
+DA:1315,0
+BRDA:1158,1057,1,0
+BRDA:1174,162,0,0
+BRDA:1174,162,1,0
+BRDA:1182,314,1,0
+BRDA:1182,314,0,0
+BRDA:1206,442,0,0
+BRDA:1206,442,1,0
+BRDA:1219,793,1,0
+BRDA:1221,498,0,0
+BRDA:1230,547,0,0
+BRDA:1233,579,0,0
+BRDA:1233,579,1,0
+BRDA:1230,547,1,0
+BRDA:1240,615,0,0
+BRDA:1240,615,1,0
+BRDA:1221,498,1,0
+BRDA:1256,708,1,0
+BRDA:1256,708,0,0
+BRDA:1264,736,0,0
+BRDA:1264,736,1,0
+BRDA:1276,973,1,0
+BRDA:1278,834,0,0
+BRDA:1283,869,0,0
+BRDA:1283,869,1,0
+BRDA:1290,896,0,0
+BRDA:1290,896,1,0
+BRDA:1290,915,0,0
+BRDA:1290,915,1,0
+BRDA:1278,834,1,0
+BRDA:1219,793,0,0
+BRDA:1276,973,0,0
+BRDA:1158,1057,0,0
+FN:1322,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CoilWithoutRemoval(Bachelor_Project.Simulation.Droplet,System.Int32,Bachelor_Project.Simulation.Droplet)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CoilWithoutRemoval(Bachelor_Project.Simulation.Droplet,System.Int32,Bachelor_Project.Simulation.Droplet)
+DA:1323,0
+DA:1325,0
+DA:1327,0
+DA:1328,0
+DA:1329,0
+DA:1330,0
+DA:1331,0
+DA:1333,0
+DA:1335,0
+DA:1336,0
+DA:1337,0
+DA:1338,0
+DA:1339,0
+DA:1340,0
+DA:1341,0
+DA:1343,0
+DA:1344,0
+DA:1345,0
+DA:1347,0
+DA:1348,0
+DA:1349,0
+DA:1350,0
+BRDA:1328,219,1,0
+BRDA:1335,191,1,0
+BRDA:1337,140,0,0
+BRDA:1343,177,0,0
+BRDA:1343,177,1,0
+BRDA:1337,140,1,0
+BRDA:1335,191,0,0
+BRDA:1328,219,0,0
+FN:1352,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::FindFreeSpaceForSplit(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Droplet,System.Int32)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::FindFreeSpaceForSplit(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Droplet,System.Int32)
+DA:1353,0
+DA:1354,0
+DA:1355,0
+DA:1356,0
+DA:1359,0
+DA:1360,0
+DA:1362,0
+DA:1363,0
+DA:1364,0
+DA:1366,0
+DA:1367,0
+DA:1368,0
+DA:1369,0
+DA:1370,0
+DA:1373,0
+DA:1374,0
+DA:1375,0
+DA:1376,0
+DA:1379,0
+DA:1380,0
+DA:1381,0
+DA:1382,0
+DA:1383,0
+DA:1384,0
+DA:1387,0
+DA:1388,0
+DA:1389,0
+DA:1390,0
+DA:1391,0
+DA:1392,0
+DA:1394,0
+DA:1395,0
+BRDA:1359,315,1,0
+BRDA:1366,284,1,0
+BRDA:1368,114,0,0
+BRDA:1368,114,1,0
+BRDA:1373,178,0,0
+BRDA:1373,178,1,0
+BRDA:1373,197,0,0
+BRDA:1373,197,1,0
+BRDA:1379,225,0,0
+BRDA:1382,250,0,0
+BRDA:1382,250,1,0
+BRDA:1379,225,1,0
+BRDA:1366,284,0,0
+BRDA:1359,315,0,0
+FN:1397,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckIfLargeEnoughSpace(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Int32)
+FNDA:0,System.ValueTuple`2<System.Boolean,Bachelor_Project.Simulation.Electrode> Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckIfLargeEnoughSpace(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,System.Int32)
+DA:1398,0
+DA:1400,0
+DA:1401,0
+DA:1402,0
+DA:1404,0
+DA:1405,0
+DA:1406,0
+DA:1407,0
+DA:1408,0
+DA:1411,0
+DA:1412,0
+DA:1414,0
+DA:1415,0
+DA:1416,0
+DA:1417,0
+DA:1418,0
+DA:1419,0
+DA:1420,0
+DA:1422,0
+DA:1423,0
+DA:1426,0
+DA:1428,0
+DA:1429,0
+BRDA:1404,326,1,0
+BRDA:1406,110,0,0
+BRDA:1406,110,1,0
+BRDA:1414,290,1,0
+BRDA:1416,241,0,0
+BRDA:1416,241,1,0
+BRDA:1416,260,0,0
+BRDA:1416,260,1,0
+BRDA:1414,290,0,0
+BRDA:1404,326,0,0
+FN:1431,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckMinDistanceDrop(Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Droplet,System.Int32,Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CheckMinDistanceDrop(Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Droplet,System.Int32,Bachelor_Project.Simulation.Electrode)
+DA:1432,0
+DA:1433,0
+DA:1434,0
+DA:1435,0
+DA:1436,0
+DA:1437,0
+DA:1438,0
+DA:1439,0
+DA:1441,0
+DA:1442,0
+BRDA:1433,7,0,0
+BRDA:1433,7,1,0
+BRDA:1437,38,0,0
+BRDA:1437,38,1,0
+FN:1444,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::ApproximateMiddleOfSpace(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::ApproximateMiddleOfSpace(System.Collections.Generic.List`1<Bachelor_Project.Simulation.Electrode>)
+DA:1445,0
+DA:1446,0
+DA:1447,0
+DA:1448,0
+DA:1449,0
+DA:1451,0
+DA:1452,0
+DA:1453,0
+DA:1454,0
+DA:1455,0
+DA:1456,0
+DA:1457,0
+DA:1460,0
+DA:1461,0
+DA:1463,0
+DA:1464,0
+DA:1468,0
+DA:1469,0
+DA:1470,0
+DA:1473,0
+DA:1474,0
+DA:1475,0
+DA:1476,0
+DA:1477,0
+DA:1478,0
+DA:1480,0
+DA:1481,0
+DA:1482,0
+DA:1483,0
+DA:1484,0
+DA:1486,0
+DA:1487,0
+DA:1488,0
+DA:1489,0
+DA:1491,0
+DA:1492,0
+BRDA:1451,142,1,0
+BRDA:1453,52,0,0
+BRDA:1453,52,1,0
+BRDA:1454,76,0,0
+BRDA:1454,76,1,0
+BRDA:1455,100,0,0
+BRDA:1455,100,1,0
+BRDA:1456,124,0,0
+BRDA:1456,124,1,0
+BRDA:1451,142,0,0
+BRDA:1468,223,0,0
+BRDA:1468,223,1,0
+BRDA:1475,428,1,0
+BRDA:1480,394,1,0
+BRDA:1482,367,0,0
+BRDA:1482,367,1,0
+BRDA:1480,394,0,0
+BRDA:1475,428,0,0
+FN:18,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::.cctor()
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::.cctor()
+DA:19,0
+LF:1026
+LH:0
+BRF:475
+BRH:0
+FNF:40
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Agent Actions\Mission Tasks.cs
+FN:16,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparature)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparature)
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:23,0
+BRDA:18,19,0,0
+BRDA:18,19,1,0
+FN:24,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::OutputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Output)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::OutputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Output)
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+FN:39,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::MixDroplets(Bachelor_Project.Simulation.Droplet,System.String,System.String)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::MixDroplets(Bachelor_Project.Simulation.Droplet,System.String,System.String)
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:46,0
+DA:47,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:57,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:91,0
+DA:92,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:105,0
+DA:106,0
+DA:107,0
+DA:108,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:125,0
+DA:128,0
+DA:129,0
+DA:134,0
+DA:135,0
+DA:138,0
+BRDA:46,182,1,0
+BRDA:49,78,0,0
+BRDA:49,78,1,0
+BRDA:50,115,0,0
+BRDA:50,115,1,0
+BRDA:51,133,0,0
+BRDA:51,133,1,0
+BRDA:52,170,0,0
+BRDA:52,170,1,0
+BRDA:46,182,0,0
+BRDA:59,245,0,0
+BRDA:59,260,0,0
+BRDA:59,260,1,0
+BRDA:59,245,1,0
+BRDA:59,288,0,0
+BRDA:61,757,1,0
+BRDA:63,324,0,0
+BRDA:63,324,1,0
+BRDA:63,380,0,0
+BRDA:63,380,1,0
+BRDA:67,429,0,0
+BRDA:67,429,1,0
+BRDA:67,485,0,0
+BRDA:67,485,1,0
+BRDA:71,534,0,0
+BRDA:71,537,0,0
+BRDA:71,534,1,0
+BRDA:71,537,1,0
+BRDA:71,593,0,0
+BRDA:71,593,1,0
+BRDA:75,642,0,0
+BRDA:75,645,0,0
+BRDA:75,642,1,0
+BRDA:75,645,1,0
+BRDA:75,701,0,0
+BRDA:75,701,1,0
+BRDA:61,757,0,0
+BRDA:81,791,0,0
+BRDA:81,791,1,0
+BRDA:89,822,0,0
+BRDA:89,822,1,0
+BRDA:97,856,0,0
+BRDA:97,856,1,0
+BRDA:105,890,0,0
+BRDA:105,890,1,0
+BRDA:114,936,0,0
+BRDA:116,1035,1,0
+BRDA:118,1000,1,0
+BRDA:118,1000,0,0
+BRDA:116,1035,0,0
+BRDA:114,936,1,0
+BRDA:59,288,1,0
+FN:144,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::WasteDroplet(Bachelor_Project.Simulation.Droplet)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::WasteDroplet(Bachelor_Project.Simulation.Droplet)
+DA:145,0
+DA:147,0
+FN:149,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::MergeDroplets(System.Collections.Generic.List`1<System.String>,Bachelor_Project.Simulation.Droplet,System.Threading.Tasks.Task,Bachelor_Project.Utility.UsefullSemaphore,Bachelor_Project.Simulation.Apparature)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::MergeDroplets(System.Collections.Generic.List`1<System.String>,Bachelor_Project.Simulation.Droplet,System.Threading.Tasks.Task,Bachelor_Project.Utility.UsefullSemaphore,Bachelor_Project.Simulation.Apparature)
+DA:150,0
+DA:151,0
+DA:152,0
+DA:153,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:160,0
+DA:161,0
+DA:162,0
+DA:163,0
+DA:165,0
+DA:167,0
+DA:168,0
+DA:169,0
+DA:170,0
+DA:171,0
+DA:172,0
+DA:173,0
+DA:174,0
+DA:175,0
+DA:176,0
+DA:177,0
+DA:178,0
+DA:180,0
+BRDA:153,191,1,0
+BRDA:155,164,1,0
+BRDA:160,132,0,0
+BRDA:160,132,1,0
+BRDA:155,164,0,0
+BRDA:153,191,0,0
+BRDA:170,313,1,0
+BRDA:173,292,0,0
+BRDA:173,292,1,0
+BRDA:170,313,0,0
+FN:182,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SplitDroplet(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Double>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Utility.UsefullSemaphore>,Bachelor_Project.Simulation.Apparature)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SplitDroplet(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Double>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Utility.UsefullSemaphore>,Bachelor_Project.Simulation.Apparature)
+DA:183,0
+DA:184,0
+DA:185,0
+DA:187,0
+DA:188,0
+FN:190,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::AwaitSplitWork(Bachelor_Project.Simulation.Droplet,System.String,Bachelor_Project.Simulation.Apparature,Bachelor_Project.Utility.UsefullSemaphore)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::AwaitSplitWork(Bachelor_Project.Simulation.Droplet,System.String,Bachelor_Project.Simulation.Apparature,Bachelor_Project.Utility.UsefullSemaphore)
+DA:191,0
+DA:192,0
+DA:193,0
+DA:195,0
+DA:196,0
+FN:198,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::AwaitWork(Bachelor_Project.Simulation.Droplet,System.Threading.Tasks.Task`1<Bachelor_Project.Simulation.Electrode>,Bachelor_Project.Utility.UsefullSemaphore,Bachelor_Project.Utility.UsefullSemaphore,System.Collections.Generic.List`1<System.String>)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::AwaitWork(Bachelor_Project.Simulation.Droplet,System.Threading.Tasks.Task`1<Bachelor_Project.Simulation.Electrode>,Bachelor_Project.Utility.UsefullSemaphore,Bachelor_Project.Utility.UsefullSemaphore,System.Collections.Generic.List`1<System.String>)
+DA:199,0
+DA:200,0
+DA:201,0
+DA:202,0
+DA:204,0
+DA:205,0
+DA:206,0
+DA:207,0
+DA:208,0
+DA:209,0
+DA:210,0
+DA:211,0
+DA:212,0
+DA:214,0
+DA:216,0
+FN:218,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::TempDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Actuator_Types.Heater,System.Int32,System.String)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::TempDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Actuator_Types.Heater,System.Int32,System.String)
+DA:219,0
+DA:220,0
+DA:221,0
+DA:222,0
+DA:223,0
+DA:224,0
+DA:225,0
+DA:226,0
+DA:228,0
+DA:229,0
+DA:230,0
+DA:231,0
+DA:232,0
+DA:234,0
+BRDA:224,55,0,0
+BRDA:224,55,1,0
+BRDA:229,83,0,0
+BRDA:229,83,1,0
+BRDA:229,102,0,0
+BRDA:229,102,1,0
+FN:236,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SenseDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Sensor)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SenseDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Sensor)
+DA:237,0
+DA:238,0
+DA:239,0
+DA:240,0
+DA:241,0
+DA:242,0
+DA:243,0
+DA:245,0
+FN:247,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SetupDestinations(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SetupDestinations(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+DA:248,0
+DA:249,0
+DA:250,0
+DA:251,0
+DA:252,0
+DA:253,0
+DA:255,0
+BRDA:250,24,0,0
+BRDA:250,24,1,0
+LF:174
+LH:0
+BRF:72
+BRH:0
+FNF:11
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Parser\Parsing.cs
+FN:24,System.ValueTuple`4<System.Collections.Generic.List`1<Bachelor_Project.Utility.Command>,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>> Bachelor_Project.Parsing.Parsing::ParseFile(System.String)
+FNDA:0,System.ValueTuple`4<System.Collections.Generic.List`1<Bachelor_Project.Utility.Command>,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>> Bachelor_Project.Parsing.Parsing::ParseFile(System.String)
+DA:25,0
+DA:26,0
+DA:28,0
+DA:30,0
+FN:32,System.ValueTuple`4<System.Collections.Generic.List`1<Bachelor_Project.Utility.Command>,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>> Bachelor_Project.Parsing.Parsing::ParseString(System.String)
+FNDA:0,System.ValueTuple`4<System.Collections.Generic.List`1<Bachelor_Project.Utility.Command>,System.Collections.Generic.Dictionary`2<System.String,System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>,System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<System.String>>> Bachelor_Project.Parsing.Parsing::ParseString(System.String)
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:49,0
+DA:50,0
+FN:52,System.Void Bachelor_Project.Parsing.Parsing::Decode(ProgramParser/CommandContext)
+FNDA:0,System.Void Bachelor_Project.Parsing.Parsing::Decode(ProgramParser/CommandContext)
+DA:53,0
+DA:56,0
+DA:59,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:79,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:88,0
+DA:89,0
+DA:90,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:100,0
+DA:101,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:106,0
+DA:107,0
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:115,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:119,0
+DA:120,0
+DA:121,0
+DA:122,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:127,0
+DA:128,0
+DA:129,0
+DA:130,0
+DA:131,0
+DA:132,0
+DA:133,0
+DA:134,0
+DA:135,0
+DA:136,0
+DA:137,0
+DA:138,0
+DA:140,0
+DA:141,0
+DA:142,0
+DA:143,0
+DA:144,0
+DA:145,0
+DA:148,0
+DA:149,0
+DA:150,0
+DA:151,0
+DA:152,0
+DA:154,0
+DA:155,0
+DA:156,0
+DA:157,0
+DA:158,0
+DA:159,0
+DA:160,0
+DA:162,0
+DA:163,0
+DA:164,0
+DA:165,0
+DA:166,0
+DA:167,0
+DA:168,0
+DA:170,0
+DA:171,0
+DA:172,0
+DA:174,0
+DA:176,0
+DA:178,0
+DA:179,0
+DA:180,0
+DA:181,0
+DA:182,0
+DA:184,0
+DA:185,0
+DA:186,0
+DA:187,0
+DA:188,0
+DA:189,0
+DA:191,0
+DA:192,0
+DA:193,0
+DA:194,0
+DA:195,0
+DA:196,0
+DA:198,0
+DA:199,0
+DA:200,0
+DA:201,0
+DA:202,0
+DA:203,0
+DA:205,0
+DA:206,0
+DA:207,0
+DA:209,0
+DA:211,0
+BRDA:56,21,0,0
+BRDA:56,39,3,0
+BRDA:56,39,4,0
+BRDA:56,136,0,0
+BRDA:56,80,5,0
+BRDA:56,80,8,0
+BRDA:56,80,7,0
+BRDA:56,80,1,0
+BRDA:56,80,3,0
+BRDA:56,147,1,0
+BRDA:56,136,1,0
+BRDA:56,39,1,0
+BRDA:56,39,2,0
+BRDA:56,166,1,0
+BRDA:56,276,1,0
+BRDA:56,188,1,0
+BRDA:56,298,1,0
+BRDA:83,1220,1,0
+BRDA:87,1100,0,0
+BRDA:87,1100,1,0
+BRDA:83,1220,0,0
+BRDA:99,1250,0,0
+BRDA:99,1250,1,0
+BRDA:56,210,1,0
+BRDA:117,1548,1,0
+BRDA:117,1548,0,0
+BRDA:56,232,1,0
+BRDA:132,1987,1,0
+BRDA:134,1729,0,0
+BRDA:136,1741,0,0
+BRDA:136,1741,1,0
+BRDA:134,1729,1,0
+BRDA:143,1809,0,0
+BRDA:143,1809,1,0
+BRDA:132,1987,0,0
+BRDA:165,2008,0,0
+BRDA:165,2008,1,0
+BRDA:56,320,1,0
+BRDA:178,2307,0,0
+BRDA:178,2307,1,0
+BRDA:56,342,1,0
+BRDA:192,2605,0,0
+BRDA:192,2605,1,0
+BRDA:56,254,1,0
+BRDA:56,21,1,0
+BRDA:56,39,0,0
+BRDA:56,80,0,0
+BRDA:56,80,2,0
+BRDA:56,80,4,0
+BRDA:56,80,6,0
+BRDA:56,147,0,0
+BRDA:56,166,0,0
+BRDA:56,188,0,0
+BRDA:56,210,0,0
+BRDA:56,232,0,0
+BRDA:56,254,0,0
+BRDA:56,276,0,0
+BRDA:56,298,0,0
+BRDA:56,320,0,0
+BRDA:56,342,0,0
+FN:18,System.Void Bachelor_Project.Parsing.Parsing::.cctor()
+FNDA:0,System.Void Bachelor_Project.Parsing.Parsing::.cctor()
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+LF:154
+LH:0
+BRF:60
+BRH:0
+FNF:4
+FNH:0
+end_of_record
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Outparser\Outparser.cs
+FN:9,System.Void Bachelor_Project.Outparser.Outparser::ElectrodeOn(Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.Void Bachelor_Project.Outparser.Outparser::ElectrodeOn(Bachelor_Project.Simulation.Electrode)
+DA:10,0
+DA:11,0
+DA:12,0
+DA:13,0
+FN:15,System.Void Bachelor_Project.Outparser.Outparser::ElectrodeOff(Bachelor_Project.Simulation.Electrode)
+FNDA:0,System.Void Bachelor_Project.Outparser.Outparser::ElectrodeOff(Bachelor_Project.Simulation.Electrode)
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+LF:8
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record

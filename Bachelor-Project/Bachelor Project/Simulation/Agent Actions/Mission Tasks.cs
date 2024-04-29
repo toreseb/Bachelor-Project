@@ -206,7 +206,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        internal static void SplitDroplet(Droplet d, List<string> outputDroplets, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem, Apparature cmdDestination)
+        public static void SplitDroplet(Droplet d, List<string> outputDroplets, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem, Apparature cmdDestination)
         {
             SetupDestinations(d, cmdDestination);
             d.Important = true;
@@ -214,7 +214,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Droplet_Actions.splitDroplet(d, ratios, dropSem);
         }
 
-        internal static void AwaitSplitWork(Droplet droplet, string outputDroplet, Apparature cmdDestination, UsefullSemaphore beginSem)
+        public static void AwaitSplitWork(Droplet droplet, string outputDroplet, Apparature cmdDestination, UsefullSemaphore beginSem)
         {
             SetupDestinations(droplet, cmdDestination);
             beginSem.WaitOne();

@@ -223,6 +223,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
 
                 }
+                Electrode el = d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value);
                 if (d.Occupy.Contains(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value))) // if it goes through itself
                 {
                     moved = false;
@@ -571,7 +572,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         private static bool SnekCheck(Droplet d, Electrode newHead, string? source = null)
         {
-            if (newHead.Occupant == null || newHead.Occupant.Name == d.Name|| newHead.Occupant.Name == source)
+            if (newHead.Occupant == null || newHead.Occupant.Name == source)
             {
                 return true;
             }

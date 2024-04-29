@@ -275,6 +275,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.Important = true;
             Printer.PrintLine(d.Name + " : WAITING");
             Thread.Sleep(time);
+            d.SnekMode = false;
+            d.SnekList = [];
             Printer.PrintLine(d.Name + " : DONE WAITING");
         }
 

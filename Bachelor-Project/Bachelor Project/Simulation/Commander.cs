@@ -1,3 +1,4 @@
+using Bachelor_Project.Outparser;
 using Bachelor_Project.Simulation.Agent_Actions;
 using Bachelor_Project.Utility;
 using System;
@@ -220,13 +221,14 @@ namespace Bachelor_Project.Simulation
                     {
                         break;
                     }
-                    if (item.GetWork().Count > 0 || !(item.ActiveTask == null || item.ActiveTask.IsCompleted))
+                    if (item.GetWork().Count > 0 || !(item.ActiveTask == null || item.ActiveTask.IsCompleted)|| !(Outparser.Outparser.OutputQueue.Count == 0 && Outparser.Outparser.cOutput == null))
                     {
                         finished = false;
                         break;
                     }
                 }
             } while (!finished);
+            Outparser.Outparser.Dispose();
         }
 
         public void SetPath(Droplet d, int startPosX, int startPosY, int endPosX, int endPosY, List<string>? mergeDroplets = null)

@@ -4,6 +4,7 @@ using Bachelor_Project.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,32 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintLine(d.Name + " has NextDestiantion of: " + d.nextDestination);
             Printer.PrintLine(d.Name + " : INPUTTING");
             bool result = Droplet_Actions.InputDroplet(d, i, volume, destination);
+            if (destination != null && d.GetWork().Count == 0)
+            {
+                Electrode destElectrode = d.GetClosestFreePointer(destination);
+                d.CurrentPath = ModifiedAStar.FindPath(d, destElectrode);
+                while (d.CurrentPath.Value.path.Count > Constants.DestBuff)
+                {
+                    d.Waiting = true;
+                    try
+                    {
+                        Droplet_Actions.MoveTowardDest(d, destElectrode);
+                    }
+                    catch (NewWorkException)
+                    {
+                        Printer.PrintBoard();
+                        d.Waiting = false;
+                        d.MergeReady = true;
+                        return false;
+                    }
+
+                    if (d.CurrentPath.Value.path.Count <= Constants.DestBuff)
+                    {
+                        Droplet_Actions.CoilSnek(d, d.SnekList.First());
+                        return true;
+                    }
+                }
+            }
             return result;
 
         }
@@ -243,6 +270,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             sensor.Sense();
 
         }
+        public static void WaitDroplet(Droplet d, int time)
+        {
+            d.Important = true;
+            Printer.PrintLine(d.Name + " : WAITING");
+            Thread.Sleep(time);
+            Printer.PrintLine(d.Name + " : DONE WAITING");
+        }
+
 
         internal static void SetupDestinations(Droplet d, Apparature destination)
         {
@@ -253,7 +288,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             
         }
-        
 
 
     }

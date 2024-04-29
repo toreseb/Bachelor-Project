@@ -101,21 +101,120 @@ public interface IProgramListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitCommand([NotNull] ProgramParser.CommandContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.input"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterInput([NotNull] ProgramParser.InputContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.input"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitInput([NotNull] ProgramParser.InputContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.output"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterOutput([NotNull] ProgramParser.OutputContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.output"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitOutput([NotNull] ProgramParser.OutputContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.waste"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWaste([NotNull] ProgramParser.WasteContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.waste"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWaste([NotNull] ProgramParser.WasteContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.contaminate"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterContaminate([NotNull] ProgramParser.ContaminateContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.contaminate"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitContaminate([NotNull] ProgramParser.ContaminateContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.merge"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMerge([NotNull] ProgramParser.MergeContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.merge"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMerge([NotNull] ProgramParser.MergeContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.split"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSplit([NotNull] ProgramParser.SplitContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.split"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSplit([NotNull] ProgramParser.SplitContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.mix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMix([NotNull] ProgramParser.MixContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.mix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMix([NotNull] ProgramParser.MixContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.temp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterTemp([NotNull] ProgramParser.TempContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.temp"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitTemp([NotNull] ProgramParser.TempContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.sense"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSense([NotNull] ProgramParser.SenseContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.sense"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSense([NotNull] ProgramParser.SenseContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.wait"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterWait([NotNull] ProgramParser.WaitContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.wait"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitWait([NotNull] ProgramParser.WaitContext context);
 }
-
 class ProgramDecoder : ProgramBaseListener
 {
     public override void ExitCommand([NotNull] ProgramParser.CommandContext context)
     {
         Bachelor_Project.Parsing.Parsing.Decode(context);
-		base.ExitCommand(context);
+        base.ExitCommand(context);
     }
 }
 class ErrorListener : BaseErrorListener
 {
-	
+
     public override void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
-	{
+    {
         throw new ArgumentException("Syntax error at line " + line + ":" + charPositionInLine + " " + msg);
     }
 }

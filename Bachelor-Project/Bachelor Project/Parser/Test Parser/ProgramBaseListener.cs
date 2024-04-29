@@ -119,6 +119,126 @@ public partial class ProgramBaseListener : IProgramListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCommand([NotNull] ProgramParser.CommandContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.input"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterInput([NotNull] ProgramParser.InputContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.input"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitInput([NotNull] ProgramParser.InputContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.output"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterOutput([NotNull] ProgramParser.OutputContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.output"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitOutput([NotNull] ProgramParser.OutputContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.waste"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWaste([NotNull] ProgramParser.WasteContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.waste"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWaste([NotNull] ProgramParser.WasteContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.contaminate"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterContaminate([NotNull] ProgramParser.ContaminateContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.contaminate"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitContaminate([NotNull] ProgramParser.ContaminateContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.merge"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMerge([NotNull] ProgramParser.MergeContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.merge"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMerge([NotNull] ProgramParser.MergeContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.split"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSplit([NotNull] ProgramParser.SplitContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.split"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSplit([NotNull] ProgramParser.SplitContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.mix"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMix([NotNull] ProgramParser.MixContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.mix"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMix([NotNull] ProgramParser.MixContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.temp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterTemp([NotNull] ProgramParser.TempContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.temp"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitTemp([NotNull] ProgramParser.TempContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.sense"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSense([NotNull] ProgramParser.SenseContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.sense"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSense([NotNull] ProgramParser.SenseContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="ProgramParser.wait"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWait([NotNull] ProgramParser.WaitContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="ProgramParser.wait"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWait([NotNull] ProgramParser.WaitContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

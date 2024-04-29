@@ -1,2 +1,5 @@
-input drop0 water in0 11;
-output drop0 out0;
+in drop0 water in0 12;
+wait drop0 2000;
+Input drop1 water in1 12;
+merge drop2 water drop0 drop1;
+output drop2 out0;

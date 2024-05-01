@@ -1,0 +1,6 @@
+input drop1 water in0 12;
+input drop2 blood in1 24;
+contam blood water;
+merge drop3 bloodwater drop1 drop2;
+mix drop3 square;
+output drop3 out0;

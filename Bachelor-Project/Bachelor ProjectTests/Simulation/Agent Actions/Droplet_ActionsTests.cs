@@ -92,12 +92,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.InputDroplet(d, board.Input["in0"], 60, board.Output["out0"]);
             board.PrintBoardState();
 
-            Assert.AreEqual(d, board.Electrodes[7, 6].Occupant);
-            Assert.AreEqual(d, board.Electrodes[7, 7].Occupant);
-            Assert.AreEqual(d, board.Electrodes[7, 8].Occupant);
-            Assert.AreEqual(d, board.Electrodes[8, 6].Occupant);
-            Assert.AreEqual(d, board.Electrodes[8, 7].Occupant);
-            Assert.AreEqual(d, board.Electrodes[8, 8].Occupant);
+            Assert.AreEqual(d, board.Electrodes[0, 4].Occupant);
+            Assert.AreEqual(d, board.Electrodes[0, 5].Occupant);
+            Assert.AreEqual(d, board.Electrodes[0, 6].Occupant);
+            Assert.AreEqual(d, board.Electrodes[0, 7].Occupant);
+            Assert.AreEqual(d, board.Electrodes[0, 8].Occupant);
+            Assert.AreEqual(d, board.Electrodes[1, 8].Occupant);
         }
 
         [TestMethod()]

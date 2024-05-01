@@ -1245,7 +1245,14 @@
       "ID": 650,
       "inputID": 0,
       "positionX": 10,
-      "positionY": 90
+      "positionY": 50
+    },
+    {
+      "name": "in1",
+      "ID": 650,
+      "inputID": 0,
+      "positionX": 10,
+      "positionY": 130
     }
   ],
   "outputs": [
@@ -1254,7 +1261,14 @@
       "ID": 660,
       "outputID": 0,
       "positionX": 170,
-      "positionY": 90
+      "positionY": 50
+    },
+    {
+      "name": "out1",
+      "ID": 660,
+      "outputID": 0,
+      "positionX": 170,
+      "positionY": 130
     }
   ],
   "droplets": [],

@@ -3,6 +3,7 @@
 using Bachelor_Project;
 using Bachelor_Project.Electrode_Types;
 using Bachelor_Project.Electrode_Types.Actuator_Types;
+using Bachelor_Project.Outparser;
 using Bachelor_Project.Parsing;
 
 using Bachelor_Project.Simulation;
@@ -36,7 +37,6 @@ static public class Program
         C = new Commander(data, inputfiles + "\\" + boarddata);
         C.Setup();
         C.Start();
-
 
     }
 

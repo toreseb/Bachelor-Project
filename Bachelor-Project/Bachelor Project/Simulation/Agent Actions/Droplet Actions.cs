@@ -37,15 +37,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 throw new ArgumentException("droplet too small");
             }
             int size = d.Size;
-            AwaitLegalMove(d, i.pointers);
-
-            if (destination != null)
+            lock (MoveLock)
             {
-                d.SnekMode = true;
-                MoveOnElectrode(d, i.pointers[0]);
-                size--;
-                destElectrode = d.GetClosestFreePointer(destination);
+                AwaitLegalMove(d, i.pointers);
+
+                if (destination != null)
+                {
+                    d.SnekMode = true;
+                    MoveOnElectrode(d, i.pointers[0]);
+                    size--;
+                    destElectrode = d.GetClosestFreePointer(destination);
+                }
             }
+            
 
             if (destination == null)
             {
@@ -77,31 +81,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         return true;
                     }
                 }
-                if (size == 0)
-                {
-                    d.CurrentPath = ModifiedAStar.FindPath(d, destElectrode);
-                }
-                while (d.CurrentPath.Value.path.Count > Constants.DestBuff)
-                {
-                    d.Waiting = true;
-                    try
-                    {
-                        MoveTowardDest(d, destElectrode);
-                    }
-                    catch (NewWorkException)
-                    {
-                        Printer.PrintBoard();
-                        d.Waiting = false;
-                        d.MergeReady = true;
-                        return false;
-                    }
-
-                    if (d.CurrentPath.Value.path.Count <= Constants.DestBuff)
-                    {
-                        CoilSnek(d, d.SnekList.First());
-                        return true;
-                    }
-                }
+                
             }
             d.MergeReady = true;
             return true;
@@ -212,6 +192,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     Thread.Sleep(10);
                 }
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination, mergeDroplets);
+                Printer.PrintBoard();
             }
             lock (MoveLock)
             {
@@ -242,6 +223,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
 
                 }
+                Electrode el = d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value);
                 if (d.Occupy.Contains(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value))) // if it goes through itself
                 {
                     moved = false;
@@ -579,14 +561,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     Printer.PrintLine(d.Name + " waited for too long");
                     throw new Exception("Droplet waited for too long");
                 }
+                Monitor.Exit(MoveLock);
                 Thread.Sleep(100);
+                Monitor.Enter(MoveLock);
                 i++;
             }
         }
 
 
 
-        private static bool SnekCheck(Electrode newHead, string? source = null)
+        private static bool SnekCheck(Droplet d, Electrode newHead, string? source = null)
         {
             if (newHead.Occupant == null || newHead.Occupant.Name == source)
             {
@@ -649,7 +633,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 // Do a snekcheck
                 // If move is legal, do the thing
-                if (CheckLegalMove(d, newHead, source: splitDroplet).legalmove && SnekCheck(newHead[0], source: splitDroplet))
+                if (CheckLegalMove(d, newHead, source: splitDroplet).legalmove && SnekCheck(d, newHead[0], source: splitDroplet))
                 {
 
                     Printer.PrintLine("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
@@ -684,7 +668,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             lock (MoveLock)
             {
-                Outparser.Outparser.ElectrodeOn(e);
                 if (d.SnekMode)
                 {
                     if (e.Occupant != null && e.Occupant != d)
@@ -707,7 +690,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
                 else
                 {
-                    Outparser.Outparser.ElectrodeOn(e);
+                    Outparser.Outparser.ElectrodeOn(e, d: d);
                 }
                 d.Occupy.Add(e);
                 e.Occupant = d;
@@ -718,7 +701,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             lock (MoveLock)
             {
-                Outparser.Outparser.ElectrodeOn(e);
+                Outparser.Outparser.ElectrodeOn(e, d: d);
                 if (d.SnekMode)
                 {
                     if (first)
@@ -744,7 +727,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 e = d.SnekList.Last();
             }
 
-            Outparser.Outparser.ElectrodeOff(e);
+            Outparser.Outparser.ElectrodeOff(e, d: d);
             if (!e.GetContaminants().Contains(d.Substance_Name))
             {
                 e.Contaminate(d.Substance_Name);
@@ -1016,7 +999,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             Tree snekTree = BuildTree(droplet, [], output.pointers[0]);
             snekTree.RemoveTree();
-            MoveOffElectrode(droplet, output.pointers[0]);
             droplet.RemoveFromBoard();
             Printer.PrintBoard();
         }

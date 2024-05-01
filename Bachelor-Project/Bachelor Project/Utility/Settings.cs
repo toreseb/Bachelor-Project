@@ -10,5 +10,6 @@ namespace Bachelor_Project.Utility
     {
         public const bool ConnectedToHardware = false;
         public const bool Printing = true;
+        public static bool Outputting = true;
     }
 }

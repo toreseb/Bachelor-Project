@@ -135,6 +135,11 @@ namespace Bachelor_Project.Utility
                     Task senseDroplet = new(() => Mission_Tasks.SenseDroplet(b.Droplets[InputDroplets[0]], b.Sensors[NextName]));
                     b.Droplets[InputDroplets[0]].GiveWork(senseDroplet);
                     break;
+                case "wait":
+                    Printer.PrintLine("Wait");
+                    Task waitDroplet = new(() => Mission_Tasks.WaitDroplet(b.Droplets[InputDroplets[0]], (int)ActionValue[0]));
+                    b.Droplets[InputDroplets[0]].GiveWork(waitDroplet);
+                    break;
                 default:
                     throw new ArgumentException("Invalid command type");
             }

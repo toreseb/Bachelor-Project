@@ -6,6 +6,7 @@
     <RootNamespace>Bachelor_Project</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Configuration>Debug</Configuration>
   </PropertyGroup>
 
   <ItemGroup>

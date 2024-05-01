@@ -12,7 +12,6 @@ namespace Bachelor_Project.Outparser
         public static Queue<(Droplet? d,string text)> OutputQueue = [];
         public static string? cOutput = null; 
         static List<string> Seen = [];
-        static string Reg = "reg";
 
         static StreamWriter Writer;
 
@@ -25,7 +24,7 @@ namespace Bachelor_Project.Outparser
             if (Settings.Outputting)
             {
                 string docPath = Directory.GetCurrentDirectory() + "\\..\\..\\..\\Outparser\\Output\\";
-                string fileName = "Output.basm";
+                string fileName = Settings.ProtocolName+"_Output.basm";
                 Writer = new StreamWriter(Path.Combine(docPath, fileName));
                 cancellationTokenSource = new CancellationTokenSource();
                 StartAgent();
@@ -109,7 +108,6 @@ namespace Bachelor_Project.Outparser
         public static void SetupOutput()
         {
             Writer.WriteLine(".text");
-            Writer.WriteLine("DEF " + Reg + " 1");
             Writer.WriteLine("main:");
             Writer.Flush();
         }
@@ -118,22 +116,18 @@ namespace Bachelor_Project.Outparser
 
         public static string ChangeEl(int ID, bool set)
         {
-            string total = LoadReg(ID) + "    ";
+            string total = "    ";
             switch(set)
             {
                 case true:
-                    total += "SETEL ";
+                    total += "SETELI ";
                     break;
                 case false:
-                    total += "CLREL ";
+                    total += "CLRELI ";
                     break;
             }
-            total += Reg + ";" ;
+            total += ID + ";" ;
             return total;
-        }
-        public static string LoadReg(int ID)
-        {
-            return "    LI " + Reg + " " + ID + ";\n";
         }
 
         public static void Dispose()

@@ -211,11 +211,11 @@ namespace Bachelor_Project.Simulation
                 int used2 = 0;
                 int used3 = 0;
                 
-                if (Electrodes[i, j].smallestGScore != null)
+                /*if (Electrodes[i, j].smallestGScore != null)
                 {
                     line1 += Electrodes[i, j].smallestGScore.ToString();
                     used1 += Electrodes[i, j].smallestGScore.ToString().Length;
-                }
+                }*/
                 
                 
                 foreach (var item in square)

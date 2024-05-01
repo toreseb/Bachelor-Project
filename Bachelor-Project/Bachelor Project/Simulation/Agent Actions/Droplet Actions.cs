@@ -39,6 +39,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             int size = d.Size;
             lock (MoveLock)
             {
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException();
+                }
                 AwaitLegalMove(d, i.pointers);
 
                 if (destination != null)
@@ -169,7 +173,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 UncoilSnek(d, destination, mergeDroplets);
                 if (!d.SnekMode)
                 {
-                    if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
+                    if (CheckParity(d, preSize))
                     {
                         throw new ArgumentException("Anomaly in Occupy.Count");
                     }
@@ -203,7 +207,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (d.CurrentPath.Value.path[0].Item2 == null)
                 {
                     d.CurrentPath.Value.path.RemoveAt(0);
-                    if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
+                    if (CheckParity(d, preSize))
                     {
                         throw new ArgumentException("Anomaly in Occupy.Count");
                     }
@@ -631,6 +635,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             lock (MoveLock)
             {
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException();
+                }
                 // Do a snekcheck
                 // If move is legal, do the thing
                 if (CheckLegalMove(d, newHead, source: splitDroplet).legalmove && SnekCheck(d, newHead[0], source: splitDroplet))
@@ -668,6 +676,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             lock (MoveLock)
             {
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException();
+                }
                 if (d.SnekMode)
                 {
                     if (e.Occupant != null && e.Occupant != d)
@@ -701,6 +713,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             lock (MoveLock)
             {
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException();
+                }
                 Outparser.Outparser.ElectrodeOn(e, d: d);
                 if (d.SnekMode)
                 {
@@ -777,7 +793,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 Program.C.RemovePath(d);
                 CoilSnek(d, dest);
-                if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
+                if (CheckParity(d,preSize))
                 {
                     throw new ArgumentException("Anomaly in Occupy.Count");
                 }
@@ -821,6 +837,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 
                 lock (MoveLock)
                 {
+                    if (d.Removed)
+                    {
+                        throw new ThreadInterruptedException();
+                    }
                     if (extraAdded > 0)
                     {
                         MoveOffElectrode(d);
@@ -875,7 +895,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 CoilSnek(d, dest);
             }
             d.MergeReady = true;
-            if (preSize != d.Occupy.Count && d.Occupy.Count != d.Size)
+            if (CheckParity(d, preSize))
             {
                 throw new ArgumentException("Anomaly in Occupy.Count");
             }
@@ -983,7 +1003,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintBoard();
             d.MergeReady = true;
 
-            if ((input == false && preSize != d.Occupy.Count && d.Occupy.Count != d.Size) || (input == true && preSize != d.Occupy.Count-1))
+            if ((input == false && CheckParity(d,preSize)) || (input == true && preSize != d.Occupy.Count-1))
             {
                 throw new ArgumentException("Anomaly in Occupy.Count");
             }
@@ -1136,6 +1156,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             source.Waiting = false;
 
             bool fixStart = false;
+            Program.C.RemovePath(source);
 
             foreach ((string dName, double ratio) in ratios)
             {
@@ -1471,6 +1492,17 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
 
             return null;
+        }
+        
+        /// <summary>
+        /// Return true if there is a parity problem, false if parity is fine
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="preSize"></param>
+        /// <returns></returns>
+        private static bool CheckParity(Droplet d, int preSize)
+        {
+            return ((preSize != d.Occupy.Count || (d.Removed && d.Occupy.Count == 0 && d.Size == 0)) && d.Occupy.Count != d.Size);
         }
     }
 }

@@ -84,7 +84,7 @@ namespace Bachelor_Project.Simulation
                     {
                         foreach (var item in item1.OutputDroplets)
                         {
-                            if (item2.InputDroplets.Contains(item))
+                            if (item2.InputDroplets.Contains(item) && !item1.OutputCommands.Contains(item2))
                             {
                                 item2.InputCommands.Add(item1);
                                 item1.OutputCommands.Add(item2);
@@ -221,14 +221,23 @@ namespace Bachelor_Project.Simulation
                     {
                         break;
                     }
-                    if (item.GetWork().Count > 0 || !(item.ActiveTask == null || item.ActiveTask.IsCompleted)|| !(Outparser.Outparser.OutputQueue.Count == 0 && Outparser.Outparser.cOutput == null))
+                    if (item.GetWork().Count > 0 || !(item.ActiveTask == null || item.ActiveTask.IsCompleted))
                     {
                         finished = false;
                         break;
                     }
                 }
+                if (!((!Settings.Outputting || Outparser.Outparser.OutputQueue.Count == 0) && Outparser.Outparser.cOutput == null))
+                {
+                    finished = false;
+                }
             } while (!finished);
+            foreach (var item in board.Droplets.Values)
+            {
+                item.Stop();
+            }
             Outparser.Outparser.Dispose();
+            
         }
 
         public void SetPath(Droplet d, int startPosX, int startPosY, int endPosX, int endPosY, List<string>? mergeDroplets = null)

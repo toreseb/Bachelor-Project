@@ -23,18 +23,13 @@ static public class Program
     static void Main(string[] args)
     {
         Printer.PrintLine("Starting Program");
-        string inputfiles = Directory.GetCurrentDirectory() + "\\..\\..\\..\\Input Files";
-        Printer.PrintLine(inputfiles);
+        string dir = Directory.GetCurrentDirectory() + "\\..\\..\\..";
+        Printer.PrintLine(dir);
         
 
 
-        string programcode = "Program.txt";
-        string testprogramcode = "testProgram.txt";
-        string boarddata = "BoardData.json";
-        string testdata = "test.json";
-
-        var data = Parsing.ParseFile(inputfiles + "\\" + programcode);
-        C = new Commander(data, inputfiles + "\\" + boarddata);
+        var data = Parsing.ParseFile(dir + "\\" + Settings.ProtocolFile);
+        C = new Commander(data, dir + "\\" + Settings.BoardFile);
         C.Setup();
         C.Start();
 

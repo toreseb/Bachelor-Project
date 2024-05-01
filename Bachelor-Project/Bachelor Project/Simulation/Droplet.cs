@@ -69,6 +69,7 @@ namespace Bachelor_Project.Simulation
             cancellationTokenSource = new CancellationTokenSource();
 
             Thread = new Thread(new ThreadStart(StartAgent));
+            Thread.Name = name;
 
             
             
@@ -173,10 +174,6 @@ namespace Bachelor_Project.Simulation
                         ActiveTask = TaskQueue.Dequeue();
                         Printer.PrintLine("Droplet " + Name + " is doing work");
                         ActiveTask.Start();
-                        if (Name == "drop4")
-                        {
-                            int a = 2;
-                        }
                         try
                         {
 
@@ -223,6 +220,7 @@ namespace Bachelor_Project.Simulation
         public void Stop()
         {
             cancellationTokenSource.Cancel();
+            Thread.Interrupt();
         }
 
         private string GetColor(string substance_name)
@@ -273,7 +271,6 @@ namespace Bachelor_Project.Simulation
             Removed = true;
             Printer.PrintLine("Droplet " + Name + " has been stopped");
             Stop();
-            Thread.Interrupt();
         }
 
 

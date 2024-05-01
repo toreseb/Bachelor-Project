@@ -34,6 +34,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     {
                         Printer.PrintBoard();
                         d.Waiting = false;
+                        d.SnekList = [];
+                        d.SnekMode = false;
                         d.MergeReady = true;
                         return false;
                     }
@@ -67,6 +69,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             Printer.PrintLine(d.Name + " : MIXING");
             d.Important = true;
+            int retryCounter = 0;
+            Program.C.RemovePath(d);
+            retry:
             bool up = true; bool down = true; bool left = true; bool right = true;
             // Check if there is room to boogie
             // Only checks board bounderies
@@ -153,13 +158,25 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
                 else
                 {
-                    throw new IllegalMoveException();
+                    if (retryCounter > 10)
+                    {
+                        throw new IllegalMoveException("No space for mixing");
+                    }
+                    Thread.Sleep(100);
+                    retryCounter++;
+                    goto retry;
                 }
 
             }
             else
             {
-                throw new IllegalMoveException();
+                if (retryCounter > 10)
+                {
+                    throw new IllegalMoveException("No space for mixing");
+                }
+                Thread.Sleep(100);
+                retryCounter++;
+                goto retry;
             }
 
         }
@@ -225,6 +242,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void AwaitWork(Droplet d, Task<Electrode> AwaitWork, UsefullSemaphore beforeDone, UsefullSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
         {
             d.Important = true;
+            d.SnekList = [];
+            d.SnekMode = false;
             beforeDone.WaitOne();
             Electrode location = AwaitWork.Result;
             try

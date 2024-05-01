@@ -11,5 +11,14 @@ namespace Bachelor_Project.Utility
         public const bool ConnectedToHardware = false;
         public const bool Printing = true;
         public static bool Outputting = true;
+
+        public const string BoardName = "WithSensors";
+        public const string BoardFileLoc = "Input Files";        
+        public const string BoardFile = BoardFileLoc + "\\" + BoardName + ".json";
+
+        public const string ProtocolName = "Program";
+        public const string ProtocolFileLoc = "Input Files";
+        public const string ProtocolFile = ProtocolFileLoc + "\\" + ProtocolName + ".txt";
+
     }
 }

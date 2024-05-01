@@ -41,25 +41,25 @@ namespace Bachelor_Project.Utility
                     cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX + 1, currentNode.Electrode.ePosY];
                     CheckAddElectrode(d, currentNode, cElectrode);
                 }
-                catch(Exception) { }
+                catch { }
                 try
                 {
                     cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX - 1, currentNode.Electrode.ePosY];
                     CheckAddElectrode(d, currentNode, cElectrode);
                 }
-                catch (Exception) { }
+                catch{ }
                 try
                 {
                     cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX, currentNode.Electrode.ePosY + 1];
                     CheckAddElectrode(d, currentNode, cElectrode);
                 }
-                catch (Exception) { }
+                catch{ }
                 try
                 {
                     cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX, currentNode.Electrode.ePosY - 1];
                     CheckAddElectrode(d, currentNode, cElectrode);
                 }
-                catch (Exception) { }
+                catch{ }
                 
                 
                 

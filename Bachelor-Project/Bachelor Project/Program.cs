@@ -29,11 +29,11 @@ static public class Program
 
 
         string programcode = "Program.txt";
-        string testprogramcode = "testProgram.txt";
+        string testprogramcode = "splitTestProgram.txt";
         string boarddata = "BoardData.json";
         string testdata = "test.json";
 
-        var data = Parsing.ParseFile(inputfiles + "\\" + programcode);
+        var data = Parsing.ParseFile(inputfiles + "\\" + testprogramcode);
         C = new Commander(data, inputfiles + "\\" + boarddata);
         C.Setup();
         C.Start();

@@ -102,19 +102,23 @@ namespace Bachelor_Project.Utility
                     if (!gScore.ContainsKey(neighborT))
                     {
                         gScore.Add(neighborT, double.MaxValue);
+                        /*
                         if (d.Name == "drop3")
                         {
                             neighborT.smallestGScore = double.MaxValue;
                         }
+                        */
                         //neighborT.smallestGScore = double.MaxValue;
 
                     }
                     if (tentativeGScore < gScore[neighborT])
                     {
+                        /*
                         if (d.Name == "Wat2")
                         {
                             neighborT.smallestGScore = tentativeGScore;
                         }
+                        */
                         //neighborT.smallestGScore = tentativeGScore;
                         cameFrom[neighborT] = (current, neighbor.Item2);
                         gScore[neighborT] = tentativeGScore;
@@ -155,11 +159,13 @@ namespace Bachelor_Project.Utility
                     }
                 }
             }
+            /*
             if (d.Name == "Wat5")
             {
                 Electrode[,] electrodes = Program.C.board.Electrodes; 
                 int a = 2;
             }
+            */
             if (!Droplet_Actions.CheckLegalMove(droplets, [end],mergeDroplets: mergeDroplets, source: splitDroplet).legalmove) // 1: check if the move is legal
             {
                 

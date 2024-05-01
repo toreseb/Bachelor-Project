@@ -227,7 +227,7 @@ namespace Bachelor_Project.Simulation
                         break;
                     }
                 }
-                if (!((!Settings.Outputting || Outparser.Outparser.OutputQueue.Count == 0) && Outparser.Outparser.cOutput == null))
+                if (!((!Settings.Outputting || Outparser.Outparser.OutputQueue.Count == 0) && Outparser.Outparser.cTask == null))
                 {
                     finished = false;
                 }

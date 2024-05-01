@@ -271,7 +271,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 throw new ArgumentException("Time must be greater than 0");
             }
-            Thread.Sleep(time*1000); // Time to heat?
+            d.WaitDroplet(time*1000);
             if (newType != null && d.Substance_Name != newType)
             {
                 d.ChangeType(newType);
@@ -293,7 +293,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             d.Important = true;
             Printer.PrintLine(d.Name + " : WAITING");
-            Thread.Sleep(time);
+            d.WaitDroplet(time);
             d.SnekMode = false;
             d.SnekList = [];
             Printer.PrintLine(d.Name + " : DONE WAITING");

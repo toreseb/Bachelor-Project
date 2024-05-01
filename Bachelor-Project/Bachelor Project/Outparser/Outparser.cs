@@ -2,6 +2,7 @@
 
 using Bachelor_Project.Simulation;
 using Bachelor_Project.Utility;
+using System.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Bachelor_Project.Outparser
@@ -9,14 +10,17 @@ namespace Bachelor_Project.Outparser
     static public class Outparser
     {
 
-        public static Queue<(Droplet? d,string text)> OutputQueue = [];
-        public static string? cOutput = null; 
+        public static Queue<Task<bool>> OutputQueue = [];
+        public static Task<bool>? cTask = null; 
         static List<string> Seen = [];
 
+        static Stopwatch WatchSinceLastTick = new();
         static StreamWriter Writer;
 
         private static CancellationTokenSource cancellationTokenSource;
         private static ManualResetEventSlim OutputAvailableEvent = new ManualResetEventSlim(false);
+
+        private static ManualResetEventSlim TickEvent = new ManualResetEventSlim(false);
 
         private static readonly object OutputEnqueue = new object();
         static Outparser()
@@ -56,22 +60,12 @@ namespace Bachelor_Project.Outparser
                 {
                     lock (OutputEnqueue)
                     {
-                        (Droplet? d, cOutput) = OutputQueue.Dequeue();
-                        if(d != null)
-                        {
-                            if (Seen.Contains(d.Name))
-                            {
-                                Writer.WriteLine("    TICK;");
-                                Seen.Clear();
-                                Seen.Add(d.Name);
-                            }
-                            else
-                            {
-                                Seen.Add(d.Name);
-                            }
-                        }
-                        Writer.WriteLine(cOutput);
-                        cOutput = null;
+                        cTask = OutputQueue.Dequeue();
+
+                        cTask.RunSynchronously();
+                        
+                        
+                        cTask = null;
                     }
 
 
@@ -81,13 +75,25 @@ namespace Bachelor_Project.Outparser
             }
         }
 
+        private static void GiveOutput(Task<bool> task)
+        {
+            lock (OutputEnqueue)
+            {
+                // TODO: Implement task queue
+                OutputQueue.Enqueue(task);
+                // Signal that work is available
+                OutputAvailableEvent.Set();
+            }
+
+        }
+
         public static void ElectrodeOn(Electrode e, Droplet? d = null)
         {
             Printer.PrintLine("setel " + e.DriverID + " " + e.ElectrodeID + " \\r");
             lock (OutputEnqueue)
             {
                 e.Status = 1;
-                OutputQueue.Enqueue((d,ChangeEl(e.ElectrodeID, true)));
+                GiveOutput(new(() => ChangeEl(d, e.ElectrodeID, true)));
                 OutputAvailableEvent.Set();
             }
             
@@ -99,7 +105,7 @@ namespace Bachelor_Project.Outparser
             lock (OutputEnqueue)
             {
                 e.Status = 0;
-                OutputQueue.Enqueue((d,ChangeEl(e.ElectrodeID, false)));
+                GiveOutput(new(() => ChangeEl(d, e.ElectrodeID, false)));
                 OutputAvailableEvent.Set();
             }
             
@@ -110,12 +116,26 @@ namespace Bachelor_Project.Outparser
             Writer.WriteLine(".text");
             Writer.WriteLine("main:");
             Writer.Flush();
+            WatchSinceLastTick.Start();
+            TickEvent.Set();
         }
 
         
 
-        public static string ChangeEl(int ID, bool set)
+        public static bool ChangeEl(Droplet? d, int ID, bool set)
         {
+            if (d != null)
+            {
+                if (Seen.Contains(d.Name))
+                {
+                    Writer.WriteLine("    TICK;");
+                    WatchSinceLastTick.Reset();
+                    TickEvent.Set();
+                    Seen.Clear();
+                }
+                Seen.Add(d.Name);
+            }
+
             string total = "    ";
             switch(set)
             {
@@ -127,8 +147,43 @@ namespace Bachelor_Project.Outparser
                     break;
             }
             total += ID + ";" ;
-            return total;
+            Writer.WriteLine(total);
+            return true;
         }
+
+        public static bool Tick()
+        {
+            Writer.WriteLine("    TICK;");
+            return true;
+        }
+
+        public static void WaitDroplet(Droplet d, int milliseconds)
+        {
+            GiveOutput(new(() => Wait(milliseconds)));
+        }
+
+        public static bool Wait(int milliseconds)
+        {
+            int elapsedTime = 0;
+            bool set = true;
+            while (elapsedTime < milliseconds)
+            {
+                set = TickEvent.Wait(Settings.TimeToWaitBeforeTicking);
+                TickEvent.Reset();
+                if (!set)
+                {
+                    GiveOutput(new(() => Tick()));
+                    elapsedTime += Settings.TimeStepOnSingleTick;
+                }
+                else
+                {
+                    elapsedTime += Settings.TimeStep;
+                }
+                
+            }
+            return true;
+        }
+        
 
         public static void Dispose()
         {

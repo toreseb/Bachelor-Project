@@ -262,6 +262,11 @@ namespace Bachelor_Project.Simulation
             
         }
 
+        public void WaitDroplet(int milliseconds)
+        {
+            Outparser.Outparser.WaitDroplet(this, milliseconds);
+        }
+
         internal void RemoveFromBoard()
         {
             // TODO: Remove it entirely from the board

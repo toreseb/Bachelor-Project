@@ -1225,20 +1225,48 @@
   ],
   "actuators": [
     {
-      "valueActualTemperature": 0,
-      "valueDesiredTemperature": 10,
-      "valuePowerStatus": 0,
-      "name": "heat1",
+      "name": "heat0",
       "ID": 640,
-      "actuatorID": 0,
+      "actuator": 0,
       "type": "heater",
-      "positionX": 20,
+      "positionX": 100,
       "positionY": 0,
+      "sizeX": 40,
+      "sizeY": 40,
+      "actualTemperature": 0,
+      "desiredTemperature": 10,
+      "status": false,
+      "nextDesiredTemperature": 0,
+      "nextStatus": false,
+      "corners": null
+    }
+  ],
+  "sensors": [
+    {
+      "valueRed": 0,
+      "valueGreen": 0,
+      "valueBlue": 0,
+      "name": "sens0",
+      "ID": 660,
+      "sensorID": 0,
+      "type": "RGB_color",
+      "positionX": 80,
+      "positionY": 160,
+      "sizeX": 20,
+      "sizeY": 20
+    },
+    {
+      "valueTemperature": 20,
+      "name": "sens1",
+      "ID": 661,
+      "sensorID": 1,
+      "type": "temperature",
+      "positionX": 0,
+      "positionY": 80,
       "sizeX": 20,
       "sizeY": 20
     }
   ],
-  "sensors": [],
   "inputs": [
     {
       "name": "in0",
@@ -1278,8 +1306,8 @@
       "substance_name": "h20",
       "positionX": 90,
       "positionY": 10,
-      "sizeX": 22,
-      "sizeY": 22,
+      "sizeX": 30,
+      "sizeY": 30,
       "color": "#00FFFF",
       "temperature": 20,
       "electrodeID": 4
@@ -1290,11 +1318,23 @@
       "substance_name": "h20",
       "positionX": 90,
       "positionY": 30,
-      "sizeX": 22,
-      "sizeY": 22,
+      "sizeX": 30,
+      "sizeY": 30,
       "color": "#0000FF",
       "temperature": 20,
       "electrodeID": 13
+    },
+    {
+      "name": "test droplet",
+      "ID": 2,
+      "substance_name": "h20",
+      "positionX": 90,
+      "positionY": 50,
+      "sizeX": 30,
+      "sizeY": 30,
+      "color": "#0000FF",
+      "temperature": 20,
+      "electrodeID": 22
     }
   ],
   "bubbles": [],

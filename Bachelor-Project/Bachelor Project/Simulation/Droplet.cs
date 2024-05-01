@@ -171,6 +171,10 @@ namespace Bachelor_Project.Simulation
                     // Do thing
                     while (TaskQueue.Count > 0)
                     {
+                        if (Name == "drop4")
+                        {
+                            int a = 2;
+                        }
                         ActiveTask = TaskQueue.Dequeue();
                         Printer.PrintLine("Droplet " + Name + " is doing work");
                         ActiveTask.Start();

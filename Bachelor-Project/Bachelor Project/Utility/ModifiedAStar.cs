@@ -81,7 +81,11 @@ namespace Bachelor_Project.Utility
                 {
                     lock (PathLock)
                     {
-                        Program.C.SetPath(d, start, current, mergeDroplets);
+                        bool newPath = Program.C.SetPath(d, start, current, mergeDroplets);
+                        if (newPath && d.CurrentPath != null)
+                        {
+                            return d.CurrentPath.Value;
+                        }
                         return ReconstructPath(d, cameFrom, current);
                     }
                     
@@ -102,23 +106,23 @@ namespace Bachelor_Project.Utility
                     if (!gScore.ContainsKey(neighborT))
                     {
                         gScore.Add(neighborT, double.MaxValue);
-                        /*
+                        
                         if (d.Name == "drop3")
                         {
                             neighborT.smallestGScore = double.MaxValue;
                         }
-                        */
+                        
                         //neighborT.smallestGScore = double.MaxValue;
 
                     }
                     if (tentativeGScore < gScore[neighborT])
                     {
-                        /*
-                        if (d.Name == "Wat2")
+                        
+                        if (d.Name == "drop3")
                         {
                             neighborT.smallestGScore = tentativeGScore;
                         }
-                        */
+                        
                         //neighborT.smallestGScore = tentativeGScore;
                         cameFrom[neighborT] = (current, neighbor.Item2);
                         gScore[neighborT] = tentativeGScore;
@@ -168,7 +172,10 @@ namespace Bachelor_Project.Utility
             */
             if (!Droplet_Actions.CheckLegalMove(droplets, [end],mergeDroplets: mergeDroplets, source: splitDroplet).legalmove) // 1: check if the move is legal
             {
-                
+                if (d.Name == "drop3")
+                {
+                    int a = 2;
+                }
                 return multiple * 1000;
             }else if (end.Apparature != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an apparature, and therefore important
             {

@@ -29,6 +29,7 @@ namespace Bachelor_Project.Simulation.Tests
         static Board board;
 
 
+        [TestMethod()]
         public void ProtocolTest()
         {
             var data = Parsing.Parsing.ParseFile(testprogramlocation);

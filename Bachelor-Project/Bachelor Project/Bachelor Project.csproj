@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Outparser\Output\" />
     <Folder Include="Parser\Test Parser\" />
   </ItemGroup>
 

@@ -132,9 +132,13 @@ namespace Bachelor_Project.Outparser
 
         public static void Dispose()
         {
-            Writer.WriteLine("    TICK;");
-            Writer.Flush();
-            Writer.Dispose();
+            if (Writer != null)
+            {
+                Writer.WriteLine("    TICK;");
+                Writer.Flush();
+                Writer.Dispose();
+            }
+
         }
 
 

@@ -239,9 +239,19 @@ namespace Bachelor_Project.Simulation
             Outparser.Outparser.Dispose();
             
         }
-
-        public void SetPath(Droplet d, int startPosX, int startPosY, int endPosX, int endPosY, List<string>? mergeDroplets = null)
+        /// <summary>
+        /// Return true if path has been reset after a line intersect, else false
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="startPosX"></param>
+        /// <param name="startPosY"></param>
+        /// <param name="endPosX"></param>
+        /// <param name="endPosY"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <returns></returns>
+        public bool SetPath(Droplet d, int startPosX, int startPosY, int endPosX, int endPosY, List<string>? mergeDroplets = null)
         {
+            bool newPath = false;
             Dictionary<string, ((Point start, Point end)? path, UsefullSemaphore sem)> oldPaths = new(dropletPaths);
             foreach ((var key, var value) in oldPaths)
             {
@@ -258,6 +268,12 @@ namespace Bachelor_Project.Simulation
                     Monitor.Exit(ModifiedAStar.PathLock);
                     value.sem.Check();
                     Monitor.Enter(ModifiedAStar.PathLock);
+                    Board b = Program.C.board;
+                    if (!(d.CurrentPath == null || d.CurrentPath.Value.path.Count == 0))
+                    {
+                        newPath = true;
+                        d.CurrentPath = ModifiedAStar.FindPath(d, d.CurrentPath.Value.path.Last().Item1, mergeDroplets: mergeDroplets, start: d.CurrentPath.Value.path[0].Item1);
+                    }
                     dropletPaths[d.Name] = oldValue;
                 }
             }
@@ -271,14 +287,14 @@ namespace Bachelor_Project.Simulation
             }
             dropletPaths[d.Name].sem.TryReleaseOne();
             dropletPaths[d.Name].sem.WaitOne();
-            
 
+            return newPath;
 
         }
 
-        public void SetPath(Droplet d, Electrode start, Electrode end, List<string>? mergeDroplets = null)
+        public bool SetPath(Droplet d, Electrode start, Electrode end, List<string>? mergeDroplets = null)
         {
-            SetPath(d, start.ePosX, start.ePosY, end.ePosX, end.ePosY, mergeDroplets);
+            return SetPath(d, start.ePosX, start.ePosY, end.ePosX, end.ePosY, mergeDroplets);
         }
 
         public void RemovePath(Droplet d)

@@ -1165,7 +1165,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 fixStart = true;
 
                 // Find electrode in source closest to where splitter needs to go. nextElectrodeDestination is not set, so we do it here.
-                d.SetNextElectrodeDestination();
+                d.SetNextElectrodeDestination(source.Name);
 
                 Electrode dest = d.nextElectrodeDestination;
                 Electrode start = dest.GetClosestElectrodeInList(source.Occupy);

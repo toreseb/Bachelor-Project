@@ -10,9 +10,11 @@ namespace Bachelor_Project.Outparser
     static public class Outparser
     {
 
-        public static Queue<Task<bool>> OutputQueue = [];
-        public static Task<bool>? cTask = null; 
+        public static LinkedList<Task<bool>> OutputQueue = [];
+        public static Task<bool>? cTask = null;
+        static bool LastTick = false;
         static List<string> Seen = [];
+        static Dictionary<string,(int elapsedTime, int totalTime)> Waiters = [];
 
         static Stopwatch WatchSinceLastTick = new();
         static StreamWriter Writer;
@@ -60,14 +62,14 @@ namespace Bachelor_Project.Outparser
                 {
                     lock (OutputEnqueue)
                     {
-                        cTask = OutputQueue.Dequeue();
-
+                        cTask = OutputQueue.Last();
+                        OutputQueue.RemoveLast();
                         cTask.RunSynchronously();
                         
                         
                         cTask = null;
                     }
-
+                    Thread.Sleep(5);
 
 
                 }
@@ -75,12 +77,31 @@ namespace Bachelor_Project.Outparser
             }
         }
 
-        private static void GiveOutput(Task<bool> task)
+        private static void GiveOutput(Task<bool> task, int? pos = null) // Pos is from the right, so last. If pos is null it inserts at left
         {
             lock (OutputEnqueue)
             {
-                // TODO: Implement task queue
-                OutputQueue.Enqueue(task);
+                if (OutputQueue.Last == null || pos == null)
+                {
+                    OutputQueue.AddFirst(task);
+
+                }else if (pos == 0)
+                {
+                    OutputQueue.AddLast(task);
+                }
+                else
+                {
+                    LinkedListNode<Task<bool>> cNode = OutputQueue.Last;
+                    for (int i = 1; i < pos; i++)
+                    {
+                        if (cNode.Previous == null)
+                        {
+                            break;
+                        }
+                        cNode = cNode.Previous;
+                    }
+                    OutputQueue.AddBefore(cNode, new LinkedListNode<Task<bool>>(task));
+                }
                 // Signal that work is available
                 OutputAvailableEvent.Set();
             }
@@ -116,7 +137,6 @@ namespace Bachelor_Project.Outparser
             Writer.WriteLine(".text");
             Writer.WriteLine("main:");
             Writer.Flush();
-            WatchSinceLastTick.Start();
             TickEvent.Set();
         }
 
@@ -129,13 +149,17 @@ namespace Bachelor_Project.Outparser
                 if (Seen.Contains(d.Name))
                 {
                     Writer.WriteLine("    TICK;");
-                    WatchSinceLastTick.Reset();
-                    TickEvent.Set();
+                    LastTick = true;
+                    foreach ((string droplet, (int elapsedTime, int totalTime)) in Waiters)
+                    {
+                        Waiters[droplet] = (elapsedTime + Settings.TimeStep,totalTime);
+                    }
                     Seen.Clear();
                 }
+                
                 Seen.Add(d.Name);
             }
-
+            LastTick = false;
             string total = "    ";
             switch(set)
             {
@@ -154,33 +178,43 @@ namespace Bachelor_Project.Outparser
         public static bool Tick()
         {
             Writer.WriteLine("    TICK;");
+            LastTick = true;
             return true;
         }
 
         public static void WaitDroplet(Droplet d, int milliseconds)
         {
-            GiveOutput(new(() => Wait(milliseconds)));
+            GiveOutput(new(() => Wait(d,milliseconds)));
         }
 
-        public static bool Wait(int milliseconds)
+        public static bool Wait(Droplet d, int milliseconds, int start = 0)
         {
-            int elapsedTime = 0;
-            bool set = true;
-            while (elapsedTime < milliseconds)
+            int elapsedTime = start;
+            lock (OutputEnqueue)
             {
-                set = TickEvent.Wait(Settings.TimeToWaitBeforeTicking);
-                TickEvent.Reset();
-                if (!set)
+                if (/*OutputQueue.Count == 0*/ true) // TODO: Make it so not everything wait when a droplet waits. VERY DIFFICULT
                 {
-                    GiveOutput(new(() => Tick()));
-                    elapsedTime += Settings.TimeStepOnSingleTick;
+
+                    if (!LastTick) // If the last one wasn't a tick, it needs 2 ticks to get a lone tick for the extra time.
+                    {
+                        Tick();
+                        elapsedTime += Settings.TimeStep;
+                    }
+                    while (elapsedTime < milliseconds)
+                    {
+                        elapsedTime += Settings.TimeStepOnSingleTick;
+                        Tick();
+
+                    }
+
                 }
                 else
                 {
-                    elapsedTime += Settings.TimeStep;
+                    Waiters.Add(d.Name, (elapsedTime, milliseconds));
+
                 }
-                
             }
+            
             return true;
         }
         

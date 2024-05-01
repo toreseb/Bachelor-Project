@@ -1462,7 +1462,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             var elapsedMs = watch.ElapsedMilliseconds;
 
-            Assert.IsTrue(elapsedMs >= time * 1000);
+            //Assert.IsTrue(elapsedMs >= time * 1000); Time is no longer slept in simulation
         }
 
         [TestMethod()]
@@ -1483,7 +1483,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             var elapsedMs = watch.ElapsedMilliseconds;
 
-            Assert.IsTrue(elapsedMs >= time * 1000);
+            //Assert.IsTrue(elapsedMs >= time * 1000); Time is no longer slept in simulation
             Assert.AreEqual("HotWater", Wat1.Substance_Name);
         }
 
@@ -1505,7 +1505,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             var elapsedMs = watch.ElapsedMilliseconds;
 
-            Assert.IsTrue(elapsedMs >= time * 1000);
+            //Assert.IsTrue(elapsedMs >= time * 1000); Time is no longer slept in simulation
         }
 
     }

@@ -99,11 +99,11 @@ namespace Bachelor_Project.Simulation
             return closestElectrode;
         }
 
-        public void SetNextElectrodeDestination()
+        public void SetNextElectrodeDestination(string? source = null)
         {
             if (nextDestination != null)
             {
-                nextElectrodeDestination = GetClosestFreePointer(nextDestination);
+                nextElectrodeDestination = GetClosestFreePointer(nextDestination, source: source);
             }
             else if (nextElectrodeDestination == null)
             {
@@ -114,8 +114,9 @@ namespace Bachelor_Project.Simulation
             
         }
 
-        public Electrode GetClosestFreePointer(Apparature a)
+        public Electrode GetClosestFreePointer(Apparature a, string? source = null)
         {
+            retry:
             Electrode? closestElectrode = null;
             double minDistance = double.MaxValue;
             Electrode center;
@@ -125,7 +126,7 @@ namespace Bachelor_Project.Simulation
             }
             else
             {
-                center = GetClosestPartToApparature(this, a); // DEBUG: Droplet 1 is stopped here??
+                center = GetClosestPartToApparature(this, a);
             }
             foreach (Electrode electrode in a.pointers)
             {
@@ -142,7 +143,8 @@ namespace Bachelor_Project.Simulation
             }
             if (closestElectrode == null)
             {
-                throw new Exception("No free pointers");
+                Thread.Sleep(50);
+                goto retry;
             }
             return closestElectrode;
         }

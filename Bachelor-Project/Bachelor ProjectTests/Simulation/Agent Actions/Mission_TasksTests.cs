@@ -185,14 +185,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(0, Wat1.Occupy[1].GetContaminants().Count);
 
             int time = 1;
-            Task temp1 = new(() => Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], time, Wat1.Substance_Name));
+            Task temp1 = new(() => Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], time, "Hotwater"));
             Wat1.GiveWork(temp1);
-            var watch = System.Diagnostics.Stopwatch.StartNew();
             temp1.Wait();
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
 
-            Assert.IsTrue(elapsedMs >= time * 1000);
+            Assert.AreEqual("Hotwater", Wat1.Substance_Name);
         }
 
         [TestMethod()]

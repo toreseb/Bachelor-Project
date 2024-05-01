@@ -80,9 +80,9 @@ namespace Bachelor_Project.Parsing.Tests
 
             //Test temp
             command = data.commands[6];
-            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "water" && (string)command.ActionValue[1] == "20" && command.NextName == "heat0" && command.NextType == typeof(Heater));
+            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "water" && (string)command.ActionValue[1] == "1" && command.NextName == "heat0" && command.NextType == typeof(Heater));
             command = data.commands[7];
-            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "heatedwater" && (string)command.ActionValue[1] == "30" && command.NextName == "heat0" && command.NextType == typeof(Heater));
+            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "heatedwater" && (string)command.ActionValue[1] == "2" && command.NextName == "heat0" && command.NextType == typeof(Heater));
 
             //Test sense
             command = data.commands[8];

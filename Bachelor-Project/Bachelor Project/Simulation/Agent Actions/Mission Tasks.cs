@@ -150,7 +150,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         foreach (var item in directions)
                         {
                             Droplet_Actions.MoveDroplet(d, item);
-                            Program.C.board.PrintBoardState();
+                            Printer.PrintBoard();
                         }
                     }
 

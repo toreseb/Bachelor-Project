@@ -1,4 +1,5 @@
 input drop1 water in0 23;
+mix drop1 square;
 split drop1 drop2 drop3;
 output drop2 out0;
 output drop3 out0;

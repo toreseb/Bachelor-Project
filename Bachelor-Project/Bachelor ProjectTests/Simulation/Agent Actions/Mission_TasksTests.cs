@@ -146,7 +146,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             UsefullSemaphore sem2 = new(InputDroplets.Count);
             foreach (var item in InputDroplets)
             {
-                Task awaitWork = new(() => Mission_Tasks.AwaitWork(board.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
+                Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(board.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
                 board.Droplets[item].GiveWork(awaitWork);
             }
             Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, board.Droplets[OutputDroplets[0]], calcMerge, sem2, CommandDestination));
@@ -268,12 +268,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Wat3.nextDestination = board.Actuators["heat2"];
             Wat4.nextDestination = board.Output["out0"];
 
-            Task split = new(() => Mission_Tasks.SplitDroplet(Wat1, ["Wat2", "Wat3", "Wat4"], ratios, dropSem, dest));
+            Task split = new(() => Mission_Tasks.SplitDroplet(Wat1, ratios, dropSem, dest));
             Wat1.GiveWork(split);
 
-            Task split2 = new(() => Mission_Tasks.AwaitSplitWork(Wat2, "Wat1", Wat2.nextDestination, dropSem[Wat2.Name]));
-            Task split3 = new(() => Mission_Tasks.AwaitSplitWork(Wat3, "Wat1", Wat3.nextDestination, dropSem[Wat3.Name]));
-            Task split4 = new(() => Mission_Tasks.AwaitSplitWork(Wat4, "Wat1", Wat4.nextDestination, dropSem[Wat4.Name]));
+            Task split2 = new(() => Mission_Tasks.AwaitSplitWork(Wat2, Wat2.nextDestination, dropSem[Wat2.Name]));
+            Task split3 = new(() => Mission_Tasks.AwaitSplitWork(Wat3, Wat3.nextDestination, dropSem[Wat3.Name]));
+            Task split4 = new(() => Mission_Tasks.AwaitSplitWork(Wat4, Wat4.nextDestination, dropSem[Wat4.Name]));
             Wat2.GiveWork(split2);
             Wat3.GiveWork(split3);
             Wat4.GiveWork(split4);

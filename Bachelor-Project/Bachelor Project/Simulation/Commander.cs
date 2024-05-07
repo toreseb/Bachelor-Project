@@ -15,15 +15,11 @@ namespace Bachelor_Project.Simulation
     public class Commander
     {
 
-        static private readonly JsonSerializerOptions options = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true,
-        };
 
         public (List<Command> commands, Dictionary<string, string> dropletpairs, Dictionary<string, List<string>> contaminated, Dictionary<string, List<string>> contaminates)? data;
         public Board board;
         public Dictionary<string, ((Point start, Point end)? path, UsefullSemaphore sem)> dropletPaths;
-        List<Command> currentCommands = [];
+        private List<Command> currentCommands = [];
 
         public Commander((List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>)? data, string boarddata)
         {
@@ -133,78 +129,7 @@ namespace Bachelor_Project.Simulation
                 // board.PrintBoardState();
             }
 
-            // Thread.Sleep(5000);
-            // board.PrintBoardState();
-
-            //Printer.PrintLine("Done");
-
-            //Actuator e = JsonSerializer.Deserialize<Actuator>(json, options);
-            //Printer.PrintLine(e);
-
-
-            /*
-            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
-            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 36);
-            board.PrintBoardState();
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
-            board.PrintBoardState();
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
-            board.PrintBoardState();
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
-            board.PrintBoardState();
-            Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
-            board.PrintBoardState();
-            */
-
-            /*
-            board.Droplets.Add("Wat1", new Droplet("Water", "Wat1"));
-            Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"],36);
-            board.PrintBoardState();
-            Printer.PrintLine("Uncoil start");
-            Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[3,1]);
-            board.PrintBoardState();
-            Printer.PrintLine("Uncoil done");
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
-            board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
-            board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
-            board.PrintBoardState();
-            Droplet_Actions.SnekMove(board.Droplets["Wat1"], Direction.RIGHT);
-            board.PrintBoardState();
-            Droplet_Actions.Mix(board.Droplets["Wat1"]);
-            */
-
-            /*
-            Droplet Wat1 = new Droplet("Water", "Wat1");
-            Wat1.Contamintants.Add("Blood");
-            board.Droplets.Add(Wat1.Name,Wat1);
             
-            board.Electrodes[5, 3].Contaminate("Blood");
-            board.Electrodes[5, 4].Contaminate("Blood");
-            board.Electrodes[5, 2].Contaminate("Blood");
-            board.Electrodes[5, 5].Contaminate("Blood");
-            board.Electrodes[5, 6].Contaminate("Blood");
-            board.Electrodes[5, 7].Contaminate("Water");
-            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 290);
-            Program.C.board.PrintBoardState();
-            //board.Electrodes[4, 5].Contaminate("water");
-            //board.Electrodes[5, 5].Contaminate("water");
-            //board.Electrodes[6, 5].Contaminate("water");
-            //board.Electrodes[3, 4].Contaminate("water");
-            //roplet_Actions.UncoilSnek(Wat1, board.Output["out0"].pointers[0]);
-            //Droplet_Actions.MoveToDest(Wat1, board.Output["out0"].pointers[0]);
-            */
-
-
-            // Test of uncoil with dest og algorithm
-            /*
-            Droplet Wat1 = new Droplet("Water", "Wat1");
-            Wat1.Contamintants.Add("Blood");
-            board.Droplets.Add(Wat1.Name, Wat1);
-            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 60, board.Output["out0"]);
-            */
-            //Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[7,2]);
 
 
 
@@ -316,9 +241,5 @@ namespace Bachelor_Project.Simulation
 
         }
 
-        Board GetBoard()
-        {
-            return board;
-        }
     }
 }

@@ -11,7 +11,7 @@ namespace Bachelor_Project.Electrode_Types
     
     public abstract class Sensor(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
     {
-        readonly int sensorID;
+        public int SensorID{ get; set; }
 
         abstract public string Type { get; set; }
 

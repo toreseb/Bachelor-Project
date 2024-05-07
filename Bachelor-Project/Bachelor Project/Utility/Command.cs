@@ -88,7 +88,7 @@ namespace Bachelor_Project.Utility
                     UsefullSemaphore sem2 = new(InputDroplets.Count);
                     foreach (var item in InputDroplets)
                     {
-                        Task awaitWork = new(() => Mission_Tasks.AwaitWork(b.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
+                        Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(b.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
                         b.Droplets[item].GiveWork(awaitWork);
                     }
                     Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]], calcMerge, sem2, CommandDestination));
@@ -112,11 +112,11 @@ namespace Bachelor_Project.Utility
                         dropSem.Add(dName, sem);
                     }
 
-                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], OutputDroplets, ratios, dropSem, CommandDestination));
+                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], ratios, dropSem, CommandDestination));
                     b.Droplets[InputDroplets[0]].GiveWork(splitDroplet);
                     foreach (var item in OutputDroplets)
                     {
-                        Task awaitSplitWork = new(() => Mission_Tasks.AwaitSplitWork(b.Droplets[item], InputDroplets[0], CommandDestination, dropSem[item]));
+                        Task awaitSplitWork = new(() => Mission_Tasks.AwaitSplitWork(b.Droplets[item], CommandDestination, dropSem[item]));
                         b.Droplets[item].GiveWork(awaitSplitWork);
                     }
                     break;

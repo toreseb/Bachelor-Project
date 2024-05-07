@@ -12,8 +12,6 @@ namespace Bachelor_Project.Utility
         public const bool Printing = true;
         public static bool Outputting = true;
 
-        public const int TimeToWaitBeforeTicking = 50; // 50 milliseconds after the last tick, if no tick has happened any droplets waiting starts ticking
-
         public const int TimeStep = 100; //100 milliseconds for each time step in the simulation
         public const int TimeStepOnSingleTick = 1000;
 

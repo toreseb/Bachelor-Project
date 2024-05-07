@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Bachelor_Project.Simulation.Agent_Actions
 {
     // This class contains the more complicated missions the agents will have.
-    public class Mission_Tasks
+    public static class Mission_Tasks
     {
         public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
@@ -50,13 +50,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return result;
 
         }
-        public static void OutputDroplet(Droplet droplet, Output output)
+        public static bool OutputDroplet(Droplet droplet, Output output)
         {
             Printer.PrintLine(droplet.Name + " : OUTPUTTING");
             Printer.PrintBoard();
             droplet.Important = true;
             Droplet_Actions.MoveToApparature(droplet, output);
             Droplet_Actions.Output(droplet, output);
+            return true;
         }
 
 
@@ -190,7 +191,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        public static void MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefullSemaphore beforeDone, Apparature cmdDestination)
+        public static bool MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefullSemaphore beforeDone, Apparature cmdDestination)
         {
             SetupDestinations(d, cmdDestination);
             Printer.PrintLine(d.Name + " : MERGING");
@@ -220,26 +221,28 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
             }
             Printer.PrintBoard();
-            //throw new NotImplementedException();
+            return true;
         }
 
-        public static void SplitDroplet(Droplet d, List<string> outputDroplets, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem, Apparature cmdDestination)
+        public static bool SplitDroplet(Droplet d, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem, Apparature cmdDestination)
         {
             SetupDestinations(d, cmdDestination);
             d.Important = true;
             // Run Droplet_Actions.splitDroplet
             Droplet_Actions.splitDroplet(d, ratios, dropSem);
+            return true;
         }
 
-        public static void AwaitSplitWork(Droplet droplet, string outputDroplet, Apparature cmdDestination, UsefullSemaphore beginSem)
+        public static bool AwaitSplitWork(Droplet droplet, string outputDroplet, Apparature cmdDestination, UsefullSemaphore beginSem)
         {
             SetupDestinations(droplet, cmdDestination);
             beginSem.WaitOne();
 
             Droplet_Actions.MoveToApparature(droplet, droplet.nextDestination);
+            return true;
         }
 
-        public static void AwaitWork(Droplet d, Task<Electrode> AwaitWork, UsefullSemaphore beforeDone, UsefullSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
+        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefullSemaphore beforeDone, UsefullSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
         {
             d.Important = true;
             d.SnekList = [];
@@ -258,10 +261,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 throw e;
             }
             selfDone.TryReleaseOne();
+            return true;
 
         }
 
-        public static void TempDroplet(Droplet d, Heater heater, int time, string newType = null)
+        public static bool TempDroplet(Droplet d, Heater heater, int time, string newType = null)
         {
             SetupDestinations(d, heater);
             Printer.PrintLine(d.Name + " : TEMPING");
@@ -276,10 +280,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 d.ChangeType(newType);
             }
-            
+            return true;
         }
 
-        public static void SenseDroplet(Droplet d, Sensor sensor)
+        public static bool SenseDroplet(Droplet d, Sensor sensor)
         {
             SetupDestinations(d, sensor);
             Printer.PrintLine(d.Name + " : SENSING");
@@ -287,9 +291,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Electrode closest = Droplet_Actions.MoveToApparature(d, sensor);
             Droplet_Actions.CoilSnek(d, center: closest, app: sensor); // Depends if sensor needs to see the entire droplet
             sensor.Sense();
-
+            return true;
         }
-        public static void WaitDroplet(Droplet d, int time)
+        public static bool WaitDroplet(Droplet d, int time)
         {
             d.Important = true;
             Printer.PrintLine(d.Name + " : WAITING");
@@ -297,6 +301,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.SnekMode = false;
             d.SnekList = [];
             Printer.PrintLine(d.Name + " : DONE WAITING");
+            return true;
         }
 
 

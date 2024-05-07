@@ -33,7 +33,7 @@ namespace Bachelor_Project.Utility
             await Task.Run(() => { RunAgent(cancellationTokenSource.Token); });
         }
 
-        public static async void RunAgent(CancellationToken cancellationToken)
+        private static async void RunAgent(CancellationToken cancellationToken)
         {
             
             // Run while cancellation has not been requested

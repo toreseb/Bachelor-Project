@@ -13,12 +13,12 @@ namespace Bachelor_Project.Utility
     /// <summary>
     /// Heavily inspired by https://en.wikipedia.org/wiki/A*_search_algorithm
     /// </summary>
-    internal class ModifiedAStar 
+    static class ModifiedAStar 
     {
 
         public static object PathLock = new object();
 
-        public static (List<(Electrode, Direction?)>, int) ReconstructPath(Droplet d, Dictionary<Electrode, (Electrode, Direction)> cameFrom, Electrode current)
+        private static (List<(Electrode, Direction?)>, int) ReconstructPath(Droplet d, Dictionary<Electrode, (Electrode, Direction)> cameFrom, Electrode current)
         {
             LinkedList<(Electrode, Direction?)> totalPath = [];
             totalPath.AddFirst((current,null));
@@ -102,7 +102,7 @@ namespace Bachelor_Project.Utility
                     {
                         continue;
                     }
-                    double tentativeGScore = gScore[current] + dfunc(d, current, neighborT, neighbor.Item2, mergeDroplets, splitDroplet);
+                    double tentativeGScore = gScore[current] + dfunc(d, neighborT, mergeDroplets, splitDroplet);
                     if (!gScore.ContainsKey(neighborT))
                     {
                         gScore.Add(neighborT, double.MaxValue);
@@ -147,7 +147,7 @@ namespace Bachelor_Project.Utility
             throw new Exception("No path found");
 
         }
-        private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir, List<string>? mergeDroplets = null, string? splitDroplet = null)
+        private static double dfunc(Droplet d, Electrode end, List<string>? mergeDroplets = null, string? splitDroplet = null)
         {
             int distance = end.GetDistanceToBorder();
             int multiple = 10 * (int)Math.Pow(distance,2);
@@ -198,6 +198,7 @@ namespace Bachelor_Project.Utility
             
 
         }
+        /*
 
         private static (bool, int) CheckSquare(Droplet d, Electrode end, Direction dir) // TODO: Change it to look at the entire square
         {
@@ -298,6 +299,7 @@ namespace Bachelor_Project.Utility
             return (null, null);
 
         }
+        */
 
     }
 }

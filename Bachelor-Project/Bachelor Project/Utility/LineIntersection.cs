@@ -12,7 +12,7 @@ namespace Bachelor_Project.Utility
     /// 
     /// <para>There is an issue where in some specific cases it returns true, when it might not be necesarry. If this is shown to be a big problem, a larger more complicated solution that fixes that problem is also refrences in the link</para> 
     /// </summary>
-    internal class LineIntersection
+    static class LineIntersection
     {
         public static bool IsIntersecting(Point a, Point b, Point c, Point d)
         {

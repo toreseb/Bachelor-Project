@@ -233,7 +233,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool AwaitSplitWork(Droplet droplet, string outputDroplet, Apparature cmdDestination, UsefullSemaphore beginSem)
+        public static bool AwaitSplitWork(Droplet droplet, Apparature cmdDestination, UsefullSemaphore beginSem)
         {
             SetupDestinations(droplet, cmdDestination);
             beginSem.WaitOne();
@@ -305,7 +305,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        internal static void SetupDestinations(Droplet d, Apparature destination)
+        private static void SetupDestinations(Droplet d, Apparature destination)
         {
             d.nextDestination = destination;
             if (d.Occupy.Count > 0)

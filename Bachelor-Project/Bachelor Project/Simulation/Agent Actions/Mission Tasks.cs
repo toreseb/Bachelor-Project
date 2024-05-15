@@ -72,90 +72,102 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.Important = true;
             int retryCounter = 0;
             Program.C.RemovePath(d);
-            retry:
-            bool up = true; bool down = true; bool left = true; bool right = true;
-            // Check if there is room to boogie
-            // Only checks board bounderies
-            foreach (Electrode e in d.Occupy)
+            while (true)
             {
-                // Check board bounderies
-                if (e.ePosX < 1) left = false;
-                if (!(e.ePosX < Program.C.board.GetXElectrodes() - 1)) right = false;
-                if (e.ePosY < 1) up = false;
-                if (!(e.ePosY < Program.C.board.GetYElectrodes() - 1)) down = false;
-            }
-
-            // Check for other droplets and contaminants in zone (+ boarder)
-            // Needs to check for each possible direction
-            List<Electrode> temp = new List<Electrode>(d.Occupy);
-
-            if (Convert.ToInt32(up) + Convert.ToInt32(right) + Convert.ToInt32(down) + Convert.ToInt32(left) >= 2 && !((Convert.ToInt32(up) + Convert.ToInt32(down) == 0) || (Convert.ToInt32(right) + Convert.ToInt32(left) == 0)))
-            {
+                bool up = true; bool down = true; bool left = true; bool right = true;
+                // Check if there is room to boogie
+                // Only checks board bounderies
                 foreach (Electrode e in d.Occupy)
                 {
-                    if (up && Program.C.board.Electrodes[e.ePosX, e.ePosY - 1].Occupant != d)
+                    // Check board bounderies
+                    if (e.ePosX < 1) left = false;
+                    if (!(e.ePosX < Program.C.board.GetXElectrodes() - 1)) right = false;
+                    if (e.ePosY < 1) up = false;
+                    if (!(e.ePosY < Program.C.board.GetYElectrodes() - 1)) down = false;
+                }
+
+                // Check for other droplets and contaminants in zone (+ boarder)
+                // Needs to check for each possible direction
+                List<Electrode> temp = new List<Electrode>(d.Occupy);
+
+                if (Convert.ToInt32(up) + Convert.ToInt32(right) + Convert.ToInt32(down) + Convert.ToInt32(left) >= 2 && !((Convert.ToInt32(up) + Convert.ToInt32(down) == 0) || (Convert.ToInt32(right) + Convert.ToInt32(left) == 0)))
+                {
+                    foreach (Electrode e in d.Occupy)
                     {
-                        temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY - 1]);
-                    }
-                    if (right && Program.C.board.Electrodes[e.ePosX + 1, e.ePosY].Occupant != d)
-                    {
-                        temp.Add(Program.C.board.Electrodes[e.ePosX + 1, e.ePosY]);
-                    }
-                    if (down && !up && Program.C.board.Electrodes[e.ePosX, e.ePosY + 1].Occupant != d)
-                    {
-                        temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY + 1]);
-                    }
-                    if (left && !right && Program.C.board.Electrodes[e.ePosX - 1, e.ePosY].Occupant != d)
-                    {
-                        temp.Add(Program.C.board.Electrodes[e.ePosX - 1, e.ePosY]);
-                    }
-                }
-                List<Direction> directions = [];
-                if (up)
-                {
-                    directions.Add(Direction.UP);
-                }
-                else
-                {
-                    directions.Add(Direction.DOWN);
-                }
-                if (right)
-                {
-                    directions.Add(Direction.RIGHT);
-                }
-                else
-                {
-                    directions.Add(Direction.LEFT);
-                }
-                if (!up)
-                {
-                    directions.Add(Direction.UP);
-                }
-                else
-                {
-                    directions.Add(Direction.DOWN);
-                }
-                if (!right)
-                {
-                    directions.Add(Direction.RIGHT);
-                }
-                else
-                {
-                    directions.Add(Direction.LEFT);
-                }
-                // Check if area is legal
-                if (Droplet_Actions.CheckLegalMove(d, temp).legalmove)
-                {
-                    for (int i = 0; i < Constants.MixAmount; i++)
-                    {
-                        foreach (var item in directions)
+                        if (up && Program.C.board.Electrodes[e.ePosX, e.ePosY - 1].Occupant != d)
                         {
-                            Droplet_Actions.MoveDroplet(d, item);
-                            Printer.PrintBoard();
+                            temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY - 1]);
+                        }
+                        if (right && Program.C.board.Electrodes[e.ePosX + 1, e.ePosY].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX + 1, e.ePosY]);
+                        }
+                        if (down && !up && Program.C.board.Electrodes[e.ePosX, e.ePosY + 1].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY + 1]);
+                        }
+                        if (left && !right && Program.C.board.Electrodes[e.ePosX - 1, e.ePosY].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX - 1, e.ePosY]);
                         }
                     }
+                    List<Direction> directions = [];
+                    if (up)
+                    {
+                        directions.Add(Direction.UP);
+                    }
+                    else
+                    {
+                        directions.Add(Direction.DOWN);
+                    }
+                    if (right)
+                    {
+                        directions.Add(Direction.RIGHT);
+                    }
+                    else
+                    {
+                        directions.Add(Direction.LEFT);
+                    }
+                    if (!up)
+                    {
+                        directions.Add(Direction.UP);
+                    }
+                    else
+                    {
+                        directions.Add(Direction.DOWN);
+                    }
+                    if (!right)
+                    {
+                        directions.Add(Direction.RIGHT);
+                    }
+                    else
+                    {
+                        directions.Add(Direction.LEFT);
+                    }
+                    // Check if area is legal
+                    if (Droplet_Actions.CheckLegalMove(d, temp).legalmove)
+                    {
+                        for (int i = 0; i < Constants.MixAmount; i++)
+                        {
+                            foreach (var item in directions)
+                            {
+                                Droplet_Actions.MoveDroplet(d, item);
+                                Printer.PrintBoard();
+                            }
+                        }
 
-                    return true;
+                        return true;
+                    }
+                    else
+                    {
+                        if (retryCounter > 10)
+                        {
+                            throw new IllegalMoveException("No space for mixing");
+                        }
+                        Thread.Sleep(100);
+                        retryCounter++;
+                    }
+
                 }
                 else
                 {
@@ -165,20 +177,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                     Thread.Sleep(100);
                     retryCounter++;
-                    goto retry;
                 }
 
             }
-            else
-            {
-                if (retryCounter > 10)
-                {
-                    throw new IllegalMoveException("No space for mixing");
-                }
-                Thread.Sleep(100);
-                retryCounter++;
-                goto retry;
-            }
+
 
         }
 

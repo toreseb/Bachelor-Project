@@ -439,14 +439,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                             else
                             {
                                 legalMove = false;
-                                goto destination;
+                                return (legalMove, occupant);
                             }
                         }
                     }
                     
                 }
             }
-            destination:
             return (legalMove, occupant);
         }
 
@@ -930,15 +929,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             List<Electrode> activeBlob2 = [];
             List<Electrode> seenElectrodes = [center];
             int i = 1;
-            while(activeBlob1.Count > 0)
+            while(activeBlob1.Count > 0 && amount > 0)
             {
                 if (d.Removed)
                 {
                     throw new ThreadInterruptedException("Thread has been interrupted");
-                }
-                if (amount <= 0)
-                {
-                    goto done;
                 }
                 Electrode current = activeBlob1[0];
                 List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors();
@@ -952,7 +947,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         amount--;
                         if (amount <= 0)
                         {
-                            goto done;
+                            break;
                         }
                     }
                 }
@@ -964,7 +959,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     activeBlob2 = [];
                 }
             }
-        done:
+
             if (d.Removed)
             {
                 throw new ThreadInterruptedException("Thread has been interrupted");

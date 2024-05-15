@@ -116,7 +116,8 @@ namespace Bachelor_Project.Simulation
 
         public Electrode GetClosestFreePointer(Apparature a, string? source = null)
         {
-            retry:
+
+
             Electrode? closestElectrode = null;
             double minDistance = double.MaxValue;
             Electrode center;
@@ -143,8 +144,7 @@ namespace Bachelor_Project.Simulation
             }
             if (closestElectrode == null)
             {
-                Thread.Sleep(50);
-                goto retry;
+                throw new InvalidDataException("Apparature has no pointers");
             }
             return closestElectrode;
         }

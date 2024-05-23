@@ -119,7 +119,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool SplitDroplet(Droplet d, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem, Apparature cmdDestination)
         {
-            Droplet_Actions.SetupDestinations(d, cmdDestination);
             d.Important = true;
             // Run Droplet_Actions.splitDroplet
             Droplet_Actions.splitDroplet(d, ratios, dropSem);

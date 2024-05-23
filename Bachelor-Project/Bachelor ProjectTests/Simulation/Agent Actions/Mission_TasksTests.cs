@@ -87,7 +87,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(0, Wat1.Occupy[0].GetContaminants().Count);
             Assert.AreEqual(0, Wat1.Occupy[1].GetContaminants().Count);
 
-            Task mix1 = new(() => Mission_Tasks.MixDroplets(Wat1, "square"));
+            Task mix1 = new(() => Mission_Tasks.MixDroplet(Wat1, "square"));
             Wat1.GiveWork(mix1);
             mix1.Wait();
             Assert.AreEqual(2, Wat1.Occupy.Count);

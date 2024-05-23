@@ -122,7 +122,7 @@ namespace Bachelor_Project.Utility
                     break;
                 case "mix":
                     Printer.PrintLine("Mix");
-                    Task mixDroplet = new(() => Mission_Tasks.MixDroplets(b.Droplets[InputDroplets[0]], (string)ActionValue[0], (string)ActionValue[1]));
+                    Task mixDroplet = new(() => Mission_Tasks.MixDroplet(b.Droplets[InputDroplets[0]], (string)ActionValue[0], (string)ActionValue[1]));
                     b.Droplets[InputDroplets[0]].GiveWork(mixDroplet);
                     break;
                 case "temp":

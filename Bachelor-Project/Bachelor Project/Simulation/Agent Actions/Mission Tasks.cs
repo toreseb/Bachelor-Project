@@ -64,7 +64,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         // Droplets needing mixing are assumed to have been merged into one drop.
         // Does not take contaminants into account yet.
-        public static bool MixDroplets(Droplet d, string pattern, string? newType = null) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
+        public static bool MixDroplet(Droplet d, string pattern, string? newType = null) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
         {
             Droplet_Actions.MixDroplet(d, pattern);
             if (newType != null)

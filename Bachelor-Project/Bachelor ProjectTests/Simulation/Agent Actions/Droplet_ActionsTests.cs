@@ -448,7 +448,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.IsTrue(board.Electrodes[1, 1].GetContaminants().Count == 0);
             Assert.IsTrue(board.Electrodes[1, 2].GetContaminants().Count == 0);
 
-            Mission_Tasks.MixDroplets(test, "square");
+            Mission_Tasks.MixDroplet(test, "square");
             Assert.IsTrue(board.Electrodes[0, 0].GetContaminants().Count == 1 && board.Electrodes[0, 0].GetContaminants()[0] == "Water");
             Assert.IsTrue(board.Electrodes[0, 1].GetContaminants().Count == 1 && board.Electrodes[0, 1].GetContaminants()[0] == "Water");
             Assert.IsTrue(board.Electrodes[0, 2].GetContaminants().Count == 1 && board.Electrodes[0, 2].GetContaminants()[0] == "Water");

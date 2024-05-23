@@ -37,6 +37,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 throw new ArgumentException("droplet too small");
             }
             int size = d.Size;
+            
             lock (MoveLock)
             {
                 if (d.Removed)
@@ -44,7 +45,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     throw new ThreadInterruptedException();
                 }
                 AwaitLegalMove(d, i.pointers);
-
                 if (destination != null)
                 {
                     d.SnekMode = true;
@@ -57,7 +57,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             if (destination == null)
             {
-                d.SnekMode = false;
                 while (size > 0)
                 {
                     CoilSnek(d, i.pointers[0], input: true);
@@ -75,12 +74,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     size--;
                     if (d.CurrentPath.Value.path.Count <= Constants.DestBuff)
                     {
-                        Electrode center = d.SnekList.First();
-                        while (size > 0)
-                        {
-                            CoilSnek(d, center, input: true);
-                            size--;
-                        }
+                        CoilWithoutRemoval(d, size);
                         d.MergeReady = true;
                         return;
                     }

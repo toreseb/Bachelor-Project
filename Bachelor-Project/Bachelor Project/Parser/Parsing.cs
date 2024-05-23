@@ -16,10 +16,10 @@ namespace Bachelor_Project.Parsing
 {
     static public class Parsing
     {
-        static Dictionary<string, string> Dropletpairs = []; // Dropletname with their type
-        static Dictionary<string, List<string>> Contaminates = [];
-        static Dictionary<string, List<string>> Contaminated = [];
-        static List<Command> Commands = []; 
+        private static Dictionary<string, string> Dropletpairs = []; // Dropletname with their type
+        private static Dictionary<string, List<string>> Contaminates = [];
+        private static Dictionary<string, List<string>> Contaminated = [];
+        private static List<Command> Commands = []; 
 
         public static (List<Command>, Dictionary<string,string>, Dictionary<string, List<string>>,Dictionary<string, List<string>>) ParseFile(string path)
         {

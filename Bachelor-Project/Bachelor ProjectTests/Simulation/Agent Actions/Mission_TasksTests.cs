@@ -146,7 +146,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             UsefullSemaphore sem2 = new(InputDroplets.Count);
             foreach (var item in InputDroplets)
             {
-                Task awaitWork = new(() => Mission_Tasks.AwaitWork(board.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
+                Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(board.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
                 board.Droplets[item].GiveWork(awaitWork);
             }
             Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, board.Droplets[OutputDroplets[0]], calcMerge, sem2, CommandDestination));
@@ -185,14 +185,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(0, Wat1.Occupy[1].GetContaminants().Count);
 
             int time = 1;
-            Task temp1 = new(() => Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], time, Wat1.Substance_Name));
+            Task temp1 = new(() => Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], time, "Hotwater"));
             Wat1.GiveWork(temp1);
-            var watch = System.Diagnostics.Stopwatch.StartNew();
             temp1.Wait();
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
 
-            Assert.IsTrue(elapsedMs >= time * 1000);
+            Assert.AreEqual("Hotwater", Wat1.Substance_Name);
         }
 
         [TestMethod()]
@@ -271,12 +268,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Wat3.nextDestination = board.Actuators["heat2"];
             Wat4.nextDestination = board.Output["out0"];
 
-            Task split = new(() => Mission_Tasks.SplitDroplet(Wat1, ["Wat2", "Wat3", "Wat4"], ratios, dropSem, dest));
+            Task split = new(() => Mission_Tasks.SplitDroplet(Wat1, ratios, dropSem, dest));
             Wat1.GiveWork(split);
 
-            Task split2 = new(() => Mission_Tasks.AwaitSplitWork(Wat2, "Wat1", Wat2.nextDestination, dropSem[Wat2.Name]));
-            Task split3 = new(() => Mission_Tasks.AwaitSplitWork(Wat3, "Wat1", Wat3.nextDestination, dropSem[Wat3.Name]));
-            Task split4 = new(() => Mission_Tasks.AwaitSplitWork(Wat4, "Wat1", Wat4.nextDestination, dropSem[Wat4.Name]));
+            Task split2 = new(() => Mission_Tasks.AwaitSplitWork(Wat2, Wat2.nextDestination, dropSem[Wat2.Name]));
+            Task split3 = new(() => Mission_Tasks.AwaitSplitWork(Wat3, Wat3.nextDestination, dropSem[Wat3.Name]));
+            Task split4 = new(() => Mission_Tasks.AwaitSplitWork(Wat4, Wat4.nextDestination, dropSem[Wat4.Name]));
             Wat2.GiveWork(split2);
             Wat3.GiveWork(split3);
             Wat4.GiveWork(split4);

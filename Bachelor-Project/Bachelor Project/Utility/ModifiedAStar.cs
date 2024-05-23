@@ -13,12 +13,12 @@ namespace Bachelor_Project.Utility
     /// <summary>
     /// Heavily inspired by https://en.wikipedia.org/wiki/A*_search_algorithm
     /// </summary>
-    internal class ModifiedAStar 
+    static class ModifiedAStar 
     {
 
         public static object PathLock = new object();
 
-        public static (List<(Electrode, Direction?)>, int) ReconstructPath(Droplet d, Dictionary<Electrode, (Electrode, Direction)> cameFrom, Electrode current)
+        private static (List<(Electrode, Direction?)>, int) ReconstructPath(Droplet d, Dictionary<Electrode, (Electrode, Direction)> cameFrom, Electrode current)
         {
             LinkedList<(Electrode, Direction?)> totalPath = [];
             totalPath.AddFirst((current,null));
@@ -41,13 +41,18 @@ namespace Bachelor_Project.Utility
 
         public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal, List<string>? mergeDroplets = null, string? splitDroplet = null, Electrode? start = null)
         {
-
+            
 
             Func<Electrode, Electrode, double> h = Electrode.GetDistance;
             if (start == null)
             {
                 start = goal.GetClosestElectrodeInList(d.Occupy);
             }
+            lock (PathLock)
+            {
+                Program.C.SetPath(d, start, goal, mergeDroplets);
+            }
+            
             List<Electrode> openSet = [start];
 
             Dictionary<Electrode, (Electrode,Direction)> cameFrom = [];
@@ -79,12 +84,7 @@ namespace Bachelor_Project.Utility
                 }
                 if (current == goal)
                 {
-                    lock (PathLock)
-                    {
-                        Program.C.SetPath(d, start, current, mergeDroplets);
-                        return ReconstructPath(d, cameFrom, current);
-                    }
-                    
+                    return ReconstructPath(d, cameFrom, current);
                 }
                 openSet.Remove(current);
 
@@ -98,27 +98,27 @@ namespace Bachelor_Project.Utility
                     {
                         continue;
                     }
-                    double tentativeGScore = gScore[current] + dfunc(d, current, neighborT, neighbor.Item2, mergeDroplets, splitDroplet);
+                    double tentativeGScore = gScore[current] + dfunc(d, neighborT, mergeDroplets, splitDroplet);
                     if (!gScore.ContainsKey(neighborT))
                     {
                         gScore.Add(neighborT, double.MaxValue);
-                        /*
+                        
                         if (d.Name == "drop3")
                         {
                             neighborT.smallestGScore = double.MaxValue;
                         }
-                        */
+                        
                         //neighborT.smallestGScore = double.MaxValue;
 
                     }
                     if (tentativeGScore < gScore[neighborT])
                     {
-                        /*
-                        if (d.Name == "Wat2")
+                        
+                        if (d.Name == "drop3")
                         {
                             neighborT.smallestGScore = tentativeGScore;
                         }
-                        */
+                        
                         //neighborT.smallestGScore = tentativeGScore;
                         cameFrom[neighborT] = (current, neighbor.Item2);
                         gScore[neighborT] = tentativeGScore;
@@ -143,7 +143,7 @@ namespace Bachelor_Project.Utility
             throw new Exception("No path found");
 
         }
-        private static double dfunc(Droplet d, Electrode start, Electrode end, Direction dir, List<string>? mergeDroplets = null, string? splitDroplet = null)
+        private static double dfunc(Droplet d, Electrode end, List<string>? mergeDroplets = null, string? splitDroplet = null)
         {
             int distance = end.GetDistanceToBorder();
             int multiple = 10 * (int)Math.Pow(distance,2);
@@ -168,7 +168,10 @@ namespace Bachelor_Project.Utility
             */
             if (!Droplet_Actions.CheckLegalMove(droplets, [end],mergeDroplets: mergeDroplets, source: splitDroplet).legalmove) // 1: check if the move is legal
             {
-                
+                if (d.Name == "drop3")
+                {
+                    int a = 2;
+                }
                 return multiple * 1000;
             }else if (end.Apparature != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an apparature, and therefore important
             {
@@ -191,6 +194,7 @@ namespace Bachelor_Project.Utility
             
 
         }
+        /*
 
         private static (bool, int) CheckSquare(Droplet d, Electrode end, Direction dir) // TODO: Change it to look at the entire square
         {
@@ -291,6 +295,7 @@ namespace Bachelor_Project.Utility
             return (null, null);
 
         }
+        */
 
     }
 }

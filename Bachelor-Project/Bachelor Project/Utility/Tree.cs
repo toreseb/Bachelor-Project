@@ -11,10 +11,10 @@ namespace Bachelor_Project.Utility
     public class Tree
     {
         public List<Node> Nodes;
-        List<Node> ActiveNodes;
-        List<Electrode> SeenElectrodes;
-        List<Electrode> NewElectrodes;
-        Droplet d;
+        private List<Node> ActiveNodes;
+        private List<Electrode> SeenElectrodes;
+        private List<Electrode> NewElectrodes;
+        private Droplet d;
         public List<Node> Leaves;
         public Electrode closestElectrode;
         public Tree(Droplet d, List<Electrode> oldElectrodes, List<Electrode> newElectrodes, Electrode center)

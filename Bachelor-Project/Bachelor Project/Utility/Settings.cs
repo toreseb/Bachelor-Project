@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +11,9 @@ namespace Bachelor_Project.Utility
         public const bool ConnectedToHardware = false;
         public const bool Printing = true;
         public static bool Outputting = true;
+
+        public const int TimeStep = 100; //100 milliseconds for each time step in the simulation
+        public const int TimeStepOnSingleTick = 1000;
 
         public const string BoardName = "BoardData";
         public const string BoardFileLoc = "Input Files";        

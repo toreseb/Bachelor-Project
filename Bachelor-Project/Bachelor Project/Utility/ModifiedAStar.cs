@@ -41,13 +41,18 @@ namespace Bachelor_Project.Utility
 
         public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal, List<string>? mergeDroplets = null, string? splitDroplet = null, Electrode? start = null)
         {
-
+            
 
             Func<Electrode, Electrode, double> h = Electrode.GetDistance;
             if (start == null)
             {
                 start = goal.GetClosestElectrodeInList(d.Occupy);
             }
+            lock (PathLock)
+            {
+                Program.C.SetPath(d, start, goal, mergeDroplets);
+            }
+            
             List<Electrode> openSet = [start];
 
             Dictionary<Electrode, (Electrode,Direction)> cameFrom = [];
@@ -79,16 +84,7 @@ namespace Bachelor_Project.Utility
                 }
                 if (current == goal)
                 {
-                    lock (PathLock)
-                    {
-                        bool newPath = Program.C.SetPath(d, start, current, mergeDroplets);
-                        if (newPath && d.CurrentPath != null)
-                        {
-                            return d.CurrentPath.Value;
-                        }
-                        return ReconstructPath(d, cameFrom, current);
-                    }
-                    
+                    return ReconstructPath(d, cameFrom, current);
                 }
                 openSet.Remove(current);
 

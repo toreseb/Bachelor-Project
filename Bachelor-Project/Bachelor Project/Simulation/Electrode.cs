@@ -100,7 +100,7 @@ namespace Bachelor_Project.Simulation
             }
         }
 
-        public List<(Electrode, Direction?)> GetExtendedNeighbors(Droplet? d = null, Droplet? source = null, bool splitPlacement = false) //TODO: Change so source is in there
+        public List<(Electrode, Direction?)> GetExtendedNeighbors(Droplet? d = null, Droplet? source = null, bool splitPlacement = false, bool includeApp = true)
         {
             List<(Electrode, Direction?)> neighbors = [];
 
@@ -135,12 +135,8 @@ namespace Bachelor_Project.Simulation
                 }
                 if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange))
                 {
-                    if (d != null && d.Name == "Wat2")
-                    {
-                        int a = 2;
-                    }
                     Electrode el = Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange];
-                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [el], source: source.Name, splitPlacement: splitPlacement).legalmove)
+                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [el], source: source == null ? null :source.Name, splitPlacement: splitPlacement).legalmove && (includeApp || el.Apparature == null))
                     {
                         cBool.Add(false);
                         continue;

@@ -18,7 +18,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         private static readonly object MoveLock = new object(); //Lock to ensure that only one droplet moves at the exact same time
 
-        public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
+        public static void InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
             d.MergeReady = false;
             if (d.Inputted)
@@ -82,13 +82,128 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                             size--;
                         }
                         d.MergeReady = true;
-                        return true;
+                        return;
                     }
                 }
                 
             }
             d.MergeReady = true;
-            return true;
+        }
+
+        public static bool MixDroplet(Droplet d, string pattern) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
+        {
+            Printer.PrintLine(d.Name + " : MIXING");
+            d.Important = true;
+            int retryCounter = 0;
+            Program.C.RemovePath(d);
+            while (true)
+            {
+                bool up = true; bool down = true; bool left = true; bool right = true;
+                // Check if there is room to boogie
+                // Only checks board bounderies
+                foreach (Electrode e in d.Occupy)
+                {
+                    // Check board bounderies
+                    if (e.ePosX < 1) left = false;
+                    if (!(e.ePosX < Program.C.board.GetXElectrodes() - 1)) right = false;
+                    if (e.ePosY < 1) up = false;
+                    if (!(e.ePosY < Program.C.board.GetYElectrodes() - 1)) down = false;
+                }
+
+                // Check for other droplets and contaminants in zone (+ boarder)
+                // Needs to check for each possible direction
+                List<Electrode> temp = new List<Electrode>(d.Occupy);
+
+                if (Convert.ToInt32(up) + Convert.ToInt32(right) + Convert.ToInt32(down) + Convert.ToInt32(left) >= 2 && !((Convert.ToInt32(up) + Convert.ToInt32(down) == 0) || (Convert.ToInt32(right) + Convert.ToInt32(left) == 0)))
+                {
+                    foreach (Electrode e in d.Occupy)
+                    {
+                        if (up && Program.C.board.Electrodes[e.ePosX, e.ePosY - 1].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY - 1]);
+                        }
+                        if (right && Program.C.board.Electrodes[e.ePosX + 1, e.ePosY].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX + 1, e.ePosY]);
+                        }
+                        if (down && !up && Program.C.board.Electrodes[e.ePosX, e.ePosY + 1].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY + 1]);
+                        }
+                        if (left && !right && Program.C.board.Electrodes[e.ePosX - 1, e.ePosY].Occupant != d)
+                        {
+                            temp.Add(Program.C.board.Electrodes[e.ePosX - 1, e.ePosY]);
+                        }
+                    }
+                    List<Direction> directions = [];
+                    if (up)
+                    {
+                        directions.Add(Direction.UP);
+                    }
+                    else
+                    {
+                        directions.Add(Direction.DOWN);
+                    }
+                    if (right)
+                    {
+                        directions.Add(Direction.RIGHT);
+                    }
+                    else
+                    {
+                        directions.Add(Direction.LEFT);
+                    }
+                    if (!up)
+                    {
+                        directions.Add(Direction.UP);
+                    }
+                    else
+                    {
+                        directions.Add(Direction.DOWN);
+                    }
+                    if (!right)
+                    {
+                        directions.Add(Direction.RIGHT);
+                    }
+                    else
+                    {
+                        directions.Add(Direction.LEFT);
+                    }
+                    // Check if area is legal
+                    if (CheckLegalMove(d, temp).legalmove)
+                    {
+                        for (int i = 0; i < Constants.MixAmount; i++)
+                        {
+                            foreach (var item in directions)
+                            {
+                                MoveDroplet(d, item);
+                                Printer.PrintBoard();
+                            }
+                        }
+
+                        return true;
+                    }
+                    else
+                    {
+                        if (retryCounter > 10)
+                        {
+                            throw new IllegalMoveException("No space for mixing");
+                        }
+                        Thread.Sleep(100);
+                        retryCounter++;
+                    }
+
+                }
+                else
+                {
+                    if (retryCounter > 10)
+                    {
+                        throw new IllegalMoveException("No space for mixing");
+                    }
+                    Thread.Sleep(100);
+                    retryCounter++;
+                }
+
+            }
 
 
         }
@@ -292,27 +407,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             bool legalMove = true;
             List<Electrode> temp = new List<Electrode>();
 
-            int xChange = 0;
-            int yChange = 0;
-            switch (dir)
-            {
-                case Direction.UP:
-                    yChange = -1;
-
-                    break;
-                case Direction.LEFT:
-                    xChange = -1;
-
-                    break;
-                case Direction.DOWN:
-                    yChange = 1;
-
-                    break;
-                case Direction.RIGHT:
-                    xChange = 1;
-
-                    break;
-            }
+            (int xChange, int yChange) = DirectionUtils.GetXY(dir);
 
             // Make list with new placements of electrodes
             foreach (Electrode e in d.Occupy)
@@ -340,26 +435,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         MoveOnElectrode(d, e);
                     }
                 }
-                List<Electrode> turnOff = [];
+                List<Electrode> OldOccupy = new(d.Occupy);
                 // Turn off all old electrodes second (which are not also new)
-                foreach (Electrode e in d.Occupy)
+                foreach (Electrode e in OldOccupy)
                 {
-                    bool contains = false;
-                    if (temp.Contains(e))
+                    if (!temp.Contains(e))
                     {
-                        contains = true;
-                        continue;
-                    }
-                    if (!contains) {
-                        turnOff.Add(e);
+                        MoveOffElectrode(d, e);
                     }
                 }
-                foreach (Electrode e in turnOff)
-                {
-                    MoveOffElectrode(d, e);
-                }
-                
-                d.Occupy = temp;
             }
             else
             {
@@ -596,7 +680,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, List<Electrode> el, Direction dir, string? splitDroplet = null, bool remove = true) // Returns true if movement happened, false if it got stopped
         {
             Printer.PrintLine(d.Name +" SnekMoves Toward: " +dir);
-            List<Electrode> newOcc = new List<Electrode>();
             List<Electrode> newHead = new List<Electrode>(); // Needs to be a list containing one electrode for a snekcheck.
             Electrode head;
             if (d.SnekMode)
@@ -608,25 +691,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 throw new Exception("No head found");
             }
 
+            (int x, int y) = DirectionUtils.GetXY(dir);
+            
+
             try
             {
-                switch (dir)
-                {
-                    case Direction.UP:
-                        newHead.Add(Program.C.board.Electrodes[head.ePosX, head.ePosY - 1]);
-                        break;
-                    case Direction.LEFT:
-                        newHead.Add(Program.C.board.Electrodes[head.ePosX - 1, head.ePosY]);
-                        break;
-                    case Direction.DOWN:
-                        newHead.Add(Program.C.board.Electrodes[head.ePosX, head.ePosY + 1]);
-                        break;
-                    case Direction.RIGHT:
-                        newHead.Add(Program.C.board.Electrodes[head.ePosX + 1, head.ePosY]);
-                        break;
-                }
+                newHead.Add(Program.C.board.Electrodes[head.ePosX + x, head.ePosY + y]);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Printer.PrintLine("Movement out of bounds");
                 return (false,null);
@@ -829,10 +901,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // Make single moves all the way towards the destination.
             do
             {
-                if (d.Removed)
-                {
-                    throw new ThreadInterruptedException();
-                }
                 
                 lock (MoveLock)
                 {
@@ -848,10 +916,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     // Save last electrode so we can turn it on again.
                     // The tree will turn off the correct electrode.
                     bool moved;
-                    bool needToRemove = true;
-                    if (blobTree.Nodes.Count > (1 + priorCounter + totalExtraAdded)){
-                        needToRemove = false;
-                    }
+                    bool needToRemove = blobTree.Nodes.Count <= (1 + priorCounter + totalExtraAdded);
 
                     moved = MoveTowardDest(d, dest, mergeDroplets, remove: needToRemove).Item1;
 
@@ -909,10 +974,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // For Testing
             int preSize = d.Occupy.Count;
 
-            if (center == null)
-            {
-                center = d.SnekList.First();
-            }
+            center ??= d.SnekList.First();
+
             d.SnekMode = false;
             d.SnekList.Clear();
             
@@ -926,9 +989,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             
             List<Electrode> newBlob = [center];
             List<Electrode> activeBlob1 = [center];
-            List<Electrode> activeBlob2 = [];
             List<Electrode> seenElectrodes = [center];
-            int i = 1;
             while(activeBlob1.Count > 0 && amount > 0)
             {
                 if (d.Removed)
@@ -936,14 +997,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     throw new ThreadInterruptedException("Thread has been interrupted");
                 }
                 Electrode current = activeBlob1[0];
-                List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors();
-                foreach (var item in neighbors)
+                List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors(d: d, includeApp: app != null); //If app is null it ignores apparature, if it isn't null in coils into apparatures
+                foreach ((Electrode el, _) in neighbors)
                 {
-                    if (CheckLegalMove(d,[item.Item1]).legalmove && !seenElectrodes.Contains(item.Item1) && (app != null && ((app.CoilInto && item.Item1.Apparature == app)||(!app.CoilInto)) || (app == null && (item.Item1.Occupant == d || item.Item1.Apparature == null))))
+                    if (CheckLegalMove(d,[el]).legalmove && !seenElectrodes.Contains(el) && (app != null && ((app.CoilInto && el.Apparature == app)||(!app.CoilInto)) || (app == null && (el.Occupant == d || el.Apparature == null))))
                     {
-                        activeBlob2.Add(item.Item1);
-                        seenElectrodes.Add(item.Item1);
-                        newBlob.Add(item.Item1);
+                        activeBlob1.Add(el);
+                        seenElectrodes.Add(el);
+                        newBlob.Add(el);
                         amount--;
                         if (amount <= 0)
                         {
@@ -953,11 +1014,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
                 
                 activeBlob1.Remove(current);
-                if (activeBlob1.Count == 0)
-                {
-                    activeBlob1 = activeBlob2;
-                    activeBlob2 = [];
-                }
             }
 
             if (d.Removed)
@@ -967,8 +1023,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             if (amount > 0)
             {
                 Printer.PrintLine("Not enough space to coil");
-                Printer.PrintBoard();
-                Thread.Sleep(1000);
                 throw new IllegalMoveException("Not enough space to coil");
             }
             Tree snekTree = BuildTree(d, newBlob, center);
@@ -990,10 +1044,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
                 }
-                
-                
+                snekTree.RemoveTree(app != null && app.CoilInto);
+
             }
-            snekTree.RemoveTree(app != null && app.CoilInto);
+            
 
             Printer.PrintBoard();
             d.MergeReady = true;
@@ -1488,7 +1542,40 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             return null;
         }
-        
+
+        /// <summary>
+        /// Sets a droplet to wait for specified amount of milliseconds
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="milliseconds"></param>
+        public static void WaitDroplet(Droplet d, int milliseconds)
+        {
+            if (Settings.ConnectedToHardware)
+            {
+                Thread.Sleep(milliseconds);
+            }
+            else
+            {
+                Outparser.Outparser.WaitDroplet(d, milliseconds);
+            }
+
+        }
+
+        /// <summary>
+        /// Finds the location in the apparature for travel
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="destination"></param>
+        public static void SetupDestinations(Droplet d, Apparature destination)
+        {
+            d.nextDestination = destination;
+            if (d.Occupy.Count > 0)
+            {
+                d.SetNextElectrodeDestination();
+            }
+
+        }
+
         /// <summary>
         /// Return true if there is a parity problem, false if parity is fine
         /// </summary>

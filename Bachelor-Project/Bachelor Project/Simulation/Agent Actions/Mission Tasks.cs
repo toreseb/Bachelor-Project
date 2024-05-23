@@ -18,7 +18,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             Printer.PrintLine(d.Name + " has NextDestiantion of: " + d.nextDestination);
             Printer.PrintLine(d.Name + " : INPUTTING");
-            bool result = Droplet_Actions.InputDroplet(d, i, volume, destination);
+            Droplet_Actions.InputDroplet(d, i, volume, destination);
             if (destination != null && d.GetWork().Count == 0)
             {
                 Electrode destElectrode = d.GetClosestFreePointer(destination);
@@ -34,8 +34,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     {
                         Printer.PrintBoard();
                         d.Waiting = false;
-                        d.SnekList = [];
-                        d.SnekMode = false;
                         d.MergeReady = true;
                         return false;
                     }
@@ -47,7 +45,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                 }
             }
-            return result;
+            return true;
 
         }
         public static bool OutputDroplet(Droplet droplet, Output output)
@@ -68,119 +66,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         // Does not take contaminants into account yet.
         public static bool MixDroplets(Droplet d, string pattern, string? newType = null) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
         {
-            Printer.PrintLine(d.Name + " : MIXING");
-            d.Important = true;
-            int retryCounter = 0;
-            Program.C.RemovePath(d);
-            while (true)
+            Droplet_Actions.MixDroplet(d, pattern);
+            if (newType != null)
             {
-                bool up = true; bool down = true; bool left = true; bool right = true;
-                // Check if there is room to boogie
-                // Only checks board bounderies
-                foreach (Electrode e in d.Occupy)
-                {
-                    // Check board bounderies
-                    if (e.ePosX < 1) left = false;
-                    if (!(e.ePosX < Program.C.board.GetXElectrodes() - 1)) right = false;
-                    if (e.ePosY < 1) up = false;
-                    if (!(e.ePosY < Program.C.board.GetYElectrodes() - 1)) down = false;
-                }
-
-                // Check for other droplets and contaminants in zone (+ boarder)
-                // Needs to check for each possible direction
-                List<Electrode> temp = new List<Electrode>(d.Occupy);
-
-                if (Convert.ToInt32(up) + Convert.ToInt32(right) + Convert.ToInt32(down) + Convert.ToInt32(left) >= 2 && !((Convert.ToInt32(up) + Convert.ToInt32(down) == 0) || (Convert.ToInt32(right) + Convert.ToInt32(left) == 0)))
-                {
-                    foreach (Electrode e in d.Occupy)
-                    {
-                        if (up && Program.C.board.Electrodes[e.ePosX, e.ePosY - 1].Occupant != d)
-                        {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY - 1]);
-                        }
-                        if (right && Program.C.board.Electrodes[e.ePosX + 1, e.ePosY].Occupant != d)
-                        {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX + 1, e.ePosY]);
-                        }
-                        if (down && !up && Program.C.board.Electrodes[e.ePosX, e.ePosY + 1].Occupant != d)
-                        {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY + 1]);
-                        }
-                        if (left && !right && Program.C.board.Electrodes[e.ePosX - 1, e.ePosY].Occupant != d)
-                        {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX - 1, e.ePosY]);
-                        }
-                    }
-                    List<Direction> directions = [];
-                    if (up)
-                    {
-                        directions.Add(Direction.UP);
-                    }
-                    else
-                    {
-                        directions.Add(Direction.DOWN);
-                    }
-                    if (right)
-                    {
-                        directions.Add(Direction.RIGHT);
-                    }
-                    else
-                    {
-                        directions.Add(Direction.LEFT);
-                    }
-                    if (!up)
-                    {
-                        directions.Add(Direction.UP);
-                    }
-                    else
-                    {
-                        directions.Add(Direction.DOWN);
-                    }
-                    if (!right)
-                    {
-                        directions.Add(Direction.RIGHT);
-                    }
-                    else
-                    {
-                        directions.Add(Direction.LEFT);
-                    }
-                    // Check if area is legal
-                    if (Droplet_Actions.CheckLegalMove(d, temp).legalmove)
-                    {
-                        for (int i = 0; i < Constants.MixAmount; i++)
-                        {
-                            foreach (var item in directions)
-                            {
-                                Droplet_Actions.MoveDroplet(d, item);
-                                Printer.PrintBoard();
-                            }
-                        }
-
-                        return true;
-                    }
-                    else
-                    {
-                        if (retryCounter > 10)
-                        {
-                            throw new IllegalMoveException("No space for mixing");
-                        }
-                        Thread.Sleep(100);
-                        retryCounter++;
-                    }
-
-                }
-                else
-                {
-                    if (retryCounter > 10)
-                    {
-                        throw new IllegalMoveException("No space for mixing");
-                    }
-                    Thread.Sleep(100);
-                    retryCounter++;
-                }
-
+                d.ChangeType(newType);
             }
-
+            return true;
 
         }
 
@@ -195,7 +86,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefullSemaphore beforeDone, Apparature cmdDestination)
         {
-            SetupDestinations(d, cmdDestination);
+            Droplet_Actions.SetupDestinations(d, cmdDestination);
             Printer.PrintLine(d.Name + " : MERGING");
             foreach (var item1 in inputDroplets)
             {
@@ -228,7 +119,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool SplitDroplet(Droplet d, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem, Apparature cmdDestination)
         {
-            SetupDestinations(d, cmdDestination);
+            Droplet_Actions.SetupDestinations(d, cmdDestination);
             d.Important = true;
             // Run Droplet_Actions.splitDroplet
             Droplet_Actions.splitDroplet(d, ratios, dropSem);
@@ -237,7 +128,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool AwaitSplitWork(Droplet droplet, Apparature cmdDestination, UsefullSemaphore beginSem)
         {
-            SetupDestinations(droplet, cmdDestination);
+            Droplet_Actions.SetupDestinations(droplet, cmdDestination);
             beginSem.WaitOne();
 
             Droplet_Actions.MoveToApparature(droplet, droplet.nextDestination);
@@ -269,15 +160,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool TempDroplet(Droplet d, Heater heater, int time, string newType = null)
         {
-            SetupDestinations(d, heater);
-            Printer.PrintLine(d.Name + " : TEMPING");
+            Droplet_Actions.SetupDestinations(d, heater);
             d.Important = true;
-            Electrode closest = Droplet_Actions.MoveToApparature(d, heater);
+            Droplet_Actions.MoveToApparature(d, heater);
             if (time <= 0)
             {
                 throw new ArgumentException("Time must be greater than 0");
             }
-            d.WaitDroplet(time*1000);
+            Droplet_Actions.WaitDroplet(d, time*1000);
             if (newType != null && d.Substance_Name != newType)
             {
                 d.ChangeType(newType);
@@ -287,7 +177,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool SenseDroplet(Droplet d, Sensor sensor)
         {
-            SetupDestinations(d, sensor);
+            Droplet_Actions.SetupDestinations(d, sensor);
             Printer.PrintLine(d.Name + " : SENSING");
             d.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(d, sensor);
@@ -299,7 +189,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             d.Important = true;
             Printer.PrintLine(d.Name + " : WAITING");
-            d.WaitDroplet(time);
+            Droplet_Actions.WaitDroplet(d,time);
             d.SnekMode = false;
             d.SnekList = [];
             Printer.PrintLine(d.Name + " : DONE WAITING");
@@ -307,15 +197,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        private static void SetupDestinations(Droplet d, Apparature destination)
-        {
-            d.nextDestination = destination;
-            if (d.Occupy.Count > 0)
-            {
-                d.SetNextElectrodeDestination();
-            }
-            
-        }
+
 
 
     }

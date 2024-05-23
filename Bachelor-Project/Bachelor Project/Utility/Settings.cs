@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,11 +15,11 @@ namespace Bachelor_Project.Utility
         public const int TimeStep = 100; //100 milliseconds for each time step in the simulation
         public const int TimeStepOnSingleTick = 1000;
 
-        public const string BoardName = "WithSensors";
+        public const string BoardName = "BoardData";
         public const string BoardFileLoc = "Input Files";        
         public const string BoardFile = BoardFileLoc + "\\" + BoardName + ".json";
 
-        public const string ProtocolName = "Program";
+        public const string ProtocolName = "splitTestProgram";
         public const string ProtocolFileLoc = "Input Files";
         public const string ProtocolFile = ProtocolFileLoc + "\\" + ProtocolName + ".txt";
 

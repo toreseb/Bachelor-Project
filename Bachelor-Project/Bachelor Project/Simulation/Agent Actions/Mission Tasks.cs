@@ -58,10 +58,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-
-
-        
-
         // Droplets needing mixing are assumed to have been merged into one drop.
         // Does not take contaminants into account yet.
         public static bool MixDroplet(Droplet d, string pattern, string? newType = null) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
@@ -74,10 +70,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
 
         }
-
-
-
-
 
         internal static void WasteDroplet(Droplet droplet)
         {
@@ -119,6 +111,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool SplitDroplet(Droplet d, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem, Apparature cmdDestination)
         {
+            Droplet_Actions.SetupDestinations(d, cmdDestination);
             d.Important = true;
             // Run Droplet_Actions.splitDroplet
             Droplet_Actions.splitDroplet(d, ratios, dropSem);

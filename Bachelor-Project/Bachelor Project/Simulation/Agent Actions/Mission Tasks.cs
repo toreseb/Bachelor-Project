@@ -114,12 +114,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //Droplet_Actions.SetupDestinations(d, cmdDestination);
             d.Important = true;
 
-            // Wait for all AwaitSplitWork to have SetupDestinations
-            foreach ((string s, UsefullSemaphore sem) in dropSem)
-            {
-                sem.WaitOne();
-            }
-
             // Run Droplet_Actions.splitDroplet
             Droplet_Actions.SplitDroplet(d, ratios, dropSem);
             return true;

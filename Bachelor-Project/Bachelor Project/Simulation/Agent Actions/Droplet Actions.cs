@@ -1207,6 +1207,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 d.Waiting = false;
                 fixStart = true;
 
+                // Wait for AwaitSplitWork to SetupDestinations for droplet
+                dropSem[dName].WaitOne();
+
                 // Find electrode in source closest to where splitter needs to go. nextElectrodeDestination is not set, so we do it here.
                 d.SetNextElectrodeDestination(source.Name);
 

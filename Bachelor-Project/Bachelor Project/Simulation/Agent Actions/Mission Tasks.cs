@@ -193,8 +193,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.Important = true;
             Printer.PrintLine(d.Name + " : WAITING");
             Droplet_Actions.WaitDroplet(d,time);
-            d.SnekMode = false;
-            d.SnekList = [];
             Printer.PrintLine(d.Name + " : DONE WAITING");
             return true;
         }

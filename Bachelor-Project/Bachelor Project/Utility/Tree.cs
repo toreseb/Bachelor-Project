@@ -17,9 +17,23 @@ namespace Bachelor_Project.Utility
         private Droplet d;
         public List<Node> Leaves;
         public Electrode closestElectrode;
+        /// <summary>
+        /// Creates a tree structure from a droplet with oldElectrodes from before, with root as center, or as close to it, and it keeps the newElectrodes
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="oldElectrodes"></param>
+        /// <param name="newElectrodes"></param>
+        /// <param name="center"></param>
         public Tree(Droplet d, List<Electrode> oldElectrodes, List<Electrode> newElectrodes, Electrode center)
         {
-            closestElectrode = FindClosestElectrode(oldElectrodes, center);
+            if (!oldElectrodes.Contains(center))
+            {
+                closestElectrode = FindClosestElectrode(oldElectrodes, center);
+            }
+            else
+            {
+                closestElectrode = center;
+            }
             SeenElectrodes = [closestElectrode];
             NewElectrodes = newElectrodes;
             Node root = new(closestElectrode);
@@ -73,7 +87,7 @@ namespace Bachelor_Project.Utility
         public void RemoveLeaf(bool into = false)
         {
             Node cLeaf = Leaves[0];
-            if (cLeaf.Parent != null || into != null)
+            if (cLeaf.Parent != null || into != false)
             {
                 if (!NewElectrodes.Contains(cLeaf.Electrode))
                 {

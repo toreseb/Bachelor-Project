@@ -182,10 +182,6 @@ namespace Bachelor_Project.Simulation
             {
                 if (value.path == null || !dropletPaths.ContainsKey(d.Name) || key == d.Name || dropletPaths[d.Name].path == null) continue;
                 if (mergeDroplets != null && mergeDroplets.Contains(key)) continue;
-                if (d.Name == "drop2")
-                {
-                    int a = 2;
-                }
                 if (LineIntersection.IsIntersecting(dropletPaths[d.Name].path.Value.start, dropletPaths[d.Name].path.Value.end, value.path.Value.start, value.path.Value.end))
                 {
                     var oldValue = dropletPaths[d.Name];

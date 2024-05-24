@@ -1179,7 +1179,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             sems.Add(w2.Name, new UsefullSemaphore(0, 1));
             sems.Add(w3.Name, new UsefullSemaphore(0, 1));
 
-            Droplet_Actions.splitDroplet(w1, ratios, sems);
+            Droplet_Actions.SplitDroplet(w1, ratios, sems);
 
             // Check existance/sizes
             Assert.IsTrue(w1.Removed);
@@ -1252,7 +1252,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             sems.Add(w4.Name, new UsefullSemaphore(0, 1));
             sems.Add(w5.Name, new UsefullSemaphore(0, 1));
 
-            Droplet_Actions.splitDroplet(w1, correctRatios, sems);
+            Droplet_Actions.SplitDroplet(w1, correctRatios, sems);
 
             Assert.IsTrue(w1.Removed);
             Assert.AreEqual(2, w2.Occupy.Count);
@@ -1304,7 +1304,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             sems.Add(w2.Name, new UsefullSemaphore(0, 1));
             sems.Add(w3.Name, new UsefullSemaphore(0, 1));
 
-            Droplet_Actions.splitDroplet(w1, correctRatios, sems);
+            Droplet_Actions.SplitDroplet(w1, correctRatios, sems);
 
             Printer.PrintBoard();
 
@@ -1355,7 +1355,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             sems.Add(w2.Name, new UsefullSemaphore(0, 1));
             sems.Add(w3.Name, new UsefullSemaphore(0, 1));
 
-            Droplet_Actions.splitDroplet(w1, correctRatios, sems);
+            Droplet_Actions.SplitDroplet(w1, correctRatios, sems);
 
             Printer.PrintBoard();
 
@@ -1423,7 +1423,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             sems.Add(w2.Name, new UsefullSemaphore(0, 1));
             sems.Add(w3.Name, new UsefullSemaphore(0, 1));
 
-            Droplet_Actions.splitDroplet(w1, correctRatios, sems);
+            Droplet_Actions.SplitDroplet(w1, correctRatios, sems);
 
             Printer.PrintBoard();
 

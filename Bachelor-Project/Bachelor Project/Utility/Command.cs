@@ -108,7 +108,7 @@ namespace Bachelor_Project.Utility
 
                     foreach (string dName in OutputDroplets)
                     {
-                        UsefullSemaphore sem = new UsefullSemaphore(0, 1);
+                        UsefullSemaphore sem = new UsefullSemaphore(0, 2);
                         dropSem.Add(dName, sem);
                     }
 

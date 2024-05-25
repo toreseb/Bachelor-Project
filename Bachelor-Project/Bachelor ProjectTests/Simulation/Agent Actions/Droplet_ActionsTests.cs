@@ -1176,10 +1176,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             ratios.Add(w3.Name, 70);
 
             Dictionary<string, UsefulSemaphore> sems = new Dictionary<string, UsefulSemaphore>();
-            sems.Add(w2.Name, new UsefulSemaphore(0, 1));
-            sems.Add(w3.Name, new UsefulSemaphore(0, 1));
+            sems.Add(w2.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
+            sems.Add(w3.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
 
-            Droplet_Actions.splitDroplet(w1, ratios, sems);
+            Droplet_Actions.SplitDroplet(w1, ratios, sems);
 
             // Check existance/sizes
             Assert.IsTrue(w1.Removed);
@@ -1247,12 +1247,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Dictionary<string, double> correctRatios = Calc.Ratio(ratios, OutputDroplets);
 
             Dictionary<string, UsefulSemaphore> sems = new Dictionary<string, UsefulSemaphore>();
-            sems.Add(w2.Name, new UsefulSemaphore(0, 1));
-            sems.Add(w3.Name, new UsefulSemaphore(0, 1));
-            sems.Add(w4.Name, new UsefulSemaphore(0, 1));
-            sems.Add(w5.Name, new UsefulSemaphore(0, 1));
+            sems.Add(w2.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
+            sems.Add(w3.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
+            sems.Add(w4.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
+            sems.Add(w5.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
 
-            Droplet_Actions.splitDroplet(w1, correctRatios, sems);
+            Droplet_Actions.SplitDroplet(w1, correctRatios, sems);
 
             Assert.IsTrue(w1.Removed);
             Assert.AreEqual(2, w2.Occupy.Count);
@@ -1301,10 +1301,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Dictionary<string, double> correctRatios = Calc.Ratio(ratios, OutputDroplets);
 
             Dictionary<string, UsefulSemaphore> sems = new Dictionary<string, UsefulSemaphore>();
-            sems.Add(w2.Name, new UsefulSemaphore(0, 1));
-            sems.Add(w3.Name, new UsefulSemaphore(0, 1));
+            sems.Add(w2.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
+            sems.Add(w3.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
 
-            Droplet_Actions.splitDroplet(w1, correctRatios, sems);
+            Droplet_Actions.SplitDroplet(w1, correctRatios, sems);
 
             Printer.PrintBoard();
 
@@ -1352,10 +1352,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Dictionary<string, double> correctRatios = Calc.Ratio(ratios, OutputDroplets);
 
             Dictionary<string, UsefulSemaphore> sems = new Dictionary<string, UsefulSemaphore>();
-            sems.Add(w2.Name, new UsefulSemaphore(0, 1));
-            sems.Add(w3.Name, new UsefulSemaphore(0, 1));
+            sems.Add(w2.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
+            sems.Add(w3.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
 
-            Droplet_Actions.splitDroplet(w1, correctRatios, sems);
+            Droplet_Actions.SplitDroplet(w1, correctRatios, sems);
 
             Printer.PrintBoard();
 
@@ -1420,10 +1420,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Dictionary<string, double> correctRatios = Calc.Ratio(ratios, OutputDroplets);
 
             Dictionary<string, UsefulSemaphore> sems = new Dictionary<string, UsefulSemaphore>();
-            sems.Add(w2.Name, new UsefulSemaphore(0, 1));
-            sems.Add(w3.Name, new UsefulSemaphore(0, 1));
+            sems.Add(w2.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
+            sems.Add(w3.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
 
-            Droplet_Actions.splitDroplet(w1, correctRatios, sems);
+            Droplet_Actions.SplitDroplet(w1, correctRatios, sems);
 
             Printer.PrintBoard();
 

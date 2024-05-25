@@ -111,17 +111,22 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static bool SplitDroplet(Droplet d, Dictionary<string, double> ratios, Dictionary<string, UsefulSemaphore> dropSem, Apparature cmdDestination)
         {
-            Droplet_Actions.SetupDestinations(d, cmdDestination);
+            //Droplet_Actions.SetupDestinations(d, cmdDestination);
             d.Important = true;
+
             // Run Droplet_Actions.splitDroplet
-            Droplet_Actions.splitDroplet(d, ratios, dropSem);
+            Droplet_Actions.SplitDroplet(d, ratios, dropSem);
             return true;
         }
 
         public static bool AwaitSplitWork(Droplet droplet, Apparature cmdDestination, UsefulSemaphore beginSem)
         {
+            // Set destinations and release one semaphore
             Droplet_Actions.SetupDestinations(droplet, cmdDestination);
-            beginSem.WaitOne();
+            beginSem.TryReleaseOne();
+
+            // Wait for SplitDroplet to release 2 semaphore
+            beginSem.Wait(2);
 
             Droplet_Actions.MoveToApparature(droplet, droplet.nextDestination);
             return true;

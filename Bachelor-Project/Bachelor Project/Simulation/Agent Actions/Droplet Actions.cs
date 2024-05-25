@@ -1207,6 +1207,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 d.Waiting = false;
                 fixStart = true;
 
+                // Wait for AwaitSplitWork to SetupDestinations for droplet
+                dropSem[dName].WaitOne();
+
                 // Find electrode in source closest to where splitter needs to go. nextElectrodeDestination is not set, so we do it here.
                 d.SetNextElectrodeDestination(source.Name);
 
@@ -1340,7 +1343,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                     else
                     {
-                        CoilSnek(d, center: dest);
+                        CoilSnek(d);
                     }
 
                 }
@@ -1351,7 +1354,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 Program.C.RemovePath(d);
 
                 // Give d the task of moving.
-                dropSem[d.Name].TryReleaseOne();
+                dropSem[d.Name].TryRelease(2);
 
                 Printer.PrintBoard();
                 Printer.PrintLine(dName + " DONE!!");

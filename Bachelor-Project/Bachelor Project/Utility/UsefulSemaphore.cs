@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Utility
 {
-    public class UsefullSemaphore
+    public class UsefulSemaphore
     {
         private int count = 0;
         private int limit = 0;
         private object locker = new object();
 
-        public UsefullSemaphore(int initialCount, int maximumCount)
+        public UsefulSemaphore(int initialCount, int maximumCount)
         {
             count = initialCount;
             limit = maximumCount;
         }
 
-        public UsefullSemaphore(int maximumCount) 
+        public UsefulSemaphore(int maximumCount) 
         {
             count = 0;
             limit = maximumCount;
@@ -28,14 +28,7 @@ namespace Bachelor_Project.Utility
 
         public void WaitOne()
         {
-            lock (locker)
-            {
-                while (count == 0)
-                {
-                    Monitor.Wait(locker);
-                }
-                count--;
-            }
+            Wait(1);
         }
 
         public void Wait(int i)
@@ -52,11 +45,16 @@ namespace Bachelor_Project.Utility
         /// <summary>
         /// Waits until semaphore is free, but does not actually subtract from the semaphore
         /// </summary>
-        public void Check()
+        public void CheckOne()
+        {
+            Check(1);
+        }
+
+        public void Check(int i)
         {
             lock (locker)
             {
-                while (count == 0)
+                while (count-i < 0)
                 {
                     Monitor.Wait(locker);
                 }
@@ -65,16 +63,7 @@ namespace Bachelor_Project.Utility
 
         public bool TryReleaseOne()
         {
-            lock (locker)
-            {
-                if (count < limit)
-                {
-                    count++;
-                    Monitor.PulseAll(locker);
-                    return true;
-                }
-                return false;
-            }
+            return TryRelease(1);
         }
 
         public bool TryRelease(int i)

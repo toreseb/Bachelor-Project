@@ -76,7 +76,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        public static bool MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefullSemaphore beforeDone, Apparature cmdDestination)
+        public static bool MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefulSemaphore beforeDone, Apparature cmdDestination)
         {
             Droplet_Actions.SetupDestinations(d, cmdDestination);
             Printer.PrintLine(d.Name + " : MERGING");
@@ -109,7 +109,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool SplitDroplet(Droplet d, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem, Apparature cmdDestination)
+        public static bool SplitDroplet(Droplet d, Dictionary<string, double> ratios, Dictionary<string, UsefulSemaphore> dropSem, Apparature cmdDestination)
         {
             Droplet_Actions.SetupDestinations(d, cmdDestination);
             d.Important = true;
@@ -118,7 +118,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool AwaitSplitWork(Droplet droplet, Apparature cmdDestination, UsefullSemaphore beginSem)
+        public static bool AwaitSplitWork(Droplet droplet, Apparature cmdDestination, UsefulSemaphore beginSem)
         {
             Droplet_Actions.SetupDestinations(droplet, cmdDestination);
             beginSem.WaitOne();
@@ -127,7 +127,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefullSemaphore beforeDone, UsefullSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
+        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefulSemaphore beforeDone, UsefulSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
         {
             d.Important = true;
             d.SnekList = [];

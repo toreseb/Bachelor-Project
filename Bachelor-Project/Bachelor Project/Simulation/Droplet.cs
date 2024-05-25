@@ -48,6 +48,8 @@ namespace Bachelor_Project.Simulation
 
         private Queue<Task> TaskQueue = [];
 
+        private object TaskEnqueue = new object();
+
         public Task? ActiveTask;
 
         public bool Inputted = false;
@@ -173,11 +175,11 @@ namespace Bachelor_Project.Simulation
                     // Do thing
                     while (TaskQueue.Count > 0)
                     {
-                        if (Name == "drop4")
+                        lock(TaskQueue)
                         {
-                            int a = 2;
+                            ActiveTask = TaskQueue.Dequeue();
                         }
-                        ActiveTask = TaskQueue.Dequeue();
+                        
                         Printer.PrintLine("Droplet " + Name + " is doing work");
                         ActiveTask.Start();
                         try
@@ -212,10 +214,14 @@ namespace Bachelor_Project.Simulation
 
         public void GiveWork(Task task)
         {
-            // TODO: Implement task queue
-            TaskQueue.Enqueue(task);
-            // Signal that work is available
-            workAvailableEvent.Set();
+            lock (TaskQueue)
+            {
+                TaskQueue.Enqueue(task);
+                // Signal that work is available
+                workAvailableEvent.Set();
+
+            }
+            
         }
 
         public List<Task> GetWork()

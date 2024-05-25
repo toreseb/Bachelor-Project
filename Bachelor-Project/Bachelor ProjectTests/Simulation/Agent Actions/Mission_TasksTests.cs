@@ -140,10 +140,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             List<string> OutputDroplets = [Wat4.Name];
             Apparature CommandDestination = board.Actuators["heat0"];
 
-            UsefullSemaphore sem1 = new(InputDroplets.Count);
+            UsefulSemaphore sem1 = new(InputDroplets.Count);
             Task<Electrode> calcMerge = new(() => Droplet_Actions.MergeCalc(InputDroplets, board.Droplets[OutputDroplets[0]], sem1));
 
-            UsefullSemaphore sem2 = new(InputDroplets.Count);
+            UsefulSemaphore sem2 = new(InputDroplets.Count);
             foreach (var item in InputDroplets)
             {
                 Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(board.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
@@ -259,10 +259,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             List<string> outDrops = [Wat2.Name, Wat3.Name, Wat4.Name];
 
             Dictionary<string, double> ratios = Calc.Ratio(dropRat, outDrops);
-            Dictionary<string, UsefullSemaphore> dropSem = new Dictionary<string, UsefullSemaphore>();
-            dropSem.Add("Wat2", new UsefullSemaphore(0, 1));
-            dropSem.Add("Wat3", new UsefullSemaphore(0, 1));
-            dropSem.Add("Wat4", new UsefullSemaphore(0, 1));
+            Dictionary<string, UsefulSemaphore> dropSem = new Dictionary<string, UsefulSemaphore>();
+            dropSem.Add("Wat2", new UsefulSemaphore(0, 1));
+            dropSem.Add("Wat3", new UsefulSemaphore(0, 1));
+            dropSem.Add("Wat4", new UsefulSemaphore(0, 1));
 
             Wat2.nextDestination = board.Actuators["heat1"];
             Wat3.nextDestination = board.Actuators["heat2"];

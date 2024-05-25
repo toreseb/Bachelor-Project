@@ -64,11 +64,12 @@ namespace Bachelor_Project.Outparser
                     {
                         cTask = OutputQueue.Last();
                         OutputQueue.RemoveLast();
-                        cTask.RunSynchronously();
-                        
-                        
-                        cTask = null;
                     }
+                    cTask.RunSynchronously();
+                        
+                        
+                    cTask = null;
+                    
                     Thread.Sleep(5);
 
 

@@ -49,26 +49,27 @@ namespace Bachelor_Project.Utility
 
                 // Do thing
                 while (PrintQueue.Count > 0)
-                {
+                { 
                     lock (PrintEnqueue)
                     {
                         cTask = PrintQueue.Dequeue();
-                        if (cTask.Status != TaskStatus.RanToCompletion)
-                        {
-                            cTask.RunSynchronously();
-                        }
-
-                        try
-                        {
-                            cTask.Wait(cancellationToken);
-                            cTask = null;
-                        }
-                        catch (Exception)
-                        {
-                            cTask = null;
-                            return;
-                        }
                     }
+                    if (cTask.Status != TaskStatus.RanToCompletion)
+                    {
+                        cTask.RunSynchronously();
+                    }
+
+                    try
+                    {
+                        cTask.Wait(cancellationToken);
+                        cTask = null;
+                    }
+                    catch (Exception)
+                    {
+                        cTask = null;
+                        return;
+                    }
+                    
                     
 
                     

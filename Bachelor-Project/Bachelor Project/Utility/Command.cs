@@ -82,10 +82,10 @@ namespace Bachelor_Project.Utility
                 case "merge":
                     Printer.PrintLine("Merge");
 
-                    UsefullSemaphore sem1 = new(InputDroplets.Count);
+                    UsefulSemaphore sem1 = new(InputDroplets.Count);
                     Task<Electrode> calcMerge = new(() => Droplet_Actions.MergeCalc(InputDroplets, b.Droplets[OutputDroplets[0]], sem1));
 
-                    UsefullSemaphore sem2 = new(InputDroplets.Count);
+                    UsefulSemaphore sem2 = new(InputDroplets.Count);
                     foreach (var item in InputDroplets)
                     {
                         Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(b.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
@@ -104,11 +104,11 @@ namespace Bachelor_Project.Utility
 
                     ratios = Calc.Ratio(ActionValue.Length > 0 ? (Dictionary<string, int>)ActionValue[0] : null, OutputDroplets);
 
-                    Dictionary<string, UsefullSemaphore> dropSem = new Dictionary<string, UsefullSemaphore>();
+                    Dictionary<string, UsefulSemaphore> dropSem = new Dictionary<string, UsefulSemaphore>();
 
                     foreach (string dName in OutputDroplets)
                     {
-                        UsefullSemaphore sem = new UsefullSemaphore(0, 1);
+                        UsefulSemaphore sem = new UsefulSemaphore(0, 1);
                         dropSem.Add(dName, sem);
                     }
 

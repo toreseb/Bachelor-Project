@@ -1066,7 +1066,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintBoard();
         }
 
-        public static Electrode MergeCalc(List<string> inputDroplets, Droplet droplet, UsefullSemaphore done) //Release 1 to done when done
+        public static Electrode MergeCalc(List<string> inputDroplets, Droplet droplet, UsefulSemaphore done) //Release 1 to done when done
         {
 
             done.TryRelease(inputDroplets.Count);
@@ -1188,7 +1188,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
         
-        public static void splitDroplet(Droplet source, Dictionary<string, double> ratios, Dictionary<string, UsefullSemaphore> dropSem)
+        public static void splitDroplet(Droplet source, Dictionary<string, double> ratios, Dictionary<string, UsefulSemaphore> dropSem)
         {
             // For loop to split the droplets out one by one.
             // Makes a snake of appropriate size a la uncoil and cuts it off.

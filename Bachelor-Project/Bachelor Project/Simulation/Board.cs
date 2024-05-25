@@ -248,16 +248,21 @@ namespace Bachelor_Project.Simulation
                 if (Electrodes[i,j].Occupant != null)
                 {
                     string name;
-                    if (Electrodes[i, j].Occupant.Name.Length > Squarewidth)
+                    try
                     {
-                        name = Electrodes[i, j].Occupant.Name[..Squarewidth];
+                        if (Electrodes[i, j].Occupant.Name.Length > Squarewidth)
+                        {
+                            name = Electrodes[i, j].Occupant.Name[..Squarewidth];
+                        }
+                        else
+                        {
+                            name = Electrodes[i, j].Occupant.Name;
+                        }
+                        line2 += name;
+                        used2 += name.Length;
                     }
-                    else
-                    {
-                        name = Electrodes[i, j].Occupant.Name;
-                    }
-                    line2 += name;
-                    used2 += name.Length;
+                    catch (Exception) { }
+
                 }else if (Electrodes[i,j].GetContaminants().Count != 0)
                 {
                     line2 += Electrodes[i, j].GetContaminants()[0].Substring(0,1);

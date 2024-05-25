@@ -18,7 +18,7 @@ namespace Bachelor_Project.Simulation
 
         public (List<Command> commands, Dictionary<string, string> dropletpairs, Dictionary<string, List<string>> contaminated, Dictionary<string, List<string>> contaminates)? data;
         public Board board;
-        public Dictionary<string, ((Point start, Point end)? path, UsefullSemaphore sem)> dropletPaths;
+        public Dictionary<string, ((Point start, Point end)? path, UsefulSemaphore sem)> dropletPaths;
         private List<Command> currentCommands = [];
 
         public Commander((List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>)? data, string boarddata)
@@ -177,17 +177,27 @@ namespace Bachelor_Project.Simulation
         public bool SetPath(Droplet d, int startPosX, int startPosY, int endPosX, int endPosY, List<string>? mergeDroplets = null)
         {
             bool newPath = false;
-            Dictionary<string, ((Point start, Point end)? path, UsefullSemaphore sem)> oldPaths = new(dropletPaths);
+            Dictionary<string, ((Point start, Point end)? path, UsefulSemaphore sem)> oldPaths = new(dropletPaths);
+
+            if (dropletPaths.Keys.Contains(d.Name))
+            {
+                dropletPaths[d.Name] = ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), dropletPaths[d.Name].sem);
+            }
+            else
+            {
+                dropletPaths.Add(d.Name, ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), new UsefulSemaphore(1, 1)));
+            }
+
             foreach ((var key, var value) in oldPaths)
             {
-                if (value.path == null || !dropletPaths.ContainsKey(d.Name) || key == d.Name || dropletPaths[d.Name].path == null) continue;
+                if (value.path == null || key == d.Name) continue;
                 if (mergeDroplets != null && mergeDroplets.Contains(key)) continue;
                 if (LineIntersection.IsIntersecting(dropletPaths[d.Name].path.Value.start, dropletPaths[d.Name].path.Value.end, value.path.Value.start, value.path.Value.end))
                 {
                     var oldValue = dropletPaths[d.Name];
                     dropletPaths[d.Name] = (null, dropletPaths[d.Name].sem);
                     Monitor.Exit(ModifiedAStar.PathLock);
-                    value.sem.Check();
+                    value.sem.CheckOne();
                     Monitor.Enter(ModifiedAStar.PathLock);
                     Board b = Program.C.board;
                     if (!(d.CurrentPath == null || d.CurrentPath.Value.path.Count == 0))
@@ -199,13 +209,7 @@ namespace Bachelor_Project.Simulation
                 }
             }
 
-            if (dropletPaths.Keys.Contains(d.Name)){
-                dropletPaths[d.Name] = ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), dropletPaths[d.Name].sem);
-            }
-            else
-            {
-                dropletPaths.Add(d.Name, ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), new UsefullSemaphore(1,1)));
-            }
+            
             dropletPaths[d.Name].sem.TryReleaseOne();
             dropletPaths[d.Name].sem.WaitOne();
 
@@ -229,7 +233,7 @@ namespace Bachelor_Project.Simulation
                 }
                 else
                 {
-                    dropletPaths.Add(d.Name, (null, new UsefullSemaphore(1, 1)));
+                    dropletPaths.Add(d.Name, (null, new UsefulSemaphore(1, 1)));
                 }
                 dropletPaths[d.Name].sem.TryReleaseOne();
             }

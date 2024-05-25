@@ -1188,7 +1188,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
         
-        public static void splitDroplet(Droplet source, Dictionary<string, double> ratios, Dictionary<string, UsefulSemaphore> dropSem)
+        public static void SplitDroplet(Droplet source, Dictionary<string, double> ratios, Dictionary<string, UsefulSemaphore> dropSem)
         {
             // For loop to split the droplets out one by one.
             // Makes a snake of appropriate size a la uncoil and cuts it off.

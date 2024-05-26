@@ -93,7 +93,6 @@ namespace Bachelor_Project.Simulation
             {
                 Printer.PrintLine(item.Type + " needs commands: " + item.InputCommands.Count + " and allows: " + item.OutputCommands.Count + " and has nextdest of " + item.CommandDestination);
             }
-            commands = commands.OrderBy(x => x.InputCommands.Count).ToList();
 
             commands.FindAll(x => x.InputCommands.Count == 0).ForEach(x => currentCommands.Add(x));
         }
@@ -117,9 +116,9 @@ namespace Bachelor_Project.Simulation
                 cCommand.CommandDestination ??= cCommand.FindDest();
                 Printer.PrintLine(cCommand.ToString() + cCommand.CommandDestination);
                 cCommand.ExecuteCommand();
-                cCommand.OutputCommands.ForEach(x => x.InputCommands.Remove(cCommand));
                 cCommand.OutputCommands.ForEach(x => 
                     {
+                        x.InputCommands.Remove(cCommand);
                         if (x.InputCommands.Count == 0) {
                             currentCommands.Add(x);
                         }
@@ -199,12 +198,6 @@ namespace Bachelor_Project.Simulation
                     Monitor.Exit(ModifiedAStar.PathLock);
                     value.sem.CheckOne();
                     Monitor.Enter(ModifiedAStar.PathLock);
-                    Board b = Program.C.board;
-                    if (!(d.CurrentPath == null || d.CurrentPath.Value.path.Count == 0))
-                    {
-                        newPath = true;
-                        d.CurrentPath = ModifiedAStar.FindPath(d, d.CurrentPath.Value.path.Last().Item1, mergeDroplets: mergeDroplets, start: d.CurrentPath.Value.path[0].Item1);
-                    }
                     dropletPaths[d.Name] = oldValue;
                 }
             }

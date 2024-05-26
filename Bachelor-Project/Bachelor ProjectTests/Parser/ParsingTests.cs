@@ -58,7 +58,7 @@ namespace Bachelor_Project.Parsing.Tests
 
             //Test output
             command = data.commands[3];
-            Assert.IsTrue(command.Type == "output" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 0 && command.NextName == "out0" && command.NextType == typeof(Output));
+            Assert.IsTrue(command.Type == "output" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 0 && command.NextName == "out0");
 
             //Test contam
             Assert.AreEqual(data.contaminated["water"][0], "blood");
@@ -80,13 +80,13 @@ namespace Bachelor_Project.Parsing.Tests
 
             //Test temp
             command = data.commands[6];
-            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "water" && (string)command.ActionValue[1] == "1" && command.NextName == "heat0" && command.NextType == typeof(Heater));
+            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "water" && (string)command.ActionValue[1] == "1" && command.NextName == "heat0");
             command = data.commands[7];
-            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "heatedwater" && (string)command.ActionValue[1] == "2" && command.NextName == "heat0" && command.NextType == typeof(Heater));
+            Assert.IsTrue(command.Type == "temp" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "heatedwater" && (string)command.ActionValue[1] == "2" && command.NextName == "heat0");
 
             //Test sense
             command = data.commands[8];
-            Assert.IsTrue(command.Type == "sense" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && command.NextName == "sens0" && command.NextType == typeof(Sensor));
+            Assert.IsTrue(command.Type == "sense" && command.InputDroplets.Count == 1 && command.OutputDroplets.Count == 1 && command.NextName == "sens0");
 
         }
     }

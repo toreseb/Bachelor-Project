@@ -19,41 +19,28 @@ namespace Bachelor_Project.Utility
         public List<Command> InputCommands = [];
         public List<string> OutputDroplets = outputs;
         public List<Command> OutputCommands = [];
-        public Type? NextType = nextType;
         public string? NextName = nextName;
         public Apparature? CommandDestination = null;
         public object[] ActionValue { get; set; } = value;
 
         public void SetDest()
         {
-            try
+            if (Type == "temp")
             {
-                if (NextType == null || NextName == null)
-                {
-                    return;
-                }
-                if (NextType.IsSubclassOf(typeof(Actuator)))
-                {
-                    CommandDestination = Program.C.board.Actuators[NextName];
-                }
-                else if (NextType.Equals(typeof(Sensor)))
-                {
-                    CommandDestination = Program.C.board.Sensors[NextName];
-                }
-                else if (NextType.Equals(typeof(Output)))
-                {
-                    CommandDestination = Program.C.board.Output[NextName];
-                }
-                else // Not sure if waste is needed
-                {
-                    throw new ArgumentException("Invalid destination type");
-                }
+                CommandDestination = Program.C.board.Actuators[NextName];
             }
-            catch (Exception)
+            else if (Type == "sense")
             {
-                throw new ArgumentException("Invalid destination target");
+                CommandDestination = Program.C.board.Sensors[NextName];
             }
-            
+            else if (Type == "output")
+            {
+                CommandDestination = Program.C.board.Output[NextName];
+            }
+            else // Not sure if waste is needed
+            {
+                return;
+            }
         }
 
         public void ExecuteCommand()

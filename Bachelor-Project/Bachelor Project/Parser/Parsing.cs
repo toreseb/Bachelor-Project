@@ -200,11 +200,11 @@ namespace Bachelor_Project.Parsing
                         newType = Dropletpairs[context.GetChild<ProgramParser.DropletnameContext>(0).GetText()];
                     }
                     Printer.PrintLine();
-                    Commands.Add(new Command("temp", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], nextName: context.GetChild<ProgramParser.TileentityContext>(0).GetText(), nextType: typeof(Heater),  value: [newType, context.GetChild<ProgramParser.NumberContext>(0).GetText()]));
+                    Commands.Add(new Command("temp", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], nextName: context.GetChild<ProgramParser.TileentityContext>(0).GetText(), value: [newType, context.GetChild<ProgramParser.NumberContext>(0).GetText()]));
                     break;
                 case "SenseContext": //SENSE , droplet name , sensor
                     Printer.PrintLine($"sense droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} with sensor: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()}");
-                    Commands.Add(new Command("sense", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], nextName: context.GetChild<ProgramParser.TileentityContext>(0).GetText(), nextType: typeof(Sensor)));
+                    Commands.Add(new Command("sense", [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], nextName: context.GetChild<ProgramParser.TileentityContext>(0).GetText()));
                     break;
                 case "WaitContext": //WAIT , droplet name , time
                     Printer.PrintLine($"droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} waits for {int.Parse(context.GetChild<ProgramParser.NumberContext>(0).GetText())} milliseconds");

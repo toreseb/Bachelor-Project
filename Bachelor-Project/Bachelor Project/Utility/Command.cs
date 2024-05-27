@@ -23,6 +23,9 @@ namespace Bachelor_Project.Utility
         public Apparature? CommandDestination = null;
         public object[] ActionValue { get; set; } = value;
 
+        private static int Inputted = 0;
+        private static UsefulSemaphore InputSem = new UsefulSemaphore(1,1);
+
         public void SetDest()
         {
             if (Type == "temp")
@@ -53,7 +56,13 @@ namespace Bachelor_Project.Utility
                 case "input":
                     
                     Printer.PrintLine("Input");
-                    command = new(() => Mission_Tasks.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[0]], int.Parse((string)ActionValue[1]), CommandDestination));
+                    while (Inputted != (int)ActionValue[0])
+                    {
+                        InputSem.CheckOne();
+                    }
+                    InputSem.WaitOne();
+                    Inputted += 1;
+                    command = new(() => Mission_Tasks.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[1]], int.Parse((string)ActionValue[2]), InputSem, CommandDestination));
                     b.Droplets[OutputDroplets[0]].GiveWork(command);
                     break;
                 case "output":

@@ -80,6 +80,7 @@ namespace Bachelor_Project.Simulation
                     {
                         foreach (var item in item1.OutputDroplets)
                         {
+                            
                             if (item2.InputDroplets.Contains(item) && !item1.OutputCommands.Contains(item2))
                             {
                                 item2.InputCommands.Add(item1);

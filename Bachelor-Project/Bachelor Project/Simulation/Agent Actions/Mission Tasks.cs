@@ -14,11 +14,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     // This class contains the more complicated missions the agents will have.
     public static class Mission_Tasks
     {
-        public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
+        public static bool InputDroplet(Droplet d, Input i, int volume, UsefulSemaphore? InputSem = null, Apparature? destination = null)
         {
             Printer.PrintLine(d.Name + " has NextDestiantion of: " + d.nextDestination);
             Printer.PrintLine(d.Name + " : INPUTTING");
             Droplet_Actions.InputDroplet(d, i, volume, destination);
+            InputSem?.TryReleaseOne();
             if (destination != null && d.GetWork().Count == 0)
             {
                 Electrode destElectrode = d.GetClosestFreePointer(destination);
@@ -41,6 +42,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     if (d.CurrentPath.Value.path.Count <= Constants.DestBuff)
                     {
                         Droplet_Actions.CoilSnek(d, d.SnekList.First());
+                        Program.C.RemovePath(d);
                         return true;
                     }
                 }

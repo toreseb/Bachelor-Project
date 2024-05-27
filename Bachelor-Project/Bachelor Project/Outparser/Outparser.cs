@@ -10,7 +10,7 @@ namespace Bachelor_Project.Outparser
     static public class Outparser
     {
 
-        public static LinkedList<Task<bool>> OutputQueue = [];
+        public static Queue<Task<bool>> OutputQueue = [];
         public static Task<bool>? cTask = null;
         static bool LastTick = false;
         static List<string> Seen = [];
@@ -62,47 +62,22 @@ namespace Bachelor_Project.Outparser
                 {
                     lock (OutputEnqueue)
                     {
-                        cTask = OutputQueue.Last();
-                        OutputQueue.RemoveLast();
+                        cTask = OutputQueue.Dequeue();
                     }
                     cTask.RunSynchronously();
                         
                         
                     cTask = null;
-                    
-                    Thread.Sleep(5);
-
-
                 }
 
             }
         }
 
-        private static void GiveOutput(Task<bool> task, int? pos = null) // Pos is from the right, so last. If pos is null it inserts at left
+        private static void GiveOutput(Task<bool> task) // Pos is from the right, so last. If pos is null it inserts at left
         {
             lock (OutputEnqueue)
             {
-                if (OutputQueue.Last == null || pos == null)
-                {
-                    OutputQueue.AddFirst(task);
-
-                }else if (pos == 0)
-                {
-                    OutputQueue.AddLast(task);
-                }
-                else
-                {
-                    LinkedListNode<Task<bool>> cNode = OutputQueue.Last;
-                    for (int i = 1; i < pos; i++)
-                    {
-                        if (cNode.Previous == null)
-                        {
-                            break;
-                        }
-                        cNode = cNode.Previous;
-                    }
-                    OutputQueue.AddBefore(cNode, new LinkedListNode<Task<bool>>(task));
-                }
+                OutputQueue.Enqueue(task);
                 // Signal that work is available
                 OutputAvailableEvent.Set();
             }
@@ -185,9 +160,24 @@ namespace Bachelor_Project.Outparser
 
         public static void WaitDroplet(Droplet d, int milliseconds)
         {
-            GiveOutput(new(() => Wait(d,milliseconds)));
+            if (Settings.ConnectedToHardware)
+            {
+                Thread.Sleep(milliseconds);
+            }
+            else
+            {
+                GiveOutput(new(() => Wait(d, milliseconds)));
+            }
+            
         }
 
+        /// <summary>
+        /// This is only called if the software is not connected to the hardware
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="milliseconds"></param>
+        /// <param name="start"></param>
+        /// <returns></returns>
         public static bool Wait(Droplet d, int milliseconds, int start = 0)
         {
             int elapsedTime = start;
@@ -207,11 +197,6 @@ namespace Bachelor_Project.Outparser
                         Tick();
 
                     }
-
-                }
-                else
-                {
-                    Waiters.Add(d.Name, (elapsedTime, milliseconds));
 
                 }
             }

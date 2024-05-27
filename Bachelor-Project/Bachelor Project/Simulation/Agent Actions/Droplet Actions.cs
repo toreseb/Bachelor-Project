@@ -1547,14 +1547,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         /// <param name="milliseconds"></param>
         public static void WaitDroplet(Droplet d, int milliseconds)
         {
-            if (Settings.ConnectedToHardware)
-            {
-                Thread.Sleep(milliseconds);
-            }
-            else
-            {
-                Outparser.Outparser.WaitDroplet(d, milliseconds);
-            }
+            Outparser.Outparser.WaitDroplet(d, milliseconds);
+            
 
         }
 

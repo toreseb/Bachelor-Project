@@ -100,6 +100,11 @@ namespace Bachelor_Project.Utility
             GivePrint(new Task<bool>(() => PrintCommand(message, true)));
         }
 
+        public static void PrintBoard()
+        {
+            GivePrint(new Task<bool>(Program.C.board.PrintBoardState));
+        }
+
         private static bool PrintCommand(object? message, bool newLine = false)
         {
             if (message == null && newLine == true)
@@ -121,10 +126,7 @@ namespace Bachelor_Project.Utility
             return true;
         }
 
-        public static void PrintBoard()
-        {
-            GivePrint(new Task<bool>(Program.C.board.PrintBoardState));
-        }
+        
 
         public static bool CurrentlyDone()
         {

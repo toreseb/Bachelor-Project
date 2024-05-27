@@ -20,6 +20,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static void InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
+            if (d.Name == "drop2")
+            {
+                int a = 2;
+            }
+
             d.MergeReady = false;
             if (d.Inputted)
             {

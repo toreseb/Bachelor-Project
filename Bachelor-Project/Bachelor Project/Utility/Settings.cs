@@ -19,7 +19,7 @@ namespace Bachelor_Project.Utility
         public const string BoardFileLoc = "Input Files";        
         public const string BoardFile = BoardFileLoc + "\\" + BoardName + ".json";
 
-        public const string ProtocolName = "splitTestProgram";
+        public const string ProtocolName = "DilutionSeries";
         public const string ProtocolFileLoc = "Input Files";
         public const string ProtocolFile = ProtocolFileLoc + "\\" + ProtocolName + ".txt";
 

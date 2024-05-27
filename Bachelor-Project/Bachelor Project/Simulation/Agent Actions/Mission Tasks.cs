@@ -111,13 +111,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool SplitDroplet(Droplet d, Dictionary<string, double> ratios, Dictionary<string, UsefulSemaphore> dropSem, Apparature cmdDestination)
+        public static bool SplitDroplet(Droplet d, Dictionary<string, double> percentages, Dictionary<string, UsefulSemaphore> dropSem, Apparature cmdDestination)
         {
             //Droplet_Actions.SetupDestinations(d, cmdDestination);
             d.Important = true;
 
             // Run Droplet_Actions.splitDroplet
-            Droplet_Actions.SplitDroplet(d, ratios, dropSem);
+            Droplet_Actions.SplitDroplet(d, percentages, dropSem);
             return true;
         }
 
@@ -157,7 +157,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
-        public static bool TempDroplet(Droplet d, Heater heater, int time, string newType = null)
+        public static bool TempDroplet(Droplet d, Heater heater, int time, string? newType = null)
         {
             Droplet_Actions.SetupDestinations(d, heater);
             d.Important = true;

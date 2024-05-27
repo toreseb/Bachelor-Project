@@ -1,4 +1,6 @@
+using Antlr4.Runtime;
 using Bachelor_Project.Outparser;
+using Bachelor_Project.Parsing;
 using Bachelor_Project.Simulation.Agent_Actions;
 using Bachelor_Project.Utility;
 using System;
@@ -23,6 +25,7 @@ namespace Bachelor_Project.Simulation
 
         public Commander((List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>)? data, string boarddata)
         {
+            Parsing.Parsing.Reset();
             this.data = data;
             string json = File.ReadAllText(boarddata);
             board = Board.ImportBoardData(json);

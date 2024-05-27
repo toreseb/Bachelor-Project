@@ -503,10 +503,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                             xCheck++;
                             break;
                     }
-                    if (droplets[0].Name == "drop3" && temp[0].Name == "el3" && mergeDroplets != null)
-                    {
-                        int a = 2;
-                    }
                     if (CheckBoardEdge(xCheck, yCheck))
                     {
                         occupant = Program.C.board.Electrodes[xCheck, yCheck].Occupant;

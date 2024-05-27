@@ -95,10 +95,10 @@ namespace Bachelor_Project.Utility
                     break;
                 case "split":
                     Printer.PrintLine("Split");
-                    Dictionary<string, double> ratios = [];
+                    Dictionary<string, double> percentages = [];
 
 
-                    ratios = Calc.Ratio(ActionValue.Length > 0 ? (Dictionary<string, int>)ActionValue[0] : null, OutputDroplets);
+                    percentages = Calc.FindPercentages(ActionValue.Length > 0 ? (Dictionary<string, int>)ActionValue[0] : null, OutputDroplets);
 
                     Dictionary<string, UsefulSemaphore> dropSem = new Dictionary<string, UsefulSemaphore>();
 
@@ -108,7 +108,7 @@ namespace Bachelor_Project.Utility
                         dropSem.Add(dName, sem);
                     }
 
-                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], ratios, dropSem, CommandDestination));
+                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], percentages, dropSem, CommandDestination));
                     b.Droplets[InputDroplets[0]].GiveWork(splitDroplet);
                     foreach (var item in OutputDroplets)
                     {

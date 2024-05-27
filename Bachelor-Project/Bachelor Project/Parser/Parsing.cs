@@ -218,6 +218,11 @@ namespace Bachelor_Project.Parsing
             }
         }
 
+        public static void Reset()
+        {
+            InputNr = 0;
+        }
+
 
     }
 }

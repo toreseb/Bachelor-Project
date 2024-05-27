@@ -258,7 +258,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             List<string> outDrops = [Wat2.Name, Wat3.Name, Wat4.Name];
 
-            Dictionary<string, double> ratios = Calc.Ratio(dropRat, outDrops);
+            Dictionary<string, double> ratios = Calc.FindPercentages(dropRat, outDrops);
             Dictionary<string, UsefulSemaphore> dropSem = new Dictionary<string, UsefulSemaphore>();
             dropSem.Add("Wat2", new UsefulSemaphore(0, 1));
             dropSem.Add("Wat3", new UsefulSemaphore(0, 1));

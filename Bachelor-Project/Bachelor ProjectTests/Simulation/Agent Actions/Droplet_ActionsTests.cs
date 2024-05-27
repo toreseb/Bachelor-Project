@@ -9,6 +9,7 @@ using Bachelor_Project.Utility;
 using System.Security.Cryptography;
 using Bachelor_Project.Electrode_Types.Actuator_Types;
 using Bachelor_Project.Parsing;
+using Bachelor_Project.Electrode_Types;
 
 
 namespace Bachelor_Project.Simulation.Agent_Actions.Tests
@@ -20,10 +21,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         static string testBoardData = "TestBoardData.json";
         static string testBoardDataBig = "TestBoardDataBig.json";
         static string testBoardDataBigWithMoreHeat = "TestBoardDataBigWithMoreHeat.json";
+        static string testBoardDataBigWithSensors = "WithSensors.json";
 
         static string testBoardDataLocation = inputfiles + "\\" + testBoardData;
         static string testBoardDataBigLocation = inputfiles + "\\" + testBoardDataBig;
         static string testBoardDataBigWithMoreHeatLocation = inputfiles + "\\Special Boards\\" + testBoardDataBigWithMoreHeat;
+        static string testBoardDataBigWithSensorsLocation = inputfiles + "\\Special Boards\\" + testBoardDataBigWithSensors;
 
         static Board board;
 
@@ -1244,7 +1247,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             List<string> OutputDroplets = [w2.Name, w3.Name, w4.Name, w5.Name];
 
-            Dictionary<string, double> correctRatios = Calc.Ratio(ratios, OutputDroplets);
+            Dictionary<string, double> correctRatios = Calc.FindPercentages(ratios, OutputDroplets);
 
             Dictionary<string, UsefulSemaphore> sems = new Dictionary<string, UsefulSemaphore>();
             sems.Add(w2.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
@@ -1298,7 +1301,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             List<string> OutputDroplets = [w2.Name, w3.Name];
 
-            Dictionary<string, double> correctRatios = Calc.Ratio(ratios, OutputDroplets);
+            Dictionary<string, double> correctRatios = Calc.FindPercentages(ratios, OutputDroplets);
 
             Dictionary<string, UsefulSemaphore> sems = new Dictionary<string, UsefulSemaphore>();
             sems.Add(w2.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
@@ -1349,7 +1352,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             List<string> OutputDroplets = [w2.Name, w3.Name];
 
-            Dictionary<string, double> correctRatios = Calc.Ratio(ratios, OutputDroplets);
+            Dictionary<string, double> correctRatios = Calc.FindPercentages(ratios, OutputDroplets);
 
             Dictionary<string, UsefulSemaphore> sems = new Dictionary<string, UsefulSemaphore>();
             sems.Add(w2.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
@@ -1417,7 +1420,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             List<string> OutputDroplets = [w2.Name, w3.Name];
 
-            Dictionary<string, double> correctRatios = Calc.Ratio(ratios, OutputDroplets);
+            Dictionary<string, double> correctRatios = Calc.FindPercentages(ratios, OutputDroplets);
 
             Dictionary<string, UsefulSemaphore> sems = new Dictionary<string, UsefulSemaphore>();
             sems.Add(w2.Name, new UsefulSemaphore(1, 2)); // Start with 1 to artificially give it what AwaitWork would
@@ -1496,8 +1499,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 11);
 
-            Droplet_Actions.MoveToApparature(Wat1, board.Actuators["heat1"]);
-
             int time = 0;
             var watch = System.Diagnostics.Stopwatch.StartNew();
             Assert.ThrowsException<ArgumentException>(() => Mission_Tasks.TempDroplet(Wat1, (Heater)board.Actuators["heat1"], time));
@@ -1507,6 +1508,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             //Assert.IsTrue(elapsedMs >= time * 1000); Time is no longer slept in simulation
         }
+
+
 
     }
 }

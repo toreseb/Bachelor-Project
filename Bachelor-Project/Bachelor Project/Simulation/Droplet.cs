@@ -281,6 +281,8 @@ namespace Bachelor_Project.Simulation
                 Droplet_Actions.MoveOffElectrode(this, item);
 
             }
+            SetSizes(0);
+            Program.C.RemovePath(this);
             SnekMode = false;
             Removed = true;
             Printer.PrintLine("Droplet " + Name + " has been stopped");
@@ -299,6 +301,10 @@ namespace Bachelor_Project.Simulation
             foreach (var item in elec)
             {
                 Droplet_Actions.TakeOverElectrode(this, item);
+            }
+            if (Volume == 0)
+            {
+                SetSizes(d.Volume);
             }
             d.RemoveFromBoard();
         }

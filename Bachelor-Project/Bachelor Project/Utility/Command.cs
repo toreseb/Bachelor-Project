@@ -77,17 +77,18 @@ namespace Bachelor_Project.Utility
                     break;
                 case "merge":
                     Printer.PrintLine("Merge");
-
-                    UsefulSemaphore sem1 = new(InputDroplets.Count);
+                    UsefulSemaphore sem0 = new(InputDroplets.Count); // For the merging droplet to tell each other that they are ready
+                    UsefulSemaphore sem1 = new(InputDroplets.Count); // For the merged droplet to tell the merging droplets that the location is calculated
                     Task<Electrode> calcMerge = new(() => Droplet_Actions.MergeCalc(InputDroplets, b.Droplets[OutputDroplets[0]], sem1));
 
-                    UsefulSemaphore sem2 = new(InputDroplets.Count);
+                    UsefulSemaphore sem2 = new(InputDroplets.Count); // For the merging droplets to tell the merged droplet they have finished.
+                    
                     foreach (var item in InputDroplets)
                     {
-                        Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(b.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
+                        Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(b.Droplets[item], calcMerge, sem0, sem1, sem2, InputDroplets));
                         b.Droplets[item].GiveWork(awaitWork);
                     }
-                    Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]], calcMerge, sem2, CommandDestination));
+                    Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]], calcMerge,  sem2, CommandDestination));
 
                     b.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);
 
@@ -178,7 +179,13 @@ namespace Bachelor_Project.Utility
             }
             return null;
         }
+        public static void Reset()
+        {
+            Inputted = 0;
+        }
     }
+
+    
 
 }
     

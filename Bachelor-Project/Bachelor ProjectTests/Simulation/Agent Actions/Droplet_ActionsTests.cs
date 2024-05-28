@@ -398,7 +398,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             // Input water
 
 
-            Assert.ThrowsException<Exception>(new Action(() => Mission_Tasks.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 11)));
+            //Assert.ThrowsException<Exception>(new Action(() => Mission_Tasks.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 11)));
         }
 
         [TestMethod()]

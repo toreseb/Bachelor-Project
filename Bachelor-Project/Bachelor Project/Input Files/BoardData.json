@@ -1244,14 +1244,14 @@
       "name": "in0",
       "ID": 650,
       "inputID": 0,
-      "positionX": 10,
+      "positionX": 50,
       "positionY": 50
     },
     {
       "name": "in1",
       "ID": 650,
       "inputID": 0,
-      "positionX": 10,
+      "positionX": 50,
       "positionY": 130
     }
   ],
@@ -1260,14 +1260,14 @@
       "name": "out0",
       "ID": 660,
       "outputID": 0,
-      "positionX": 170,
+      "positionX": 130,
       "positionY": 50
     },
     {
       "name": "out1",
       "ID": 660,
       "outputID": 0,
-      "positionX": 170,
+      "positionX": 130,
       "positionY": 130
     }
   ],

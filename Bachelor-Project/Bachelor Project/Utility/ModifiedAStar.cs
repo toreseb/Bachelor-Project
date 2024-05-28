@@ -103,10 +103,7 @@ namespace Bachelor_Project.Utility
                     {
                         gScore.Add(neighborT, double.MaxValue);
                         
-                        if (d.Name == "drop3")
-                        {
-                            neighborT.smallestGScore = double.MaxValue;
-                        }
+
                         
                         //neighborT.smallestGScore = double.MaxValue;
 
@@ -114,11 +111,7 @@ namespace Bachelor_Project.Utility
                     if (tentativeGScore < gScore[neighborT])
                     {
                         
-                        if (d.Name == "drop3")
-                        {
-                            neighborT.smallestGScore = tentativeGScore;
-                        }
-                        
+
                         //neighborT.smallestGScore = tentativeGScore;
                         cameFrom[neighborT] = (current, neighbor.Item2);
                         gScore[neighborT] = tentativeGScore;
@@ -161,7 +154,7 @@ namespace Bachelor_Project.Utility
             }
             if (!Droplet_Actions.CheckLegalMove(droplets, [end],mergeDroplets: mergeDroplets, source: splitDroplet).legalmove) // 1: check if the move is legal
             {
-                return double.MaxValue;
+                return 1000* multiple;
             }else if (end.Apparature != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an apparature, and therefore important
             {
                 return multiple * 100;

@@ -140,13 +140,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             List<string> OutputDroplets = [Wat4.Name];
             Apparature CommandDestination = board.Actuators["heat0"];
 
+            UsefulSemaphore sem0 = new(InputDroplets.Count);
             UsefulSemaphore sem1 = new(InputDroplets.Count);
             Task<Electrode> calcMerge = new(() => Droplet_Actions.MergeCalc(InputDroplets, board.Droplets[OutputDroplets[0]], sem1));
 
             UsefulSemaphore sem2 = new(InputDroplets.Count);
             foreach (var item in InputDroplets)
             {
-                Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(board.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
+                Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(board.Droplets[item], calcMerge, sem0, sem1, sem2, InputDroplets));
                 board.Droplets[item].GiveWork(awaitWork);
             }
             Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, board.Droplets[OutputDroplets[0]], calcMerge, sem2, CommandDestination));

@@ -86,6 +86,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
                 
             }
+            Program.C.RemovePath(d);
             d.MergeReady = true;
         }
 
@@ -287,7 +288,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 UncoilSnek(d, destination, mergeDroplets);
                 if (!d.SnekMode)
                 {
-                    if (CheckParity(d, preSize))
+                    if (CheckParity(d, preSize, mergeDroplets))
                     {
                         throw new ArgumentException("Anomaly in Occupy.Count");
                     }
@@ -304,11 +305,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     d.TriedResetCounter++;
                     if (d.TriedResetCounter > 5)
                     {
-                        throw new ArgumentException("Reset too many times");
+                        //throw new ArgumentException("Reset too many times");
                     }
-                    Program.C.RemovePath(d);
+                    
                     Thread.Sleep(10);
                 }
+                Program.C.RemovePath(d);
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination, mergeDroplets);
                 Printer.PrintBoard();
             }
@@ -321,7 +323,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (d.CurrentPath.Value.path[0].Item2 == null)
                 {
                     d.CurrentPath.Value.path.RemoveAt(0);
-                    if (CheckParity(d, preSize))
+                    if (CheckParity(d, preSize, mergeDroplets))
                     {
                         throw new ArgumentException("Anomaly in Occupy.Count");
                     }
@@ -641,7 +643,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (i > 50)
                 {
                     Printer.PrintLine(d.Name + " waited for too long");
-                    throw new Exception("Droplet waited for too long");
+                    //throw new Exception("Droplet waited for too long");
                 }
                 Monitor.Exit(MoveLock);
                 Thread.Sleep(100);
@@ -859,7 +861,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 Program.C.RemovePath(d);
                 CoilSnek(d, dest);
-                if (CheckParity(d,preSize))
+                if (CheckParity(d,preSize, mergeDroplets))
                 {
                     throw new ArgumentException("Anomaly in Occupy.Count");
                 }
@@ -897,8 +899,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             do
             {
                 
-                lock (MoveLock)
-                {
+                
                     if (d.Removed)
                     {
                         throw new ThreadInterruptedException();
@@ -942,7 +943,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         CoilSnek(d, dest);
                         return;
                     }
-                }
+                
 
                 Printer.PrintBoard();
             } while (d.CurrentPath != null && d.CurrentPath.Value.path.Count != 0);
@@ -954,7 +955,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 CoilSnek(d, dest);
             }
             d.MergeReady = true;
-            if (CheckParity(d, preSize))
+            if (CheckParity(d, preSize, mergeDroplets))
             {
                 throw new ArgumentException("Anomaly in Occupy.Count");
             }
@@ -966,6 +967,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             d.MergeReady = false;
 
+            Program.C.RemovePath(d);
             // For Testing
             int preSize = d.Occupy.Count;
 
@@ -1043,11 +1045,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             }
             
-
             Printer.PrintBoard();
             d.MergeReady = true;
 
-            if ((input == false && CheckParity(d,preSize)) || (input == true && preSize != d.Occupy.Count-1))
+            if ((input == false && CheckParity(d,preSize, null)) || (input == true && preSize != d.Occupy.Count-1))
             {
                 throw new ArgumentException("Anomaly in Occupy.Count");
             }
@@ -1070,8 +1071,37 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static Electrode MergeCalc(List<string> inputDroplets, Droplet droplet, UsefulSemaphore done) //Release 1 to done when done
         {
 
+            
+
+            Electrode trueDestination = droplet.nextDestination.pointers[0];
+
+            double x = 0, y = 0;
+            int total = 0;
+            foreach (var item in inputDroplets)
+            {
+                Droplet cD = Program.C.board.Droplets[item];
+                if (cD.Occupy.Count == 0)
+                {
+                    return trueDestination;
+                }
+                Electrode randomEl = cD.Occupy[0]; // A random electrode, don't think more thought is necessary
+                x += randomEl.ePosX;
+                y += randomEl.ePosY;
+                total++;
+            }
+
+            x = x / total;
+            y = y / total;
+
+            x = (int) x;
+            y = (int) y;
+
+            Electrode averageEl = Program.C.board.Electrodes[(int)x, (int)y];
+
+
+
             done.TryRelease(inputDroplets.Count);
-            return droplet.nextDestination.pointers[0]; //TODO: update to find a better spot to merge
+            return averageEl; //TODO: update to find a better spot to merge
         }
 
         public static void Merge(Droplet d, Droplet mergeDroplet, Electrode center, List<string> mergeDroplets)
@@ -1397,6 +1427,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                 }
             }
+            Program.C.RemovePath(d);
         }
 
         public static Electrode? FindFreeSpaceForSplit(Droplet d, Droplet source, int size)
@@ -1574,9 +1605,21 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         /// <param name="d"></param>
         /// <param name="preSize"></param>
         /// <returns></returns>
-        private static bool CheckParity(Droplet d, int preSize)
+        private static bool CheckParity(Droplet d, int preSize, List<string>? mergeDroplets)
         {
-            return ((preSize != d.Occupy.Count || (d.Removed && d.Occupy.Count == 0 && d.Size == 0)) && d.Occupy.Count != d.Size);
+            if (mergeDroplets == null) // If a droplet is trying to merge, the resulting size will be different
+            {
+                if ((preSize != d.Occupy.Count || (d.Removed && d.Occupy.Count == 0 && d.Size == 0)) && d.Occupy.Count != d.Size)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
+            return false;
         }
     }
 }

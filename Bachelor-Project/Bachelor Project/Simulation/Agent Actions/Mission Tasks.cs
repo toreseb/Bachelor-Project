@@ -20,6 +20,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintLine(d.Name + " : INPUTTING");
             Droplet_Actions.InputDroplet(d, i, volume, destination);
             InputSem?.TryReleaseOne();
+            /*
             if (destination != null && d.GetWork().Count == 0)
             {
                 Electrode destElectrode = d.GetClosestFreePointer(destination);
@@ -47,6 +48,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                 }
             }
+            */
             return true;
 
         }
@@ -134,11 +136,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefulSemaphore beforeDone, UsefulSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
+        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefulSemaphore imReady,  UsefulSemaphore beforeDone, UsefulSemaphore selfDone, List<string> mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
         {
             d.Important = true;
             d.SnekList = [];
             d.SnekMode = false;
+            imReady.TryReleaseOne();
+            imReady.Check(mergeDoplets.Count);
             beforeDone.WaitOne();
             Electrode location = AwaitWork.Result;
             try
@@ -147,10 +151,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 d.nextElectrodeDestination = location;
                 Droplet_Actions.MoveToDest(d, location, mergeDoplets);
             }
-            catch (ThreadInterruptedException e)
+            catch (ThreadInterruptedException)
             {
                 selfDone.TryReleaseOne();
-                throw e;
+                throw;
             }
             selfDone.TryReleaseOne();
             return true;

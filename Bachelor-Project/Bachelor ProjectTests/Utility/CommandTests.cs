@@ -29,6 +29,7 @@ namespace Bachelor_Project.Utility.Tests
         [TestMethod()]
         public void ExecuteInputCommandTest()
         {
+            Program.C.Reset();
             Droplet d = new("water", "test");
             Program.C.board.Droplets.Add("test", d);
             Command command = new("input", [], [d.Name], value:[0,"in0", "24"]);

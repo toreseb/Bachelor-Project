@@ -25,7 +25,7 @@ namespace Bachelor_Project.Simulation
 
         public Commander((List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>)? data, string boarddata)
         {
-            Parsing.Parsing.Reset();
+            Reset();
             this.data = data;
             string json = File.ReadAllText(boarddata);
             board = Board.ImportBoardData(json);
@@ -124,7 +124,7 @@ namespace Bachelor_Project.Simulation
                     {
                         x.InputCommands.Remove(cCommand);
                         if (x.InputCommands.Count == 0) {
-                            currentCommands.Add(x);
+                            currentCommands.Insert(0, x);
                         }
                     });
                 currentCommands.Remove(cCommand);
@@ -199,6 +199,7 @@ namespace Bachelor_Project.Simulation
                 {
                     var oldValue = dropletPaths[d.Name];
                     dropletPaths[d.Name] = (null, dropletPaths[d.Name].sem);
+                    Printer.PrintLine(d.Name + " waits on " + key);
                     Monitor.Exit(ModifiedAStar.PathLock);
                     value.sem.CheckOne();
                     Monitor.Enter(ModifiedAStar.PathLock);
@@ -223,6 +224,7 @@ namespace Bachelor_Project.Simulation
         {
             lock (ModifiedAStar.PathLock)
             {
+                Printer.PrintLine(d.Name + " no longer waits waits" );
                 d.CurrentPath = null;
                 if (dropletPaths.Keys.Contains(d.Name))
                 {
@@ -236,6 +238,12 @@ namespace Bachelor_Project.Simulation
             }
             
 
+        }
+
+        public void Reset()
+        {
+            Parsing.Parsing.Reset();
+            Command.Reset();
         }
 
     }

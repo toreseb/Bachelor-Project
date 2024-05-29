@@ -9,6 +9,7 @@ namespace Bachelor_Project.Electrode_Types.Accessor_Types
     
     internal class Trash(int x, int y) : Accessor(x, y)
     {
+        override public string Type { get; set; } = "trash";
         readonly int TrashID;
     }
 }

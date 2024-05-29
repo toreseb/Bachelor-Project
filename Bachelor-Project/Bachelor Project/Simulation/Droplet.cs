@@ -113,7 +113,6 @@ namespace Bachelor_Project.Simulation
                 // TODO: think of making this better
                 //throw new NullReferenceException("Can't find the closest electrode destination, when next destination is null");
             }
-            
         }
 
         public Electrode GetClosestFreePointer(Apparature a, string? source = null)
@@ -190,9 +189,17 @@ namespace Bachelor_Project.Simulation
                         }
                         catch (Exception e)
                         {
-                            Printer.PrintLine("Droplet " + Name + " has been stopped");
-                            ActiveTask = null;
-                            return;
+                            if (cancellationToken.IsCancellationRequested)
+                            {
+                                Printer.PrintLine("Droplet " + Name + " has been stopped");
+                                ActiveTask = null;
+                                return;
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                            
                         }
 
                         Printer.PrintLine("Droplet " + Name + " has done work");
@@ -270,11 +277,16 @@ namespace Bachelor_Project.Simulation
             
         }
 
-        
+        internal void changeTemp(int actualTemperature)
+        {
+            Temperature = actualTemperature;
+        }
+
+
 
         internal void RemoveFromBoard()
         {
-            // TODO: Remove it entirely from the board
+            Removed = true;
             List<Electrode> oldElectrode = new(Occupy);
             foreach (var item in oldElectrode)
             {
@@ -284,7 +296,7 @@ namespace Bachelor_Project.Simulation
             SetSizes(0);
             Program.C.RemovePath(this);
             SnekMode = false;
-            Removed = true;
+            
             Printer.PrintLine("Droplet " + Name + " has been stopped");
             Stop();
         }
@@ -308,5 +320,13 @@ namespace Bachelor_Project.Simulation
             }
             d.RemoveFromBoard();
         }
+
+        internal void GoAmorphous()
+        {
+            SnekMode = false;
+            SnekList = [];
+        }
+
+        
     }
 }

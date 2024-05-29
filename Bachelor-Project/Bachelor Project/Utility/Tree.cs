@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Bachelor_Project.Utility
 {
@@ -42,6 +43,7 @@ namespace Bachelor_Project.Utility
             Leaves = [];
             this.d = d;
             BuildTree();
+            
         }
 
         private void BuildTree()
@@ -86,6 +88,10 @@ namespace Bachelor_Project.Utility
         }
         public void RemoveLeaf(bool into = false)
         {
+            if (Leaves.Count == 0)
+            {
+                return;
+            }
             Node cLeaf = Leaves[0];
             if (cLeaf.Parent != null || into != false)
             {
@@ -150,7 +156,15 @@ namespace Bachelor_Project.Utility
                 }
             }
             return closestElectrode;
-        }   
+        }
+        public bool CheckTree()
+        {
+            if (Nodes.Count != d.Occupy.Count)
+            {
+                return false;
+            }
+            return true;
+        }
 
     }
     public class Node
@@ -172,6 +186,9 @@ namespace Bachelor_Project.Utility
         {
             Children.Remove(child);
         }
+
+
+
         public override string ToString()
         {
             return Electrode.ToString();

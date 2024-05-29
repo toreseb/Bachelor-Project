@@ -1224,19 +1224,6 @@
     }
   ],
   "actuators": [
-    {
-      "valueActualTemperature": 0,
-      "valueDesiredTemperature": 10,
-      "valuePowerStatus": 0,
-      "name": "heat1",
-      "ID": 640,
-      "actuatorID": 0,
-      "type": "heater",
-      "positionX": 20,
-      "positionY": 0,
-      "sizeX": 20,
-      "sizeY": 20
-    }
   ],
   "sensors": [],
   "inputs": [

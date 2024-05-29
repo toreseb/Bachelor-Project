@@ -134,5 +134,13 @@ namespace Bachelor_Project.Utility
 
 
         }
+
+        internal static void Reset()
+        {
+            lock (PrintEnqueue)
+            {
+                PrintQueue.Clear();
+            }
+        }
     }
 }

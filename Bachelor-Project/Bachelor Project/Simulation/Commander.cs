@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Bachelor_Project.Simulation
 {
@@ -103,6 +104,7 @@ namespace Bachelor_Project.Simulation
 
         public Board SetBoard(string boarddata)
         {
+            Printer.Reset();
             string json = File.ReadAllText(boarddata);
             board = Board.ImportBoardData(json);
             return board;
@@ -167,6 +169,8 @@ namespace Bachelor_Project.Simulation
             Outparser.Outparser.Dispose();
             
         }
+
+
         /// <summary>
         /// Return true if path has been reset after a line intersect, else false
         /// </summary>
@@ -182,14 +186,23 @@ namespace Bachelor_Project.Simulation
             bool newPath = false;
             Dictionary<string, ((Point start, Point end)? path, UsefulSemaphore sem)> oldPaths = new(dropletPaths);
 
-            if (dropletPaths.Keys.Contains(d.Name))
+            lock (Droplet_Actions.MoveLock)
             {
-                dropletPaths[d.Name] = ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), dropletPaths[d.Name].sem);
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException();
+                }
+                if (dropletPaths.TryGetValue(d.Name, out ((Point start, Point end)? path, UsefulSemaphore sem) value1))
+                {
+                    dropletPaths[d.Name] = ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), value1.sem);
+                }
+                else
+                {
+                    dropletPaths.Add(d.Name, ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), new UsefulSemaphore(1, 1)));
+                }
             }
-            else
-            {
-                dropletPaths.Add(d.Name, ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), new UsefulSemaphore(1, 1)));
-            }
+            
+
 
             foreach ((var key, var value) in oldPaths)
             {
@@ -220,15 +233,17 @@ namespace Bachelor_Project.Simulation
             return SetPath(d, start.ePosX, start.ePosY, end.ePosX, end.ePosY, mergeDroplets);
         }
 
+
         public void RemovePath(Droplet d)
         {
             lock (ModifiedAStar.PathLock)
             {
-                Printer.PrintLine(d.Name + " no longer waits waits" );
+
+                Printer.PrintLine(d.Name + " no longer waits" );
                 d.CurrentPath = null;
-                if (dropletPaths.Keys.Contains(d.Name))
+                if (dropletPaths.TryGetValue(d.Name, out ((Point start, Point end)? path, UsefulSemaphore sem) value))
                 {
-                    dropletPaths[d.Name] = (null, dropletPaths[d.Name].sem);
+                    dropletPaths[d.Name] = (null, value.sem);
                 }
                 else
                 {
@@ -242,6 +257,7 @@ namespace Bachelor_Project.Simulation
 
         public void Reset()
         {
+            Printer.Reset();
             Parsing.Parsing.Reset();
             Command.Reset();
         }

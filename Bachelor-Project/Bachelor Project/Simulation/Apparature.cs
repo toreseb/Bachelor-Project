@@ -11,6 +11,8 @@ namespace Bachelor_Project.Simulation
     {
         public List<Electrode> pointers = [];
 
+        abstract public string Type { get; set; }
+
         public abstract bool CoilInto { get; set; }
 
 

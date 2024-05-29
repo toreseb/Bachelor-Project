@@ -13,7 +13,7 @@ namespace Bachelor_Project.Electrode_Types
     {
         public int SensorID{ get; set; }
 
-        abstract public string Type { get; set; }
+        
 
         public override bool CoilInto { get; set; } = false;
 

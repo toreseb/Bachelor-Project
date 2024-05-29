@@ -44,10 +44,15 @@ namespace Bachelor_Project.Utility
             
 
             Func<Electrode, Electrode, double> h = Electrode.GetDistance;
-            if (start == null)
+            lock (Droplet_Actions.MoveLock)
             {
-                start = goal.GetClosestElectrodeInList(d.Occupy);
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException();
+                }
+                start ??= goal.GetClosestElectrodeInList(d.Occupy);
             }
+            
             lock (PathLock)
             {
                 Program.C.SetPath(d, start, goal, mergeDroplets);

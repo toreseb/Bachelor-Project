@@ -150,7 +150,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
                 Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(board.Droplets[item], calcMerge, sem0, sem1, sem2, InputDroplets));
                 board.Droplets[item].GiveWork(awaitWork);
             }
-            Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, board.Droplets[OutputDroplets[0]], calcMerge, sem2, CommandDestination));
+            Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, board.Droplets[OutputDroplets[0]], calcMerge,sem0, sem2, CommandDestination));
 
 
             board.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);

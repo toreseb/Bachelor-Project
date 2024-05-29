@@ -88,7 +88,7 @@ namespace Bachelor_Project.Utility
                         Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(b.Droplets[item], calcMerge, sem0, sem1, sem2, InputDroplets));
                         b.Droplets[item].GiveWork(awaitWork);
                     }
-                    Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]], calcMerge,  sem2, CommandDestination));
+                    Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]], calcMerge, sem0, sem2, CommandDestination));
 
                     b.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);
 

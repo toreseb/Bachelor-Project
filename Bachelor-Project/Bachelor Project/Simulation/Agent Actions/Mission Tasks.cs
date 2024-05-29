@@ -80,7 +80,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        public static bool MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefulSemaphore beforeDone, Apparature cmdDestination)
+        public static bool MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefulSemaphore everybodyReady, UsefulSemaphore mergesFinished, Apparature cmdDestination)
         {
             Droplet_Actions.SetupDestinations(d, cmdDestination);
             Printer.PrintLine(d.Name + " : MERGING");
@@ -93,14 +93,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                     if(id1 != id2)
                     {
-                        id1.Contamintants.Remove(id2.Substance_Name);
+                        lock (id1.Contamintants)
+                        {
+                            id1.Contamintants.Remove(id2.Substance_Name);
+                        }
+                        
                     }
 
                 }
 
             }
+            everybodyReady.Check(inputDroplets.Count);
             calcMerge.Start();
-            beforeDone.Wait(inputDroplets.Count);
+            mergesFinished.Wait(inputDroplets.Count);
             foreach (var inputDroplet in inputDroplets)
             {
                 Droplet other = Program.C.board.Droplets[inputDroplet];
@@ -120,6 +125,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // Run Droplet_Actions.splitDroplet
             Droplet_Actions.SplitDroplet(d, percentages, dropSem);
+            
             return true;
         }
 
@@ -131,19 +137,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // Wait for SplitDroplet to release 2 semaphore
             beginSem.Wait(2);
-
-            Droplet_Actions.MoveToApparature(droplet, droplet.nextDestination);
+            droplet.GoAmorphous();
+            //Droplet_Actions.MoveToApparature(droplet, droplet.nextDestination);
             return true;
         }
 
-        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefulSemaphore imReady,  UsefulSemaphore beforeDone, UsefulSemaphore selfDone, List<string> mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
+        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefulSemaphore imReady,  UsefulSemaphore locCalculated, UsefulSemaphore selfDone, List<string> mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
         {
             d.Important = true;
             d.SnekList = [];
             d.SnekMode = false;
             imReady.TryReleaseOne();
             imReady.Check(mergeDoplets.Count);
-            beforeDone.WaitOne();
+            locCalculated.WaitOne();
             Electrode location = AwaitWork.Result;
             try
             {
@@ -173,6 +179,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Droplet_Actions.WaitDroplet(d, time*1000);
             if (newType != null && d.Substance_Name != newType)
             {
+                d.changeTemp(heater.ActualTemperature);
                 d.ChangeType(newType);
             }
             return true;

@@ -9,7 +9,7 @@ namespace Bachelor_Project.Utility
     public static class Constants
     {
         public const int DestBuff = 4;
-        public const int SplitBuff = 3;
+        public const int SplitBuff = 2;
         public const int MixAmount = 5;
     }
 

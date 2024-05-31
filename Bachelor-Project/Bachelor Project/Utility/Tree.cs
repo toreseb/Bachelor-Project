@@ -51,33 +51,17 @@ namespace Bachelor_Project.Utility
             while (ActiveNodes.Count > 0)
             {
                 Node currentNode = ActiveNodes[0];
-                Electrode cElectrode;
-                try
+                if (currentNode.Electrode == null)
                 {
-                    cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX + 1, currentNode.Electrode.ePosY];
-                    CheckAddElectrode(d, currentNode, cElectrode);
+                    throw new ThreadInterruptedException();
                 }
-                catch { }
-                try
+                List<(Electrode, Direction)> neighbors = currentNode.Electrode.GetTrueNeighbors();
+
+                foreach ((Electrode cEl, Direction _) in neighbors)
                 {
-                    cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX - 1, currentNode.Electrode.ePosY];
-                    CheckAddElectrode(d, currentNode, cElectrode);
+                    CheckAddElectrode(d, currentNode, cEl);
                 }
-                catch{ }
-                try
-                {
-                    cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX, currentNode.Electrode.ePosY + 1];
-                    CheckAddElectrode(d, currentNode, cElectrode);
-                }
-                catch{ }
-                try
-                {
-                    cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX, currentNode.Electrode.ePosY - 1];
-                    CheckAddElectrode(d, currentNode, cElectrode);
-                }
-                catch{ }
-                
-                
+
                 
                 ActiveNodes.Remove(currentNode);
                 if (currentNode.Children.Count == 0)
@@ -86,34 +70,51 @@ namespace Bachelor_Project.Utility
                 }
             }
         }
-        public void RemoveLeaf(bool into = false)
+        public Electrode? RemoveLeaf(bool into = false)
         {
+            Electrode? returnedElectrode = null;
             if (Leaves.Count == 0)
             {
-                return;
+                return null;
             }
             Node cLeaf = Leaves[0];
-            if (cLeaf.Parent != null || into != false)
+            bool removed = false;
+            while (!removed)
             {
-                if (!NewElectrodes.Contains(cLeaf.Electrode))
+                if (Leaves.Count == 0)
                 {
-                    Printer.PrintLine("moving off electrode: "+cLeaf.Electrode.Name);
-                    Droplet_Actions.MoveOffElectrode(d, cLeaf.Electrode);
+                    break;
                 }
-
-                if (cLeaf.Parent != null)
+                cLeaf = Leaves[0];
+                if (cLeaf.Parent != null || into != false)
                 {
-                    cLeaf.Parent.RemoveChild(cLeaf);
-
-                    if (cLeaf.Parent.Children.Count == 0)
+                    if (!NewElectrodes.Contains(cLeaf.Electrode))
                     {
-                        Leaves.Add(cLeaf.Parent);
+                        Printer.PrintLine("moving off electrode: " + cLeaf.Electrode.Name);
+                        Droplet_Actions.MoveOffElectrode(d, cLeaf.Electrode);
+                        returnedElectrode = cLeaf.Electrode;
+                        removed = true;
                     }
+                    else
+                    {
+                        int a = 2;
+                    }
+
+                    if (cLeaf.Parent != null)
+                    {
+                        cLeaf.Parent.RemoveChild(cLeaf);
+
+                        if (cLeaf.Parent.Children.Count == 0)
+                        {
+                            Leaves.Add(cLeaf.Parent);
+                        }
+                    }
+
                 }
-                
+                Nodes.Remove(cLeaf);
+                Leaves.Remove(cLeaf);
             }
-            Nodes.Remove(cLeaf);
-            Leaves.Remove(cLeaf);
+            return returnedElectrode;
         }
 
 

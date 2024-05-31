@@ -4,17 +4,17 @@
     platform_name: "4by3example",
     platform_type: "example",
     platform_ID: "012345678",
-    sizeX: 180,
-    sizeY: 180
+    sizeX: 220,
+    sizeY: 220
   },
     electrodes: [
-      '{{repeat(9*9)}}',
+      '{{repeat(11*11)}}',
       {
         name: "el" + '{{index()}}',
         ID: '{{index()}}',
         electrodeID: '{{index()}}',
         driverID: function (tags) {
-          if (tags.index() < 9*9/2){
+          if (tags.index() < 11*11/2){
             return 0;
           }else{
             return 1;
@@ -22,12 +22,12 @@
         },
         shape: 0,
         positionX: function (tags){
-          return tags.index() % 9 * 20;
+          return tags.index() % 11 * 20;
         },
         positionY: function (tags){
-          var n = tags.index() % 9;
+          var n = tags.index() % 11;
           var y = tags.index() - n;
-          return y / 9 * 20;
+          return y / 11 * 20;
         },
         sizeX: 20,
         sizeY: 20,
@@ -42,7 +42,7 @@
         "valueDesiredTemperature": 10,
         "valuePowerStatus": 0,
         name: "heat1",
-        ID: 8*8+ '{{index()}}', // Size of board
+        ID: 11*11+ '{{index()}}', // Size of board
         actuatorID: '{{index()}}',
         type: "heater",
         positionX: 20,
@@ -53,14 +53,14 @@
         sensors: [],
         inputs: [{
           name: "in" + '{{index()}}',
-          ID: 8*8+1+'{{index()}}', // Size of board + heaters
+          ID: 11*11+1+'{{index()}}', // Size of board + heaters
           inputID: '{{index()}}',
           positionX: 10,
           positionY: 90
         }],
         outputs: [{
           name: "out" + '{{index()}}',
-          ID: 8*8+1+1+'{{index()}}', // Size of board + heaters + inputs
+          ID: 11*11+1+1+'{{index()}}', // Size of board + heaters + inputs
           outputID: '{{index()}}',
           positionX: 170,
           positionY: 90

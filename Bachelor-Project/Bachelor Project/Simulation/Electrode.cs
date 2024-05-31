@@ -136,7 +136,7 @@ namespace Bachelor_Project.Simulation
                 if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange))
                 {
                     Electrode el = Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange];
-                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [el], source: source == null ? null :source.Name, splitPlacement: splitPlacement).legalmove && (includeApp || el.Apparature == null))
+                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [el], source: source?.Name, splitPlacement: splitPlacement).legalmove && (includeApp || el.Apparature == null))
                     {
                         cBool.Add(false);
                         continue;
@@ -186,6 +186,43 @@ namespace Bachelor_Project.Simulation
             }
             return neighbors;
         }
+
+        public List<Electrode> GetExtendedNeighborsFromTrue(List<Direction> foundTrueNeighbors, List<Electrode>? seenElectrodes = null)
+        {
+            seenElectrodes ??= [];
+            List<Electrode> extendedNeighbors = [];
+            for (int i = 0; i < 4; i++)
+            {
+                int xChange = 0;
+                int yChange = 0;
+                if (i == 0 && (foundTrueNeighbors.Contains(Direction.UP)|| foundTrueNeighbors.Contains(Direction.RIGHT)))
+                {
+                    xChange = 1;
+                    yChange = -1;
+                }
+                else if (i == 1 && (foundTrueNeighbors.Contains(Direction.RIGHT) || foundTrueNeighbors.Contains(Direction.DOWN)))
+                {
+                    xChange = 1;
+                    yChange = 1;
+                }
+                else if (i == 2 && (foundTrueNeighbors.Contains(Direction.DOWN) || foundTrueNeighbors.Contains(Direction.LEFT)))
+                {
+                    xChange = -1;
+                    yChange = 1;
+                }
+                else if (i == 3 && (foundTrueNeighbors.Contains(Direction.LEFT) || foundTrueNeighbors.Contains(Direction.UP)))
+                {
+                    xChange = -1;
+                    yChange = -1;
+                }
+                if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange) && !seenElectrodes.Contains(Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange]))
+                {
+                    extendedNeighbors.Add(Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange]);
+                }
+            }
+            return extendedNeighbors;
+        }
+
 
         public static double GetDistance(Electrode e1, Electrode e2)
         {

@@ -18,7 +18,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             Printer.PrintLine(d.Name + " has NextDestiantion of: " + d.nextDestination);
             Printer.PrintLine(d.Name + " : INPUTTING");
-            Droplet_Actions.InputDroplet(d, i, volume, destination);
+            try
+            {
+                Droplet_Actions.InputDroplet(d, i, volume, destination);
+            }
+            catch (NewWorkException)
+            {
+            }
+            
             InputSem?.TryReleaseOne();
             /*
             if (destination != null && d.GetWork().Count == 0)
@@ -57,8 +64,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintLine(droplet.Name + " : OUTPUTTING");
             Printer.PrintBoard();
             droplet.Important = true;
-            Droplet_Actions.MoveToApparature(droplet, output);
-            Droplet_Actions.Output(droplet, output);
+            try
+            {
+                Droplet_Actions.MoveToApparature(droplet, output);
+                Droplet_Actions.Output(droplet, output);
+            }
+            catch(Exception e)
+            {
+                throw;
+            }
+            
             return true;
         }
 
@@ -124,7 +139,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.Important = true;
 
             // Run Droplet_Actions.splitDroplet
-            Droplet_Actions.SplitDroplet(d, percentages, dropSem);
+            try
+            {
+                Droplet_Actions.SplitDroplet(d, percentages, dropSem);
+            }
+            catch(Exception e)
+            {
+                throw;
+            }
             
             return true;
         }
@@ -148,6 +170,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.SnekList = [];
             d.SnekMode = false;
             imReady.TryReleaseOne();
+            Program.C.RemovePath(d);
             imReady.Check(mergeDoplets.Count);
             locCalculated.WaitOne();
             Electrode location = AwaitWork.Result;
@@ -159,7 +182,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             catch (ThreadInterruptedException)
             {
-                selfDone.TryReleaseOne();
+
+            }
+            catch (OperationCanceledException)
+            {
+
+            }
+            catch(Exception)
+            {
+                if (d.Removed)
+                {
+                    selfDone.TryReleaseOne();
+                    return true;
+                }
                 throw;
             }
             selfDone.TryReleaseOne();
@@ -191,7 +226,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintLine(d.Name + " : SENSING");
             d.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(d, sensor);
-            Droplet_Actions.CoilSnek(d, center: closest, app: sensor); // Depends if sensor needs to see the entire droplet
             sensor.Sense();
             return true;
         }

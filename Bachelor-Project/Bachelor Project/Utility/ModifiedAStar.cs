@@ -159,7 +159,7 @@ namespace Bachelor_Project.Utility
             }
             if (!Droplet_Actions.CheckLegalMove(droplets, [end],mergeDroplets: mergeDroplets, source: splitDroplet).legalmove) // 1: check if the move is legal
             {
-                return 1000* multiple;
+                return 100000* multiple;
             }else if (end.Apparature != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an apparature, and therefore important
             {
                 return multiple * 100;

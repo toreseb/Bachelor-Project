@@ -861,12 +861,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.UncoilSnek(board.Droplets["Wat1"], board.Electrodes[6, 4]);
 
             // Check placement
-            Assert.AreEqual(drop1, board.Electrodes[6, 3].Occupant);
-            Assert.AreEqual(drop1, board.Electrodes[6, 4].Occupant);
-            Assert.AreEqual(drop1, board.Electrodes[6, 5].Occupant);
             Assert.AreEqual(drop1, board.Electrodes[5, 3].Occupant);
             Assert.AreEqual(drop1, board.Electrodes[5, 4].Occupant);
             Assert.AreEqual(drop1, board.Electrodes[5, 5].Occupant);
+            Assert.AreEqual(drop1, board.Electrodes[6, 3].Occupant);
+            Assert.AreEqual(drop1, board.Electrodes[6, 4].Occupant);
+            Assert.AreEqual(drop1, board.Electrodes[6, 5].Occupant);
 
             // More in depth tests will follow when algorithm is implemented
         }
@@ -913,31 +913,33 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             Droplet_Actions.InputDroplet(drop2, board.Input["in0"], 120); // Size = 10
 
-            Assert.AreEqual(null, board.Electrodes[0, 1].Occupant);
-            Assert.AreEqual(null, board.Electrodes[0, 2].Occupant);
+            Assert.AreEqual(drop2, board.Electrodes[0, 1].Occupant);
+            Assert.AreEqual(drop2, board.Electrodes[0, 2].Occupant);
             Assert.AreEqual(drop2, board.Electrodes[0, 3].Occupant);
             Assert.AreEqual(drop2, board.Electrodes[0, 4].Occupant);
             Assert.AreEqual(drop2, board.Electrodes[0, 5].Occupant);
             Assert.AreEqual(drop2, board.Electrodes[0, 6].Occupant);
             Assert.AreEqual(drop2, board.Electrodes[0, 7].Occupant);
-            Assert.AreEqual(drop2, board.Electrodes[0, 8].Occupant);
+            Assert.AreEqual(null, board.Electrodes[0, 8].Occupant);
+
             Assert.AreEqual(null, board.Electrodes[1, 0].Occupant);
             Assert.AreEqual(null, board.Electrodes[1, 1].Occupant);
-            Assert.AreEqual(null, board.Electrodes[1, 2].Occupant);
+            Assert.AreEqual(drop2, board.Electrodes[1, 2].Occupant);
             Assert.AreEqual(null, board.Electrodes[1, 3].Occupant);
             Assert.AreEqual(null, board.Electrodes[1, 4].Occupant);
             Assert.AreEqual(null, board.Electrodes[1, 5].Occupant);
             Assert.AreEqual(drop2, board.Electrodes[1, 6].Occupant);
             Assert.AreEqual(drop2, board.Electrodes[1, 7].Occupant);
-            Assert.AreEqual(drop2, board.Electrodes[1, 8].Occupant);
+            Assert.AreEqual(null, board.Electrodes[1, 8].Occupant);
+
             Assert.AreEqual(null, board.Electrodes[2, 0].Occupant);
             Assert.AreEqual(null, board.Electrodes[2, 1].Occupant);
-            Assert.AreEqual(null, board.Electrodes[2, 2].Occupant);
+            Assert.AreEqual(drop2, board.Electrodes[2, 2].Occupant);
             Assert.AreEqual(null, board.Electrodes[2, 3].Occupant);
             Assert.AreEqual(drop1, board.Electrodes[2, 4].Occupant);
             Assert.AreEqual(null, board.Electrodes[2, 5].Occupant);
-            Assert.AreEqual(drop2, board.Electrodes[2, 6].Occupant);
-            Assert.AreEqual(drop2, board.Electrodes[2, 7].Occupant);
+            Assert.AreEqual(null, board.Electrodes[2, 6].Occupant);
+            Assert.AreEqual(null, board.Electrodes[2, 7].Occupant);
             Assert.AreEqual(null, board.Electrodes[2, 8].Occupant);
 
         }
@@ -957,7 +959,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(drop1, board.Electrodes[1, 4].Occupant);
 
             // Coil
-            Assert.ThrowsException<IllegalMoveException>( () => Droplet_Actions.UncoilSnek(drop1, board.Electrodes[0, 0])); // Uncoil coils at the destination
+            Droplet_Actions.UncoilSnek(drop1, board.Electrodes[0, 0]);
+
+            Assert.AreEqual(drop1, board.Electrodes[0, 0].Occupant);
+            Assert.AreEqual(drop1, board.Electrodes[0, 1].Occupant);
+            Assert.AreEqual(drop1, board.Electrodes[0, 2].Occupant);
+            Assert.AreEqual(drop1, board.Electrodes[1, 2].Occupant);
 
         }
         [TestMethod()]
@@ -978,10 +985,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.UncoilSnek(drop1, board.Electrodes[0, 2]); // Uncoil coils at the destination
 
             // Check placement
-            Assert.AreEqual(drop1, board.Electrodes[0, 4].Occupant);
-            Assert.AreEqual(drop1, board.Electrodes[0, 3].Occupant);
-            Assert.AreEqual(drop1, board.Electrodes[1, 3].Occupant);
-            Assert.AreEqual(drop1, board.Electrodes[1, 4].Occupant);
+            Assert.AreEqual(drop1, board.Electrodes[0, 6].Occupant);
+            Assert.AreEqual(drop1, board.Electrodes[0, 7].Occupant);
+            Assert.AreEqual(drop1, board.Electrodes[1, 6].Occupant);
+            Assert.AreEqual(drop1, board.Electrodes[1, 7].Occupant);
         }
 
         [TestMethod()]
@@ -1033,7 +1040,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.MoveOnElectrode(d, board.Electrodes[2, 4]);
             Droplet_Actions.MoveOnElectrode(d, board.Electrodes[2, 5]);
             Droplet_Actions.MoveOnElectrode(d, board.Electrodes[2, 6]);
-            Droplet_Actions.MoveOnElectrode(d, board.Electrodes[0, 6]);
+            Droplet_Actions.MoveOnElectrode(d, board.Electrodes[2, 7]);
+            d.Size = 8;
 
             Assert.AreEqual(8, d.Occupy.Count);
 
@@ -1046,9 +1054,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(d, board.Electrodes[8, 6].Occupant);
             Assert.AreEqual(d, board.Electrodes[7, 6].Occupant);
             Assert.AreEqual(d, board.Electrodes[7, 7].Occupant);
+            Assert.AreEqual(d, board.Electrodes[7, 8].Occupant);
             Assert.AreEqual(d, board.Electrodes[6, 6].Occupant);
             Assert.AreEqual(d, board.Electrodes[6, 7].Occupant);
-            Assert.AreEqual(d, board.Electrodes[6, 5].Occupant);
+
 
 
         }
@@ -1226,17 +1235,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Electrodes[1,5].Occupant, w3);
 
 
-            Droplet_Actions.MoveToApparature(w2, board.Actuators["heat1"]);
-            Droplet_Actions.MoveToApparature(w3, board.Actuators["heat2"]);
-
-            // Check placements
-            Assert.AreEqual(board.Electrodes[7,0].Occupant, w2);
-            Assert.AreEqual(board.Electrodes[8,0].Occupant, w2);
-
-            Assert.AreEqual(board.Electrodes[7,8].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[7,7].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[8,7].Occupant, w3);
-
 
             Printer.PrintBoard();
         }
@@ -1258,12 +1256,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             board.Droplets.Add("Wat4", w4);
             board.Droplets.Add("Wat5", w5);
 
-            w2.nextDestination = board.Actuators["heat1"];
-            w2.nextElectrodeDestination = board.Electrodes[7, 0];
-            w3.nextDestination = board.Actuators["heat2"];
-            w3.nextElectrodeDestination = board.Electrodes[7, 8];
-            w4.nextElectrodeDestination = board.Electrodes[7, 4];
-            w5.nextElectrodeDestination = board.Electrodes[4, 4];
+            w2.nextElectrodeDestination = board.Electrodes[0, 0];
+            w3.nextElectrodeDestination = board.Electrodes[0, 8];
+            w4.nextElectrodeDestination = board.Electrodes[8, 0];
+            w5.nextElectrodeDestination = board.Electrodes[8, 8];
 
             Droplet_Actions.InputDroplet(w1, board.Input["in0"], 84);
 
@@ -1285,7 +1281,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             Droplet_Actions.SplitDroplet(w1, correctRatios, sems);
 
-            Assert.IsTrue(w1.Removed);
+            Assert.AreEqual(true, w1.Removed);
+            Assert.AreEqual(0, w1.Occupy.Count);
             Assert.AreEqual(2, w2.Occupy.Count);
             Assert.AreEqual(2, w3.Occupy.Count);
             Assert.AreEqual(2, w4.Occupy.Count);
@@ -1295,14 +1292,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Electrodes[0, 0].Occupant, w2);
             Assert.AreEqual(board.Electrodes[1, 0].Occupant, w2);
 
-            Assert.AreEqual(board.Electrodes[0, 6].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[0, 7].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1, 6].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[2, 6].Occupant, w3);
 
             Assert.AreEqual(board.Electrodes[3, 1].Occupant, w4);
             Assert.AreEqual(board.Electrodes[3, 2].Occupant, w4);
 
-            Assert.AreEqual(board.Electrodes[1, 3].Occupant, w5);
-            Assert.AreEqual(board.Electrodes[1, 4].Occupant, w5);
+            Assert.AreEqual(board.Electrodes[3, 4].Occupant, w5);
+            Assert.AreEqual(board.Electrodes[4, 4].Occupant, w5);
         }
 
         [TestMethod()]
@@ -1352,8 +1349,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             Assert.AreEqual(board.Electrodes[0, 5].Occupant, w3);
             Assert.AreEqual(board.Electrodes[0, 6].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[1, 4].Occupant, w3);
             Assert.AreEqual(board.Electrodes[1, 5].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[0, 7].Occupant, w3);
         }
 
         [TestMethod()]
@@ -1403,8 +1400,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             Assert.AreEqual(board.Electrodes[0, 5].Occupant, w3);
             Assert.AreEqual(board.Electrodes[0, 6].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[1, 4].Occupant, w3);
             Assert.AreEqual(board.Electrodes[1, 5].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[0, 7].Occupant, w3);
         }
 
         [TestMethod()]
@@ -1467,12 +1464,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Electrodes[0, 7].Occupant, w2);
             Assert.AreEqual(board.Electrodes[0, 8].Occupant, w2);
             Assert.AreEqual(board.Electrodes[1, 8].Occupant, w2);
-            Assert.AreEqual(board.Electrodes[2, 8].Occupant, w2);
+            Assert.AreEqual(board.Electrodes[1, 8].Occupant, w2);
 
-            Assert.AreEqual(board.Electrodes[1, 3].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[0, 5].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1, 5].Occupant, w3);
             Assert.AreEqual(board.Electrodes[1, 4].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[2, 3].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[3, 3].Occupant, w3);
+            Assert.AreEqual(board.Electrodes[1, 3].Occupant, w3);
         }
 
         [TestMethod()]

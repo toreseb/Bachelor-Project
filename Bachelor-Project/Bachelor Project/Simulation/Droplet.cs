@@ -180,14 +180,17 @@ namespace Bachelor_Project.Simulation
                         }
                         
                         Printer.PrintLine("Droplet " + Name + " is doing work");
-                        ActiveTask.Start();
+                        
                         try
                         {
-
-                            ActiveTask.Wait(cancellationToken);
+                            ActiveTask.RunSynchronously();
+                            if (ActiveTask.IsFaulted)
+                            {
+                                throw ActiveTask.Exception;
+                            }
                             ActiveTask = null;
                         }
-                        catch (Exception e)
+                        catch (ThreadInterruptedException e)
                         {
                             if (cancellationToken.IsCancellationRequested)
                             {
@@ -199,7 +202,14 @@ namespace Bachelor_Project.Simulation
                             {
                                 throw;
                             }
-                            
+
+                        }
+                        catch (AggregateException e)
+                        {
+                            if(e.InnerException is not NewWorkException)
+                            {
+                                throw;
+                            }
                         }
 
                         Printer.PrintLine("Droplet " + Name + " has done work");
@@ -240,6 +250,7 @@ namespace Bachelor_Project.Simulation
         {
             cancellationTokenSource.Cancel();
             Thread.Interrupt();
+            Removed = true;
         }
 
         private string GetColor(string substance_name)
@@ -286,19 +297,26 @@ namespace Bachelor_Project.Simulation
 
         internal void RemoveFromBoard()
         {
-            Removed = true;
-            List<Electrode> oldElectrode = new(Occupy);
-            foreach (var item in oldElectrode)
+            lock (ModifiedAStar.PathLock) // Also needs the PathLock, so removepath doesn't create a deadlock
             {
-                Droplet_Actions.MoveOffElectrode(this, item);
+                lock (this)
+                {
+                    Program.C.RemovePath(this);
+                    List<Electrode> oldElectrode = new(Occupy);
+                    foreach (var item in oldElectrode)
+                    {
+                        Droplet_Actions.MoveOffElectrode(this, item);
 
+                    }
+                    SetSizes(0);
+
+                    SnekMode = false;
+                    Printer.PrintLine("Droplet " + Name + " has been stopped");
+                    Stop();
+                }
             }
-            SetSizes(0);
-            Program.C.RemovePath(this);
-            SnekMode = false;
             
-            Printer.PrintLine("Droplet " + Name + " has been stopped");
-            Stop();
+            
         }
 
 
@@ -308,20 +326,28 @@ namespace Bachelor_Project.Simulation
         /// <param name="d"></param>
         public void TakeOver(Droplet d)
         {
-            SnekMode = false;
-            List<Electrode> elec = new(d.Occupy);
-            foreach (var item in elec)
+            lock (ModifiedAStar.PathLock) // Also take pathLock, to make sure removeboard doesn't create deadlock
             {
-                Droplet_Actions.TakeOverElectrode(this, item);
+                lock (d)
+                {
+                    SnekMode = false;
+                    List<Electrode> elec = new(d.Occupy);
+                    foreach (var item in elec)
+                    {
+                        Droplet_Actions.TakeOverElectrode(this, item);
+                    }
+                    if (Volume == 0)
+                    {
+                        SetSizes(d.Volume);
+                    }
+                    d.RemoveFromBoard();
+                }
             }
-            if (Volume == 0)
-            {
-                SetSizes(d.Volume);
-            }
-            d.RemoveFromBoard();
+            
+            
         }
 
-        internal void GoAmorphous()
+        public void GoAmorphous()
         {
             SnekMode = false;
             SnekList = [];

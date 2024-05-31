@@ -166,6 +166,11 @@ namespace Bachelor_Project.Simulation
             {
                 item.Stop();
             }
+            Printer.PrintBoard();
+            while (!Printer.CurrentlyDone())
+            {
+                Thread.Sleep(10);
+            }
             Outparser.Outparser.Dispose();
             
         }
@@ -186,7 +191,7 @@ namespace Bachelor_Project.Simulation
             bool newPath = false;
             Dictionary<string, ((Point start, Point end)? path, UsefulSemaphore sem)> oldPaths = new(dropletPaths);
 
-            lock (Droplet_Actions.MoveLock)
+            lock (d)
             {
                 if (d.Removed)
                 {
@@ -236,9 +241,10 @@ namespace Bachelor_Project.Simulation
 
         public void RemovePath(Droplet d)
         {
+
             lock (ModifiedAStar.PathLock)
             {
-
+                
                 Printer.PrintLine(d.Name + " no longer waits" );
                 d.CurrentPath = null;
                 if (dropletPaths.TryGetValue(d.Name, out ((Point start, Point end)? path, UsefulSemaphore sem) value))

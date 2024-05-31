@@ -52,6 +52,10 @@ namespace Bachelor_Project.Utility
                 { 
                     lock (PrintEnqueue)
                     {
+                        if (PrintQueue.Count == 0)
+                        {
+                            continue;
+                        }
                         cTask = PrintQueue.Dequeue();
                     }
                     if (cTask.Status != TaskStatus.RanToCompletion)
@@ -130,7 +134,7 @@ namespace Bachelor_Project.Utility
 
         public static bool CurrentlyDone()
         {
-            return PrintQueue.Count == 0 && cTask == null;
+            return (PrintQueue.Count == 0 && cTask == null) || !Settings.Printing;
 
 
         }

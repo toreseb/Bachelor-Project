@@ -18,16 +18,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             Printer.PrintLine(d.Name + " has NextDestiantion of: " + d.nextDestination);
             Printer.PrintLine(d.Name + " : INPUTTING");
-            try
-            {
-                Droplet_Actions.InputDroplet(d, i, volume, destination);
-            }
-            catch (NewWorkException)
-            {
-            }
-            
+            Droplet_Actions.InputDroplet(d, i, volume, destination);
+
             InputSem?.TryReleaseOne();
-            /*
+            
             if (destination != null && d.GetWork().Count == 0)
             {
                 Electrode destElectrode = d.GetClosestFreePointer(destination);
@@ -55,7 +49,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                 }
             }
-            */
+            
             return true;
 
         }
@@ -64,16 +58,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintLine(droplet.Name + " : OUTPUTTING");
             Printer.PrintBoard();
             droplet.Important = true;
-            try
-            {
-                Droplet_Actions.MoveToApparature(droplet, output);
-                Droplet_Actions.Output(droplet, output);
-            }
-            catch(Exception e)
-            {
-                throw;
-            }
-            
+            Droplet_Actions.MoveToApparature(droplet, output);
+            Droplet_Actions.Output(droplet, output);
+
             return true;
         }
 
@@ -139,15 +126,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.Important = true;
 
             // Run Droplet_Actions.splitDroplet
-            try
-            {
-                Droplet_Actions.SplitDroplet(d, percentages, dropSem);
-            }
-            catch(Exception e)
-            {
-                throw;
-            }
-            
+            Droplet_Actions.SplitDroplet(d, percentages, dropSem);
+
             return true;
         }
 
@@ -159,8 +139,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // Wait for SplitDroplet to release 2 semaphore
             beginSem.Wait(2);
-            droplet.GoAmorphous();
-            //Droplet_Actions.MoveToApparature(droplet, droplet.nextDestination);
             return true;
         }
 
@@ -179,14 +157,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 d.CurrentPath = null;
                 d.nextElectrodeDestination = location;
                 Droplet_Actions.MoveToDest(d, location, mergeDoplets);
-            }
-            catch (ThreadInterruptedException)
-            {
-
-            }
-            catch (OperationCanceledException)
-            {
-
             }
             catch(Exception)
             {

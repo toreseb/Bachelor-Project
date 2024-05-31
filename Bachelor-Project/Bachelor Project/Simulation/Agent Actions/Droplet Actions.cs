@@ -887,23 +887,24 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static Electrode MoveOffElectrode(Droplet d, Electrode? e = null)
         {
-            if (e == null)
+            lock (MoveLock)
             {
-                e = d.SnekList.Last();
-            }
+                e ??= d.SnekList.Last();
 
-            Outparser.Outparser.ElectrodeOff(e, d: d);
-            if (!e.GetContaminants().Contains(d.Substance_Name))
-            {
-                e.Contaminate(d.Substance_Name);
+                Outparser.Outparser.ElectrodeOff(e, d: d);
+                if (!e.GetContaminants().Contains(d.Substance_Name))
+                {
+                    e.Contaminate(d.Substance_Name);
+                }
+                if (d.SnekMode)
+                {
+                    d.SnekList.Remove(e);
+                }
+                d.Occupy.Remove(e);
+                e.Occupant = null;
+                return e;
             }
-            if (d.SnekMode)
-            {
-                d.SnekList.Remove(e);
-            }
-            d.Occupy.Remove(e);
-            e.Occupant = null;
-            return e;
+            
         }
 
 
@@ -941,7 +942,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // If snake already occupies destination, coil around dest.
             if (dest.Occupant != null && dest.Occupant.Equals(d))
             {
-                Program.C.RemovePath(d);
                 CoilSnek(d, dest);
                 if (CheckParity(d,preSize, mergeDroplets))
                 {
@@ -963,7 +963,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             int priorCounter = 0;
             int totalExtraAdded = 0;
 
-            LinkedList<Electrode> oldList = new(d.SnekList);
             if (CheckDropletHeldTogetherParity(d))
             {
                 throw new ArgumentException("Anomaly in Occupy.Count");
@@ -988,7 +987,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 throw new ArgumentException("Anomaly in Occupy.Count");
             }
             int extraAdded = totalExtraAdded;
-            LinkedList<Electrode> oldList2 = new(d.SnekList);
             int needToTreeRemove = (d.Occupy.Count - d.SnekList.Count) - totalExtraAdded;
             // Make tree out of blob in order to know what can safely be removed.
             Tree blobTree = BuildTree(d, d.SnekList.ToList(), d.SnekList.First());
@@ -1036,7 +1034,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     d.MergeReady = true;
                     // Turn off the right electrode.
-                    Electrode testSee = blobTree.RemoveLeaf();
+                    blobTree.RemoveLeaf();
                     if (CheckDropletHeldTogetherParity(d, mergeDroplets))
                     {
                         throw new ArgumentException("Anomaly in Occupy.Count");
@@ -1055,7 +1053,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (d.Occupy.Contains(dest) && !d.Important)
                 {
                     Program.C.RemovePath(d);
-                    int preCoilSize = d.Occupy.Count;
                     CoilSnek(d, dest);
                     if (CheckParity(d, preSize, mergeDroplets))
                     {
@@ -1092,8 +1089,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Program.C.RemovePath(d);
             // For Testing
             int preSize = d.Occupy.Count;
-            int preDSize = d.Size;
-            List<Electrode> testlist = new(d.Occupy);
+
+            d.SnekMode = false;
+            d.SnekList.Clear();
 
             bool coilAgain = false; // If the center found is still in the border, coil again and the center is outside the border
 
@@ -1107,7 +1105,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     throw new ThreadInterruptedException("Thread has been interrupted");
                 }
-
+                Electrode? oldCenter = center;
                 if (d.SnekList.Count > 0)
                 {
                     center ??= d.SnekList.First();
@@ -1124,10 +1122,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     currentElectrodes = [center];
                     seenElectrodes1 = [center];
                 }
-                Electrode oldCenter = center;
+                
                 center = null;
 
-                while(!(input ||app != null || oldCenter.Apparature != null) && currentElectrodes.Count > 0)
+                while(!(input ||app != null || (oldCenter != null && oldCenter.Apparature != null)) && currentElectrodes.Count > 0)
                 {
                     Electrode cElectrode = currentElectrodes[0];
 
@@ -1165,17 +1163,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             
 
-            d.SnekMode = false;
-            d.SnekList.Clear();
+            
             
             int amount = input ? d.Occupy.Count : d.Occupy.Count -1; // -1 because the center is not in the list 0 if it inputs new value
             if (amount == 0 && input)
             {
                 MoveOnElectrode(d, center);
             }
-
-
-            int totalAmount = amount;
             
             
             
@@ -1183,7 +1177,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             List<Electrode> activeBlob1 = [center];
             List<Electrode> seenElectrodes = [center];
 
-            List<Apparature> alreadyOnApp = [];
 
             while(activeBlob1.Count > 0 && amount > 0)
             {
@@ -1192,15 +1185,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     throw new ThreadInterruptedException("Thread has been interrupted");
                 }
                 Electrode current = activeBlob1[0];
-                if (current.Apparature != null)
-                {
-                    alreadyOnApp.Add(current.Apparature);
-                }
-                List<(Electrode, Direction)> trueNeighbors = current.GetTrueNeighbors(); ; // This is causing some issues TODO: Make sure this always works
+
+                List<(Electrode, Direction)> trueNeighbors = current.GetTrueNeighbors();
                 List<Direction> foundNeighbors = [];
                 foreach ((Electrode el, Direction dir) in trueNeighbors)
                 {
-                    if (!(ignoreBorders || input) && !CheckApparatureBorders(el, alreadyOnApp, app))
+                    if (!(ignoreBorders || input) && !CheckApparatureBorders(el, [], app))
                     {
                         continue;
                     }
@@ -1220,11 +1210,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
                 if (amount > 0)
                 {
-                    List<Electrode> extendedNeighbors = current.GetExtendedNeighborsFromTrue(foundNeighbors, seenElectrodes); ; // This is causing some issues TODO: Make sure this always works
+                    List<Electrode> extendedNeighbors = current.GetExtendedNeighborsFromTrue(foundNeighbors, seenElectrodes);
 
                     foreach (Electrode el in extendedNeighbors)
                     {
-                        if (!(ignoreBorders || input) && !CheckApparatureBorders(el, alreadyOnApp, app))
+                        if (!(ignoreBorders || input) && !CheckApparatureBorders(el, [], app))
                         {
                             continue;
                         }
@@ -1616,10 +1606,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 // Move all the way away
                 // I can use CheckBoarder for it and just give it the current position of the droplet that was just split off.
-                bool hitBorders = false;
                 while (!CheckBorder(d, d.Occupy).Item1)
                 {
-                    hitBorders = true;
                     if (d.CurrentPath == null || d.CurrentPath.Value.path.Count > destBuffer)
                     {
                         bool moved = MoveTowardDest(d, dest, splitDroplet: source.Name).Item1;

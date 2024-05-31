@@ -1292,14 +1292,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Electrodes[0, 0].Occupant, w2);
             Assert.AreEqual(board.Electrodes[1, 0].Occupant, w2);
 
+            Assert.AreEqual(board.Electrodes[0, 6].Occupant, w3);
             Assert.AreEqual(board.Electrodes[1, 6].Occupant, w3);
-            Assert.AreEqual(board.Electrodes[2, 6].Occupant, w3);
 
             Assert.AreEqual(board.Electrodes[3, 1].Occupant, w4);
             Assert.AreEqual(board.Electrodes[3, 2].Occupant, w4);
 
             Assert.AreEqual(board.Electrodes[3, 4].Occupant, w5);
-            Assert.AreEqual(board.Electrodes[4, 4].Occupant, w5);
+            Assert.AreEqual(board.Electrodes[3, 5].Occupant, w5);
         }
 
         [TestMethod()]

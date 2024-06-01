@@ -1612,7 +1612,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 // Move all the way away
                 // I can use CheckBoarder for it and just give it the current position of the droplet that was just split off.
-                while (!CheckBorder(d, d.Occupy).Item1)
+                while (!CheckBorder(d, d.Occupy).legalmove)
                 {
                     if (d.CurrentPath == null || d.CurrentPath.Value.path.Count > destBuffer)
                     {
@@ -1633,6 +1633,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         if (!moved && d.Waiting == false)
                         {
                             d.Waiting = true;
+                        }
+                        if (CheckBorder(d, d.Occupy).legalmove)
+                        {
+                            CoilSnek(d);
                         }
                     }
                     else

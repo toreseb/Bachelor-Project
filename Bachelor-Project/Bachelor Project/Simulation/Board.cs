@@ -1,6 +1,7 @@
 ﻿using Bachelor_Project.Electrode_Types;
 using Bachelor_Project.Electrode_Types.Actuator_Types;
 using Bachelor_Project.Electrode_Types.Sensor_Types;
+using Bachelor_Project.Simulation.Electrode_Types.Sensor_Types;
 using Bachelor_Project.Utility;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
@@ -128,6 +129,9 @@ namespace Bachelor_Project.Simulation
                 {
                     case "RGB_color":
                         trueItem = item.ToObject<RGBSensor>();
+                        break;
+                    case "temperature":
+                        trueItem = item.ToObject<HeatSensor>();
                         break;
                     case "size":
                         trueItem = item.ToObject<SizeSensor>();

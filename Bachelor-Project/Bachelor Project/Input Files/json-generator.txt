@@ -4,7 +4,7 @@
     platform_name: "4by3example",
     platform_type: "example",
     platform_ID: "012345678",
-    sizeX: 220,
+    sizeX: 220, // Size of board times size of electrodes
     sizeY: 220
   },
     electrodes: [
@@ -45,24 +45,32 @@
         ID: 11*11+ '{{index()}}', // Size of board
         actuatorID: '{{index()}}',
         type: "heater",
-        positionX: 20,
+        positionX: 20, // Position of heater, top left part of heater, electrode position
         positionY: 0,
-        sizeX: 20,
+        sizeX: 20, // Size of heater, size is how further than the position the heater is
         sizeY: 20
       }],
-        sensors: [],
+	sensors: [{
+        name: "sens" + '{{index()}}',
+		ID: 11*11+ 1 + '{{index()}}', // Size of board + heaters
+      sensorID: '{{index()}}',
+		type: "RGB_color", // Type of sensor, RGB_color or temperature
+		positionX: 90, // Position of sensor, center of electrode, electrode position + electrodesize/2
+		positionY: 170
+	}
+    ],
         inputs: [{
           name: "in" + '{{index()}}',
-          ID: 11*11+1+'{{index()}}', // Size of board + heaters
+          ID: 11*11+1+1+'{{index()}}', // Size of board + sensors + heaters
           inputID: '{{index()}}',
-          positionX: 10,
+          positionX: 10, // Position of input, center of electrode, electrode position + electrodesize/2
           positionY: 90
         }],
         outputs: [{
           name: "out" + '{{index()}}',
-          ID: 11*11+1+1+'{{index()}}', // Size of board + heaters + inputs
+          ID: 11*11+1+1+1+'{{index()}}', // Size of board + sensors + heaters + inputs
           outputID: '{{index()}}',
-          positionX: 170,
+          positionX: 170, // Position of output, center of electrode, electrode position + electrodesize/2
           positionY: 90
         }],
         droplets: [],

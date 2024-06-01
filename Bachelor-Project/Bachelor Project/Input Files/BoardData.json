@@ -1,7 +1,7 @@
 {
   "information": {
-    "platform_name": "4by3example",
-    "platform_type": "example",
+    "platform_name": "11by11board",
+    "platform_type": "board",
     "platform_ID": 12345678,
     "sizeX": 260,
     "sizeY": 260

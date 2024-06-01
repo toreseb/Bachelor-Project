@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation.Electrode_Types.Sensor_Types
 {
-    internal class Heat_Sensor(int x, int y, int sizeX, int sizeY) : Sensor(x, y, sizeX, sizeY)
+    internal class HeatSensor(int x, int y, int sizeX, int sizeY) : Sensor(x, y, sizeX, sizeY)
     {
         override public string Type { get; set; } = "heat";
         public override object[]? SenseFunc() // Returns [Color]

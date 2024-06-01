@@ -107,10 +107,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 foreach (Electrode e in d.Occupy)
                 {
                     // Check board bounderies
-                    if (e.ePosX < 1) left = false;
-                    if (!(e.ePosX < Program.C.board.GetXElectrodes() - 1)) right = false;
-                    if (e.ePosY < 1) up = false;
-                    if (!(e.ePosY < Program.C.board.GetYElectrodes() - 1)) down = false;
+                    if (e.EPosX < 1) left = false;
+                    if (!(e.EPosX < Program.C.board.GetXElectrodes() - 1)) right = false;
+                    if (e.EPosY < 1) up = false;
+                    if (!(e.EPosY < Program.C.board.GetYElectrodes() - 1)) down = false;
                 }
 
                 // Check for other droplets and contaminants in zone (+ boarder)
@@ -121,21 +121,21 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     foreach (Electrode e in d.Occupy)
                     {
-                        if (up && Program.C.board.Electrodes[e.ePosX, e.ePosY - 1].Occupant != d)
+                        if (up && Program.C.board.Electrodes[e.EPosX, e.EPosY - 1].Occupant != d)
                         {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY - 1]);
+                            temp.Add(Program.C.board.Electrodes[e.EPosX, e.EPosY - 1]);
                         }
-                        if (right && Program.C.board.Electrodes[e.ePosX + 1, e.ePosY].Occupant != d)
+                        if (right && Program.C.board.Electrodes[e.EPosX + 1, e.EPosY].Occupant != d)
                         {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX + 1, e.ePosY]);
+                            temp.Add(Program.C.board.Electrodes[e.EPosX + 1, e.EPosY]);
                         }
-                        if (down && !up && Program.C.board.Electrodes[e.ePosX, e.ePosY + 1].Occupant != d)
+                        if (down && !up && Program.C.board.Electrodes[e.EPosX, e.EPosY + 1].Occupant != d)
                         {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY + 1]);
+                            temp.Add(Program.C.board.Electrodes[e.EPosX, e.EPosY + 1]);
                         }
-                        if (left && !right && Program.C.board.Electrodes[e.ePosX - 1, e.ePosY].Occupant != d)
+                        if (left && !right && Program.C.board.Electrodes[e.EPosX - 1, e.EPosY].Occupant != d)
                         {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX - 1, e.ePosY]);
+                            temp.Add(Program.C.board.Electrodes[e.EPosX - 1, e.EPosY]);
                         }
                     }
                     List<Direction> directions = [];
@@ -448,9 +448,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             foreach (Electrode e in d.Occupy)
             {
                 // Check if new posision is legal
-                if (CheckLegalPosition(d,[(e.ePosX + xChange, e.ePosY + yChange)]))
+                if (CheckLegalPosition(d,[(e.EPosX + xChange, e.EPosY + yChange)]))
                 {
-                    temp.Add(Program.C.board.Electrodes[e.ePosX + xChange, e.ePosY + yChange]);
+                    temp.Add(Program.C.board.Electrodes[e.EPosX + xChange, e.EPosY + yChange]);
                 }
                 else
                 {
@@ -505,8 +505,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 // Check neighbors all the way around electrode for occupancy
                 // If same droplet, fine. If blank, fine. If other droplet, not fine.
 
-                int xCheck = e.ePosX;
-                int yCheck = e.ePosY;
+                int xCheck = e.EPosX;
+                int yCheck = e.EPosY;
                 for(int i = 1; i <= 8;i++)
                 {
                     switch(i)
@@ -764,7 +764,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             try
             {
-                newHead.Add(Program.C.board.Electrodes[head.ePosX + x, head.ePosY + y]);
+                newHead.Add(Program.C.board.Electrodes[head.EPosX + x, head.EPosY + y]);
             }
             catch (Exception)
             {
@@ -787,8 +787,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (CheckLegalMove(d, newHead, source: splitDroplet).legalmove && SnekCheck(d, newHead[0], source: splitDroplet))
                 {
 
-                    Printer.PrintLine("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
-                    Printer.PrintLine("Old head: " + head.ePosX + " " + head.ePosY);
+                    Printer.PrintLine("New head: " + newHead[0].EPosX + " " + newHead[0].EPosY);
+                    Printer.PrintLine("Old head: " + head.EPosX + " " + head.EPosY);
 
                     if (splitDroplet != null && Program.C.board.Droplets[splitDroplet].Occupy.Contains(newHead[0]))
                     {
@@ -908,7 +908,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        // Switch head and tail of snake
+        /// <summary>
+        /// This is discontinued, and no longer is used.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="mergers"></param>
+        /// <param name="mergePoint"></param>
+        /// <exception cref="Exception"></exception>
         public static void SnekReversal(Droplet d)
         {
             LinkedList<Electrode> copyList = new LinkedList<Electrode>();
@@ -1332,8 +1338,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     return trueDestination;
                 }
                 Electrode randomEl = cD.Occupy[0]; // A random electrode, don't think more thought is necessary
-                x += randomEl.ePosX;
-                y += randomEl.ePosY;
+                x += randomEl.EPosX;
+                y += randomEl.EPosY;
                 total++;
             }
 
@@ -1806,10 +1812,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             foreach (Electrode e in space)
             {
-                if (e.ePosX < minX) minX = e.ePosX;
-                if (e.ePosY < minY) minY = e.ePosY;
-                if (e.ePosX > maxX) maxX = e.ePosX;
-                if (e.ePosY > maxY) maxY = e.ePosY;
+                if (e.EPosX < minX) minX = e.EPosX;
+                if (e.EPosY < minY) minY = e.EPosY;
+                if (e.EPosX > maxX) maxX = e.EPosX;
+                if (e.EPosY > maxY) maxY = e.EPosY;
             }
 
             // Find electrode in middle of area

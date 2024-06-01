@@ -43,9 +43,9 @@ namespace Bachelor_Project.Simulation.Tests
                 Assert.AreEqual(j, e.ID);
                 Assert.AreEqual(-1, e.DriverID);
                 Assert.AreEqual((j % board.GetXElectrodes()) * 20 , e.PositionX);
-                Assert.AreEqual((j % board.GetXElectrodes()), e.ePosX);
+                Assert.AreEqual((j % board.GetXElectrodes()), e.EPosX);
                 Assert.AreEqual((j / board.GetXElectrodes()) * 20, e.PositionY);
-                Assert.AreEqual((j / board.GetXElectrodes()), e.ePosY);
+                Assert.AreEqual((j / board.GetXElectrodes()), e.EPosY);
                 Assert.AreEqual(20, e.SizeX);
                 Assert.AreEqual(20, e.SizeY);
                 Assert.AreEqual(0, e.Status);

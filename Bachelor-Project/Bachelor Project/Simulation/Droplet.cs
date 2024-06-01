@@ -78,12 +78,12 @@ namespace Bachelor_Project.Simulation
 
         }
 
-        public static Electrode GetClosestPartToApparature(Droplet d, Apparature a)
+        private Electrode GetClosestPartToApparature(Apparature a)
         {
             (int x, int y) = a.GetCenter();
             Electrode? closestElectrode = null;
             double minDistance = double.MaxValue;
-            foreach (Electrode e in d.Occupy) // BROKEN - There is a problem when splitting as there is nothing in Occupy
+            foreach (Electrode e in this.Occupy) // BROKEN - There is a problem when splitting as there is nothing in Occupy
             {
                 double distance = Electrode.GetDistance(e, new Electrode(x, y));
                 if (distance < minDistance)
@@ -128,7 +128,7 @@ namespace Bachelor_Project.Simulation
             }
             else
             {
-                center = GetClosestPartToApparature(this, a);
+                center = GetClosestPartToApparature(a);
             }
             foreach (Electrode electrode in a.pointers)
             {
@@ -265,7 +265,7 @@ namespace Bachelor_Project.Simulation
             Size = ((int)Volume/12)+1;
         }
 
-        internal void SetContam(List<string> list)
+        public void SetContam(List<string> list)
         {
             Contamintants = list;
         }
@@ -288,14 +288,14 @@ namespace Bachelor_Project.Simulation
             
         }
 
-        internal void changeTemp(int actualTemperature)
+        public void ChangeTemp(int actualTemperature)
         {
             Temperature = actualTemperature;
         }
 
 
 
-        internal void RemoveFromBoard()
+        public void RemoveFromBoard()
         {
             lock (ModifiedAStar.PathLock) // Also needs the PathLock, so removepath doesn't create a deadlock
             {

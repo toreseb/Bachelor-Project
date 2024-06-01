@@ -184,7 +184,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Droplet_Actions.WaitDroplet(d, time*1000);
             if (newType != null && d.Substance_Name != newType)
             {
-                d.changeTemp(heater.ActualTemperature);
+                d.ChangeTemp(heater.ActualTemperature);
                 d.ChangeType(newType);
             }
             return true;

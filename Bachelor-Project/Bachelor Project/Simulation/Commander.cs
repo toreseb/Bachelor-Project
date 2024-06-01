@@ -235,7 +235,7 @@ namespace Bachelor_Project.Simulation
 
         public bool SetPath(Droplet d, Electrode start, Electrode end, List<string>? mergeDroplets = null)
         {
-            return SetPath(d, start.ePosX, start.ePosY, end.ePosX, end.ePosY, mergeDroplets);
+            return SetPath(d, start.EPosX, start.EPosY, end.EPosX, end.EPosY, mergeDroplets);
         }
 
 

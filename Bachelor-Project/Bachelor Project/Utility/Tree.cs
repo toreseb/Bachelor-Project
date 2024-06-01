@@ -149,7 +149,7 @@ namespace Bachelor_Project.Utility
             double minDistance = double.MaxValue;
             foreach (Electrode electrode in electrodes)
             {
-                double distance = Math.Sqrt(Math.Pow(electrode.ePosX - center.ePosX, 2) + Math.Pow(electrode.ePosY - center.ePosY, 2));
+                double distance = Math.Sqrt(Math.Pow(electrode.EPosX - center.EPosX, 2) + Math.Pow(electrode.EPosY - center.EPosY, 2));
                 if (distance < minDistance)
                 {
                     closestElectrode = electrode;

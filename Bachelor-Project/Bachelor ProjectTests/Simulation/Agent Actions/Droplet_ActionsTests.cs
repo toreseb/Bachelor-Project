@@ -143,8 +143,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             input.Wait();
 
             // Get input coords
-            int inX = board.Input["in0"].pointers[0].ePosX;
-            int inY = board.Input["in0"].pointers[0].ePosY;
+            int inX = board.Input["in0"].pointers[0].EPosX;
+            int inY = board.Input["in0"].pointers[0].EPosY;
 
             // Check that Wat1 is at in0
             Assert.AreEqual(board.Droplets["Wat1"], board.Electrodes[inX, inY].Occupant);
@@ -179,8 +179,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 11);
 
             // Remember old position
-            int oldPosX = board.Droplets["Wat1"].Occupy[0].ePosX;
-            int oldPosY = board.Droplets["Wat1"].Occupy[0].ePosY;
+            int oldPosX = board.Droplets["Wat1"].Occupy[0].EPosX;
+            int oldPosY = board.Droplets["Wat1"].Occupy[0].EPosY;
 
             // Move droplet right
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
@@ -199,8 +199,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 11);
 
             // Remember old position
-            int oldPosX = board.Droplets["Wat1"].Occupy[0].ePosX;
-            int oldPosY = board.Droplets["Wat1"].Occupy[0].ePosY;
+            int oldPosX = board.Droplets["Wat1"].Occupy[0].EPosX;
+            int oldPosY = board.Droplets["Wat1"].Occupy[0].EPosY;
 
             // Move droplet up
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.UP);
@@ -222,8 +222,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.RIGHT);
 
             // Remember old position
-            int oldPosX = board.Droplets["Wat1"].Occupy[0].ePosX;
-            int oldPosY = board.Droplets["Wat1"].Occupy[0].ePosY;
+            int oldPosX = board.Droplets["Wat1"].Occupy[0].EPosX;
+            int oldPosY = board.Droplets["Wat1"].Occupy[0].EPosY;
 
             // Move droplet left
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.LEFT);
@@ -242,8 +242,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 11);
 
             // Remember old position
-            int oldPosX = board.Droplets["Wat1"].Occupy[0].ePosX;
-            int oldPosY = board.Droplets["Wat1"].Occupy[0].ePosY;
+            int oldPosX = board.Droplets["Wat1"].Occupy[0].EPosX;
+            int oldPosY = board.Droplets["Wat1"].Occupy[0].EPosY;
 
             // Move droplet down
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.DOWN);
@@ -290,8 +290,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.InputDroplet(board.Droplets["Wat1"], board.Input["in0"], 11);
 
             // Remember old position
-            int oldPosX = board.Droplets["Wat1"].Occupy[0].ePosX;
-            int oldPosY = board.Droplets["Wat1"].Occupy[0].ePosY;
+            int oldPosX = board.Droplets["Wat1"].Occupy[0].EPosX;
+            int oldPosY = board.Droplets["Wat1"].Occupy[0].EPosY;
 
             // Droplet is inserted by left boarder. Try to move droplet left.
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.LEFT);
@@ -318,8 +318,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.InputDroplet(board.Droplets["Wat2"], board.Input["in0"], 11);
 
             // Save Wat2 placement
-            int oldX = board.Droplets["Wat2"].Occupy[0].ePosX;
-            int oldY = board.Droplets["Wat2"].Occupy[0].ePosY;
+            int oldX = board.Droplets["Wat2"].Occupy[0].EPosX;
+            int oldY = board.Droplets["Wat2"].Occupy[0].EPosY;
 
             // Move Wat2 towards Wat1, first move should be allowed, second move should be stopped
             Droplet_Actions.MoveDroplet(board.Droplets["Wat2"], Direction.RIGHT);
@@ -359,8 +359,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Droplet_Actions.MoveDroplet(board.Droplets["Wat1"], Direction.DOWN);
 
             // Save water position
-            int watX = board.Droplets["Wat1"].Occupy[0].ePosX;
-            int watY = board.Droplets["Wat1"].Occupy[0].ePosY;
+            int watX = board.Droplets["Wat1"].Occupy[0].EPosX;
+            int watY = board.Droplets["Wat1"].Occupy[0].EPosY;
 
             // Check contamination
             Assert.IsTrue(board.Electrodes[watX, watY + 1].GetContaminants().Any()); // True if there is any contaminants

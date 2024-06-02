@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Electrode_Types.Sensor_Types
 {
+    /// <summary>
+    /// This was a mistake, and is not actually part of the program.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="sizeX"></param>
+    /// <param name="sizeY"></param>
     internal class SizeSensor(int x, int y, int sizeX, int sizeY) : Sensor(x, y, sizeX, sizeY)
     {
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Bachelor_Project.Utility
 {
@@ -42,6 +43,7 @@ namespace Bachelor_Project.Utility
             Leaves = [];
             this.d = d;
             BuildTree();
+            
         }
 
         private void BuildTree()
@@ -49,33 +51,17 @@ namespace Bachelor_Project.Utility
             while (ActiveNodes.Count > 0)
             {
                 Node currentNode = ActiveNodes[0];
-                Electrode cElectrode;
-                try
+                if (currentNode.Electrode == null)
                 {
-                    cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX + 1, currentNode.Electrode.ePosY];
-                    CheckAddElectrode(d, currentNode, cElectrode);
+                    throw new ThreadInterruptedException();
                 }
-                catch { }
-                try
+                List<(Electrode, Direction)> neighbors = currentNode.Electrode.GetTrueNeighbors();
+
+                foreach ((Electrode cEl, Direction _) in neighbors)
                 {
-                    cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX - 1, currentNode.Electrode.ePosY];
-                    CheckAddElectrode(d, currentNode, cElectrode);
+                    CheckAddElectrode(d, currentNode, cEl);
                 }
-                catch{ }
-                try
-                {
-                    cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX, currentNode.Electrode.ePosY + 1];
-                    CheckAddElectrode(d, currentNode, cElectrode);
-                }
-                catch{ }
-                try
-                {
-                    cElectrode = Program.C.board.Electrodes[currentNode.Electrode.ePosX, currentNode.Electrode.ePosY - 1];
-                    CheckAddElectrode(d, currentNode, cElectrode);
-                }
-                catch{ }
-                
-                
+
                 
                 ActiveNodes.Remove(currentNode);
                 if (currentNode.Children.Count == 0)
@@ -84,30 +70,51 @@ namespace Bachelor_Project.Utility
                 }
             }
         }
-        public void RemoveLeaf(bool into = false)
+        public Electrode? RemoveLeaf(bool into = false)
         {
-            Node cLeaf = Leaves[0];
-            if (cLeaf.Parent != null || into != false)
+            Electrode? returnedElectrode = null;
+            if (Leaves.Count == 0)
             {
-                if (!NewElectrodes.Contains(cLeaf.Electrode))
-                {
-                    Printer.PrintLine("moving off electrode: "+cLeaf.Electrode.Name);
-                    Droplet_Actions.MoveOffElectrode(d, cLeaf.Electrode);
-                }
-
-                if (cLeaf.Parent != null)
-                {
-                    cLeaf.Parent.RemoveChild(cLeaf);
-
-                    if (cLeaf.Parent.Children.Count == 0)
-                    {
-                        Leaves.Add(cLeaf.Parent);
-                    }
-                }
-                
+                return null;
             }
-            Nodes.Remove(cLeaf);
-            Leaves.Remove(cLeaf);
+            Node cLeaf = Leaves[0];
+            bool removed = false;
+            while (!removed)
+            {
+                if (Leaves.Count == 0)
+                {
+                    break;
+                }
+                cLeaf = Leaves[0];
+                if (cLeaf.Parent != null || into != false)
+                {
+                    if (!NewElectrodes.Contains(cLeaf.Electrode))
+                    {
+                        Printer.PrintLine("moving off electrode: " + cLeaf.Electrode.Name);
+                        Droplet_Actions.MoveOffElectrode(d, cLeaf.Electrode);
+                        returnedElectrode = cLeaf.Electrode;
+                        removed = true;
+                    }
+                    else
+                    {
+                        int a = 2;
+                    }
+
+                    if (cLeaf.Parent != null)
+                    {
+                        cLeaf.Parent.RemoveChild(cLeaf);
+
+                        if (cLeaf.Parent.Children.Count == 0)
+                        {
+                            Leaves.Add(cLeaf.Parent);
+                        }
+                    }
+
+                }
+                Nodes.Remove(cLeaf);
+                Leaves.Remove(cLeaf);
+            }
+            return returnedElectrode;
         }
 
 
@@ -142,7 +149,7 @@ namespace Bachelor_Project.Utility
             double minDistance = double.MaxValue;
             foreach (Electrode electrode in electrodes)
             {
-                double distance = Math.Sqrt(Math.Pow(electrode.ePosX - center.ePosX, 2) + Math.Pow(electrode.ePosY - center.ePosY, 2));
+                double distance = Math.Sqrt(Math.Pow(electrode.EPosX - center.EPosX, 2) + Math.Pow(electrode.EPosY - center.EPosY, 2));
                 if (distance < minDistance)
                 {
                     closestElectrode = electrode;
@@ -150,7 +157,15 @@ namespace Bachelor_Project.Utility
                 }
             }
             return closestElectrode;
-        }   
+        }
+        public bool CheckTree()
+        {
+            if (Nodes.Count != d.Occupy.Count)
+            {
+                return false;
+            }
+            return true;
+        }
 
     }
     public class Node
@@ -172,6 +187,9 @@ namespace Bachelor_Project.Utility
         {
             Children.Remove(child);
         }
+
+
+
         public override string ToString()
         {
             return Electrode.ToString();

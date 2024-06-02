@@ -23,6 +23,9 @@ namespace Bachelor_Project.Utility
         public Apparature? CommandDestination = null;
         public object[] ActionValue { get; set; } = value;
 
+        private static int Inputted = 0;
+        private static UsefulSemaphore InputSem = new UsefulSemaphore(1,1);
+
         public void SetDest()
         {
             if (Type == "temp")
@@ -53,7 +56,13 @@ namespace Bachelor_Project.Utility
                 case "input":
                     
                     Printer.PrintLine("Input");
-                    command = new(() => Mission_Tasks.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[0]], int.Parse((string)ActionValue[1]), CommandDestination));
+                    while (Inputted != (int)ActionValue[0])
+                    {
+                        InputSem.CheckOne();
+                    }
+                    InputSem.WaitOne();
+                    Inputted += 1;
+                    command = new(() => Mission_Tasks.InputDroplet(b.Droplets[OutputDroplets[0]], b.Input[(string)ActionValue[1]], int.Parse((string)ActionValue[2]), InputSem, CommandDestination));
                     b.Droplets[OutputDroplets[0]].GiveWork(command);
                     break;
                 case "output":
@@ -68,17 +77,18 @@ namespace Bachelor_Project.Utility
                     break;
                 case "merge":
                     Printer.PrintLine("Merge");
-
-                    UsefulSemaphore sem1 = new(InputDroplets.Count);
+                    UsefulSemaphore sem0 = new(InputDroplets.Count); // For the merging droplet to tell each other that they are ready
+                    UsefulSemaphore sem1 = new(InputDroplets.Count); // For the merged droplet to tell the merging droplets that the location is calculated
                     Task<Electrode> calcMerge = new(() => Droplet_Actions.MergeCalc(InputDroplets, b.Droplets[OutputDroplets[0]], sem1));
 
-                    UsefulSemaphore sem2 = new(InputDroplets.Count);
+                    UsefulSemaphore sem2 = new(InputDroplets.Count); // For the merging droplets to tell the merged droplet they have finished.
+                    
                     foreach (var item in InputDroplets)
                     {
-                        Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(b.Droplets[item], calcMerge, sem1, sem2, InputDroplets));
+                        Task awaitWork = new(() => Mission_Tasks.AwaitMergeWork(b.Droplets[item], calcMerge, sem0, sem1, sem2, InputDroplets));
                         b.Droplets[item].GiveWork(awaitWork);
                     }
-                    Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]], calcMerge, sem2, CommandDestination));
+                    Task mergeDroplet = new(() => Mission_Tasks.MergeDroplets(InputDroplets, b.Droplets[OutputDroplets[0]], calcMerge, sem0, sem2, CommandDestination));
 
                     b.Droplets[OutputDroplets[0]].GiveWork(mergeDroplet);
 
@@ -86,10 +96,10 @@ namespace Bachelor_Project.Utility
                     break;
                 case "split":
                     Printer.PrintLine("Split");
-                    Dictionary<string, double> ratios = [];
+                    Dictionary<string, double> percentages = [];
 
 
-                    ratios = Calc.Ratio(ActionValue.Length > 0 ? (Dictionary<string, int>)ActionValue[0] : null, OutputDroplets);
+                    percentages = Calc.FindPercentages(ActionValue.Length > 0 ? (Dictionary<string, int>)ActionValue[0] : null, OutputDroplets);
 
                     Dictionary<string, UsefulSemaphore> dropSem = new Dictionary<string, UsefulSemaphore>();
 
@@ -99,7 +109,7 @@ namespace Bachelor_Project.Utility
                         dropSem.Add(dName, sem);
                     }
 
-                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], ratios, dropSem, CommandDestination));
+                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], percentages, dropSem, CommandDestination));
                     b.Droplets[InputDroplets[0]].GiveWork(splitDroplet);
                     foreach (var item in OutputDroplets)
                     {
@@ -169,7 +179,13 @@ namespace Bachelor_Project.Utility
             }
             return null;
         }
+        public static void Reset()
+        {
+            Inputted = 0;
+        }
     }
+
+    
 
 }
     

@@ -1,4 +1,6 @@
+using Antlr4.Runtime;
 using Bachelor_Project.Outparser;
+using Bachelor_Project.Parsing;
 using Bachelor_Project.Simulation.Agent_Actions;
 using Bachelor_Project.Utility;
 using System;
@@ -9,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Bachelor_Project.Simulation
 {
@@ -23,6 +26,7 @@ namespace Bachelor_Project.Simulation
 
         public Commander((List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>)? data, string boarddata)
         {
+            Reset();
             this.data = data;
             string json = File.ReadAllText(boarddata);
             board = Board.ImportBoardData(json);
@@ -80,6 +84,7 @@ namespace Bachelor_Project.Simulation
                     {
                         foreach (var item in item1.OutputDroplets)
                         {
+                            
                             if (item2.InputDroplets.Contains(item) && !item1.OutputCommands.Contains(item2))
                             {
                                 item2.InputCommands.Add(item1);
@@ -99,6 +104,7 @@ namespace Bachelor_Project.Simulation
 
         public Board SetBoard(string boarddata)
         {
+            Printer.Reset();
             string json = File.ReadAllText(boarddata);
             board = Board.ImportBoardData(json);
             return board;
@@ -120,7 +126,7 @@ namespace Bachelor_Project.Simulation
                     {
                         x.InputCommands.Remove(cCommand);
                         if (x.InputCommands.Count == 0) {
-                            currentCommands.Add(x);
+                            currentCommands.Insert(0, x);
                         }
                     });
                 currentCommands.Remove(cCommand);
@@ -160,9 +166,16 @@ namespace Bachelor_Project.Simulation
             {
                 item.Stop();
             }
+            Printer.PrintBoard();
+            while (!Printer.CurrentlyDone())
+            {
+                Thread.Sleep(10);
+            }
             Outparser.Outparser.Dispose();
             
         }
+
+
         /// <summary>
         /// Return true if path has been reset after a line intersect, else false
         /// </summary>
@@ -178,14 +191,23 @@ namespace Bachelor_Project.Simulation
             bool newPath = false;
             Dictionary<string, ((Point start, Point end)? path, UsefulSemaphore sem)> oldPaths = new(dropletPaths);
 
-            if (dropletPaths.Keys.Contains(d.Name))
+            lock (d)
             {
-                dropletPaths[d.Name] = ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), dropletPaths[d.Name].sem);
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException();
+                }
+                if (dropletPaths.TryGetValue(d.Name, out ((Point start, Point end)? path, UsefulSemaphore sem) value1))
+                {
+                    dropletPaths[d.Name] = ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), value1.sem);
+                }
+                else
+                {
+                    dropletPaths.Add(d.Name, ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), new UsefulSemaphore(1, 1)));
+                }
             }
-            else
-            {
-                dropletPaths.Add(d.Name, ((new Point(startPosX, startPosY), new Point(endPosX, endPosY)), new UsefulSemaphore(1, 1)));
-            }
+            
+
 
             foreach ((var key, var value) in oldPaths)
             {
@@ -195,6 +217,7 @@ namespace Bachelor_Project.Simulation
                 {
                     var oldValue = dropletPaths[d.Name];
                     dropletPaths[d.Name] = (null, dropletPaths[d.Name].sem);
+                    Printer.PrintLine(d.Name + " waits on " + key);
                     Monitor.Exit(ModifiedAStar.PathLock);
                     value.sem.CheckOne();
                     Monitor.Enter(ModifiedAStar.PathLock);
@@ -212,17 +235,21 @@ namespace Bachelor_Project.Simulation
 
         public bool SetPath(Droplet d, Electrode start, Electrode end, List<string>? mergeDroplets = null)
         {
-            return SetPath(d, start.ePosX, start.ePosY, end.ePosX, end.ePosY, mergeDroplets);
+            return SetPath(d, start.EPosX, start.EPosY, end.EPosX, end.EPosY, mergeDroplets);
         }
+
 
         public void RemovePath(Droplet d)
         {
+
             lock (ModifiedAStar.PathLock)
             {
+                
+                Printer.PrintLine(d.Name + " no longer waits" );
                 d.CurrentPath = null;
-                if (dropletPaths.Keys.Contains(d.Name))
+                if (dropletPaths.TryGetValue(d.Name, out ((Point start, Point end)? path, UsefulSemaphore sem) value))
                 {
-                    dropletPaths[d.Name] = (null, dropletPaths[d.Name].sem);
+                    dropletPaths[d.Name] = (null, value.sem);
                 }
                 else
                 {
@@ -232,6 +259,13 @@ namespace Bachelor_Project.Simulation
             }
             
 
+        }
+
+        public void Reset()
+        {
+            Printer.Reset();
+            Parsing.Parsing.Reset();
+            Command.Reset();
         }
 
     }

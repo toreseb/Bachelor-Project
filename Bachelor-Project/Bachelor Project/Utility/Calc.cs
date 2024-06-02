@@ -8,10 +8,10 @@ namespace Bachelor_Project.Utility
 {
     public static class Calc
     {
-        public static Dictionary<string, double> Ratio(Dictionary<string, int>? ratios, List<string> OutputDroplets)
+        public static Dictionary<string, double> FindPercentages(Dictionary<string, int>? Percentages, List<string> OutputDroplets)
         {
             Dictionary<string, double> result = [];
-            if (ratios == null)
+            if (Percentages == null)
             {
                 foreach (string d in OutputDroplets)
                 {
@@ -24,12 +24,12 @@ namespace Bachelor_Project.Utility
 
                 foreach (string d in OutputDroplets)
                 {
-                    sum += ratios[d];
+                    sum += Percentages[d];
                 }
 
                 foreach (string d in OutputDroplets)
                 {
-                    result.Add(d, ratios[d] / sum * 100);
+                    result.Add(d, Percentages[d] / sum * 100);
                 }
             }
 

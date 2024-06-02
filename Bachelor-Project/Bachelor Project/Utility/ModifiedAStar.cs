@@ -44,10 +44,15 @@ namespace Bachelor_Project.Utility
             
 
             Func<Electrode, Electrode, double> h = Electrode.GetDistance;
-            if (start == null)
+            lock (Droplet_Actions.MoveLock)
             {
-                start = goal.GetClosestElectrodeInList(d.Occupy);
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException();
+                }
+                start ??= goal.GetClosestElectrodeInList(d.Occupy);
             }
+            
             lock (PathLock)
             {
                 Program.C.SetPath(d, start, goal, mergeDroplets);
@@ -103,10 +108,7 @@ namespace Bachelor_Project.Utility
                     {
                         gScore.Add(neighborT, double.MaxValue);
                         
-                        if (d.Name == "drop3")
-                        {
-                            neighborT.smallestGScore = double.MaxValue;
-                        }
+
                         
                         //neighborT.smallestGScore = double.MaxValue;
 
@@ -114,11 +116,7 @@ namespace Bachelor_Project.Utility
                     if (tentativeGScore < gScore[neighborT])
                     {
                         
-                        if (d.Name == "drop3")
-                        {
-                            neighborT.smallestGScore = tentativeGScore;
-                        }
-                        
+
                         //neighborT.smallestGScore = tentativeGScore;
                         cameFrom[neighborT] = (current, neighbor.Item2);
                         gScore[neighborT] = tentativeGScore;
@@ -159,23 +157,12 @@ namespace Bachelor_Project.Utility
                     }
                 }
             }
-            /*
-            if (d.Name == "Wat5")
-            {
-                Electrode[,] electrodes = Program.C.board.Electrodes; 
-                int a = 2;
-            }
-            */
             if (!Droplet_Actions.CheckLegalMove(droplets, [end],mergeDroplets: mergeDroplets, source: splitDroplet).legalmove) // 1: check if the move is legal
             {
-                if (d.Name == "drop3")
-                {
-                    int a = 2;
-                }
-                return multiple * 1000;
+                return 100000* multiple;
             }else if (end.Apparature != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an apparature, and therefore important
             {
-                return (Math.Pow(multiple+5,2));
+                return multiple * 100;
             } else if (end.GetContaminants().Count > 0 && !end.GetContaminants().Exists( x => d.Contamintants.Contains(x))){ // 3: Check if highway
                 return 1;
             }

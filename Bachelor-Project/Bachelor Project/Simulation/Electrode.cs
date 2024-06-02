@@ -12,8 +12,8 @@ namespace Bachelor_Project.Simulation
         public int ElectrodeID { get; set; }
         public int DriverID { get; set; }
         public int Status { get; set; }
-        public int ePosX { get; set; } // Electrode position X
-        public int ePosY { get; set; } // Electrode position Y
+        public int EPosX { get; set; } // Electrode position X
+        public int EPosY { get; set; } // Electrode position Y
         // Contamination of tile in grid, may need changing later.
         private List<string> Contaminants { get; set; } = [];
         public Droplet? Occupant;
@@ -75,9 +75,9 @@ namespace Bachelor_Project.Simulation
                         throw new Exception("Invalid direction");
 
                 }
-                if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange))
+                if (Droplet_Actions.CheckBoardEdge(EPosX + xChange, EPosY + yChange))
                 {
-                    neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange],dir));
+                    neighbors.Add((Program.C.board.Electrodes[EPosX + xChange, EPosY + yChange],dir));
                 }
             }
             return neighbors;
@@ -88,13 +88,13 @@ namespace Bachelor_Project.Simulation
             switch (dir)
             {
                 case Direction.UP:
-                    return Program.C.board.Electrodes[ePosX, ePosY - 1];
+                    return Program.C.board.Electrodes[EPosX, EPosY - 1];
                 case Direction.RIGHT:
-                    return Program.C.board.Electrodes[ePosX + 1, ePosY];
+                    return Program.C.board.Electrodes[EPosX + 1, EPosY];
                 case Direction.DOWN:
-                    return Program.C.board.Electrodes[ePosX, ePosY + 1];
+                    return Program.C.board.Electrodes[EPosX, EPosY + 1];
                 case Direction.LEFT:
-                    return Program.C.board.Electrodes[ePosX - 1, ePosY];
+                    return Program.C.board.Electrodes[EPosX - 1, EPosY];
                 default:
                     throw new Exception("Invalid direction");
             }
@@ -133,16 +133,16 @@ namespace Bachelor_Project.Simulation
                     default:
                         throw new Exception("Invalid direction");
                 }
-                if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange))
+                if (Droplet_Actions.CheckBoardEdge(EPosX + xChange, EPosY + yChange))
                 {
-                    Electrode el = Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange];
-                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [el], source: source == null ? null :source.Name, splitPlacement: splitPlacement).legalmove && (includeApp || el.Apparature == null))
+                    Electrode el = Program.C.board.Electrodes[EPosX + xChange, EPosY + yChange];
+                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [el], source: source?.Name, splitPlacement: splitPlacement).legalmove && (includeApp || el.Apparature == null))
                     {
                         cBool.Add(false);
                         continue;
                     }
                     cBool.Add(true);
-                    neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange], dir));
+                    neighbors.Add((Program.C.board.Electrodes[EPosX + xChange, EPosY + yChange], dir));
                 }
                 else
                 {
@@ -175,34 +175,71 @@ namespace Bachelor_Project.Simulation
                     yChange = -1;
                     dir = null;
                 }
-                if (Droplet_Actions.CheckBoardEdge(ePosX + xChange, ePosY + yChange))
+                if (Droplet_Actions.CheckBoardEdge(EPosX + xChange, EPosY + yChange))
                 {
-                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange]]).legalmove)
+                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [Program.C.board.Electrodes[EPosX + xChange, EPosY + yChange]]).legalmove)
                     {
                         continue;
                     }
-                    neighbors.Add((Program.C.board.Electrodes[ePosX + xChange, ePosY + yChange], dir));
+                    neighbors.Add((Program.C.board.Electrodes[EPosX + xChange, EPosY + yChange], dir));
                 }
             }
             return neighbors;
         }
 
+        public List<Electrode> GetExtendedNeighborsFromTrue(List<Direction> foundTrueNeighbors, List<Electrode>? seenElectrodes = null)
+        {
+            seenElectrodes ??= [];
+            List<Electrode> extendedNeighbors = [];
+            for (int i = 0; i < 4; i++)
+            {
+                int xChange = 0;
+                int yChange = 0;
+                if (i == 0 && (foundTrueNeighbors.Contains(Direction.UP)|| foundTrueNeighbors.Contains(Direction.RIGHT)))
+                {
+                    xChange = 1;
+                    yChange = -1;
+                }
+                else if (i == 1 && (foundTrueNeighbors.Contains(Direction.RIGHT) || foundTrueNeighbors.Contains(Direction.DOWN)))
+                {
+                    xChange = 1;
+                    yChange = 1;
+                }
+                else if (i == 2 && (foundTrueNeighbors.Contains(Direction.DOWN) || foundTrueNeighbors.Contains(Direction.LEFT)))
+                {
+                    xChange = -1;
+                    yChange = 1;
+                }
+                else if (i == 3 && (foundTrueNeighbors.Contains(Direction.LEFT) || foundTrueNeighbors.Contains(Direction.UP)))
+                {
+                    xChange = -1;
+                    yChange = -1;
+                }
+                if (Droplet_Actions.CheckBoardEdge(EPosX + xChange, EPosY + yChange) && !seenElectrodes.Contains(Program.C.board.Electrodes[EPosX + xChange, EPosY + yChange]))
+                {
+                    extendedNeighbors.Add(Program.C.board.Electrodes[EPosX + xChange, EPosY + yChange]);
+                }
+            }
+            return extendedNeighbors;
+        }
+
+
         public static double GetDistance(Electrode e1, Electrode e2)
         {
-            return Math.Sqrt(Math.Pow(e1.ePosX - e2.ePosX, 2) + Math.Pow(e1.ePosY - e2.ePosY, 2));
+            return Math.Sqrt(Math.Pow(e1.EPosX - e2.EPosX, 2) + Math.Pow(e1.EPosY - e2.EPosY, 2));
         }
 
         public int GetDistanceToBorder()
         {
-            int x = ePosX;
-            if (ePosX > (Program.C.board.Information.eRow - 1) / 2)
+            int x = EPosX;
+            if (EPosX > (Program.C.board.Information.eRow - 1) / 2)
             {
-                x = (Program.C.board.Information.eRow -1) - ePosX;
+                x = (Program.C.board.Information.eRow -1) - EPosX;
             }
-            int y = ePosY;
-            if (ePosY > (Program.C.board.Information.eRow - 1) / 2)
+            int y = EPosY;
+            if (EPosY > (Program.C.board.Information.eRow - 1) / 2)
             {
-                y = (Program.C.board.Information.eCol -1) - ePosY;
+                y = (Program.C.board.Information.eCol -1) - EPosY;
             }
 
             return Math.Min(x+1, y+1);
@@ -227,7 +264,7 @@ namespace Bachelor_Project.Simulation
 
         public override string ToString()
         {
-            return Name + " x: " + ePosX + " y: " + ePosY;
+            return Name + " x: " + EPosX + " y: " + EPosY;
         }
 
     }

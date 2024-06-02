@@ -78,12 +78,12 @@ namespace Bachelor_Project.Simulation
 
         }
 
-        public static Electrode GetClosestPartToApparature(Droplet d, Apparature a)
+        private Electrode GetClosestPartToApparature(Apparature a)
         {
             (int x, int y) = a.GetCenter();
             Electrode? closestElectrode = null;
             double minDistance = double.MaxValue;
-            foreach (Electrode e in d.Occupy) // BROKEN - There is a problem when splitting as there is nothing in Occupy
+            foreach (Electrode e in this.Occupy) // BROKEN - There is a problem when splitting as there is nothing in Occupy
             {
                 double distance = Electrode.GetDistance(e, new Electrode(x, y));
                 if (distance < minDistance)
@@ -113,7 +113,6 @@ namespace Bachelor_Project.Simulation
                 // TODO: think of making this better
                 //throw new NullReferenceException("Can't find the closest electrode destination, when next destination is null");
             }
-            
         }
 
         public Electrode GetClosestFreePointer(Apparature a, string? source = null)
@@ -129,7 +128,7 @@ namespace Bachelor_Project.Simulation
             }
             else
             {
-                center = GetClosestPartToApparature(this, a);
+                center = GetClosestPartToApparature(a);
             }
             foreach (Electrode electrode in a.pointers)
             {
@@ -181,18 +180,36 @@ namespace Bachelor_Project.Simulation
                         }
                         
                         Printer.PrintLine("Droplet " + Name + " is doing work");
-                        ActiveTask.Start();
+                        
                         try
                         {
-
-                            ActiveTask.Wait(cancellationToken);
+                            ActiveTask.RunSynchronously();
+                            if (ActiveTask.IsFaulted)
+                            {
+                                throw ActiveTask.Exception;
+                            }
                             ActiveTask = null;
                         }
-                        catch (Exception e)
+                        catch (ThreadInterruptedException e)
                         {
-                            Printer.PrintLine("Droplet " + Name + " has been stopped");
-                            ActiveTask = null;
-                            return;
+                            if (cancellationToken.IsCancellationRequested)
+                            {
+                                Printer.PrintLine("Droplet " + Name + " has been stopped");
+                                ActiveTask = null;
+                                return;
+                            }
+                            else
+                            {
+                                throw;
+                            }
+
+                        }
+                        catch (AggregateException e)
+                        {
+                            if(e.InnerException is not NewWorkException)
+                            {
+                                throw;
+                            }
                         }
 
                         Printer.PrintLine("Droplet " + Name + " has done work");
@@ -233,6 +250,7 @@ namespace Bachelor_Project.Simulation
         {
             cancellationTokenSource.Cancel();
             Thread.Interrupt();
+            Removed = true;
         }
 
         private string GetColor(string substance_name)
@@ -247,7 +265,7 @@ namespace Bachelor_Project.Simulation
             Size = ((int)Volume/12)+1;
         }
 
-        internal void SetContam(List<string> list)
+        public void SetContam(List<string> list)
         {
             Contamintants = list;
         }
@@ -270,21 +288,35 @@ namespace Bachelor_Project.Simulation
             
         }
 
-        
-
-        internal void RemoveFromBoard()
+        public void ChangeTemp(int actualTemperature)
         {
-            // TODO: Remove it entirely from the board
-            List<Electrode> oldElectrode = new(Occupy);
-            foreach (var item in oldElectrode)
-            {
-                Droplet_Actions.MoveOffElectrode(this, item);
+            Temperature = actualTemperature;
+        }
 
+
+
+        public void RemoveFromBoard()
+        {
+            lock (ModifiedAStar.PathLock) // Also needs the PathLock, so removepath doesn't create a deadlock
+            {
+                lock (this)
+                {
+                    Program.C.RemovePath(this);
+                    List<Electrode> oldElectrode = new(Occupy);
+                    foreach (var item in oldElectrode)
+                    {
+                        Droplet_Actions.MoveOffElectrode(this, item);
+
+                    }
+                    SetSizes(0);
+
+                    SnekMode = false;
+                    Printer.PrintLine("Droplet " + Name + " has been stopped");
+                    Stop();
+                }
             }
-            SnekMode = false;
-            Removed = true;
-            Printer.PrintLine("Droplet " + Name + " has been stopped");
-            Stop();
+            
+            
         }
 
 
@@ -294,13 +326,33 @@ namespace Bachelor_Project.Simulation
         /// <param name="d"></param>
         public void TakeOver(Droplet d)
         {
-            SnekMode = false;
-            List<Electrode> elec = new(d.Occupy);
-            foreach (var item in elec)
+            lock (ModifiedAStar.PathLock) // Also take pathLock, to make sure removeboard doesn't create deadlock
             {
-                Droplet_Actions.TakeOverElectrode(this, item);
+                lock (d)
+                {
+                    SnekMode = false;
+                    List<Electrode> elec = new(d.Occupy);
+                    foreach (var item in elec)
+                    {
+                        Droplet_Actions.TakeOverElectrode(this, item);
+                    }
+                    if (Volume == 0)
+                    {
+                        SetSizes(d.Volume);
+                    }
+                    d.RemoveFromBoard();
+                }
             }
-            d.RemoveFromBoard();
+            
+            
         }
+
+        public void GoAmorphous()
+        {
+            SnekMode = false;
+            SnekList = [];
+        }
+
+        
     }
 }

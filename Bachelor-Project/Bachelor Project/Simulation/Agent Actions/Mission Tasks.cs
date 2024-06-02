@@ -14,11 +14,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     // This class contains the more complicated missions the agents will have.
     public static class Mission_Tasks
     {
-        public static bool InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
+        public static bool InputDroplet(Droplet d, Input i, int volume, UsefulSemaphore? InputSem = null, Apparature? destination = null)
         {
             Printer.PrintLine(d.Name + " has NextDestiantion of: " + d.nextDestination);
             Printer.PrintLine(d.Name + " : INPUTTING");
             Droplet_Actions.InputDroplet(d, i, volume, destination);
+
+            InputSem?.TryReleaseOne();
+            
             if (destination != null && d.GetWork().Count == 0)
             {
                 Electrode destElectrode = d.GetClosestFreePointer(destination);
@@ -41,10 +44,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     if (d.CurrentPath.Value.path.Count <= Constants.DestBuff)
                     {
                         Droplet_Actions.CoilSnek(d, d.SnekList.First());
+                        Program.C.RemovePath(d);
                         return true;
                     }
                 }
             }
+            
             return true;
 
         }
@@ -55,6 +60,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             droplet.Important = true;
             Droplet_Actions.MoveToApparature(droplet, output);
             Droplet_Actions.Output(droplet, output);
+
             return true;
         }
 
@@ -76,7 +82,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             //throw new NotImplementedException();
         }
 
-        public static bool MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefulSemaphore beforeDone, Apparature cmdDestination)
+        public static bool MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefulSemaphore everybodyReady, UsefulSemaphore mergesFinished, Apparature cmdDestination)
         {
             Droplet_Actions.SetupDestinations(d, cmdDestination);
             Printer.PrintLine(d.Name + " : MERGING");
@@ -89,14 +95,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                     if(id1 != id2)
                     {
-                        id1.Contamintants.Remove(id2.Substance_Name);
+                        lock (id1.Contamintants)
+                        {
+                            id1.Contamintants.Remove(id2.Substance_Name);
+                        }
+                        
                     }
 
                 }
 
             }
+            everybodyReady.Check(inputDroplets.Count);
             calcMerge.Start();
-            beforeDone.Wait(inputDroplets.Count);
+            mergesFinished.Wait(inputDroplets.Count);
             foreach (var inputDroplet in inputDroplets)
             {
                 Droplet other = Program.C.board.Droplets[inputDroplet];
@@ -109,13 +120,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool SplitDroplet(Droplet d, Dictionary<string, double> ratios, Dictionary<string, UsefulSemaphore> dropSem, Apparature cmdDestination)
+        public static bool SplitDroplet(Droplet d, Dictionary<string, double> percentages, Dictionary<string, UsefulSemaphore> dropSem, Apparature cmdDestination)
         {
             //Droplet_Actions.SetupDestinations(d, cmdDestination);
             d.Important = true;
 
             // Run Droplet_Actions.splitDroplet
-            Droplet_Actions.SplitDroplet(d, ratios, dropSem);
+            Droplet_Actions.SplitDroplet(d, percentages, dropSem);
+
             return true;
         }
 
@@ -127,17 +139,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // Wait for SplitDroplet to release 2 semaphore
             beginSem.Wait(2);
-
-            Droplet_Actions.MoveToApparature(droplet, droplet.nextDestination);
             return true;
         }
 
-        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefulSemaphore beforeDone, UsefulSemaphore selfDone, List<string>? mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
+        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefulSemaphore imReady,  UsefulSemaphore locCalculated, UsefulSemaphore selfDone, List<string> mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
         {
             d.Important = true;
             d.SnekList = [];
             d.SnekMode = false;
-            beforeDone.WaitOne();
+            imReady.TryReleaseOne();
+            Program.C.RemovePath(d);
+            imReady.Check(mergeDoplets.Count);
+            locCalculated.WaitOne();
             Electrode location = AwaitWork.Result;
             try
             {
@@ -145,17 +158,21 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 d.nextElectrodeDestination = location;
                 Droplet_Actions.MoveToDest(d, location, mergeDoplets);
             }
-            catch (ThreadInterruptedException e)
+            catch(Exception)
             {
-                selfDone.TryReleaseOne();
-                throw e;
+                if (d.Removed)
+                {
+                    selfDone.TryReleaseOne();
+                    return true;
+                }
+                throw;
             }
             selfDone.TryReleaseOne();
             return true;
 
         }
 
-        public static bool TempDroplet(Droplet d, Heater heater, int time, string newType = null)
+        public static bool TempDroplet(Droplet d, Heater heater, int time, string? newType = null)
         {
             Droplet_Actions.SetupDestinations(d, heater);
             d.Important = true;
@@ -167,6 +184,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Droplet_Actions.WaitDroplet(d, time*1000);
             if (newType != null && d.Substance_Name != newType)
             {
+                d.ChangeTemp(heater.ActualTemperature);
                 d.ChangeType(newType);
             }
             return true;
@@ -178,7 +196,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintLine(d.Name + " : SENSING");
             d.Important = true;
             Electrode closest = Droplet_Actions.MoveToApparature(d, sensor);
-            Droplet_Actions.CoilSnek(d, center: closest, app: sensor); // Depends if sensor needs to see the entire droplet
             sensor.Sense();
             return true;
         }

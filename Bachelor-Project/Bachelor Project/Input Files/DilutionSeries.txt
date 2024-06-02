@@ -31,3 +31,4 @@ merge mix64 bloodwater dil32 drop7;
 mix mix64 square;
 split mix64 dil64 50 waste64 50;
 output waste64 out0;
+output dil64 out1;

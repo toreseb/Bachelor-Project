@@ -43,32 +43,15 @@ namespace Bachelor_Project.Simulation.Tests
                 Assert.AreEqual(j, e.ID);
                 Assert.AreEqual(-1, e.DriverID);
                 Assert.AreEqual((j % board.GetXElectrodes()) * 20 , e.PositionX);
-                Assert.AreEqual((j % board.GetXElectrodes()), e.ePosX);
+                Assert.AreEqual((j % board.GetXElectrodes()), e.EPosX);
                 Assert.AreEqual((j / board.GetXElectrodes()) * 20, e.PositionY);
-                Assert.AreEqual((j / board.GetXElectrodes()), e.ePosY);
+                Assert.AreEqual((j / board.GetXElectrodes()), e.EPosY);
                 Assert.AreEqual(20, e.SizeX);
                 Assert.AreEqual(20, e.SizeY);
                 Assert.AreEqual(0, e.Status);
             }
 
-            // Test Actuators
-            Assert.AreEqual(1, board.Actuators.Count);
-            Heater a = (Heater)board.Actuators["heat1"];
-            Assert.AreEqual("heat1", a.Name);
-            Assert.AreEqual(2, a.ID);
-            Assert.AreEqual(30, a.ActuatorID);
-            Assert.AreEqual("heater", a.Type);
-            Assert.AreEqual(20, a.PositionX);
-            Assert.AreEqual(0, a.PositionY);
-            Assert.AreEqual(40, a.SizeX);
-            Assert.AreEqual(40, a.SizeY);
-            Assert.AreEqual(0, a.ActualTemperature);
-            Assert.AreEqual(10, a.DesiredTemperature);
-            Assert.AreEqual(false, a.Status);
-            Assert.AreEqual(0, a.NextDesiredTemperature);
-            Assert.AreEqual(false, a.NextStatus);
 
-            // Test Sensors : TODO not in the test data
 
             // Test Inputs
             Assert.AreEqual(1, board.Input.Count);

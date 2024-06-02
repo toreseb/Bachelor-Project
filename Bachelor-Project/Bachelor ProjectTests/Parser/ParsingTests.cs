@@ -54,7 +54,7 @@ namespace Bachelor_Project.Parsing.Tests
 
             //Test input
             Command command = data.commands[0];
-            Assert.IsTrue(command.Type == "input" && command.InputDroplets.Count == 0 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[0] == "in0" && int.Parse((string)command.ActionValue[1]) == 24);
+            Assert.IsTrue(command.Type == "input" && command.InputDroplets.Count == 0 && command.OutputDroplets.Count == 1 && (string)command.ActionValue[1] == "in0" && int.Parse((string)command.ActionValue[2]) == 24);
 
             //Test output
             command = data.commands[3];

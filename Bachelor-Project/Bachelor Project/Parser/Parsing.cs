@@ -21,6 +21,8 @@ namespace Bachelor_Project.Parsing
         private static Dictionary<string, List<string>> Contaminated = [];
         private static List<Command> Commands = []; 
 
+        private static int InputNr = 0;
+
         public static (List<Command>, Dictionary<string,string>, Dictionary<string, List<string>>,Dictionary<string, List<string>>) ParseFile(string path)
         {
             string data = File.ReadAllText(path);
@@ -66,7 +68,8 @@ namespace Bachelor_Project.Parsing
                     {
                         Printer.PrintLine($"Droplet with name: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} already exists");
                     }
-                    Commands.Add(new Command("input", [], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], value:[context.GetChild<ProgramParser.TileentityContext>(0).GetText(), context.GetChild<ProgramParser.NumberContext>(0).GetText()]));
+                    Commands.Add(new Command("input", [], [context.GetChild<ProgramParser.DropletnameContext>(0).GetText()], value:[InputNr,context.GetChild<ProgramParser.TileentityContext>(0).GetText(), context.GetChild<ProgramParser.NumberContext>(0).GetText()]));
+                    InputNr++;
                     break;
                 case "OutputContext": //OUTPUT , droplet name , output name
                     Printer.PrintLine($"output droplet: {context.GetChild<ProgramParser.DropletnameContext>(0).GetText()} at output: {context.GetChild<ProgramParser.TileentityContext>(0).GetText()}");
@@ -213,6 +216,11 @@ namespace Bachelor_Project.Parsing
                 default:
                     break;
             }
+        }
+
+        public static void Reset()
+        {
+            InputNr = 0;
         }
 
 

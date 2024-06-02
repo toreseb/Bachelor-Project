@@ -1,6 +1,7 @@
 ﻿using Bachelor_Project.Electrode_Types;
 using Bachelor_Project.Electrode_Types.Actuator_Types;
 using Bachelor_Project.Electrode_Types.Sensor_Types;
+using Bachelor_Project.Simulation.Electrode_Types.Sensor_Types;
 using Bachelor_Project.Utility;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
@@ -23,7 +24,7 @@ namespace Bachelor_Project.Simulation
         public Dictionary<string, Output> Output { get; set; }
         public Dictionary<string, Droplet> Droplets       { get; set; }
         public Information Information{ get; set; }
-        public String?[] Unclassified   { get; set; }
+        public string?[] Unclassified   { get; set; }
 
         // For printing
         int Squarewidth = 6;
@@ -79,8 +80,8 @@ namespace Bachelor_Project.Simulation
             for (int j = 0; j < eList.Length; j++)
             {
                 eArray[j % inf.eRow, j / inf.eRow] = eList[j];
-                eList[j].ePosX = j % inf.eRow;
-                eList[j].ePosY = j / inf.eRow;
+                eList[j].EPosX = j % inf.eRow;
+                eList[j].EPosY = j / inf.eRow;
             }
 
             JArray aList = jObject["actuators"].Type != JTokenType.Null ? (JArray)jObject["actuators"] : [] ;
@@ -128,6 +129,9 @@ namespace Bachelor_Project.Simulation
                 {
                     case "RGB_color":
                         trueItem = item.ToObject<RGBSensor>();
+                        break;
+                    case "temperature":
+                        trueItem = item.ToObject<HeatSensor>();
                         break;
                     case "size":
                         trueItem = item.ToObject<SizeSensor>();
@@ -178,13 +182,13 @@ namespace Bachelor_Project.Simulation
                     squares[i][j] = [];
                 }
             }
-            Actuators.Values.ToList().ForEach(x => x.pointers.ToList().ForEach(y => squares[y.ePosY][y.ePosX].Add(x)));
+            Actuators.Values.ToList().ForEach(x => x.pointers.ToList().ForEach(y => squares[y.EPosY][y.EPosX].Add(x)));
             
-            Sensors.Values.ToList().ForEach(x => x.pointers.ToList().ForEach(y => squares[y.ePosY][y.ePosX].Add(x)));
+            Sensors.Values.ToList().ForEach(x => x.pointers.ToList().ForEach(y => squares[y.EPosY][y.EPosX].Add(x)));
 
-            Input.Values.ToList().ForEach(x => squares[x.pointers[0].ePosY][x.pointers[0].ePosX].Add(x));
+            Input.Values.ToList().ForEach(x => squares[x.pointers[0].EPosY][x.pointers[0].EPosX].Add(x));
 
-            Output.Values.ToList().ForEach(x => squares[x.pointers[0].ePosY][x.pointers[0].ePosX].Add(x));
+            Output.Values.ToList().ForEach(x => squares[x.pointers[0].EPosY][x.pointers[0].EPosX].Add(x));
 
             Console.WriteLine("Board State:");
             Console.WriteLine(new string('-',1+Information.eRow*(3+Squarewidth)));

@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,14 +18,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
     public static class Droplet_Actions
     {
 
-        private static readonly object MoveLock = new object(); //Lock to ensure that only one droplet moves at the exact same time
+        public static readonly object MoveLock = new object(); //Lock to ensure that only one droplet moves at the exact same time
 
         public static void InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
         {
-            if (d.Name == "drop2")
-            {
-                int a = 2;
-            }
 
             d.MergeReady = false;
             if (d.Inputted)
@@ -74,18 +72,24 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 while (size > 0)
                 {
 
-                    MoveTowardDest(d, destElectrode,remove: false);
-
-                    size--;
+                    (bool moved, Electrode? _) = MoveTowardDest(d, destElectrode,remove: false);
+                    if (moved)
+                    {
+                        size--;
+                    }
+                    
                     if (d.CurrentPath.Value.path.Count <= Constants.DestBuff)
                     {
                         CoilWithoutRemoval(d, size);
+                        CoilSnek(d, i.pointers[0]);
+
                         d.MergeReady = true;
                         return;
                     }
                 }
                 
             }
+            Program.C.RemovePath(d);
             d.MergeReady = true;
         }
 
@@ -103,10 +107,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 foreach (Electrode e in d.Occupy)
                 {
                     // Check board bounderies
-                    if (e.ePosX < 1) left = false;
-                    if (!(e.ePosX < Program.C.board.GetXElectrodes() - 1)) right = false;
-                    if (e.ePosY < 1) up = false;
-                    if (!(e.ePosY < Program.C.board.GetYElectrodes() - 1)) down = false;
+                    if (e.EPosX < 1) left = false;
+                    if (!(e.EPosX < Program.C.board.GetXElectrodes() - 1)) right = false;
+                    if (e.EPosY < 1) up = false;
+                    if (!(e.EPosY < Program.C.board.GetYElectrodes() - 1)) down = false;
                 }
 
                 // Check for other droplets and contaminants in zone (+ boarder)
@@ -117,21 +121,21 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     foreach (Electrode e in d.Occupy)
                     {
-                        if (up && Program.C.board.Electrodes[e.ePosX, e.ePosY - 1].Occupant != d)
+                        if (up && Program.C.board.Electrodes[e.EPosX, e.EPosY - 1].Occupant != d)
                         {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY - 1]);
+                            temp.Add(Program.C.board.Electrodes[e.EPosX, e.EPosY - 1]);
                         }
-                        if (right && Program.C.board.Electrodes[e.ePosX + 1, e.ePosY].Occupant != d)
+                        if (right && Program.C.board.Electrodes[e.EPosX + 1, e.EPosY].Occupant != d)
                         {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX + 1, e.ePosY]);
+                            temp.Add(Program.C.board.Electrodes[e.EPosX + 1, e.EPosY]);
                         }
-                        if (down && !up && Program.C.board.Electrodes[e.ePosX, e.ePosY + 1].Occupant != d)
+                        if (down && !up && Program.C.board.Electrodes[e.EPosX, e.EPosY + 1].Occupant != d)
                         {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX, e.ePosY + 1]);
+                            temp.Add(Program.C.board.Electrodes[e.EPosX, e.EPosY + 1]);
                         }
-                        if (left && !right && Program.C.board.Electrodes[e.ePosX - 1, e.ePosY].Occupant != d)
+                        if (left && !right && Program.C.board.Electrodes[e.EPosX - 1, e.EPosY].Occupant != d)
                         {
-                            temp.Add(Program.C.board.Electrodes[e.ePosX - 1, e.ePosY]);
+                            temp.Add(Program.C.board.Electrodes[e.EPosX - 1, e.EPosY]);
                         }
                     }
                     List<Direction> directions = [];
@@ -221,6 +225,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             catch (NewWorkException)
             {
                 Printer.PrintBoard();
+                d.GoAmorphous();
                 d.Waiting = false;
                 d.MergeReady = true;
                 return closest;
@@ -241,9 +246,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     MoveTowardDest(d, destination, mergeDroplets);
                 }
                 Program.C.RemovePath(d);
-            }catch (NullReferenceException ex)
+            }catch (NullReferenceException)
             {
-                throw ex;
+                throw;
             }
             Printer.PrintBoard();
         }
@@ -276,25 +281,32 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 d.SnekList = [];
                 throw new NewWorkException();
             }
-
             if (!d.SnekMode && d.SnekList.Count == 0)
             {
                 if (d.Removed)
                 {
                     throw new ThreadInterruptedException();
                 }
+                if (CheckParity(d, preSize, mergeDroplets))
+                {
+                    throw new ArgumentException("Anomaly in Occupy.Count");
+                }
                 int preCoilSize = d.Occupy.Count;
                 UncoilSnek(d, destination, mergeDroplets);
+                int postCoilSize = d.Occupy.Count;
                 if (!d.SnekMode)
                 {
-                    if (CheckParity(d, preSize))
+                    if (CheckParity(d, preSize, mergeDroplets))
+                    {
+                        throw new ArgumentException("Anomaly in Occupy.Count");
+                    }
+                    if (CheckDropletHeldTogetherParity(d))
                     {
                         throw new ArgumentException("Anomaly in Occupy.Count");
                     }
                     return (true, null);
                 }
             }
-
             if (d.CurrentPath == null || d.CurrentPath.Value.path.Count == 0 || d.TriedMoveCounter > 10)
             {
                 if (d.TriedMoveCounter > 10)
@@ -302,26 +314,31 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     Printer.PrintLine(d.Name + " needed to find a new path");
                     d.TriedMoveCounter = 0;
                     d.TriedResetCounter++;
-                    if (d.TriedResetCounter > 5)
+                    if (d.TriedResetCounter > 10)
                     {
                         throw new ArgumentException("Reset too many times");
                     }
-                    Program.C.RemovePath(d);
-                    Thread.Sleep(10);
+                    
+                    Thread.Sleep(50);
+
                 }
+                
+                Program.C.RemovePath(d);
                 d.CurrentPath = ModifiedAStar.FindPath(d, destination, mergeDroplets);
                 Printer.PrintBoard();
             }
             lock (MoveLock)
             {
+
                 if (d.Removed)
                 {
                     throw new ThreadInterruptedException();
                 }
+                
                 if (d.CurrentPath.Value.path[0].Item2 == null)
                 {
                     d.CurrentPath.Value.path.RemoveAt(0);
-                    if (CheckParity(d, preSize))
+                    if (CheckDropletHeldTogetherParity(d))
                     {
                         throw new ArgumentException("Anomaly in Occupy.Count");
                     }
@@ -366,13 +383,24 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         MoveOnElectrode(d, d.SnekList.First.Value.ElectrodeStep(dir));
                     }
                     Merge(d, occupant, d.SnekList.First.Value.ElectrodeStep(dir), mergeDroplets); //TODO: make sure that if a droplet meets 2 droplets in it's borders, it somehow merge with either the first then the second, or both at once
+                    CoilSnek(d, mergeDroplets: mergeDroplets);
                     Printer.PrintBoard();
+
+                    if (CheckParity(d, d.Occupy.Count, mergeDroplets))
+                    {
+                        throw new IllegalMoveException("Broken parity");
+                    }
+
 
                     return (false, null);
 
                 }
                 else
                 {
+                    if (CheckDropletHeldTogetherParity(d))
+                    {
+                        throw new ArgumentException("Anomaly in Occupy.Count");
+                    }
                     Thread.Sleep(0);
                     (changed, movedOff) = SnekMove(d, d.CurrentPath.Value.path[0].Item2.Value, splitDroplet: splitDroplet, remove);
                     if (changed)
@@ -386,6 +414,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         removePath = false;
                         moved = false;
                     }
+                    if (CheckDropletHeldTogetherParity(d))
+                    {
+                        throw new ArgumentException("Anomaly in Occupy.Count");
+                    }
                 }
 
                 if (removePath)
@@ -396,9 +428,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     throw new ArgumentException("Anomaly in Occupy.Count");
                 }
+                if (CheckDropletHeldTogetherParity(d))
+                {
+                    throw new ArgumentException("Anomaly in Occupy.Count");
+                }
                 return (moved, movedOff);
             }
-            
+
         }
 
         public static void MoveDroplet(Droplet d, Direction dir)
@@ -412,9 +448,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             foreach (Electrode e in d.Occupy)
             {
                 // Check if new posision is legal
-                if (CheckLegalPosition(d,[(e.ePosX + xChange, e.ePosY + yChange)]))
+                if (CheckLegalPosition(d,[(e.EPosX + xChange, e.EPosY + yChange)]))
                 {
-                    temp.Add(Program.C.board.Electrodes[e.ePosX + xChange, e.ePosY + yChange]);
+                    temp.Add(Program.C.board.Electrodes[e.EPosX + xChange, e.EPosY + yChange]);
                 }
                 else
                 {
@@ -458,7 +494,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        // Used to check if new droplet position upholds border
+        // Used to check if new droplet position upholds borders
         private static (bool legalmove, Droplet? occupant) CheckBorder(List<Droplet> droplets, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null)
         {
             Droplet? occupant = null;
@@ -469,8 +505,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 // Check neighbors all the way around electrode for occupancy
                 // If same droplet, fine. If blank, fine. If other droplet, not fine.
 
-                int xCheck = e.ePosX;
-                int yCheck = e.ePosY;
+                int xCheck = e.EPosX;
+                int yCheck = e.EPosY;
                 for(int i = 1; i <= 8;i++)
                 {
                     switch(i)
@@ -503,10 +539,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                             xCheck++;
                             break;
                     }
-                    if (droplets[0].Name == "drop3" && temp[0].Name == "el3" && mergeDroplets != null)
-                    {
-                        int a = 2;
-                    }
                     if (CheckBoardEdge(xCheck, yCheck))
                     {
                         occupant = Program.C.board.Electrodes[xCheck, yCheck].Occupant;
@@ -530,6 +562,36 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
             }
             return (legalMove, occupant);
+        }
+        /// <summary>
+        /// Checks if the elctrode is in the board of an apparature.
+        /// </summary>
+        /// <param name="el"></param>
+        /// <param name="alreadyOnApp"></param>
+        /// <param name="coilIntoApp"></param>
+        /// <returns></returns>
+        private static bool CheckApparatureBorders(Electrode el, List<Apparature?> alreadyOnApp, Apparature? coilIntoApp)
+        {
+            if (el.Apparature != null && el.Apparature != coilIntoApp)
+            {
+                if (!alreadyOnApp.Contains(el.Apparature))
+                {
+                    return false;
+                }
+            }
+            List<(Electrode, Direction?)> border = el.GetExtendedNeighbors();
+
+            foreach ((Electrode cEl, Direction? _) in border)
+            {
+                if (cEl.Apparature != null && cEl.Apparature != coilIntoApp)
+                {
+                    if (!alreadyOnApp.Contains(cEl.Apparature))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         public static bool CheckBoardEdge(int xPos, int yPos)
@@ -581,15 +643,20 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             foreach (Electrode e in temp)
             {
                 // Check for contaminants
-                foreach (string c in e.GetContaminants())
+                lock (e.GetContaminants())
                 {
-                    foreach (Droplet d in droplets)
+                    foreach (string c in e.GetContaminants())
                     {
-                        if (d.Contamintants.Contains(c)){
-                            return false;
+                        foreach (Droplet d in droplets)
+                        {
+                            if (d.Contamintants.Contains(c))
+                            {
+                                return false;
+                            }
                         }
                     }
                 }
+                
             }
             return true;
         }
@@ -635,6 +702,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return CheckLegalMove(d, temp, source: source).legalmove;
         }
 
+        
+        
 
         public static void AwaitLegalMove(Droplet d, List<Electrode> temp, string? source = null)
         {
@@ -695,14 +764,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             try
             {
-                newHead.Add(Program.C.board.Electrodes[head.ePosX + x, head.ePosY + y]);
+                newHead.Add(Program.C.board.Electrodes[head.EPosX + x, head.EPosY + y]);
             }
             catch (Exception)
             {
                 Printer.PrintLine("Movement out of bounds");
                 return (false,null);
             }
-
+            if (newHead[0].Occupant == d)
+            {
+                d.GoAmorphous();
+                return (false, null);
+            }
             lock (MoveLock)
             {
                 if (d.Removed)
@@ -714,8 +787,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 if (CheckLegalMove(d, newHead, source: splitDroplet).legalmove && SnekCheck(d, newHead[0], source: splitDroplet))
                 {
 
-                    Printer.PrintLine("New head: " + newHead[0].ePosX + " " + newHead[0].ePosY);
-                    Printer.PrintLine("Old head: " + head.ePosX + " " + head.ePosY);
+                    Printer.PrintLine("New head: " + newHead[0].EPosX + " " + newHead[0].EPosY);
+                    Printer.PrintLine("Old head: " + head.EPosX + " " + head.EPosY);
 
                     if (splitDroplet != null && Program.C.board.Droplets[splitDroplet].Occupy.Contains(newHead[0]))
                     {
@@ -725,6 +798,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     {
                         MoveOnElectrode(d, newHead[0]);
                     }
+                    
 
                     Printer.PrintLine("Droplet moved");
                     Electrode movedOffElectrode = null;
@@ -732,10 +806,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     {
                         movedOffElectrode = MoveOffElectrode(d);
                     }
+                    if (CheckDropletHeldTogetherParity(d))
+                    {
+                        throw new ArgumentException("Anomaly in Occupy.Count");
+                    }
                     return (true,movedOffElectrode);
                 }
                 else
                 {
+                    
                     Printer.PrintLine("Droplet not moved");
                     return (false,null);
                 }
@@ -808,27 +887,34 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         public static Electrode MoveOffElectrode(Droplet d, Electrode? e = null)
         {
-            if (e == null)
+            lock (MoveLock)
             {
-                e = d.SnekList.Last();
-            }
+                e ??= d.SnekList.Last();
 
-            Outparser.Outparser.ElectrodeOff(e, d: d);
-            if (!e.GetContaminants().Contains(d.Substance_Name))
-            {
-                e.Contaminate(d.Substance_Name);
+                Outparser.Outparser.ElectrodeOff(e, d: d);
+                if (!e.GetContaminants().Contains(d.Substance_Name))
+                {
+                    e.Contaminate(d.Substance_Name);
+                }
+                if (d.SnekMode)
+                {
+                    d.SnekList.Remove(e);
+                }
+                d.Occupy.Remove(e);
+                e.Occupant = null;
+                return e;
             }
-            if (d.SnekMode)
-            {
-                d.SnekList.Remove(e);
-            }
-            d.Occupy.Remove(e);
-            e.Occupant = null;
-            return e;
+            
         }
 
 
-        // Switch head and tail of snake
+        /// <summary>
+        /// This is discontinued, and no longer is used.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="mergers"></param>
+        /// <param name="mergePoint"></param>
+        /// <exception cref="Exception"></exception>
         public static void SnekReversal(Droplet d)
         {
             LinkedList<Electrode> copyList = new LinkedList<Electrode>();
@@ -857,17 +943,22 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             // For Testing
             int preSize = d.Occupy.Count;
-            
+
+
             // If snake already occupies destination, coil around dest.
             if (dest.Occupant != null && dest.Occupant.Equals(d))
             {
-                Program.C.RemovePath(d);
                 CoilSnek(d, dest);
-                if (CheckParity(d,preSize))
+                if (CheckParity(d,preSize, mergeDroplets))
                 {
                     throw new ArgumentException("Anomaly in Occupy.Count");
                 }
                 return;
+            }
+
+            if (CheckDropletHeldTogetherParity(d))
+            {
+                throw new ArgumentException("Anomaly in Occupy.Count");
             }
 
             // Make a temp snake to snek move towards the destination that grows with the shrinkage of the droplet.
@@ -877,6 +968,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.CurrentPath = ModifiedAStar.FindPath(d, dest, mergeDroplets: mergeDroplets);
             int priorCounter = 0;
             int totalExtraAdded = 0;
+
+            if (CheckDropletHeldTogetherParity(d))
+            {
+                throw new ArgumentException("Anomaly in Occupy.Count");
+            }
             while (d.CurrentPath.Value.path[0].Item2 != null && d.CurrentPath.Value.inside > 0) //Move the head inside the blob
             {
                 if (d.Occupy.Contains(d.CurrentPath.Value.path[0].Item1.ElectrodeStep(d.CurrentPath.Value.path[0].Item2.Value)))
@@ -884,69 +980,95 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     priorCounter++;
                 }
                 
-                (bool physMove, Electrode movedOffElectrode) = MoveTowardDest(d, dest, mergeDroplets);
+                (bool physMove, Electrode? movedOffElectrode) = MoveTowardDest(d, dest, mergeDroplets, remove: false);
                 if (physMove)
                 {
-                    MoveOnElectrode(d, movedOffElectrode, first: false) ;
                     totalExtraAdded++;
                 }
                 Printer.PrintLine("SPECIAL BOARD:");
                 Printer.PrintBoard();
             }
+            if (CheckDropletHeldTogetherParity(d))
+            {
+                throw new ArgumentException("Anomaly in Occupy.Count");
+            }
             int extraAdded = totalExtraAdded;
+            int needToTreeRemove = (d.Occupy.Count - d.SnekList.Count) - totalExtraAdded;
             // Make tree out of blob in order to know what can safely be removed.
             Tree blobTree = BuildTree(d, d.SnekList.ToList(), d.SnekList.First());
 
             // Make single moves all the way towards the destination.
             do
             {
-                
-                lock (MoveLock)
+                if (d.Removed)
                 {
-                    if (d.Removed)
+                    throw new ThreadInterruptedException();
+                }
+                if (extraAdded > 0)
+                {
+                    blobTree.RemoveLeaf();
+                    if (CheckDropletHeldTogetherParity(d))
                     {
-                        throw new ThreadInterruptedException();
+                        throw new ArgumentException("Anomaly in Occupy.Count");
                     }
-                    if (extraAdded > 0)
+                    extraAdded--;
+                }
+                // Save last electrode so we can turn it on again.
+                // The tree will turn off the correct electrode.
+                bool moved;
+                bool needToRemove = true;
+                if (needToTreeRemove > 0)
+                {
+                    needToRemove = false;
+                    needToTreeRemove--;
+                }
+                if (CheckDropletHeldTogetherParity(d, mergeDroplets))
+                {
+                    throw new ArgumentException("Anomaly in Occupy.Count");
+                }
+                moved = MoveTowardDest(d, dest, mergeDroplets, remove: needToRemove).Item1;
+
+                if (CheckDropletHeldTogetherParity(d, mergeDroplets))
+                {
+                    throw new ArgumentException("Anomaly in Occupy.Count");
+                }
+
+                // If there are still nodes in the tree, it means that the snake is still uncoiling and the electrode that is turned off
+                // needs to be controlled by the tree. Otherwise, we are no longer uncoiling and we can just move.
+                // "> 1" because the last should not be counted.
+                if (!needToRemove && moved)
+                {
+                    d.MergeReady = true;
+                    // Turn off the right electrode.
+                    blobTree.RemoveLeaf();
+                    if (CheckDropletHeldTogetherParity(d, mergeDroplets))
                     {
-                        MoveOffElectrode(d);
-                        extraAdded--;
+                        throw new ArgumentException("Anomaly in Occupy.Count");
                     }
-                    // Save last electrode so we can turn it on again.
-                    // The tree will turn off the correct electrode.
-                    bool moved;
-                    bool needToRemove = blobTree.Nodes.Count <= (1 + priorCounter + totalExtraAdded);
-
-                    moved = MoveTowardDest(d, dest, mergeDroplets, remove: needToRemove).Item1;
-
-
-                    
-                    // If there are still nodes in the tree, it means that the snake is still uncoiling and the electrode that is turned off
-                    // needs to be controlled by the tree. Otherwise, we are no longer uncoiling and we can just move.
-                    // "> 1" because the last should not be counted.
-                    if (!needToRemove && moved)
+                    if (blobTree.Nodes.Count <= (1 + priorCounter + totalExtraAdded))
                     {
                         d.MergeReady = true;
-                        // Turn off the right electrode.
-                        blobTree.RemoveLeaf();
-                        if (blobTree.Nodes.Count <= (1 + priorCounter + totalExtraAdded))
-                        {
-                            d.MergeReady = true;
-                        }
-                    }
-                    else if (d.Waiting == false)
-                    {
-                        d.MergeReady = true;
-                        d.Waiting = true;
-                    }
-
-                    if (d.Occupy.Contains(dest) && !d.Important)
-                    {
-                        Program.C.RemovePath(d);
-                        CoilSnek(d, dest);
-                        return;
                     }
                 }
+                else if (d.Waiting == false)
+                {
+                    d.MergeReady = true;
+                    d.Waiting = true;
+                }
+
+                if (d.Occupy.Contains(dest) && !d.Important)
+                {
+                    Program.C.RemovePath(d);
+                    CoilSnek(d, dest);
+                    if (CheckParity(d, preSize, mergeDroplets))
+                    {
+                        throw new ArgumentException("Anomaly in Occupy.Count");
+                    }
+                    return;
+                }
+
+
+
 
                 Printer.PrintBoard();
             } while (d.CurrentPath != null && d.CurrentPath.Value.path.Count != 0);
@@ -958,7 +1080,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 CoilSnek(d, dest);
             }
             d.MergeReady = true;
-            if (CheckParity(d, preSize))
+            if (CheckParity(d, preSize, mergeDroplets))
             {
                 throw new ArgumentException("Anomaly in Occupy.Count");
             }
@@ -966,17 +1088,88 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         // Coil snake
         // Could try doing it without thinking of it as a snake, just a bunch of small droplets moving to be a big one.
-        public static void CoilSnek(Droplet d, Electrode? center = null, Apparature? app = null, bool input = false)
+        public static void CoilSnek(Droplet d, Electrode? center = null, Apparature? app = null, bool input = false, List<string>? mergeDroplets = null, bool ignoreBorders = false, bool coiledAgain = false)
         {
             d.MergeReady = false;
 
+            Program.C.RemovePath(d);
             // For Testing
             int preSize = d.Occupy.Count;
 
-            center ??= d.SnekList.First();
-
             d.SnekMode = false;
             d.SnekList.Clear();
+
+            bool coilAgain = false; // If the center found is still in the border, coil again and the center is outside the border
+
+            if ((!(input || coiledAgain) && CheckParity(d, preSize, mergeDroplets)) || CheckDropletHeldTogetherParity(d, mergeDroplets))
+            {
+                throw new ArgumentException("Anomaly in Occupy.Count");
+            }
+            lock (d)
+            {
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException("Thread has been interrupted");
+                }
+                Electrode? oldCenter = center;
+                if (d.SnekList.Count > 0)
+                {
+                    center ??= d.SnekList.First();
+                }
+                else if (d.Occupy.Count > 0)
+                {
+                    center ??= d.Occupy[0];
+                }
+                List<Electrode> currentElectrodes = [];
+                List<Electrode> seenElectrodes1 = [];
+                Electrode? cBorderEl = null;
+                if (center != null)
+                {
+                    currentElectrodes = [center];
+                    seenElectrodes1 = [center];
+                }
+                
+                center = null;
+
+                while(!(input ||app != null || (oldCenter != null && oldCenter.Apparature != null)) && currentElectrodes.Count > 0)
+                {
+                    Electrode cElectrode = currentElectrodes[0];
+
+                    if (CheckApparatureBorders(cElectrode, [], app))
+                    {
+                        center = cElectrode;
+                        break;
+                    }else if (cElectrode.Apparature == null)
+                    {
+                        cBorderEl = cElectrode;
+                    }
+
+                    List<(Electrode, Direction)> neighbors = cElectrode.GetTrueNeighbors();
+
+                    foreach ((Electrode nEl, Direction _) in neighbors)
+                    {
+                        if (nEl.Occupant == d && !seenElectrodes1.Contains(nEl))
+                        {
+                            currentElectrodes.Add(nEl);
+                            seenElectrodes1.Add(nEl);
+                        }
+                    }
+                    currentElectrodes.Remove(cElectrode);
+                }
+                if (center == null && cBorderEl != null)
+                {
+                    center = cBorderEl;
+                    coilAgain = true;
+                }
+                else center ??= oldCenter;
+                int a = 2;
+
+            }
+            
+
+            
+
+            
             
             int amount = input ? d.Occupy.Count : d.Occupy.Count -1; // -1 because the center is not in the list 0 if it inputs new value
             if (amount == 0 && input)
@@ -989,6 +1182,8 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             List<Electrode> newBlob = [center];
             List<Electrode> activeBlob1 = [center];
             List<Electrode> seenElectrodes = [center];
+
+
             while(activeBlob1.Count > 0 && amount > 0)
             {
                 if (d.Removed)
@@ -996,14 +1191,22 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     throw new ThreadInterruptedException("Thread has been interrupted");
                 }
                 Electrode current = activeBlob1[0];
-                List<(Electrode, Direction?)> neighbors = current.GetExtendedNeighbors(d: d, includeApp: app != null); //If app is null it ignores apparature, if it isn't null in coils into apparatures
-                foreach ((Electrode el, _) in neighbors)
+
+                List<(Electrode, Direction)> trueNeighbors = current.GetTrueNeighbors();
+                List<Direction> foundNeighbors = [];
+                foreach ((Electrode el, Direction dir) in trueNeighbors)
                 {
+                    if (!(ignoreBorders || input) && !CheckApparatureBorders(el, [], app))
+                    {
+                        continue;
+                    }
+                    
                     if (CheckLegalMove(d,[el]).legalmove && !seenElectrodes.Contains(el) && (app != null && ((app.CoilInto && el.Apparature == app)||(!app.CoilInto)) || (app == null && (el.Occupant == d || el.Apparature == null))))
                     {
                         activeBlob1.Add(el);
                         seenElectrodes.Add(el);
                         newBlob.Add(el);
+                        foundNeighbors.Add(dir);
                         amount--;
                         if (amount <= 0)
                         {
@@ -1011,7 +1214,33 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         }
                     }
                 }
+                if (amount > 0)
+                {
+                    List<Electrode> extendedNeighbors = current.GetExtendedNeighborsFromTrue(foundNeighbors, seenElectrodes);
+
+                    foreach (Electrode el in extendedNeighbors)
+                    {
+                        if (!(ignoreBorders || input) && !CheckApparatureBorders(el, [], app))
+                        {
+                            continue;
+                        }
+
+                        if (!seenElectrodes.Contains(el) && CheckLegalMove(d, [el]).legalmove && (app != null && ((app.CoilInto && el.Apparature == app) || (!app.CoilInto)) || (app == null && (el.Occupant == d || el.Apparature == null))))
+                        {
+                            activeBlob1.Add(el);
+                            seenElectrodes.Add(el);
+                            newBlob.Add(el);
+                            amount--;
+                            if (amount <= 0)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
                 
+
+
                 activeBlob1.Remove(current);
             }
 
@@ -1022,6 +1251,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             if (amount > 0)
             {
                 Printer.PrintLine("Not enough space to coil");
+                if (!ignoreBorders)
+                {
+                    CoilSnek(d, input: input, mergeDroplets: mergeDroplets, ignoreBorders: true, coiledAgain: true);
+                    return;
+                }
                 throw new IllegalMoveException("Not enough space to coil");
             }
             Tree snekTree = BuildTree(d, newBlob, center);
@@ -1044,14 +1278,21 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 }
                 snekTree.RemoveTree(app != null && app.CoilInto);
-
             }
-            
+
+            if (coilAgain)
+            {
+                if (!coiledAgain)
+                {
+                    CoilSnek(d, mergeDroplets: mergeDroplets, coiledAgain: true);
+                }
+                
+            }
 
             Printer.PrintBoard();
             d.MergeReady = true;
 
-            if ((input == false && CheckParity(d,preSize)) || (input == true && preSize != d.Occupy.Count-1))
+            if ((!(input || coiledAgain) && CheckParity(d,preSize, mergeDroplets)) || (input == true && preSize != d.Occupy.Count-1))
             {
                 throw new ArgumentException("Anomaly in Occupy.Count");
             }
@@ -1065,17 +1306,55 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         internal static void Output(Droplet droplet, Output output)
         {
-            Tree snekTree = BuildTree(droplet, [], output.pointers[0]);
-            snekTree.RemoveTree();
-            droplet.RemoveFromBoard();
-            Printer.PrintBoard();
+            try
+            {
+                Tree snekTree = BuildTree(droplet, [], output.pointers[0]);
+                snekTree.RemoveTree();
+                droplet.RemoveFromBoard();
+                Printer.PrintBoard();
+            }
+            catch (Exception e)
+            {
+                int a = 2;
+            }
+            
         }
 
         public static Electrode MergeCalc(List<string> inputDroplets, Droplet droplet, UsefulSemaphore done) //Release 1 to done when done
         {
 
+            
+
+            Electrode trueDestination = droplet.nextDestination.pointers[0];
+
+            double x = 0, y = 0;
+            int total = 0;
+            foreach (var item in inputDroplets)
+            {
+                Droplet cD = Program.C.board.Droplets[item];
+                if (cD.Occupy.Count == 0)
+                {
+                    done.TryRelease(inputDroplets.Count);
+                    return trueDestination;
+                }
+                Electrode randomEl = cD.Occupy[0]; // A random electrode, don't think more thought is necessary
+                x += randomEl.EPosX;
+                y += randomEl.EPosY;
+                total++;
+            }
+
+            x = x / total;
+            y = y / total;
+
+            x = (int) x;
+            y = (int) y;
+
+            Electrode averageEl = Program.C.board.Electrodes[(int)x, (int)y];
+
+
+
             done.TryRelease(inputDroplets.Count);
-            return droplet.nextDestination.pointers[0]; //TODO: update to find a better spot to merge
+            return averageEl; //TODO: update to find a better spot to merge
         }
 
         public static void Merge(Droplet d, Droplet mergeDroplet, Electrode center, List<string> mergeDroplets)
@@ -1096,7 +1375,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.SnekList = [];
             d.SnekMode = false;
             Program.C.RemovePath(d);
-            Printer.PrintLine(d.Name + " and " + mergeDroplet.Name + " has been merged");
+            Printer.PrintLine(d.Name + " and " + mergeDroplet.Name + " has been merged into " + d.Name);
 
         }
 
@@ -1192,7 +1471,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             // Makes a snake of appropriate size a la uncoil and cuts it off.
             // After cutoff, the 'new' droplet is given the task of moving.
 
-            Printer.PrintLine("I am splitting!");
+            Printer.PrintLine(source.Name +" is splitting!");
 
             source.Waiting = false;
 
@@ -1244,8 +1523,6 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 Printer.PrintBoard();
 
-                Thread.Sleep(100);
-
                 // Find number of electrodes to occupy
                 if (!Settings.ConnectedToHardware)
                 {
@@ -1292,13 +1569,20 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                     else
                     {
+                        bool moved = false;
+                        // Try to move one further away, to ensure that the CoilWithoutRemoval and TakeOverElectrode doesn't break the droplet
+                        moved = MoveTowardDest(d, dest, splitDroplet: source.Name, remove: false).Item1;
+                        if (moved)
+                        {
+                            i += 1;
+                        }
                         int remainder = d.Size - i;
 
-                        Electrode head = d.SnekList.First.Value;
 
+
+                        Electrode head = d.SnekList.First.Value;
                         // Coil at dest and remove from source
                         CoilWithoutRemoval(d, remainder, source);
-
                         // Remove the corresponding electrodes from the source tree
                         for (int j = 0; j < remainder; j++)
                         {
@@ -1306,7 +1590,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         }
 
                         // Move away and replenish start TODO: Maybe put a moved on here
-                        TakeOverElectrode(source, start);
+                        List<Electrode> oldList = d.Occupy;
+                        if (ratios.Last().Key != d.Name) // If the source needs to split more, it needs start back
+                        {
+                            TakeOverElectrode(source, start);
+                        }
+                        
                         // Normal coil to suck up tail
                         CoilSnek(d, d.Occupy.Contains(dest) ? dest : head, input: true); // Input: true adds one more to the droplet
                         sourceTree.RemoveLeaf();
@@ -1314,18 +1603,25 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                         i += remainder;
                     }
-
+                    if (CheckDropletHeldTogetherParity(d))
+                    {
+                        throw new ArgumentException("Anomaly in Occupy.Count");
+                    }
                     Printer.PrintBoard();
                 }
 
                 // Move all the way away
                 // I can use CheckBoarder for it and just give it the current position of the droplet that was just split off.
-                while (!CheckBorder(d, d.Occupy).Item1)
+                while (!CheckBorder(d, d.Occupy).legalmove)
                 {
-                    if (d.CurrentPath.Value.path.Count > destBuffer)
+                    if (d.CurrentPath == null || d.CurrentPath.Value.path.Count > destBuffer)
                     {
                         bool moved = MoveTowardDest(d, dest, splitDroplet: source.Name).Item1;
 
+                        if (CheckDropletHeldTogetherParity(d))
+                        {
+                            throw new ArgumentException("Anomaly in Occupy.Count");
+                        }
                         // Give start back to source to keep it connected.
                         if (fixStart && moved)
                         {
@@ -1338,6 +1634,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         {
                             d.Waiting = true;
                         }
+                        if (CheckBorder(d, d.Occupy).legalmove)
+                        {
+                            CoilSnek(d);
+                        }
                     }
                     else
                     {
@@ -1345,6 +1645,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
 
                 }
+                
 
                 d.Waiting = true;
                 d.Important = false;
@@ -1369,11 +1670,24 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         public static void CoilWithoutRemoval(Droplet d, int remainder, Droplet? source = null)
         {
             //List<Electrode> workingList = [d.Occupy[0]];
-            List<Electrode> workingList = [d.SnekList.First.Value];
+            List<Electrode> workingList;
+            lock (MoveLock)
+            {
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException();
+                }
+                workingList = [d.SnekList.First.Value];
+            }
+           
             // Coil without removing
             int i = 0;
             while (i < remainder)
             {
+                if (workingList.Count == 0)
+                {
+                    throw new IllegalMoveException("Not enough space to coil without removal");
+                }
                 Electrode e = workingList[0];
                 workingList.Remove(e);
 
@@ -1381,7 +1695,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 foreach ((Electrode n, Direction? dir) in neighbors)
                 {
-                    if (e.Apparature == null) // If apparature at each true neighbor, an unconnected corner may happen :(
+                    if (n.Apparature == null) // If apparature at each true neighbor, an unconnected corner may happen :(
                     {
                         MoveOnElectrode(d,n, first: false);
                         workingList.Add(n);
@@ -1394,6 +1708,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     }
                 }
             }
+            if (CheckDropletHeldTogetherParity(d))
+            {
+                throw new ArgumentException("Anomaly in Occupy.Count");
+            }
+            Program.C.RemovePath(d);
         }
 
         public static Electrode? FindFreeSpaceForSplit(Droplet d, Droplet source, int size)
@@ -1497,10 +1816,10 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             foreach (Electrode e in space)
             {
-                if (e.ePosX < minX) minX = e.ePosX;
-                if (e.ePosY < minY) minY = e.ePosY;
-                if (e.ePosX > maxX) maxX = e.ePosX;
-                if (e.ePosY > maxY) maxY = e.ePosY;
+                if (e.EPosX < minX) minX = e.EPosX;
+                if (e.EPosY < minY) minY = e.EPosY;
+                if (e.EPosX > maxX) maxX = e.EPosX;
+                if (e.EPosY > maxY) maxY = e.EPosY;
             }
 
             // Find electrode in middle of area
@@ -1571,9 +1890,66 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         /// <param name="d"></param>
         /// <param name="preSize"></param>
         /// <returns></returns>
-        private static bool CheckParity(Droplet d, int preSize)
+        private static bool CheckParity(Droplet d, int preSize, List<string>? mergeDroplets)
         {
-            return ((preSize != d.Occupy.Count || (d.Removed && d.Occupy.Count == 0 && d.Size == 0)) && d.Occupy.Count != d.Size);
+            lock (d)
+            {
+                if (d.Occupy.Count != d.Occupy.Distinct().ToList().Count) // If duplicates in occupy, bad
+                {
+                    return true;
+                }
+
+                if (CheckDropletHeldTogetherParity(d, mergeDroplets))
+                {
+                    return true;
+                }
+
+                if (mergeDroplets == null) // If a droplet is trying to merge, the resulting size will be different
+                {
+                    if (d.Removed && d.Occupy.Count == 0 && d.Size == 0) // If dropelt is removed and empty, good
+                    {
+                        return false;
+                    }
+                    if (d.Occupy.Count != d.Size) // If sizes are different, bad
+                    {
+                        return true;
+                    }
+                    if (preSize != d.Occupy.Count) //If sizes changed, bad
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            
         }
+
+        private static bool CheckDropletHeldTogetherParity(Droplet d, List<string>? mergeDroplets = null)
+        {
+            lock (d)
+            {
+
+                if (d.Removed)
+                {
+                    throw new ThreadInterruptedException();
+                }
+                Tree? dropletTree = null;
+                if (d.Occupy.Count != 0)// For letting coil inputting happen
+                {
+                    dropletTree = BuildTree(d, [], d.Occupy[0]);
+                }
+
+                if (mergeDroplets == null && d.Occupy.Count != 0 && dropletTree != null && !dropletTree.CheckTree()) // If droplet isnt held together, bad
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            
+        }
+
+
     }
 }

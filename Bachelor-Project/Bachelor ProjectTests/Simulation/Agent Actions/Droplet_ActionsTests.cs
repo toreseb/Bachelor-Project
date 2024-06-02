@@ -1481,7 +1481,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             board = Program.C.SetBoard(testBoardDataBigLocation);
             board.Droplets.Add(Wat1.Name, Wat1);
 
-            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 11);
+            Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 36);
 
             Droplet_Actions.MoveToApparature(Wat1, board.Actuators["heat1"]);
 

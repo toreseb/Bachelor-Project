@@ -1133,6 +1133,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     coilAgain = true;
                 }
                 else center ??= oldCenter;
+                center ??= d.Occupy[0];
                 int a = 2;
 
             }

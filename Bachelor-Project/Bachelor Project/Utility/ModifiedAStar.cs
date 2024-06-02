@@ -99,21 +99,22 @@ namespace Bachelor_Project.Utility
                 {
 
                     Electrode neighborT = neighbor.Item1;
-                    if (cameFrom.ContainsKey(current) && neighbor.Equals(cameFrom[current]))
+                    if (cameFrom.TryGetValue(current, out (Electrode, Direction) value) && neighbor.Equals(value))
                     {
                         continue;
                     }
                     double tentativeGScore = gScore[current] + dfunc(d, neighborT, mergeDroplets, splitDroplet);
-                    if (!gScore.ContainsKey(neighborT))
+                    if (!gScore.TryGetValue(neighborT, out double value2))
                     {
-                        gScore.Add(neighborT, double.MaxValue);
+                        value2 = double.MaxValue;
+                        gScore.Add(neighborT, value2);
                         
 
                         
                         //neighborT.smallestGScore = double.MaxValue;
 
                     }
-                    if (tentativeGScore < gScore[neighborT])
+                    if (tentativeGScore < value2)
                     {
                         
 

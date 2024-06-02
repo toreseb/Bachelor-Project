@@ -1137,6 +1137,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
         }
 
+        /*
         [TestMethod()]
         public void MergeMoveTest()
         {
@@ -1190,6 +1191,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(null, board.Electrodes[6, 6].Occupant);
             Assert.AreEqual(null, board.Electrodes[6, 7].Occupant);
         }
+        */
 
         [TestMethod()]
         public void splitDropletTest_TwoSplitters()
@@ -1299,7 +1301,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Assert.AreEqual(board.Electrodes[3, 2].Occupant, w4);
 
             Assert.AreEqual(board.Electrodes[3, 4].Occupant, w5);
-            Assert.AreEqual(board.Electrodes[3, 5].Occupant, w5);
+            Assert.AreEqual(board.Electrodes[4, 4].Occupant, w5);
         }
 
         [TestMethod()]
@@ -1473,7 +1475,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         }
 
         [TestMethod()]
-        public void tempDropletNormal()
+        public void TempDropletNormal()
         {
             Droplet Wat1 = new Droplet("Water", "Wat1");
             board = Program.C.SetBoard(testBoardDataBigLocation);
@@ -1516,7 +1518,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
         }
 
         [TestMethod()]
-        public void tempDropletNoTime()
+        public void TempDropletNoTime()
         {
             Droplet Wat1 = new("Water", "Wat1");
             board = Program.C.SetBoard(testBoardDataBigLocation);

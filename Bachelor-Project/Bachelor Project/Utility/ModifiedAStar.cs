@@ -145,19 +145,8 @@ namespace Bachelor_Project.Utility
         {
             int distance = end.GetDistanceToBorder();
             int multiple = 10 * (int)Math.Pow(distance,2);
-            List<Droplet> droplets = [d];
-            if (mergeDroplets != null)
-            {
-                foreach (var item in mergeDroplets)
-                {
-                    Droplet cDroplet = Program.C.board.Droplets[item];
-                    if (!droplets.Contains(cDroplet))
-                    {
-                        droplets.Add(cDroplet);
-                    }
-                }
-            }
-            if (!Droplet_Actions.CheckLegalMove(droplets, [end],mergeDroplets: mergeDroplets, source: splitDroplet).legalmove) // 1: check if the move is legal
+
+            if (!Droplet_Actions.CheckLegalMove(d, [end],mergeDroplets: mergeDroplets, source: splitDroplet).legalmove) // 1: check if the move is legal
             {
                 return 100000* multiple;
             }else if (end.Apparature != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an apparature, and therefore important

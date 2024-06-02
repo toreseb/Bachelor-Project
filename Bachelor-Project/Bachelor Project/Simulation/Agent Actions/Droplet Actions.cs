@@ -1095,14 +1095,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             
             d.SnekList = [];
             d.SnekMode = false;
-            if (d.nextElectrodeDestination != null)
-            {
-                d.CurrentPath = ModifiedAStar.FindPath(d, d.nextElectrodeDestination, mergeDroplets);
-            }
-            else
-            {
-                Program.C.RemovePath(d);
-            }
+            Program.C.RemovePath(d);
             Printer.PrintLine(d.Name + " and " + mergeDroplet.Name + " has been merged");
 
         }

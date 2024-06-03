@@ -12,7 +12,7 @@ namespace Bachelor_Project.Utility
     public static class Settings
     {
         public const bool ConnectedToHardware = false;
-        public static bool Printing = false;
+        public static bool Printing = true;
         public static bool Outputting = true;
 
         public const int TimeStep = 100; //100 milliseconds for each time step in the simulation

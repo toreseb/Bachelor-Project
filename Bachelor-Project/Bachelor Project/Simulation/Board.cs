@@ -121,7 +121,7 @@ namespace Bachelor_Project.Simulation
                     while (j >= 0)
                     {
                         actuators[item["name"].ToString()].pointers.Add(eArray[startX + i, startY + j]);
-                        eArray[startX + i, startY + j].Apparature = actuators[item["name"].ToString()];
+                        eArray[startX + i, startY + j].Apparatus = actuators[item["name"].ToString()];
                         j--;
                     }
                     i--;
@@ -152,7 +152,7 @@ namespace Bachelor_Project.Simulation
                 }
                 sensors.Add(item["name"].ToString(), trueItem);
                 trueItem.pointers.Add(eArray[trueItem.PositionX/inf.electrode_size, trueItem.PositionY/inf.electrode_size]);
-                eArray[trueItem.PositionX / inf.electrode_size, trueItem.PositionY / inf.electrode_size].Apparature = trueItem;
+                eArray[trueItem.PositionX / inf.electrode_size, trueItem.PositionY / inf.electrode_size].Apparatus = trueItem;
             }
             Input[] iList = jObject["inputs"].Type != JTokenType.Null ? jObject["inputs"].ToObject<Input[]>():[] ;
             Dictionary<string, Input> iDict = [];
@@ -160,7 +160,7 @@ namespace Bachelor_Project.Simulation
             {
                 iDict.Add(item.Name, item);
                 item.pointers.Add(eArray[item.PositionX/inf.electrode_size,item.PositionY/inf.electrode_size]);
-                eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size].Apparature = item;
+                eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size].Apparatus = item;
             }
             Output[] oList = jObject["outputs"].Type != JTokenType.Null ? jObject["outputs"].ToObject<Output[]>() : [];
             Dictionary<string, Output> oDict = [];
@@ -168,7 +168,7 @@ namespace Bachelor_Project.Simulation
             {
                 oDict.Add(item.Name, item);
                 item.pointers.Add(eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size]);
-                eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size].Apparature = item;
+                eArray[item.PositionX / inf.electrode_size, item.PositionY / inf.electrode_size].Apparatus = item;
             }
             Droplet[] droplets = jObject["droplets"].Type != JTokenType.Null ? jObject["droplets"].ToObject<Droplet[]>() : [];
             Dictionary<string, Droplet> dDict = [];

@@ -86,7 +86,7 @@ namespace Bachelor_Project.Simulation
         /// </summary>
         /// <param name="a"></param>
         /// <returns>The found closest <see cref="Electrode"/></returns>
-        private Electrode GetClosestPartToApparature(Apparatus a)
+        private Electrode GetClosestPartToApparatus(Apparatus a)
         {
             (int x, int y) = a.GetCenter();
             Electrode? closestElectrode = null;
@@ -144,7 +144,7 @@ namespace Bachelor_Project.Simulation
             }
             else
             {
-                center = GetClosestPartToApparature(a);
+                center = GetClosestPartToApparatus(a);
             }
             foreach (Electrode electrode in a.pointers)
             {

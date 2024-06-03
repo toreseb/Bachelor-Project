@@ -1483,7 +1483,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 36);
 
-            Droplet_Actions.MoveToApparature(Wat1, board.Actuators["heat1"]);
+            Droplet_Actions.MoveToApparatus(Wat1, board.Actuators["heat1"]);
 
             int time = 1;
             var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -1504,7 +1504,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             Droplet_Actions.InputDroplet(Wat1, board.Input["in0"], 11);
 
-            Droplet_Actions.MoveToApparature(Wat1, board.Actuators["heat1"]);
+            Droplet_Actions.MoveToApparatus(Wat1, board.Actuators["heat1"]);
 
             int time = 1;
             var watch = System.Diagnostics.Stopwatch.StartNew();

@@ -23,7 +23,7 @@ namespace Bachelor_Project.Simulation
         // Contamination of tile in grid, may need changing later.
         private List<string> Contaminants { get; set; } = [];
         public Droplet? Occupant;
-        public Apparatus? Apparature;
+        public Apparatus? Apparatus;
 
         public double? smallestGScore = null;
 
@@ -168,7 +168,7 @@ namespace Bachelor_Project.Simulation
                 if (Droplet_Actions.CheckBoardEdge(EPosX + xChange, EPosY + yChange))
                 {
                     Electrode el = Program.C.board.Electrodes[EPosX + xChange, EPosY + yChange];
-                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [el], source: source?.Name, splitPlacement: splitPlacement).legalmove && (includeApp || el.Apparature == null))
+                    if (d != null && !Droplet_Actions.CheckLegalMove(d, [el], source: source?.Name, splitPlacement: splitPlacement).legalmove && (includeApp || el.Apparatus == null))
                     {
                         cBool.Add(false);
                         continue;

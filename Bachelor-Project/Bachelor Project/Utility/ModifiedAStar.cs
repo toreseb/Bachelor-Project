@@ -179,7 +179,7 @@ namespace Bachelor_Project.Utility
             if (!Droplet_Actions.CheckLegalMove(d, [end],mergeDroplets: mergeDroplets, source: splitDroplet).legalmove) // 1: check if the move is legal
             {
                 return 100000* multiple;
-            }else if (end.Apparature != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an apparature, and therefore important
+            }else if (end.Apparatus != null && !end.GetContaminants().Contains(d.Substance_Name)) // 2: Check if the end is an Apparatus, and therefore important
             {
                 return multiple * 100;
             } else if (end.GetContaminants().Count > 0 && !end.GetContaminants().Exists( x => d.Contamintants.Contains(x))){ // 3: Check if highway

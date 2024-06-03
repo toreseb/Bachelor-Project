@@ -79,7 +79,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintLine(droplet.Name + " : OUTPUTTING");
             Printer.PrintBoard();
             droplet.Important = true;
-            Droplet_Actions.MoveToApparature(droplet, output);
+            Droplet_Actions.MoveToApparatus(droplet, output);
             Droplet_Actions.OutputDroplet(droplet, output);
 
             return true;
@@ -247,7 +247,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         {
             Droplet_Actions.SetupDestinations(d, heater);
             d.Important = true;
-            Droplet_Actions.MoveToApparature(d, heater);
+            Droplet_Actions.MoveToApparatus(d, heater);
             if (time <= 0)
             {
                 throw new ArgumentException("Time must be greater than 0");
@@ -272,7 +272,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Droplet_Actions.SetupDestinations(d, sensor);
             Printer.PrintLine(d.Name + " : SENSING");
             d.Important = true;
-            Electrode closest = Droplet_Actions.MoveToApparature(d, sensor);
+            Electrode closest = Droplet_Actions.MoveToApparatus(d, sensor);
             sensor.Sense();
             return true;
         }

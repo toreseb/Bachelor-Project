@@ -1270,8 +1270,8 @@ FNDA:0,System.String Bachelor_Project.Utility.Command::ToString()
 DA:157,0
 DA:158,0
 DA:159,0
-FN:161,Bachelor_Project.Simulation.Apparature Bachelor_Project.Utility.Command::FindDest()
-FNDA:0,Bachelor_Project.Simulation.Apparature Bachelor_Project.Utility.Command::FindDest()
+FN:161,Bachelor_Project.Simulation.Apparatus Bachelor_Project.Utility.Command::FindDest()
+FNDA:0,Bachelor_Project.Simulation.Apparatus Bachelor_Project.Utility.Command::FindDest()
 DA:162,0
 DA:163,0
 DA:164,0
@@ -2195,9 +2195,9 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Apparature.cs
-FN:9,System.Void Bachelor_Project.Simulation.Apparature::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
-FNDA:0,System.Void Bachelor_Project.Simulation.Apparature::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
+SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Apparatus.cs
+FN:9,System.Void Bachelor_Project.Simulation.Apparatus::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
+FNDA:0,System.Void Bachelor_Project.Simulation.Apparatus::.ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)
 DA:10,0
 DA:12,0
 LF:2
@@ -2806,8 +2806,8 @@ DA:34,0
 FN:35,System.ValueTuple`2<System.Nullable`1<System.Int32>,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>> Bachelor_Project.Simulation.Droplet::get_SquareInfo()
 FNDA:0,System.ValueTuple`2<System.Nullable`1<System.Int32>,System.Nullable`1<Bachelor_Project.Simulation.Agent_Actions.Direction>> Bachelor_Project.Simulation.Droplet::get_SquareInfo()
 DA:36,0
-FN:78,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestPartToApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
-FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestPartToApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+FN:78,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestPartToApparatus(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparatus)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestPartToApparatus(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparatus)
 DA:79,0
 DA:80,0
 DA:81,0
@@ -2848,8 +2848,8 @@ BRDA:103,12,0,0
 BRDA:103,12,1,0
 BRDA:107,47,0,0
 BRDA:107,47,1,0
-FN:116,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestFreePointer(Bachelor_Project.Simulation.Apparature)
-FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestFreePointer(Bachelor_Project.Simulation.Apparature)
+FN:116,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestFreePointer(Bachelor_Project.Simulation.Apparatus)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Droplet::GetClosestFreePointer(Bachelor_Project.Simulation.Apparatus)
 DA:117,0
 DA:118,0
 DA:119,0
@@ -3435,8 +3435,8 @@ FNF:1
 FNH:0
 end_of_record
 SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Agent Actions\Droplet Actions.cs
-FN:21,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparature)
-FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparature)
+FN:21,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparatus)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparatus)
 DA:22,0
 DA:23,0
 DA:24,0
@@ -3532,8 +3532,8 @@ BRDA:99,486,0,0
 BRDA:99,486,1,0
 BRDA:80,374,1,0
 BRDA:84,547,0,0
-FN:112,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveToApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
-FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveToApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+FN:112,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveToApparatus(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparatus)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveToApparatus(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparatus)
 DA:113,0
 DA:114,0
 DA:119,0
@@ -3576,8 +3576,8 @@ BRDA:141,166,1,0
 BRDA:141,135,0,0
 BRDA:141,135,1,0
 BRDA:141,166,0,0
-FN:153,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveTowardApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
-FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveTowardApparature(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+FN:153,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveTowardApparatus(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparatus)
+FNDA:0,Bachelor_Project.Simulation.Electrode Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::MoveTowardApparatus(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparatus)
 DA:154,0
 DA:155,0
 DA:156,0
@@ -4431,8 +4431,8 @@ BRDA:895,874,1,0
 BRDA:895,905,0,0
 BRDA:797,115,1,0
 BRDA:895,905,1,0
-FN:903,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CoilSnek(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Apparature,System.Boolean)
-FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CoilSnek(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Apparature,System.Boolean)
+FN:903,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CoilSnek(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Apparatus,System.Boolean)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Droplet_Actions::CoilSnek(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Electrode,Bachelor_Project.Simulation.Apparatus,System.Boolean)
 DA:904,0
 DA:905,0
 DA:908,0
@@ -5024,8 +5024,8 @@ FNF:40
 FNH:0
 end_of_record
 SF:C:\Users\helen\OneDrive\Skrivebord\Uni\6. Semester\Bachelorprojekt\Bachelor-Project\Bachelor-Project\Bachelor Project\Simulation\Agent Actions\Mission Tasks.cs
-FN:16,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparature)
-FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparature)
+FN:16,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparatus)
+FNDA:0,System.Boolean Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::InputDroplet(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Electrode_Types.Input,System.Int32,Bachelor_Project.Simulation.Apparatus)
 DA:17,0
 DA:18,0
 DA:19,0
@@ -5179,8 +5179,8 @@ FN:144,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::Wast
 FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::WasteDroplet(Bachelor_Project.Simulation.Droplet)
 DA:145,0
 DA:147,0
-FN:149,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::MergeDroplets(System.Collections.Generic.List`1<System.String>,Bachelor_Project.Simulation.Droplet,System.Threading.Tasks.Task,Bachelor_Project.Utility.UsefullSemaphore,Bachelor_Project.Simulation.Apparature)
-FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::MergeDroplets(System.Collections.Generic.List`1<System.String>,Bachelor_Project.Simulation.Droplet,System.Threading.Tasks.Task,Bachelor_Project.Utility.UsefullSemaphore,Bachelor_Project.Simulation.Apparature)
+FN:149,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::MergeDroplets(System.Collections.Generic.List`1<System.String>,Bachelor_Project.Simulation.Droplet,System.Threading.Tasks.Task,Bachelor_Project.Utility.UsefullSemaphore,Bachelor_Project.Simulation.Apparatus)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::MergeDroplets(System.Collections.Generic.List`1<System.String>,Bachelor_Project.Simulation.Droplet,System.Threading.Tasks.Task,Bachelor_Project.Utility.UsefullSemaphore,Bachelor_Project.Simulation.Apparatus)
 DA:150,0
 DA:151,0
 DA:152,0
@@ -5218,15 +5218,15 @@ BRDA:170,313,1,0
 BRDA:173,292,0,0
 BRDA:173,292,1,0
 BRDA:170,313,0,0
-FN:182,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SplitDroplet(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Double>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Utility.UsefullSemaphore>,Bachelor_Project.Simulation.Apparature)
-FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SplitDroplet(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Double>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Utility.UsefullSemaphore>,Bachelor_Project.Simulation.Apparature)
+FN:182,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SplitDroplet(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Double>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Utility.UsefullSemaphore>,Bachelor_Project.Simulation.Apparatus)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SplitDroplet(Bachelor_Project.Simulation.Droplet,System.Collections.Generic.List`1<System.String>,System.Collections.Generic.Dictionary`2<System.String,System.Double>,System.Collections.Generic.Dictionary`2<System.String,Bachelor_Project.Utility.UsefullSemaphore>,Bachelor_Project.Simulation.Apparatus)
 DA:183,0
 DA:184,0
 DA:185,0
 DA:187,0
 DA:188,0
-FN:190,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::AwaitSplitWork(Bachelor_Project.Simulation.Droplet,System.String,Bachelor_Project.Simulation.Apparature,Bachelor_Project.Utility.UsefullSemaphore)
-FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::AwaitSplitWork(Bachelor_Project.Simulation.Droplet,System.String,Bachelor_Project.Simulation.Apparature,Bachelor_Project.Utility.UsefullSemaphore)
+FN:190,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::AwaitSplitWork(Bachelor_Project.Simulation.Droplet,System.String,Bachelor_Project.Simulation.Apparatus,Bachelor_Project.Utility.UsefullSemaphore)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::AwaitSplitWork(Bachelor_Project.Simulation.Droplet,System.String,Bachelor_Project.Simulation.Apparatus,Bachelor_Project.Utility.UsefullSemaphore)
 DA:191,0
 DA:192,0
 DA:193,0
@@ -5281,8 +5281,8 @@ DA:241,0
 DA:242,0
 DA:243,0
 DA:245,0
-FN:247,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SetupDestinations(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
-FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SetupDestinations(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparature)
+FN:247,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SetupDestinations(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparatus)
+FNDA:0,System.Void Bachelor_Project.Simulation.Agent_Actions.Mission_Tasks::SetupDestinations(Bachelor_Project.Simulation.Droplet,Bachelor_Project.Simulation.Apparatus)
 DA:248,0
 DA:249,0
 DA:250,0

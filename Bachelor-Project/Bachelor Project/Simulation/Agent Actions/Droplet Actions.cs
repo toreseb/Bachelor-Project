@@ -256,7 +256,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         /// <param name="d"></param>
         /// <param name="dest"></param>
         /// <returns>Closest <see cref="Electrode"/> in <see cref="Apparatus"/> <paramref name="dest"/> to <see cref="Droplet"/> <paramref name="d"/></returns>
-        public static Electrode MoveToApparature(Droplet d, Apparatus dest)
+        public static Electrode MoveToApparatus(Droplet d, Apparatus dest)
         {
             Electrode closest = d.GetClosestFreePointer(dest);
             try
@@ -308,7 +308,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         /// <param name="d"></param>
         /// <param name="dest"></param>
         /// <returns>Closest <see cref="Electrode"/> in <see cref="Apparatus"/> <paramref name="dest"/> to <see cref="Droplet"/> <paramref name="d"/></returns>
-        public static Electrode MoveTowardApparature(Droplet d, Apparatus dest)
+        public static Electrode MoveTowardApparatus(Droplet d, Apparatus dest)
         {
             Electrode closest = d.GetClosestFreePointer(dest);
             MoveTowardDest(d, closest);
@@ -653,9 +653,9 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         /// <param name="alreadyOnApp"></param>
         /// <param name="coilIntoApp"></param>
         /// <returns><see cref="bool"/> determening if there are border violations</returns>
-        private static bool CheckApparatureBorders(Electrode el, Apparatus? coilIntoApp)
+        private static bool CheckApparatusBorders(Electrode el, Apparatus? coilIntoApp)
         {
-            if (el.Apparature != null && el.Apparature != coilIntoApp)
+            if (el.Apparatus != null && el.Apparatus != coilIntoApp)
             {
                 return false;
             }
@@ -663,7 +663,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
             foreach ((Electrode cEl, Direction? _) in border)
             {
-                if (cEl.Apparature != null && cEl.Apparature != coilIntoApp)
+                if (cEl.Apparatus != null && cEl.Apparatus != coilIntoApp)
                 {
                     return false;
                 }
@@ -1271,15 +1271,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 
                 center = null;
 
-                while(!(input ||app != null || (oldCenter != null && oldCenter.Apparature != null)) && currentElectrodes.Count > 0)
+                while(!(input ||app != null || (oldCenter != null && oldCenter.Apparatus != null)) && currentElectrodes.Count > 0)
                 {
                     Electrode cElectrode = currentElectrodes[0];
 
-                    if (CheckApparatureBorders(cElectrode, app))
+                    if (CheckApparatusBorders(cElectrode, app))
                     {
                         center = cElectrode;
                         break;
-                    }else if (cElectrode.Apparature == null)
+                    }else if (cElectrode.Apparatus == null)
                     {
                         cBorderEl = cElectrode;
                     }
@@ -1337,12 +1337,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 List<Direction> foundNeighbors = [];
                 foreach ((Electrode el, Direction dir) in trueNeighbors)
                 {
-                    if (!(ignoreBorders || input) && !CheckApparatureBorders(el, app))
+                    if (!(ignoreBorders || input) && !CheckApparatusBorders(el, app))
                     {
                         continue;
                     }
                     
-                    if (CheckLegalMove(d,[el]).legalmove && !seenElectrodes.Contains(el) && (app != null && ((app.CoilInto && el.Apparature == app)||(!app.CoilInto)) || (app == null && (el.Occupant == d || el.Apparature == null))))
+                    if (CheckLegalMove(d,[el]).legalmove && !seenElectrodes.Contains(el) && (app != null && ((app.CoilInto && el.Apparatus == app)||(!app.CoilInto)) || (app == null && (el.Occupant == d || el.Apparatus == null))))
                     {
                         activeBlob.Add(el);
                         seenElectrodes.Add(el);
@@ -1361,12 +1361,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                     foreach (Electrode el in extendedNeighbors)
                     {
-                        if (!(ignoreBorders || input) && !CheckApparatureBorders(el, app))
+                        if (!(ignoreBorders || input) && !CheckApparatusBorders(el, app))
                         {
                             continue;
                         }
 
-                        if (!seenElectrodes.Contains(el) && CheckLegalMove(d, [el]).legalmove && (app != null && ((app.CoilInto && el.Apparature == app) || (!app.CoilInto)) || (app == null && (el.Occupant == d || el.Apparature == null))))
+                        if (!seenElectrodes.Contains(el) && CheckLegalMove(d, [el]).legalmove && (app != null && ((app.CoilInto && el.Apparatus == app) || (!app.CoilInto)) || (app == null && (el.Occupant == d || el.Apparatus == null))))
                         {
                             activeBlob.Add(el);
                             seenElectrodes.Add(el);
@@ -1774,7 +1774,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 foreach ((Electrode n, Direction? dir) in neighbors)
                 {
-                    if (n.Apparature == null) // If apparature at each true neighbor, an unconnected corner may happen :(
+                    if (n.Apparatus == null) // If Apparatus at each true neighbor, an unconnected corner may happen :(
                     {
                         MoveOnElectrode(d,n, first: false);
                         workingList.Add(n);
@@ -1822,7 +1822,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         continue;
                     }
                     // If e is not a space that d can occupy, add it to the list
-                    if (!CheckLegalMove(d, [e]).legalmove || e.Apparature != null)
+                    if (!CheckLegalMove(d, [e]).legalmove || e.Apparatus != null)
                     {
                         activeEl.Add(e);
                     }
@@ -1871,7 +1871,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
                 foreach ((Electrode n, Direction? dir) in neighbors)
                 {
-                    if (CheckLegalMove(d, [n]).legalmove && n.Apparature == null)
+                    if (CheckLegalMove(d, [n]).legalmove && n.Apparatus == null)
                     {
                         clearList.Add(n);
                         checkingList.Add(n);

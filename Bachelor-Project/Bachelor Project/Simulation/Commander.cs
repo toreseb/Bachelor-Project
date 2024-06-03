@@ -33,6 +33,9 @@ namespace Bachelor_Project.Simulation
             dropletPaths = [];
         }
 
+        /// <summary>
+        /// Creates all the <see cref="Droplet"/>s that will be on the <see cref="Board"/>, and links the <see cref="Command"/> tree together, and finds the starting <see cref="Command"/>
+        /// </summary>
         public void Setup()
         {
             Printer.PrintBoard();
@@ -102,6 +105,11 @@ namespace Bachelor_Project.Simulation
             commands.FindAll(x => x.InputCommands.Count == 0).ForEach(x => currentCommands.Add(x));
         }
 
+        /// <summary>
+        /// Overwrites the current <see cref="Board"/> as a new one, used in tests to reset the environment.
+        /// </summary>
+        /// <param name="boarddata"></param>
+        /// <returns> The created <see cref="Board"/></returns>
         public Board SetBoard(string boarddata)
         {
             Printer.Reset();
@@ -110,6 +118,9 @@ namespace Bachelor_Project.Simulation
             return board;
         }
 
+        /// <summary>
+        /// Begins assigning all the <see cref="Mission_Tasks"/> using the <see cref="Command"/>s and begins checking of the program is finished.
+        /// </summary>
         public void Start()
         {
 
@@ -177,7 +188,8 @@ namespace Bachelor_Project.Simulation
 
 
         /// <summary>
-        /// Return true if path has been reset after a line intersect, else false
+        /// Checks if the given path that the <see cref="Droplet"/> <paramref name="d"/> is taking intersects any current paths. If it does wait until they finish, then add path to <see cref="dropletPaths"/> and start calculating the path between to point.
+        /// <para>If <paramref name="mergeDroplets"/> is specified, <paramref name="d"/> can ignore <see cref="Droplet"/>s that it is merging with.</para>
         /// </summary>
         /// <param name="d"></param>
         /// <param name="startPosX"></param>
@@ -185,7 +197,7 @@ namespace Bachelor_Project.Simulation
         /// <param name="endPosX"></param>
         /// <param name="endPosY"></param>
         /// <param name="mergeDroplets"></param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if path has been reset after a line intersect, else <see langword="false"/></returns>
         public bool SetPath(Droplet d, int startPosX, int startPosY, int endPosX, int endPosY, List<string>? mergeDroplets = null)
         {
             bool newPath = false;
@@ -233,12 +245,23 @@ namespace Bachelor_Project.Simulation
 
         }
 
+        /// <summary>
+        /// Calls the <see cref="SetPath(Droplet, int, int, int, int, List{string}?)"/> function using the positions of the given electrodes.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <returns><see langword="true"/> if path has been reset after a line intersect, else <see langword="false"/></returns>
         public bool SetPath(Droplet d, Electrode start, Electrode end, List<string>? mergeDroplets = null)
         {
             return SetPath(d, start.EPosX, start.EPosY, end.EPosX, end.EPosY, mergeDroplets);
         }
 
-
+        /// <summary>
+        /// Removes the path of the <see cref="Droplet"/> <paramref name="d"/> in <see cref="dropletPaths"/>.
+        /// </summary>
+        /// <param name="d"></param>
         public void RemovePath(Droplet d)
         {
 
@@ -261,6 +284,9 @@ namespace Bachelor_Project.Simulation
 
         }
 
+        /// <summary>
+        /// Resets the <see cref="Commander"/>, used by tests to reset the environment.
+        /// </summary>
         public void Reset()
         {
             Printer.Reset();

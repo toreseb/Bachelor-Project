@@ -25,12 +25,19 @@ namespace Bachelor_Project.Utility
             count = 0;
             limit = maximumCount;
         }
-
+        
+        /// <summary>
+        /// <see cref="Wait(int)"/> on the <see cref="UsefulSemaphore"/> with a amount of one.
+        /// </summary>
         public void WaitOne()
         {
             Wait(1);
         }
 
+        /// <summary>
+        /// Waits on the <see cref="UsefulSemaphore"/> while it has less space than the amount <paramref name="i"/>. 
+        /// </summary>
+        /// <param name="i"></param>
         public void Wait(int i)
         {
             lock (locker)
@@ -42,14 +49,18 @@ namespace Bachelor_Project.Utility
                 count-= i;
             }
         }
+
         /// <summary>
-        /// Waits until semaphore is free, but does not actually subtract from the semaphore
+        /// <see cref="Check(int)"/> the <see cref="UsefulSemaphore"/> with a value of one.
         /// </summary>
         public void CheckOne()
         {
             Check(1);
         }
 
+        /// <summary>
+        /// Waits until <see cref="UsefulSemaphore"/> is has space for the amount <see cref="i"/>, but does not actually subtract from the <see cref="UsefulSemaphore"/> when allowed.
+        /// </summary>
         public void Check(int i)
         {
             lock (locker)
@@ -61,11 +72,20 @@ namespace Bachelor_Project.Utility
             }
         }
 
+        /// <summary>
+        /// <see cref="TryRelease(int)"/> on the <see cref="UsefulSemaphore"/> with an amount of 1.
+        /// </summary>
+        /// <returns></returns>
         public bool TryReleaseOne()
         {
             return TryRelease(1);
         }
 
+        /// <summary>
+        /// Tries to instert amount <paramref name="i"/> into the <see cref="UsefulSemaphore"/> but only succeeds if there is space for <paramref name="i"/>.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns><see langword="true"/> if it successfully releases.</returns>
         public bool TryRelease(int i)
         {
             lock (locker)

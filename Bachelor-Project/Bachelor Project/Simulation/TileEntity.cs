@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
+    /// <summary>
+    /// The superclass for all objects that are placed on the <see cref="Board"/>.
+    /// </summary>
     abstract public class TileEntity
     {
         public string Name { get; set; }
@@ -29,15 +32,24 @@ namespace Bachelor_Project.Simulation
             SizeY = sizeY;
         }
  
+        /// <summary>
+        /// Finds the center of the <see cref="TileEntity"/>.
+        /// </summary>
+        /// <returns>The center</returns>
         public (int,int) GetCenter()
         {
             return (PositionX + SizeX / 2, PositionY + SizeY / 2);
         }
 
-       public string getName() 
-       {             
+        /// <summary>
+        /// Getter for <see cref="Name"/>.
+        /// </summary>
+        /// <returns></returns>
+        public string getName()
+        {
             return Name;
-       }
+        }
+
 
     }
 }

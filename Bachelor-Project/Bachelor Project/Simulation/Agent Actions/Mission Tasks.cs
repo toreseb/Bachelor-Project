@@ -12,9 +12,23 @@ using System.Threading.Tasks;
 namespace Bachelor_Project.Simulation.Agent_Actions
 {
     // This class contains the more complicated missions the agents will have.
+    /// <summary>
+    /// This class contains the <see cref="Mission_Tasks"/>, which uses <see cref="Droplet_Actions"/> to perform the <see cref="Command"/>s given by the <see cref="Commander"/> 
+    /// </summary>
     public static class Mission_Tasks
     {
-        public static bool InputDroplet(Droplet d, Input i, int volume, UsefulSemaphore? InputSem = null, Apparature? destination = null)
+        /// <summary>
+        /// Input the <see cref="Droplet"/> <paramref name="d"/> onto the <see cref="Board"/> at the <see cref="Input"/> <paramref name="i"/> with a <paramref name="volume"/>.
+        /// <para>If <paramref name="destination"/> is specified, it moves towards the location, else it coils around <paramref name="i"/></para>
+        /// <para><paramref name="InputSem"/> is used to time the inputs of <see cref="Droplet"/>s</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="i"></param>
+        /// <param name="volume"></param>
+        /// <param name="InputSem"></param>
+        /// <param name="destination"></param>
+        /// <returns><see langword="true"/> when the task is finished</returns>
+        public static bool InputDroplet(Droplet d, Input i, int volume, UsefulSemaphore? InputSem = null, Apparatus? destination = null)
         {
             Printer.PrintLine(d.Name + " has NextDestiantion of: " + d.nextDestination);
             Printer.PrintLine(d.Name + " : INPUTTING");
@@ -53,20 +67,33 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
 
         }
+
+        /// <summary>
+        /// Outputs the <see cref="Droplet"/> <paramref name="droplet"/> at the <see cref="Output"/> <paramref name="output"/>.
+        /// </summary>
+        /// <param name="droplet"></param>
+        /// <param name="output"></param>
+        /// <returns><see langword="true"/> when the task is finished</returns>
         public static bool OutputDroplet(Droplet droplet, Output output)
         {
             Printer.PrintLine(droplet.Name + " : OUTPUTTING");
             Printer.PrintBoard();
             droplet.Important = true;
             Droplet_Actions.MoveToApparature(droplet, output);
-            Droplet_Actions.Output(droplet, output);
+            Droplet_Actions.OutputDroplet(droplet, output);
 
             return true;
         }
 
-        // Droplets needing mixing are assumed to have been merged into one drop.
-        // Does not take contaminants into account yet.
-        public static bool MixDroplet(Droplet d, string pattern, string? newType = null) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
+        /// <summary>
+        /// Mixes the <see cref="Droplet"/> <paramref name="d"/>.
+        /// <para>If <paramref name="newType"/> is specified then <paramref name="d"/> changes its type to <paramref name="newType"/></para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="pattern"></param>
+        /// <param name="newType"></param>
+        /// <returns><see langword="true"/> when the task is finished</returns>
+        public static bool MixDroplet(Droplet d, string pattern, string? newType = null)
         {
             Droplet_Actions.MixDroplet(d, pattern);
             if (newType != null)
@@ -77,12 +104,20 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
-        internal static void WasteDroplet(Droplet droplet)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public static bool MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefulSemaphore everybodyReady, UsefulSemaphore mergesFinished, Apparature cmdDestination)
+        /// <summary>
+        /// Is called from the <see cref="Droplet"/> <paramref name="d"/> who results from the merging. The other <paramref name="inputDroplets"/> call the <see cref="AwaitMergeWork(Droplet, Task{Electrode}, UsefulSemaphore, UsefulSemaphore, UsefulSemaphore, List{string})"/>.
+        /// <para> <paramref name="calcMerge"/> is used to calculate the location of the merge, while the other <see cref="Droplet"/>s can access it</para>
+        /// <para> The semaphores are used to time the many different <see cref="Droplet"/>s.</para>
+        /// <para> <paramref name="cmdDestination"/> is where the resulting <see cref="Droplet"/> <paramref name="d"/> wants to go after the merge.</para>
+        /// </summary>
+        /// <param name="inputDroplets"></param>
+        /// <param name="d"></param>
+        /// <param name="calcMerge"></param>
+        /// <param name="everybodyReady"></param>
+        /// <param name="mergesFinished"></param>
+        /// <param name="cmdDestination"></param>
+        /// <returns><see langword="true"/> when the task is finished</returns>
+        public static bool MergeDroplets(List<string> inputDroplets, Droplet d, Task calcMerge, UsefulSemaphore everybodyReady, UsefulSemaphore mergesFinished, Apparatus cmdDestination)
         {
             Droplet_Actions.SetupDestinations(d, cmdDestination);
             Printer.PrintLine(d.Name + " : MERGING");
@@ -120,7 +155,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool SplitDroplet(Droplet d, Dictionary<string, double> percentages, Dictionary<string, UsefulSemaphore> dropSem, Apparature cmdDestination)
+        /// <summary>
+        /// Splits the calculating <see cref="Droplet"/> <paramref name="d"/> into the resulting <see cref="Droplet"/>s, one for each value in <paramref name="percentages"/>. The other <see cref="Droplet"/>s call <see cref="AwaitSplitWork(Droplet, Apparatus, UsefulSemaphore)"/>.
+        /// <para> The semaphore, <paramref name="dropSem"/>, is used for timing the many threads together.</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="percentages"></param>
+        /// <param name="dropSem"></param>
+        /// <returns><see langword="true"/> when the task is finished</returns>
+        public static bool SplitDroplet(Droplet d, Dictionary<string, double> percentages, Dictionary<string, UsefulSemaphore> dropSem)
         {
             //Droplet_Actions.SetupDestinations(d, cmdDestination);
             d.Important = true;
@@ -131,18 +174,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-        public static bool AwaitSplitWork(Droplet droplet, Apparature cmdDestination, UsefulSemaphore beginSem)
-        {
-            // Set destinations and release one semaphore
-            Droplet_Actions.SetupDestinations(droplet, cmdDestination);
-            beginSem.TryReleaseOne();
-
-            // Wait for SplitDroplet to release 2 semaphore
-            beginSem.Wait(2);
-            return true;
-        }
-
-        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefulSemaphore imReady,  UsefulSemaphore locCalculated, UsefulSemaphore selfDone, List<string> mergeDoplets = null) // check if beforedone is done, and then release on selfDone when done
+        /// <summary>
+        /// Waits on the merging <see cref="Droplet"/> allows <see cref="Droplet"/> <paramref name="d"/> to start merging.
+        /// <para><paramref name="AwaitWork"/> is a <see cref="Task"/> that calculates the <see cref="Electrode"/> that the merge happpens.</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="AwaitWork"></param>
+        /// <param name="imReady"></param>
+        /// <param name="locCalculated"></param>
+        /// <param name="selfDone"></param>
+        /// <param name="mergeDoplets"></param>
+        /// <returns><see langword="true"/> when the task is finished</returns>
+        public static bool AwaitMergeWork(Droplet d, Task<Electrode> AwaitWork, UsefulSemaphore imReady, UsefulSemaphore locCalculated, UsefulSemaphore selfDone, List<string> mergeDoplets) // check if beforedone is done, and then release on selfDone when done
         {
             d.Important = true;
             d.SnekList = [];
@@ -158,7 +201,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 d.nextElectrodeDestination = location;
                 Droplet_Actions.MoveToDest(d, location, mergeDoplets);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 if (d.Removed)
                 {
@@ -172,6 +215,34 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
+        /// <summary>
+        /// <see cref="Droplet"/> <paramref name="droplet"/> waits on <paramref name="beginSem"/>. When <see cref="SplitDroplet(Droplet, Dictionary{string, double}, Dictionary{string, UsefulSemaphore})"/> has split off <paramref name="droplet"/> it can continue.
+        /// </summary>
+        /// <param name="droplet"></param>
+        /// <param name="cmdDestination"></param>
+        /// <param name="beginSem"></param>
+        /// <returns><see langword="true"/> when the task is finished</returns>
+        public static bool AwaitSplitWork(Droplet droplet, Apparatus cmdDestination, UsefulSemaphore beginSem)
+        {
+            // Set destinations and release one semaphore
+            Droplet_Actions.SetupDestinations(droplet, cmdDestination);
+            beginSem.TryReleaseOne();
+
+            // Wait for SplitDroplet to release 2 semaphore
+            beginSem.Wait(2);
+            return true;
+        }
+
+        /// <summary>
+        /// Heats the <see cref="Droplet"/> <paramref name="d"/> up by moving it to the <see cref="Heater"/> <paramref name="heater"/> and wating for <paramref name="time"/> seconds. Then the <see cref="Droplet.Temperature"/> is changed.
+        /// <para>If <paramref name="newType"/> is specified, the <see cref="Droplet"/> <paramref name="d"/> changes its <see cref="Droplet.Substance_Name"/> into <paramref name="newType"/></para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="heater"></param>
+        /// <param name="time"></param>
+        /// <param name="newType"></param>
+        /// <returns><see langword="true"/> when the task is finished</returns>
+        /// <exception cref="ArgumentException"></exception>
         public static bool TempDroplet(Droplet d, Heater heater, int time, string? newType = null)
         {
             Droplet_Actions.SetupDestinations(d, heater);
@@ -190,6 +261,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
+        /// <summary>
+        /// Senses the relevant <see cref="Sensor.Sense()"/> of the <see cref="Droplet"/> <paramref name="d"/>.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="sensor"></param>
+        /// <returns><see langword="true"/> when the task is finished</returns>
         public static bool SenseDroplet(Droplet d, Sensor sensor)
         {
             Droplet_Actions.SetupDestinations(d, sensor);
@@ -199,6 +276,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             sensor.Sense();
             return true;
         }
+
+        /// <summary>
+        /// Makes the <see cref="Droplet"/> <paramref name="d"/> wait for <paramref name="time"/> milliseconds.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public static bool WaitDroplet(Droplet d, int time)
         {
             d.Important = true;

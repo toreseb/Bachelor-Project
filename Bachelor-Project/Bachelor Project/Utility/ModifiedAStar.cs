@@ -18,6 +18,13 @@ namespace Bachelor_Project.Utility
 
         public static object PathLock = new object();
 
+        /// <summary>
+        /// A function which reconstructs the path the <see cref="ModifiedAStar"/> algorihm found, using <paramref name="cameFrom"/>, which is the paths its taken, and <paramref name="current"/>, which is the end.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="cameFrom"></param>
+        /// <param name="current"></param>
+        /// <returns>A <see cref="List{T}"/> of <see cref="Electrode"/> and <see cref="Direction"/>s containing the <see cref="Electrode"/>s in the path, and the <see cref="Direction"/> necessary to take it.</returns>
         private static (List<(Electrode, Direction?)>, int) ReconstructPath(Droplet d, Dictionary<Electrode, (Electrode, Direction)> cameFrom, Electrode current)
         {
             LinkedList<(Electrode, Direction?)> totalPath = [];
@@ -38,7 +45,19 @@ namespace Bachelor_Project.Utility
             return (totalPath.ToList(),moveInsideSelf-1);
         }
 
-
+        /// <summary>
+        /// The function which performs the <see cref="ModifiedAStar"/> algorithm. It traverses the <see cref="Board"/> as a heatmap, to find the best path for the <see cref="Droplet"/> <paramref name="d"/>.
+        /// <para>The path has a <paramref name="start"/> and a <paramref name="goal"/></para>
+        /// <para><paramref name="mergeDroplets"/> and <paramref name="splitDroplet"/> are given to <see cref="dfunc(Droplet, Electrode, List{string}?, string?)"/></para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="goal"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <param name="splitDroplet"></param>
+        /// <param name="start"></param>
+        /// <returns>The reconstructed path that the <see cref="Droplet"/> <paramref name="d"/> would take.</returns>
+        /// <exception cref="ThreadInterruptedException"></exception>
+        /// <exception cref="Exception"></exception>
         public static (List<(Electrode, Direction?)>, int) FindPath(Droplet d, Electrode goal, List<string>? mergeDroplets = null, string? splitDroplet = null, Electrode? start = null)
         {
             
@@ -142,6 +161,16 @@ namespace Bachelor_Project.Utility
             throw new Exception("No path found");
 
         }
+
+        /// <summary>
+        /// Used to create the heatmap <see cref="ModifiedAStar"/> uses. It essentially calculate the value of the <see cref="Electrode"/> <paramref name="end"/> for the <see cref="Droplet"/> <paramref name="d"/>.
+        /// <para><paramref name="mergeDroplets"/> and <paramref name="splitDroplet"/> can be specified, which allows the algorithm to move through the borders and the <paramref name="mergeDroplets"/> themselves.</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="end"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <param name="splitDroplet"></param>
+        /// <returns>The quality of moving onto the <see cref="Electrode"/> <paramref name="end"/> for the <see cref="Droplet"/> <paramref name="d"/></returns>
         private static double dfunc(Droplet d, Electrode end, List<string>? mergeDroplets = null, string? splitDroplet = null)
         {
             int distance = end.GetDistanceToBorder();

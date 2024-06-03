@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Bachelor_Project.Electrode_Types.Sensor_Types
 {
     /// <summary>
-    /// This was a mistake, and is not actually part of the program.
+    /// This was a mistake, and is not actually part of the program. Depricated.
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>

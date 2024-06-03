@@ -17,7 +17,7 @@ namespace Bachelor_Project.Simulation
         // Contamination of tile in grid, may need changing later.
         private List<string> Contaminants { get; set; } = [];
         public Droplet? Occupant;
-        public Apparature? Apparature;
+        public Apparatus? Apparature;
 
         public double? smallestGScore = null;
 
@@ -25,6 +25,12 @@ namespace Bachelor_Project.Simulation
         {
         }
 
+        /// <summary>
+        /// Finds the closest <see cref="Electrode"/> to this <see cref="Electrode"/> in the list. 
+        /// </summary>
+        /// <param name="electrodes"></param>
+        /// <returns> The closests <see cref="Electrode"/></returns>
+        /// <exception cref="ArgumentException"></exception>
         public Electrode GetClosestElectrodeInList(List<Electrode> electrodes)
         {
             Electrode? closestElectrode = null;
@@ -45,6 +51,11 @@ namespace Bachelor_Project.Simulation
             return closestElectrode;
         }
 
+        /// <summary>
+        /// Finds the four <see cref="Electrode"/>s around this <see cref="Electrode"/> in the four <see cref="Direction"/>s which are on the <see cref="Board"/>.
+        /// </summary>
+        /// <returns>The <see cref="Electrode"/>s found.</returns>
+        /// <exception cref="Exception"></exception>
         public List<(Electrode, Direction)> GetTrueNeighbors()
         {
             List<(Electrode, Direction)> neighbors = [];
@@ -83,6 +94,12 @@ namespace Bachelor_Project.Simulation
             return neighbors;
         }
 
+        /// <summary>
+        /// Finds the <see cref="Electrode"/> that is the <see cref="Direction"/> <paramref name="dir"/> from this <see cref="Electrode"/>.
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <returns>The found <see cref="Electrode"/></returns>
+        /// <exception cref="Exception"></exception>
         public Electrode ElectrodeStep(Direction dir)
         {
             switch (dir)
@@ -100,6 +117,15 @@ namespace Bachelor_Project.Simulation
             }
         }
 
+        /// <summary>
+        /// Finds the eight <see cref="Electrodes"/> that are around this <see cref="Electrode"/>. If a <paramref name="d"/> is given, it also checks if the movement is legal for the <see cref="Droplet"/> <paramref name="d"/>.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="source"></param>
+        /// <param name="splitPlacement"></param>
+        /// <param name="includeApp"></param>
+        /// <returns>The found extended neighbous</returns>
+        /// <exception cref="Exception"></exception>
         public List<(Electrode, Direction?)> GetExtendedNeighbors(Droplet? d = null, Droplet? source = null, bool splitPlacement = false, bool includeApp = true)
         {
             List<(Electrode, Direction?)> neighbors = [];
@@ -187,9 +213,13 @@ namespace Bachelor_Project.Simulation
             return neighbors;
         }
 
-        public List<Electrode> GetExtendedNeighborsFromTrue(List<Direction> foundTrueNeighbors, List<Electrode>? seenElectrodes = null)
+        /// <summary>
+        /// Finds the four extended neighbors that are not true neighbours based of which directions are in <paramref name="foundTrueNeighbors"/>.
+        /// </summary>
+        /// <param name="foundTrueNeighbors"></param>
+        /// <returns></returns>
+        public List<Electrode> GetExtendedNeighborsFromTrue(List<Direction> foundTrueNeighbors)
         {
-            seenElectrodes ??= [];
             List<Electrode> extendedNeighbors = [];
             for (int i = 0; i < 4; i++)
             {
@@ -215,7 +245,7 @@ namespace Bachelor_Project.Simulation
                     xChange = -1;
                     yChange = -1;
                 }
-                if (Droplet_Actions.CheckBoardEdge(EPosX + xChange, EPosY + yChange) && !seenElectrodes.Contains(Program.C.board.Electrodes[EPosX + xChange, EPosY + yChange]))
+                if (Droplet_Actions.CheckBoardEdge(EPosX + xChange, EPosY + yChange))
                 {
                     extendedNeighbors.Add(Program.C.board.Electrodes[EPosX + xChange, EPosY + yChange]);
                 }
@@ -223,12 +253,21 @@ namespace Bachelor_Project.Simulation
             return extendedNeighbors;
         }
 
-
+        /// <summary>
+        /// Finds the distance between the two <see cref="Electrode"/>s, <paramref name="e1"/> and <paramref name="e2"/>.
+        /// </summary>
+        /// <param name="e1"></param>
+        /// <param name="e2"></param>
+        /// <returns>The distance as a <see cref="float"/></returns>
         public static double GetDistance(Electrode e1, Electrode e2)
         {
             return Math.Sqrt(Math.Pow(e1.EPosX - e2.EPosX, 2) + Math.Pow(e1.EPosY - e2.EPosY, 2));
         }
 
+        /// <summary>
+        /// Finds the distance of this <see cref="Electrode"/> to the edges of the <see cref="Board"/>.
+        /// </summary>
+        /// <returns>The distance as an <see cref="int"/>.</returns>
         public int GetDistanceToBorder()
         {
             int x = EPosX;
@@ -247,21 +286,37 @@ namespace Bachelor_Project.Simulation
 
         }
 
+        /// <summary>
+        /// Method to contaminate this <see cref="Electrode"/> with the contamination of <paramref name="contaminator"/>
+        /// </summary>
+        /// <param name="contaminator"></param>
         public void Contaminate(string contaminator)
         {
             Contaminants.Add(contaminator);
         }
 
+        /// <summary>
+        /// Getter for <see cref="Contaminants"/>.
+        /// </summary>
+        /// <returns></returns>
         public List<string> GetContaminants()
         {
             return Contaminants;
         }
 
+        /// <summary>
+        /// Getter for <see cref="Status"/>.
+        /// </summary>
+        /// <returns></returns>
         public int GetStatus()
         {
             return Status;
         }
 
+        /// <summary>
+        /// ToString overrider.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return Name + " x: " + EPosX + " y: " + EPosY;

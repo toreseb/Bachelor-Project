@@ -14,13 +14,27 @@ using static Antlr4.Runtime.Atn.SemanticContext;
 
 namespace Bachelor_Project.Simulation.Agent_Actions
 {
-    // This class contains the more basic movements and actions an agent can take.
+
+    /// <summary>
+    /// This class contains the more basic movements and actions an <see cref="Droplet"/> agent can take.
+    /// </summary>
     public static class Droplet_Actions
     {
+        
+        public static readonly object MoveLock = new object(); //Lock to ensure that only one droplet moves at the same time
 
-        public static readonly object MoveLock = new object(); //Lock to ensure that only one droplet moves at the exact same time
-
-        public static void InputDroplet(Droplet d, Input i, int volume, Apparature? destination = null)
+        /// <summary>
+        /// Inputs a <see cref="Droplet"/> <paramref name="d"/> onto the board with <paramref name="volume"/> at the specified <see cref="Input"/> <paramref name="i"/>.
+        /// <para>If a <paramref name="destination"/> is specified it moves toward it, else it coils around the <see cref="Input"/> <paramref name="i"/>.</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="i"></param>
+        /// <param name="volume"></param>
+        /// <param name="destination"></param>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ThreadInterruptedException"></exception>
+        public static void InputDroplet(Droplet d, Input i, int volume, Apparatus? destination = null)
         {
 
             d.MergeReady = false;
@@ -93,7 +107,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             d.MergeReady = true;
         }
 
-        public static bool MixDroplet(Droplet d, string pattern) //TODO: Remake to make sure that droplet interference makes it try a different direction, not give up
+        /// <summary>
+        /// Mixes the <see cref="Droplet"/> <paramref name="d"/> by moving it around in a square. The <paramref name="pattern"/> is curently not implemented
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="pattern"></param>
+        /// <returns><see cref="bool"/> determining if the mix succeded</returns>
+        /// <exception cref="IllegalMoveException"></exception>
+        public static bool MixDroplet(Droplet d, string pattern)
         {
             Printer.PrintLine(d.Name + " : MIXING");
             d.Important = true;
@@ -178,7 +199,25 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         {
                             foreach (var item in directions)
                             {
-                                MoveDroplet(d, item);
+                                bool moved = false;
+                                int counter = 0;
+                                while (!moved)
+                                {
+                                    moved = MoveDroplet(d, item);
+                                    if (!moved)
+                                    {
+                                        counter++;
+                                    }
+                                    else
+                                    {
+                                        counter = 0;
+                                    }
+                                    
+                                    if (counter == 50)
+                                    {
+                                        throw new IllegalMoveException("No space for mixing");
+                                    }
+                                }
                                 Printer.PrintBoard();
                             }
                         }
@@ -211,12 +250,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
-        public static Electrode MoveToApparature(Droplet d, Apparature dest)
+        /// <summary>
+        /// Moves a <see cref="Droplet"/> <paramref name="d"/> to a <see cref="Apparatus"/> <paramref name="dest"/>, and coils either on or in it, depending on <see cref="Apparatus.CoilInto"/>.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="dest"></param>
+        /// <returns>Closest <see cref="Electrode"/> in <see cref="Apparatus"/> <paramref name="dest"/> to <see cref="Droplet"/> <paramref name="d"/></returns>
+        public static Electrode MoveToApparature(Droplet d, Apparatus dest)
         {
             Electrode closest = d.GetClosestFreePointer(dest);
-
-            
-
             try
             {
                 MoveToDest(d, closest);
@@ -233,7 +275,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return closest;
         }
 
-        public static void MoveToDest(Droplet d, Electrode destination, List<string>? mergeDroplets = null) //TODO: Make sure that the droplet moves to the destination
+        /// <summary>
+        /// Moves a <see cref="Droplet"/> <paramref name="d"/> to an <see cref="Electrode"/> <paramref name="destination"/>.
+        /// <para> If <paramref name="mergeDroplets"/> is specified, it can merge along the way.</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="destination"></param>
+        /// <param name="mergeDroplets"></param>
+        public static void MoveToDest(Droplet d, Electrode destination, List<string>? mergeDroplets = null)
         {
             if (d.CurrentPath == null || d.CurrentPath.Value.path.Count == 0 || d.CurrentPath.Value.path[^1].Item1 != destination)
             {
@@ -253,13 +302,35 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintBoard();
         }
 
-        public static Electrode MoveTowardApparature(Droplet d, Apparature dest)
+        /// <summary>
+        /// Moves a <see cref="Droplet"/> <paramref name="d"/> towards an <see cref="Apparatus"/> <paramref name="dest"/>.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="dest"></param>
+        /// <returns>Closest <see cref="Electrode"/> in <see cref="Apparatus"/> <paramref name="dest"/> to <see cref="Droplet"/> <paramref name="d"/></returns>
+        public static Electrode MoveTowardApparature(Droplet d, Apparatus dest)
         {
             Electrode closest = d.GetClosestFreePointer(dest);
             MoveTowardDest(d, closest);
             return closest;
         }
 
+        /// <summary>
+        /// Moves a <see cref="Droplet"/> <paramref name="d"/> towards an <see cref="Electrode"/> <paramref name="destination"/>.
+        /// <para>If <paramref name="remove"/> is false it does not remove from the <see cref="Droplet"/> <paramref name="d"/>.</para>
+        /// <para>If <paramref name="mergeDroplets"/> is specified it can merge during the movement.</para>
+        /// <para>If <paramref name="splitDroplet"/> is specified, it can move through the border of the specified split <see cref="Droplet"/>.</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="destination"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <param name="splitDroplet"></param>
+        /// <param name="remove"></param>
+        /// <returns><see cref="bool"/> for if the <see cref="Droplet"/> moved, and the <see cref="Electrode"/> the <see cref="Droplet"/> <paramref name="d"/> moved off</returns>
+        /// <exception cref="ThreadInterruptedException"></exception>
+        /// <exception cref="NewWorkException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="IllegalMoveException"></exception>
         public static (bool, Electrode? movedOffElectrode) MoveTowardDest(Droplet d, Electrode destination, List<string>? mergeDroplets = null, string? splitDroplet = null, bool remove = true) // returns true if droplet physcally moves, false if not
         {
             Thread.Sleep(0);
@@ -291,9 +362,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     throw new ArgumentException("Anomaly in Occupy.Count");
                 }
-                int preCoilSize = d.Occupy.Count;
                 UncoilSnek(d, destination, mergeDroplets);
-                int postCoilSize = d.Occupy.Count;
                 if (!d.SnekMode)
                 {
                     if (CheckParity(d, preSize, mergeDroplets))
@@ -382,7 +451,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     {
                         MoveOnElectrode(d, d.SnekList.First.Value.ElectrodeStep(dir));
                     }
-                    Merge(d, occupant, d.SnekList.First.Value.ElectrodeStep(dir), mergeDroplets); //TODO: make sure that if a droplet meets 2 droplets in it's borders, it somehow merge with either the first then the second, or both at once
+                    Merge(d, occupant, d.SnekList.First.Value.ElectrodeStep(dir));
                     CoilSnek(d, mergeDroplets: mergeDroplets);
                     Printer.PrintBoard();
 
@@ -437,7 +506,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
-        public static void MoveDroplet(Droplet d, Direction dir)
+        /// <summary>
+        /// Move <see cref="Droplet"/> <paramref name="d"/> as an amorphous <see cref="Droplet"/> in the direction <paramref name="dir"/>.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="dir"></param>
+        /// <returns><see cref="bool"/> determining if the movement succeded.</returns>
+        public static bool MoveDroplet(Droplet d, Direction dir)
         {
             bool legalMove = true;
             List<Electrode> temp = new List<Electrode>();
@@ -479,15 +554,24 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                         MoveOffElectrode(d, e);
                     }
                 }
+                return true;
             }
             else
             {
-                //throw new IllegalMoveException();
-                Printer.PrintLine("Illegal Move");
+                return false;
             }
         }
 
-
+        /// <summary>
+        /// Checks if the <see cref="Droplet"/> <paramref name="d"/> moving onto the <see cref="Electrode"/>s in <paramref name="temp"/> would violate the borders of other <see cref="Droplet"/>s.
+        /// <para>If <paramref name="mergeDroplets"/> is specified, it ignores the borders of the <see cref="Droplet"/>s in <paramref name="mergeDroplets"/></para>
+        /// <para>If <paramref name="source"/> is specified, it ignores the borders of the <paramref name="source"/> <see cref="Droplet"/></para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="temp"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <param name="source"></param>
+        /// <returns><see cref="bool"/> for if the movement is legal and the occupant to tell which <see cref="Droplet"/>'s border it violates </returns>
         private static (bool legalmove, Droplet? occupant) CheckBorder(Droplet d, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null)
         {
             Droplet? occupant = null;
@@ -560,23 +644,20 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        // Used to check if new droplet position upholds borders
 
         /// <summary>
-        /// Checks if the elctrode is in the board of an apparature.
+        /// Checks if the <see cref="Electrode"/> <paramref name="el"/> is in the border of an <see cref="Apparatus"/>.
+        /// <para><paramref name="coilIntoApp"/> specifies if it is currently coiling into a <see cref="Apparatus"/></para>
         /// </summary>
         /// <param name="el"></param>
         /// <param name="alreadyOnApp"></param>
         /// <param name="coilIntoApp"></param>
-        /// <returns></returns>
-        private static bool CheckApparatureBorders(Electrode el, List<Apparature?> alreadyOnApp, Apparature? coilIntoApp)
+        /// <returns><see cref="bool"/> determening if there are border violations</returns>
+        private static bool CheckApparatureBorders(Electrode el, Apparatus? coilIntoApp)
         {
             if (el.Apparature != null && el.Apparature != coilIntoApp)
             {
-                if (!alreadyOnApp.Contains(el.Apparature))
-                {
-                    return false;
-                }
+                return false;
             }
             List<(Electrode, Direction?)> border = el.GetExtendedNeighbors();
 
@@ -584,20 +665,31 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             {
                 if (cEl.Apparature != null && cEl.Apparature != coilIntoApp)
                 {
-                    if (!alreadyOnApp.Contains(cEl.Apparature))
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
             return true;
         }
 
+        /// <summary>
+        /// Checks if the specific <paramref name="xPos"/> and <paramref name="yPos"/> is inside the bound of the <see cref="Board"/>.
+        /// </summary>
+        /// <param name="xPos"></param>
+        /// <param name="yPos"></param>
+        /// <returns><see cref="bool"/> determening if inside <see cref="Board"/></returns>
         public static bool CheckBoardEdge(int xPos, int yPos)
         {
             return !(xPos < 0 || xPos >= Program.C.board.GetXElectrodes() || yPos < 0 || yPos >= Program.C.board.GetYElectrodes());
         }
 
+        /// <summary>
+        /// Checking the placement of the <see cref="Droplet"/> <paramref name="d"/>, running both <see cref="CheckOtherDroplets"/> and <see cref="CheckContaminations"/>, giving them the relevant parameters.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="temp"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <param name="splitDroplet"></param>
+        /// <returns><see cref="bool"/> determining if the placement is allowed</returns>
         private static bool CheckPlacement(Droplet d, List<Electrode> temp, List<string>? mergeDroplets = null, string? splitDroplet = null)
         {
             if (!CheckOtherDroplets(d, temp, mergeDroplets, splitDroplet))
@@ -612,7 +704,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-
+        /// <summary>
+        /// Checks if the <see cref="Droplet"/> <paramref name="d"/> moved on the <see cref="Electrode"/>s <paramref name="temp"/> would place <paramref name="d"/> on top of existing <see cref="Droplet"/>s.
+        /// <para>If <paramref name="mergeDroplets"/> is specified, <paramref name="d"/> is allowed to move through the <see cref="Droplet"/>s in <paramref name="mergeDroplets"/></para>
+        /// <para>If <paramref name="splitDroplet"/> is specified, <paramref name="d"/> is allowed to move through the split <see cref="Droplet"/></para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="temp"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <param name="splitDroplet"></param>
+        /// <returns><see cref="bool"/> determining if the move is allowed</returns>
         public static bool CheckOtherDroplets(Droplet d, List<Electrode> temp, List<string>? mergeDroplets = null, string? splitDroplet = null)
         {
             foreach (Electrode e in temp)
@@ -625,7 +726,12 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
-
+        /// <summary>
+        /// Checks if the <see cref="Droplet"/> <paramref name="d"/> moved on the <see cref="Electrode"/>s <paramref name="temp"/> would be allowed by contaminations.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="temp"></param>
+        /// <returns><see cref="bool"/> determining if the movement is allowed</returns>
         public static bool CheckContaminations(Droplet d, List<Electrode> temp){
             foreach (Electrode e in temp)
             {
@@ -645,6 +751,16 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
+        /// <summary>
+        /// Checks if the <see cref="Droplet"/> <paramref name="d"/> moved on the <see cref="Electrode"/> <paramref name="temp"/> would be a legal move. It uses many if the other checks in <see cref="Droplet_Actions"/>.
+        /// <para>Parameters are parsed to the functions which needs them</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="temp"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <param name="source"></param>
+        /// <param name="splitPlacement"></param>
+        /// <returns><see cref="bool"/> determining if the movement is allowed to happen</returns>
         public static (bool legalmove, Droplet? occupant) CheckLegalMove(Droplet d, List<Electrode> temp, List<string>? mergeDroplets = null, string? source = null, bool splitPlacement = false)
         {
             bool legalMove = true;
@@ -657,7 +773,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return (legalMove, occupant);
         }
 
-        public static bool CheckLegalPosition(Droplet d, List<(int, int)> pos, string? source = null)
+        /// <summary>
+        /// Checks if the given <paramref name="pos"/> is inside the <see cref="Board"/>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="pos"></param>
+        /// <returns><see cref="bool"/> determining if inside, and returning <see cref="CheckLegalMove(Droplet, List{Electrode}, List{string}?, string?, bool)"/> if it is.</returns>
+        public static bool CheckLegalPosition(Droplet d, List<(int, int)> pos)
         {
             List<Electrode> temp = [];
 
@@ -675,16 +797,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
 
             // Check for other droplets and contamination
-            return CheckLegalMove(d, temp, source: source).legalmove;
+            return CheckLegalMove(d, temp).legalmove;
         }
 
-        
-        
-
-        public static void AwaitLegalMove(Droplet d, List<Electrode> temp, string? source = null)
+        /// <summary>
+        /// Makes <see cref="Droplet"/> <paramref name="d"/> <see cref="Thread.Sleep(int)"/> while waiting on the movement being legal. There is a limit to the amount of time it can wait.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="temp"></param>
+        /// <exception cref="Exception"></exception>
+        public static void AwaitLegalMove(Droplet d, List<Electrode> temp)
         {
             int i = 0;
-            while (!CheckLegalMove(d, temp, source: source).legalmove)
+            while (!CheckLegalMove(d, temp).legalmove)
             {
                 Printer.PrintLine(d.Name + " waiting for space");
                 if (i > 50)
@@ -700,7 +825,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-
+        /// <summary>
+        /// Used for moving as a snake, to make sure that the <paramref name="newHead"/> of <paramref name="d"/> is not occupied.
+        /// <para>If <paramref name="source"/> is specified, the move is allowed through the <paramref name="source"/> <see cref="Droplet"/></para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="newHead"></param>
+        /// <param name="source"></param>
+        /// <returns><see cref="bool"/> determing whether the <paramref name="newHead"/> is allowed.</returns>
         private static bool SnekCheck(Droplet d, Electrode newHead, string? source = null)
         {
             if (newHead.Occupant == null || newHead.Occupant.Name == source)
@@ -714,9 +846,20 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
 
-        // Non-protected snake move forward 1
-        // Assumes that the list of occupied electrodes are in the form of a snake.
-        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, Direction dir, string? splitDroplet = null, bool remove = true) // Returns true if movement happened, false if it got stopped
+        /// <summary>
+        /// Moves the <see cref="Droplet"/> <paramref name="d"/> in the <see cref="Direction"/> <paramref name="dir"/> as a snake. 
+        /// <para>If <paramref name="splitDroplet"/> is specified, it can move through the border of the split <see cref="Droplet"/></para>
+        /// <para>If <paramref name="remove"/> is <see langword="false"/> the tail is not removed after moving</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="dir"></param>
+        /// <param name="splitDroplet"></param>
+        /// <param name="remove"></param>
+        /// <returns><see cref="bool"/> determining if the move succeeded and a <see cref="Electrode"/> for which it moved off. </returns>
+        /// <exception cref="Exception"></exception>
+        /// <exception cref="ThreadInterruptedException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static (bool, Electrode? MovedOffElectrode) SnekMove(Droplet d, Direction dir, string? splitDroplet = null, bool remove = true)
         {
             Printer.PrintLine(d.Name +" SnekMoves Toward: " +dir);
             List<Electrode> newHead = new List<Electrode>(); // Needs to be a list containing one electrode for a snekcheck.
@@ -792,6 +935,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
             
         }
+
+        /// <summary>
+        /// <see cref="Droplet"/> <paramref name="d"/> takes over the <see cref="Electrode"/> <paramref name="e"/>. This removes it from its prior <see cref="Droplet"/>.
+        /// <para>If <paramref name="first"/> is <see langword="false"/> it is placed at the tail, else the head.</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        /// <param name="first"></param>
+        /// <exception cref="ThreadInterruptedException"></exception>
         public static void TakeOverElectrode(Droplet d, Electrode e, bool first = true)
         {
             lock (MoveLock)
@@ -829,6 +981,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
         }
 
+        /// <summary>
+        /// Moves the <see cref="Droplet"/> <paramref name="d"/> onto the <see cref="Electrode"/> <paramref name="e"/>. How it is placed is determine by if the droplet is a snake.
+        /// <para>If it is a snake it is placed in the SnekList. If <paramref name="first"/> is <see langword="false"/> it is placed at the end, else at the start </para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        /// <param name="first"></param>
+        /// <exception cref="ThreadInterruptedException"></exception>
         public static void MoveOnElectrode(Droplet d, Electrode e, bool first = true)
         {
             lock (MoveLock)
@@ -856,12 +1016,22 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             
         }
 
+        /// <summary>
+        /// Moves the <see cref="Droplet"/> <paramref name="d"/> off an <see cref="Electrode"/>.
+        /// <para>If no <paramref name="e"/> is specified it select the tail of SnekList. Else it moves of the <see cref="Electrode"/> <paramref name="e"/></para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        /// <returns><see cref="Electrode"/> representing the moved off <see cref="Electrode"/></returns>
         public static Electrode MoveOffElectrode(Droplet d, Electrode? e = null)
         {
             lock (MoveLock)
             {
                 e ??= d.SnekList.Last();
-
+                if (e == null)
+                {
+                    throw new IllegalMoveException("A droplet is trying to move off, without specifying the droplet or being a snake.");
+                }
                 Outparser.Outparser.ElectrodeOff(e, d: d);
                 if (!e.GetContaminants().Contains(d.Substance_Name))
                 {
@@ -880,34 +1050,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
 
         /// <summary>
-        /// This is discontinued, and no longer is used.
+        /// Uncoils the <see cref="Droplet"/> <paramref name="d"/> into a snake <see cref="Droplet"/>. It moves towars the <see cref="Electrode"/> <paramref name="dest"/> while uncoiling.
+        /// <para>If <paramref name="mergeDroplets"/> is specified it can merge with the <paramref name="mergeDroplets"/> after it finished uncoiling</para>
         /// </summary>
-        /// <param name="result"></param>
-        /// <param name="mergers"></param>
-        /// <param name="mergePoint"></param>
-        /// <exception cref="Exception"></exception>
-        public static void SnekReversal(Droplet d)
-        {
-            LinkedList<Electrode> copyList = new LinkedList<Electrode>();
-
-            LinkedListNode<Electrode> start = d.SnekList.Last;
-            while (start != null)
-            {
-
-                copyList.AddLast(start.Value);
-
-                start = start.Previous;
-            }
-
-            d.SnekList = copyList;
-
-        }
-
-
-
-        // Uncoil snake - takes droplet and destination
-        // Choose head at spot close to destination. Run through rest of body, check for each part if moving it would disconnect body,
-        // if yes, go to next part, if no, turn on next electrode for head and turn off electrode for part.
+        /// <param name="d"></param>
+        /// <param name="dest"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ThreadInterruptedException"></exception>
         public static void UncoilSnek(Droplet d, Electrode dest, List<string>? mergeDroplets = null)
         {
             d.Waiting = false;
@@ -951,7 +1101,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                     priorCounter++;
                 }
                 
-                (bool physMove, Electrode? movedOffElectrode) = MoveTowardDest(d, dest, mergeDroplets, remove: false);
+                (bool physMove, Electrode? _) = MoveTowardDest(d, dest, mergeDroplets, remove: false);
                 if (physMove)
                 {
                     totalExtraAdded++;
@@ -1057,9 +1207,28 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             }
         }
 
-        // Coil snake
-        // Could try doing it without thinking of it as a snake, just a bunch of small droplets moving to be a big one.
-        public static void CoilSnek(Droplet d, Electrode? center = null, Apparature? app = null, bool input = false, List<string>? mergeDroplets = null, bool ignoreBorders = false, bool coiledAgain = false)
+
+        /// <summary>
+        /// Coils the <see cref="Droplet"/> <paramref name="d"/> around the <see cref="Electrode"/> <paramref name="center"/>.
+        /// <para>
+        /// If <paramref name="center"/> is specified, it coils around it either if it has an <see cref="Apparatus"/> or is not in the border of an <see cref="Apparatus"/>. This is to ensure that it only is near a <see cref="Apparatus"/> if strictly necessary
+        /// If no <paramref name="center"/> is specified, it finds a new <see cref="Electrode"/> furthes away from any <see cref="Apparatus"/> and coils around it.
+        /// </para>
+        /// <para>If <paramref name="input"/> is <see langword="true"/> and extra occupy will be coiled, used by input.</para>
+        /// <para>If <paramref name="mergeDroplets"/> is specified it can coil next to the merge <see cref="Droplet"/>s.</para>
+        /// <para><paramref name="ignoreBorders"/> and <paramref name="coiledAgain"/> are both used to coil again, <paramref name="ignoreBorders"/> makes the new coil able to coil inside <see cref="Apparatus"/> borders</para>
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="center"></param>
+        /// <param name="app"></param>
+        /// <param name="input"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <param name="ignoreBorders"></param>
+        /// <param name="coiledAgain"></param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ThreadInterruptedException"></exception>
+        /// <exception cref="IllegalMoveException"></exception>
+        public static void CoilSnek(Droplet d, Electrode? center = null, Apparatus? app = null, bool input = false, List<string>? mergeDroplets = null, bool ignoreBorders = false, bool coiledAgain = false)
         {
             d.MergeReady = false;
 
@@ -1106,7 +1275,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 {
                     Electrode cElectrode = currentElectrodes[0];
 
-                    if (CheckApparatureBorders(cElectrode, [], app))
+                    if (CheckApparatureBorders(cElectrode, app))
                     {
                         center = cElectrode;
                         break;
@@ -1152,30 +1321,30 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             
             
             List<Electrode> newBlob = [center];
-            List<Electrode> activeBlob1 = [center];
+            List<Electrode> activeBlob = [center];
             List<Electrode> seenElectrodes = [center];
 
 
-            while(activeBlob1.Count > 0 && amount > 0)
+            while(activeBlob.Count > 0 && amount > 0) // Find the electrodes to coil in.
             {
                 if (d.Removed)
                 {
                     throw new ThreadInterruptedException("Thread has been interrupted");
                 }
-                Electrode current = activeBlob1[0];
+                Electrode current = activeBlob[0];
 
                 List<(Electrode, Direction)> trueNeighbors = current.GetTrueNeighbors();
                 List<Direction> foundNeighbors = [];
                 foreach ((Electrode el, Direction dir) in trueNeighbors)
                 {
-                    if (!(ignoreBorders || input) && !CheckApparatureBorders(el, [], app))
+                    if (!(ignoreBorders || input) && !CheckApparatureBorders(el, app))
                     {
                         continue;
                     }
                     
                     if (CheckLegalMove(d,[el]).legalmove && !seenElectrodes.Contains(el) && (app != null && ((app.CoilInto && el.Apparature == app)||(!app.CoilInto)) || (app == null && (el.Occupant == d || el.Apparature == null))))
                     {
-                        activeBlob1.Add(el);
+                        activeBlob.Add(el);
                         seenElectrodes.Add(el);
                         newBlob.Add(el);
                         foundNeighbors.Add(dir);
@@ -1188,18 +1357,18 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 }
                 if (amount > 0)
                 {
-                    List<Electrode> extendedNeighbors = current.GetExtendedNeighborsFromTrue(foundNeighbors, seenElectrodes);
+                    List<Electrode> extendedNeighbors = current.GetExtendedNeighborsFromTrue(foundNeighbors);
 
                     foreach (Electrode el in extendedNeighbors)
                     {
-                        if (!(ignoreBorders || input) && !CheckApparatureBorders(el, [], app))
+                        if (!(ignoreBorders || input) && !CheckApparatureBorders(el, app))
                         {
                             continue;
                         }
 
                         if (!seenElectrodes.Contains(el) && CheckLegalMove(d, [el]).legalmove && (app != null && ((app.CoilInto && el.Apparature == app) || (!app.CoilInto)) || (app == null && (el.Occupant == d || el.Apparature == null))))
                         {
-                            activeBlob1.Add(el);
+                            activeBlob.Add(el);
                             seenElectrodes.Add(el);
                             newBlob.Add(el);
                             amount--;
@@ -1213,7 +1382,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 
 
 
-                activeBlob1.Remove(current);
+                activeBlob.Remove(current);
             }
 
             if (d.Removed)
@@ -1271,32 +1440,41 @@ namespace Bachelor_Project.Simulation.Agent_Actions
 
         }
 
+        /// <summary>
+        /// Creates a <see cref="Tree"/> using a <see cref="Droplet"/> <paramref name="d"/>. The root is placed at the <see cref="Electrode"/> <paramref name="center"/>. <paramref name="newElectrodes"/> specifies which <see cref="Electrode"/>s the <see cref="Tree"/> cannot remove.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="newElectrodes"></param>
+        /// <param name="center"></param>
+        /// <returns>The <see cref="Tree"/> built.</returns>
         public static Tree BuildTree(Droplet d, List<Electrode> newElectrodes, Electrode center)
         {
             return new Tree(d, d.Occupy, newElectrodes, center);
         }
 
-        internal static void Output(Droplet droplet, Output output)
+        /// <summary>
+        /// Outpus the <see cref="Droplet"/> <paramref name="droplet"/> by moving it to an <see cref="Output"/> and removing the <see cref="Droplet"/>.
+        /// </summary>
+        /// <param name="droplet"></param>
+        /// <param name="output"></param>
+        internal static void OutputDroplet(Droplet droplet, Output output)
         {
-            try
-            {
-                Tree snekTree = BuildTree(droplet, [], output.pointers[0]);
-                snekTree.RemoveTree();
-                droplet.RemoveFromBoard();
-                Printer.PrintBoard();
-            }
-            catch (Exception e)
-            {
-                int a = 2;
-            }
-            
+            Tree snekTree = BuildTree(droplet, [], output.pointers[0]);
+            snekTree.RemoveTree();
+            droplet.RemoveFromBoard();
+            Printer.PrintBoard();
+
         }
 
+        /// <summary>
+        /// Calculates the location where the merge should happen, using all the <see cref="Droplet"/>s from <paramref name="inputDroplets"/>. The location is the center between all merging <see cref="Droplet"/>s
+        /// </summary>
+        /// <param name="inputDroplets"></param>
+        /// <param name="droplet"></param>
+        /// <param name="done"></param>
+        /// <returns>The <see cref="Electrode"/> of the location it found.</returns>
         public static Electrode MergeCalc(List<string> inputDroplets, Droplet droplet, UsefulSemaphore done) //Release 1 to done when done
         {
-
-            
-
             Electrode trueDestination = droplet.nextDestination.pointers[0];
 
             double x = 0, y = 0;
@@ -1329,7 +1507,14 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return averageEl; //TODO: update to find a better spot to merge
         }
 
-        public static void Merge(Droplet d, Droplet mergeDroplet, Electrode center, List<string> mergeDroplets)
+        /// <summary>
+        /// Merges two <see cref="Droplet"/>s together when they touch at the <see cref="Electrode"/> <paramref name="center"/> while moving, and their mergeDroplets contain each other.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="mergeDroplet"></param>
+        /// <param name="center"></param>
+        /// <param name="mergeDroplets"></param>
+        public static void Merge(Droplet d, Droplet mergeDroplet, Electrode center)
         {
 
             d.SetSizes(d.Volume+ mergeDroplet.Volume);
@@ -1350,99 +1535,19 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Printer.PrintLine(d.Name + " and " + mergeDroplet.Name + " has been merged into " + d.Name);
 
         }
-
-        /// <summary>
-        /// This is discontinued, and no longer is used.
-        /// </summary>
-        /// <param name="result"></param>
-        /// <param name="mergers"></param>
-        /// <param name="mergePoint"></param>
-        /// <exception cref="Exception"></exception>
-
-        /*
-        public static void MergeMove(Droplet result, List<Droplet> mergers, Electrode mergePoint) // TODO: Can corners be cut?
-            // TODO: Maybe CheckLegalMove instead
-        {
-            // This method assumes that the droplets to be merged are close and ready to move into each other
-            // and is just here to bypass the restrictions of the regular move
-
-            // Take volume of all merging droplets and make a space of size corresponding to this volume.
-            // Then, have each droplet touching this area and make trees to turn off their pre-merge positions.
-
-            double volume = 0;
-            foreach (Droplet d in mergers)
-            {
-                volume += d.Volume;
-            }
-
-            result.SetSizes(volume);
-
-            // Find space.
-            List<Electrode> looking = [mergePoint];
-            List<Electrode> space = new List<Electrode>();
-
-            while (space.Count < result.Size)
-            {
-                if (looking.Count == 0)
-                {
-                    throw new Exception("Not enough space");
-                }
-                Electrode e = looking[0];
-                looking.RemoveAt(0);
-
-                // If the e we are currently looking at is valid, we can look further along it.
-                if (CheckLegalMove(mergers, [e]).legalmove){
-                    space.Add(e);
-
-                    List<(Electrode, Direction?)> neighbors = e.GetExtendedNeighbors();
-
-                    foreach ((Electrode el, Direction? direction) in neighbors)
-                    {
-                        looking.Add(el);
-                    }
-                }
-                // Continue with next electrode in looking
-            }
-
-            // Turn on electrodes in found space - also adds e to occupy in result.
-            foreach (Electrode e in space)
-            {
-                MoveOnElectrode(result, e);
-
-                foreach (Droplet d in mergers)
-                {
-                    if (d.Occupy.Contains(e))
-                    {
-                        d.Occupy.Remove(e);
-                    }
-                }
-            }
-
-            Printer.PrintBoard();
-
-            // Make trees of mergers and turn off the electrodes not in the space.
-            foreach (Droplet d in mergers)
-            {
-                Tree tree = new Tree(d, d.Occupy, space, mergePoint);
-                tree.RemoveTree();
-
-                while(d.Occupy.Count > 0)
-                {
-                    MoveOffElectrode(d, d.Occupy[0]);
-                }
-                // TODO: Remove d from board
-
-                Printer.PrintBoard();
-            }
-            // The droplets should now all be in the space.
-        }
-        */
-
         
+        /// <summary>
+        /// Splits the active <see cref="Droplet"/> <paramref name="source"/> into multiple other <see cref="Droplet"/>s, one for each value in <paramref name="ratios"/>. <paramref name="dropSem"/> is used to time the MissionTask.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="ratios"></param>
+        /// <param name="dropSem"></param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="Exception"></exception>
         public static void SplitDroplet(Droplet source, Dictionary<string, double> ratios, Dictionary<string, UsefulSemaphore> dropSem)
         {
             // For loop to split the droplets out one by one.
-            // Makes a snake of appropriate size a la uncoil and cuts it off.
+            // Makes a snake of appropriate size and cuts it off.
             // After cutoff, the 'new' droplet is given the task of moving.
 
             Printer.PrintLine(source.Name +" is splitting!");
@@ -1462,7 +1567,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 dropSem[dName].WaitOne();
 
                 // Find electrode in source closest to where splitter needs to go. nextElectrodeDestination is not set, so we do it here.
-                d.SetNextElectrodeDestination(source.Name);
+                d.SetNextElectrodeDestination();
 
                 Electrode dest = d.nextElectrodeDestination;
                 Electrode start = dest.GetClosestElectrodeInList(source.Occupy);
@@ -1630,15 +1735,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
                 dropSem[d.Name].TryRelease(2);
 
                 Printer.PrintBoard();
-                Printer.PrintLine(dName + " DONE!!");
+                Printer.PrintLine(dName + " done splitting");
 
             }
             source.RemoveFromBoard();
         }
 
         /// <summary>
-        /// Coils around head without removing from tail.
-        /// Used for input and split.
+        /// Coils the <see cref="Droplet"/> <paramref name="d"/> around the head of <paramref name="d"/>, while adding the remainder. 
+        /// <para>If <paramref name="source"/> is specified so it can coil close to the <paramref name="source"/> <see cref="Droplet"/></para>
         /// </summary>
         /// <param name="d"></param>
         public static void CoilWithoutRemoval(Droplet d, int remainder, Droplet? source = null)
@@ -1689,6 +1794,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             Program.C.RemovePath(d);
         }
 
+        /// <summary>
+        /// Calculates a free area around the <paramref name="source"/> which can hold the <see cref="Droplet"/> <paramref name="d"/> of size <paramref name="size"/>.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="source"></param>
+        /// <param name="size"></param>
+        /// <returns>The <see cref="Electrode"/> at the center of the found space.</returns>
         public static Electrode? FindFreeSpaceForSplit(Droplet d, Droplet source, int size)
         {
             bool foundSpace = false;
@@ -1734,9 +1846,15 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return null;
         }
 
+        /// <summary>
+        /// Checks if the <see cref="Electrode"/> <paramref name="e"/> has a large enough space for <see cref="Droplet"/> <paramref name="d"/> if size <paramref name="size"/>.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        /// <param name="size"></param>
+        /// <returns><see cref="bool"/> determining if a space was found and a <see cref="Electrode"/> at the center of the space</returns>
         public static (bool, Electrode?) CheckIfLargeEnoughSpace(Droplet d, Electrode e, int size)
         {
-            // REMINDER dropletSize kvadratrod væk fra source mindst. To be safe the furthest one away?
             List<Electrode> checkingList = [e];
             List<Electrode> clearList = [e];
             List<(Electrode, Direction?)> neighbors = [];
@@ -1768,12 +1886,17 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return (true, middle);
         }
 
+        /// <summary>
+        /// Checks if the distance between the <paramref name="dest"/> and <paramref name="start"/>, or <see cref="Droplet"/> <paramref name="d"/> if no <paramref name="start"/>, is less than <paramref name="allowedDist"/>.
+        /// </summary>
+        /// <param name="dest"></param>
+        /// <param name="d"></param>
+        /// <param name="allowedDist"></param>
+        /// <param name="start"></param>
+        /// <returns><see cref="bool"/> detemining if the distance is allowed</returns>
         public static bool CheckMinDistanceDrop(Electrode dest, Droplet d, int allowedDist, Electrode? start = null)
         {
-            if (start == null)
-            {
-                start = d.Occupy[0];
-            }
+            start ??= d.Occupy[0];
             if (Electrode.GetDistance(dest, start) < allowedDist)
             {
                 return false;
@@ -1781,6 +1904,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             return true;
         }
 
+        /// <summary>
+        /// Approximates the middle <see cref="Electrode"/> of the <see cref="List{Electrode}"/> <paramref name="space"/>.
+        /// </summary>
+        /// <param name="space"></param>
+        /// <returns>The <see cref="Electrode"/> at the approximate middle</returns>
         public static Electrode? ApproximateMiddleOfSpace(List<Electrode> space)
         {
             int minX = int.MaxValue;
@@ -1832,7 +1960,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
         /// <summary>
-        /// Sets a droplet to wait for specified amount of milliseconds
+        /// Sets the <see cref="Droplet"/> <paramref name="d"/> to wait for specified amount of <paramref name="milliseconds"/>
         /// </summary>
         /// <param name="d"></param>
         /// <param name="milliseconds"></param>
@@ -1844,11 +1972,11 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
         /// <summary>
-        /// Finds the location in the apparature for travel
+        /// Finds the location in the <paramref name="destination"/> for travel the <see cref="Droplet"/> <paramref name="d"/> to travel to.
         /// </summary>
         /// <param name="d"></param>
         /// <param name="destination"></param>
-        public static void SetupDestinations(Droplet d, Apparature destination)
+        public static void SetupDestinations(Droplet d, Apparatus destination)
         {
             d.nextDestination = destination;
             if (d.Occupy.Count > 0)
@@ -1859,7 +1987,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions
         }
 
         /// <summary>
-        /// Return true if there is a parity problem, false if parity is fine
+        /// Return <see langword="true"/> if there is a parity problem, false if <see langword="false"/> is fine
         /// </summary>
         /// <param name="d"></param>
         /// <param name="preSize"></param>
@@ -1899,6 +2027,13 @@ namespace Bachelor_Project.Simulation.Agent_Actions
             
         }
 
+        /// <summary>
+        /// Checks if the <see cref="Droplet"/> <paramref name="d"/> is currently coherent.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="mergeDroplets"></param>
+        /// <returns><see cref="bool"/> determining if it is coherent</returns>
+        /// <exception cref="ThreadInterruptedException"></exception>
         private static bool CheckDropletHeldTogetherParity(Droplet d, List<string>? mergeDroplets = null)
         {
             lock (d)

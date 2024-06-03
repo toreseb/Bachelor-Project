@@ -9,6 +9,9 @@ using System.Xml.Linq;
 
 namespace Bachelor_Project.Utility
 {
+    /// <summary>
+    /// <see cref="Tree"/> structure used to remove dropelts effeciently.
+    /// </summary>
     public class Tree
     {
         public List<Node> Nodes;
@@ -19,7 +22,7 @@ namespace Bachelor_Project.Utility
         public List<Node> Leaves;
         public Electrode closestElectrode;
         /// <summary>
-        /// Creates a tree structure from a droplet with oldElectrodes from before, with root as center, or as close to it, and it keeps the newElectrodes
+        /// Creates a <see cref="Tree"/> structure from a <see cref="Droplet"/> with <paramref name="oldElectrodes"/> from before, with root as <paramref name="center"/>, or as close to it, and it keeps the <paramref name="newElectrodes"/>
         /// </summary>
         /// <param name="d"></param>
         /// <param name="oldElectrodes"></param>
@@ -46,6 +49,10 @@ namespace Bachelor_Project.Utility
             
         }
 
+        /// <summary>
+        /// Creates the <see cref="Tree"/>, by traversing the <see cref="Droplet"/> <see cref="d"/>.
+        /// </summary>
+        /// <exception cref="ThreadInterruptedException"></exception>
         private void BuildTree()
         {
             while (ActiveNodes.Count > 0)
@@ -70,6 +77,12 @@ namespace Bachelor_Project.Utility
                 }
             }
         }
+
+        /// <summary>
+        /// Removes a leaf of the <see cref="Tree"/> by moving of a leaf, that is not a part of <see cref="NewElectrodes"/>.
+        /// </summary>
+        /// <param name="into"></param>
+        /// <returns>Which <see cref="Electrode"/> the <see cref="Droplet"/> <see cref="d"/> moved off.</returns>
         public Electrode? RemoveLeaf(bool into = false)
         {
             Electrode? returnedElectrode = null;
@@ -117,9 +130,10 @@ namespace Bachelor_Project.Utility
             return returnedElectrode;
         }
 
-
-
- 
+        /// <summary>
+        /// Removes the entire <see cref="Tree"/>, by calling <see cref="RemoveLeaf(bool)"/> until no nodes remain.
+        /// </summary>
+        /// <param name="into"></param>
         public void RemoveTree(bool into = false)
         {
             while(Leaves.Count > 0)
@@ -129,7 +143,12 @@ namespace Bachelor_Project.Utility
             }
         }
         
-
+        /// <summary>
+        /// Used to create the <see cref="Tree"/>, by adding <see cref="Electrode"/>s to the tree, only if they are new, and a part of <see cref="d"/>.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="currentNode"></param>
+        /// <param name="cElectrode"></param>
         private void CheckAddElectrode(Droplet d, Node currentNode, Electrode cElectrode)
         {
             if (d.Occupy.Contains(cElectrode) && !SeenElectrodes.Contains(cElectrode))
@@ -143,6 +162,12 @@ namespace Bachelor_Project.Utility
             }
         }
 
+        /// <summary>
+        /// Used to create the <see cref="Tree"/>, by finding the closests <see cref="Electrode"/> to the center in a <see cref="List{T}"/>
+        /// </summary>
+        /// <param name="electrodes"></param>
+        /// <param name="center"></param>
+        /// <returns></returns>
         private static Electrode FindClosestElectrode(List<Electrode> electrodes, Electrode center)
         {
             Electrode? closestElectrode = null;
@@ -158,6 +183,11 @@ namespace Bachelor_Project.Utility
             }
             return closestElectrode;
         }
+
+        /// <summary>
+        /// Checks if the <see cref="Tree"/> currently has the same amount of nodes as the <see cref="Droplet"/> <see cref="d"/> has <see cref="Electrode"/>s in its <see cref="Droplet.Occupy"/>
+        /// </summary>
+        /// <returns> <see langword="true"/> if the amount is the same.</returns>
         public bool CheckTree()
         {
             if (Nodes.Count != d.Occupy.Count)
@@ -168,6 +198,10 @@ namespace Bachelor_Project.Utility
         }
 
     }
+
+    /// <summary>
+    /// The <see cref="Node"/>s the <see cref="Tree"/> is built of.
+    /// </summary>
     public class Node
     {
         public Node? Parent;
@@ -179,17 +213,30 @@ namespace Bachelor_Project.Utility
             Children = new();
             Electrode = electrode;
         }
+
+        /// <summary>
+        /// Inserts the <see cref="Node"/> <paramref name="child"/> into this <see cref="Node"/>'s <see cref="Children"/>.
+        /// </summary>
+        /// <param name="child"></param>
         public void AddChild(Node child)
         {
             Children.Add(child);
         }
+
+        /// <summary>
+        /// Removes the <see cref="Node"/> <paramref name="child"/> from this <see cref="Node"/>'s <see cref="Children"/>.
+        /// </summary>
+        /// <param name="child"></param>
         public void RemoveChild(Node child)
         {
             Children.Remove(child);
         }
 
 
-
+        /// <summary>
+        /// ToString override.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return Electrode.ToString();

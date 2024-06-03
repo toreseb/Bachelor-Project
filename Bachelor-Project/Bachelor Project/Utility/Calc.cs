@@ -6,12 +6,21 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Utility
 {
+    /// <summary>
+    /// Calculates the percentages for splitdroplet
+    /// </summary>
     public static class Calc
     {
-        public static Dictionary<string, double> FindPercentages(Dictionary<string, int>? Percentages, List<string> OutputDroplets)
+        /// <summary>
+        /// Finds the percentages for each <see cref="Droplet"/> in <paramref name="OutputDroplets"/> base of their <paramref name="ratio"/>.
+        /// </summary>
+        /// <param name="ratio"></param>
+        /// <param name="OutputDroplets"></param>
+        /// <returns>A total <see cref="Dictionary{TKey, TValue}"/> of all the <paramref name="OutputDroplets"/> percentages.</returns>
+        public static Dictionary<string, double> FindPercentages(Dictionary<string, int>? ratio, List<string> OutputDroplets)
         {
             Dictionary<string, double> result = [];
-            if (Percentages == null)
+            if (ratio == null)
             {
                 foreach (string d in OutputDroplets)
                 {
@@ -24,12 +33,12 @@ namespace Bachelor_Project.Utility
 
                 foreach (string d in OutputDroplets)
                 {
-                    sum += Percentages[d];
+                    sum += ratio[d];
                 }
 
                 foreach (string d in OutputDroplets)
                 {
-                    result.Add(d, Percentages[d] / sum * 100);
+                    result.Add(d, ratio[d] / sum * 100);
                 }
             }
 

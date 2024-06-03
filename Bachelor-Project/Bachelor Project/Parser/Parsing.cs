@@ -23,6 +23,11 @@ namespace Bachelor_Project.Parsing
 
         private static int InputNr = 0;
 
+        /// <summary>
+        /// Creates information from a filepath <paramref name="path"/> using <see cref="ParseString(string)"/>.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>The information created by <see cref="ParseString(string)"/></returns>
         public static (List<Command>, Dictionary<string,string>, Dictionary<string, List<string>>,Dictionary<string, List<string>>) ParseFile(string path)
         {
             string data = File.ReadAllText(path);
@@ -31,6 +36,11 @@ namespace Bachelor_Project.Parsing
 
         }
 
+        /// <summary>
+        /// Creates information by analyzing the <paramref name="data"/> of a .txt protocol file.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns>The information created</returns>
         public static (List<Command>, Dictionary<string, string>, Dictionary<string, List<string>>, Dictionary<string, List<string>>) ParseString(string data)
         {
             Dropletpairs = [];
@@ -51,6 +61,11 @@ namespace Bachelor_Project.Parsing
             return (Commands, Dropletpairs, Contaminated, Contaminates);
         }
 
+        /// <summary>
+        /// Decodes a specific <paramref name="context"/> from the ANTLR4 into <see cref="Command"/>s and data.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <exception cref="ArgumentException"></exception>
         public static void Decode(ProgramParser.CommandContext context)
         {
             string output;
@@ -218,6 +233,9 @@ namespace Bachelor_Project.Parsing
             }
         }
 
+        /// <summary>
+        /// Resets the saved values of the <see cref="Parser"/>, used in tests to reset the environment.
+        /// </summary>
         public static void Reset()
         {
             InputNr = 0;

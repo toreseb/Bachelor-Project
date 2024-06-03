@@ -39,7 +39,7 @@ namespace Bachelor_Project.Simulation
         public bool Important = true; // If a droplet is important, it's movement is important, so it can't be changed. This is for tasks
         public bool MergeReady = false; // Determines if a droplet is in the state where it is possible to merge.
 
-        public Apparature? nextDestination = null;
+        public Apparatus? nextDestination = null;
         public Electrode? nextElectrodeDestination = null;
 
         // Used for threading
@@ -66,7 +66,7 @@ namespace Bachelor_Project.Simulation
         {
             Temperature = 20;
             Substance_Name = substance_name;
-            Color = GetColor(Substance_Name);
+            Color = GetColor();
 
             cancellationTokenSource = new CancellationTokenSource();
 
@@ -78,12 +78,17 @@ namespace Bachelor_Project.Simulation
 
         }
 
-        private Electrode GetClosestPartToApparature(Apparature a)
+        /// <summary>
+        /// Finds the closest <see cref="Electrode"/> in this <see cref="Droplet"/> to the given <see cref="Apparatus"/> <paramref name="a"/>.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns>The found closest <see cref="Electrode"/></returns>
+        private Electrode GetClosestPartToApparature(Apparatus a)
         {
             (int x, int y) = a.GetCenter();
             Electrode? closestElectrode = null;
             double minDistance = double.MaxValue;
-            foreach (Electrode e in this.Occupy) // BROKEN - There is a problem when splitting as there is nothing in Occupy
+            foreach (Electrode e in Occupy)
             {
                 double distance = Electrode.GetDistance(e, new Electrode(x, y));
                 if (distance < minDistance)
@@ -96,16 +101,18 @@ namespace Bachelor_Project.Simulation
             if (closestElectrode == null)
             {
                 return a.pointers[0];
-                //throw new Exception("Droplet has no electrodes");
             }
             return closestElectrode;
         }
 
-        public void SetNextElectrodeDestination(string? source = null)
+        /// <summary>
+        /// Sets the location that this <see cref="Droplet"/> is trying to go next
+        /// </summary>
+        public void SetNextElectrodeDestination()
         {
             if (nextDestination != null)
             {
-                nextElectrodeDestination = GetClosestFreePointer(nextDestination, source: source);
+                nextElectrodeDestination = GetClosestFreePointer(nextDestination);
             }
             else if (nextElectrodeDestination == null)
             {
@@ -115,7 +122,13 @@ namespace Bachelor_Project.Simulation
             }
         }
 
-        public Electrode GetClosestFreePointer(Apparature a, string? source = null)
+        /// <summary>
+        /// Finds the closest <see cref="Electrode"/> in the <see cref="Apparatus"/> <paramref name="a"/> to this <see cref="Droplet"/>.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns>The found closest <see cref="Electrode"/></returns>
+        /// <exception cref="InvalidDataException"></exception>
+        public Electrode GetClosestFreePointer(Apparatus a)
         {
 
 
@@ -145,17 +158,23 @@ namespace Bachelor_Project.Simulation
             }
             if (closestElectrode == null)
             {
-                throw new InvalidDataException("Apparature has no pointers");
+                throw new InvalidDataException("Apparatus has no pointers");
             }
             return closestElectrode;
         }
 
-
+        /// <summary>
+        /// The function to start the <see cref="Droplet"/> as an agent.
+        /// </summary>
         private async void StartAgent()
         {
            RunAgent(cancellationTokenSource.Token);
         }
 
+        /// <summary>
+        /// The function whith the <see cref="Droplet"/> runs on its <see cref="Thread"/>
+        /// </summary>
+        /// <param name="cancellationToken"></param>
         public async void RunAgent(CancellationToken cancellationToken)
         {
             try
@@ -229,6 +248,10 @@ namespace Bachelor_Project.Simulation
             
         }
 
+        /// <summary>
+        /// The method the <see cref="Commander"/> uses to assign the <see cref="Task"/> <paramref name="task"/> to this <see cref="Droplet"/>.
+        /// </summary>
+        /// <param name="task"></param>
         public void GiveWork(Task task)
         {
             lock (TaskQueue)
@@ -241,11 +264,18 @@ namespace Bachelor_Project.Simulation
             
         }
 
+        /// <summary>
+        /// Getter for <see cref="TaskQueue"/>
+        /// </summary>
+        /// <returns></returns>
         public List<Task> GetWork()
         {
             return TaskQueue.ToList();
         }
 
+        /// <summary>
+        /// Stops the <see cref="Thread"/> of this <see cref="Droplet"/>. Called when the <see cref="Droplet"/> needs to be removed from the <see cref="Board"/>.
+        /// </summary>
         public void Stop()
         {
             cancellationTokenSource.Cancel();
@@ -253,27 +283,47 @@ namespace Bachelor_Project.Simulation
             Removed = true;
         }
 
-        private string GetColor(string substance_name)
+        /// <summary>
+        /// Color is not entirely implemented.
+        /// </summary>
+        /// <returns></returns>
+        private string GetColor()
         {
             return "0000FF"; // Needs to be changed to a color based on the substance name.
         }
 
-
+        /// <summary>
+        /// Calculates and sets the <see cref="Size"/> of this <see cref="Droplet"/> based off of <paramref name="Volume"/>. Also sets <see cref="Volume"/>
+        /// </summary>
+        /// <param name="Volume"></param>
         public void SetSizes(double Volume)
         {
             this.Volume = Volume;
             Size = ((int)Volume/12)+1;
         }
 
+        /// <summary>
+        /// Sets this <see cref="Droplets"/> <see cref="Contamintants"/>.
+        /// </summary>
+        /// <param name="list"></param>
         public void SetContam(List<string> list)
         {
             Contamintants = list;
         }
+        
+        /// <summary>
+        /// ToString overwriter.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return Name + " " + Substance_Name + " OccupyCount = " + Occupy.Count;
         }
 
+        /// <summary>
+        /// Changes the <see cref="Substance_Name"/> of this <see cref="Droplet"/>.
+        /// </summary>
+        /// <param name="newType"></param>
         public void ChangeType(string newType)
         {
             Substance_Name = newType;
@@ -288,13 +338,18 @@ namespace Bachelor_Project.Simulation
             
         }
 
+        /// <summary>
+        /// Changes the <see cref="Temperature"/> of this <see cref="Droplet"/>.
+        /// </summary>
+        /// <param name="actualTemperature"></param>
         public void ChangeTemp(int actualTemperature)
         {
             Temperature = actualTemperature;
         }
 
-
-
+        /// <summary>
+        /// Removes this <see cref="Droplet"/> from the <see cref="Board"/> by removing its <see cref="Occupy"/> and stoppong its <see cref="Thread"/>
+        /// </summary>
         public void RemoveFromBoard()
         {
             lock (ModifiedAStar.PathLock) // Also needs the PathLock, so removepath doesn't create a deadlock
@@ -321,7 +376,7 @@ namespace Bachelor_Project.Simulation
 
 
         /// <summary>
-        /// This droplet gains all the electrodes of d, and Removes d
+        /// This <see cref="Droplet"/> gains all the electrodes of <paramref name="d"/>, and removes <paramref name="d"/> from the <see cref="Board"/>
         /// </summary>
         /// <param name="d"></param>
         public void TakeOver(Droplet d)
@@ -347,6 +402,9 @@ namespace Bachelor_Project.Simulation
             
         }
 
+        /// <summary>
+        /// Empties the <see cref="SnekList"/> and turns <see cref="SnekMode"/> <see langword="false"/> to go amorphous.
+        /// </summary>
         public void GoAmorphous()
         {
             SnekMode = false;

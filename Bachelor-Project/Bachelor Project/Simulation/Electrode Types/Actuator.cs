@@ -7,7 +7,15 @@ using Bachelor_Project.Simulation;
 
 namespace Bachelor_Project
 {
-    public abstract class Actuator(int x, int y, int sizeX, int sizeY, string name = "") : Apparature(x, y, sizeX, sizeY, name)
+    /// <summary>
+    /// The superclass of all <see cref="Actuator"/>s on the <see cref="Board"/>
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="sizeX"></param>
+    /// <param name="sizeY"></param>
+    /// <param name="name"></param>
+    public abstract class Actuator(int x, int y, int sizeX, int sizeY, string name = "") : Apparatus(x, y, sizeX, sizeY, name)
     {
         public int ActuatorID { get; set; }
         public bool Status { get; set; }

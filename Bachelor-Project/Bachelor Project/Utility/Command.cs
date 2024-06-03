@@ -20,7 +20,7 @@ namespace Bachelor_Project.Utility
         public List<string> OutputDroplets = outputs;
         public List<Command> OutputCommands = [];
         public string? NextName = nextName;
-        public Apparature? CommandDestination = null;
+        public Apparatus? CommandDestination = null;
         public object[] ActionValue { get; set; } = value;
 
         private static int Inputted = 0;
@@ -66,14 +66,9 @@ namespace Bachelor_Project.Utility
                     b.Droplets[OutputDroplets[0]].GiveWork(command);
                     break;
                 case "output":
-                    Printer.PrintLine("Output");
+                    Printer.PrintLine("OutputDroplet");
                     Task outputDroplet = new(() => Mission_Tasks.OutputDroplet(b.Droplets[InputDroplets[0]], b.Output[NextName]));
                     b.Droplets[InputDroplets[0]].GiveWork(outputDroplet);
-                    break;
-                case "waste":
-                    Printer.PrintLine("Waste");
-                    Task wasteDroplet = new(() => Mission_Tasks.WasteDroplet(b.Droplets[InputDroplets[0]]));
-                    b.Droplets[InputDroplets[0]].GiveWork(wasteDroplet);
                     break;
                 case "merge":
                     Printer.PrintLine("Merge");
@@ -109,7 +104,7 @@ namespace Bachelor_Project.Utility
                         dropSem.Add(dName, sem);
                     }
 
-                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], percentages, dropSem, CommandDestination));
+                    Task splitDroplet = new(() => Mission_Tasks.SplitDroplet(b.Droplets[InputDroplets[0]], percentages, dropSem));
                     b.Droplets[InputDroplets[0]].GiveWork(splitDroplet);
                     foreach (var item in OutputDroplets)
                     {
@@ -160,7 +155,7 @@ namespace Bachelor_Project.Utility
             return Type + " " + string.Join(", ", InputDroplets) + " -> " + string.Join(", ", OutputDroplets) + " extra: "+ string.Join(", ", ActionValue);
         }
 
-        internal Apparature? FindDest()
+        internal Apparatus? FindDest()
         {
             foreach (Command item in OutputCommands)
             {

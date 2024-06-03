@@ -36,12 +36,18 @@ namespace Bachelor_Project.Outparser
                 StartAgent();
             }
         }
-
+        /// <summary>
+        /// Starts the <see cref="Outparser"/> agent
+        /// </summary>
         public static async void StartAgent()
         {
             await Task.Run(() => { RunAgent(cancellationTokenSource.Token); });
         }
 
+        /// <summary>
+        /// The functions which the <see cref="Outparser"/> loops.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
         public static void RunAgent(CancellationToken cancellationToken)
         {
             SetupOutput();
@@ -73,7 +79,11 @@ namespace Bachelor_Project.Outparser
             }
         }
 
-        private static void GiveOutput(Task<bool> task) // Pos is from the right, so last. If pos is null it inserts at left
+        /// <summary>
+        /// A function to assign outputs to the .basm file.
+        /// </summary>
+        /// <param name="task"></param>
+        private static void GiveOutput(Task<bool> task)
         {
             lock (OutputEnqueue)
             {
@@ -84,6 +94,11 @@ namespace Bachelor_Project.Outparser
 
         }
 
+        /// <summary>
+        /// Turns on the stated <see cref="Electrode"/>, and sends a task to the <see cref="Outparser"/> to write the bio-assembly
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="d"></param>
         public static void ElectrodeOn(Electrode e, Droplet? d = null)
         {
             Printer.PrintLine("setel " + e.DriverID + " " + e.ElectrodeID + " \\r");
@@ -96,6 +111,11 @@ namespace Bachelor_Project.Outparser
             
         }
 
+        /// <summary>
+        /// Turns off the stated <see cref="Electrode"/>, and sends a task to the <see cref="Outparser"/> to write the bio-assembly
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="d"></param>
         public static void ElectrodeOff(Electrode e, Droplet? d = null) 
         {
             Printer.PrintLine("clrel " + e.DriverID + " " + e.ElectrodeID + " \\r");
@@ -108,6 +128,11 @@ namespace Bachelor_Project.Outparser
             
         }
 
+        /// <summary>
+        /// Initial bio-assembly in the top of the file, always necessary
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="d"></param>
         public static void SetupOutput()
         {
             Writer.WriteLine(".text");
@@ -116,8 +141,14 @@ namespace Bachelor_Project.Outparser
             TickEvent.Set();
         }
 
-        
 
+        /// <summary>
+        /// The function which writes the correct bio-assembly instructions.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="ID"></param>
+        /// <param name="set"></param>
+        /// <returns>Returns <see langword="true"/> when the task is finished</returns>
         public static bool ChangeEl(Droplet? d, int ID, bool set)
         {
             if (d != null)
@@ -151,6 +182,10 @@ namespace Bachelor_Project.Outparser
             return true;
         }
 
+        /// <summary>
+        /// Creates a tick in the bio-assembly.
+        /// </summary>
+        /// <returns>Returns <see langword="true"/> when the task is completed</returns>
         public static bool Tick()
         {
             Writer.WriteLine("    TICK;");
@@ -158,6 +193,11 @@ namespace Bachelor_Project.Outparser
             return true;
         }
 
+        /// <summary>
+        /// The fucntion used by <see cref="Droplet"/>s to <see langword="wait"/>, function changes depend on <see cref="Settings.ConnectedToHardware"/>.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="milliseconds"></param>
         public static void WaitDroplet(Droplet d, int milliseconds)
         {
             if (Settings.ConnectedToHardware)
@@ -172,18 +212,18 @@ namespace Bachelor_Project.Outparser
         }
 
         /// <summary>
-        /// This is only called if the software is not connected to the hardware
+        /// This is only called if <see cref="Settings.ConnectedToHardware"/> is <see langword="false"/>.
         /// </summary>
         /// <param name="d"></param>
         /// <param name="milliseconds"></param>
         /// <param name="start"></param>
-        /// <returns></returns>
+        /// <returns>Return <see langword="true"/> when the task is finished</returns>
         public static bool Wait(Droplet d, int milliseconds, int start = 0)
         {
             int elapsedTime = start;
             lock (OutputEnqueue)
             {
-                if (/*OutputQueue.Count == 0*/ true) // TODO: Make it so not everything wait when a droplet waits. VERY DIFFICULT
+                if (true)
                 {
 
                     if (!LastTick) // If the last one wasn't a tick, it needs 2 ticks to get a lone tick for the extra time.
@@ -204,7 +244,9 @@ namespace Bachelor_Project.Outparser
             return true;
         }
         
-
+        /// <summary>
+        /// Dispose of the current <see cref="Outparser"/>, used by the <see cref="Commander"/> when exiting the <see cref="Program"/>.
+        /// </summary>
         public static void Dispose()
         {
             if (Writer != null)

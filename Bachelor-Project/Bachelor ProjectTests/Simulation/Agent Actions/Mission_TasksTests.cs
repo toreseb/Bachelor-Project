@@ -138,7 +138,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             List<string> InputDroplets = [Wat1.Name, Wat2.Name, Wat3.Name];
             List<string> OutputDroplets = [Wat4.Name];
-            Apparature CommandDestination = board.Actuators["heat0"];
+            Apparatus CommandDestination = board.Actuators["heat0"];
 
             UsefulSemaphore sem0 = new(InputDroplets.Count);
             UsefulSemaphore sem1 = new(InputDroplets.Count);
@@ -250,7 +250,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
 
             input.Wait();
 
-            Apparature dest = Wat2.nextDestination;
+            Apparatus dest = Wat2.nextDestination;
 
             Dictionary<string, int> dropRat = new Dictionary<string, int>();
             dropRat.Add(Wat2.Name, 50);
@@ -269,7 +269,7 @@ namespace Bachelor_Project.Simulation.Agent_Actions.Tests
             Wat3.nextDestination = board.Actuators["heat2"];
             Wat4.nextDestination = board.Output["out0"];
 
-            Task split = new(() => Mission_Tasks.SplitDroplet(Wat1, ratios, dropSem, dest));
+            Task split = new(() => Mission_Tasks.SplitDroplet(Wat1, ratios, dropSem));
             Wat1.GiveWork(split);
 
             Task split2 = new(() => Mission_Tasks.AwaitSplitWork(Wat2, Wat2.nextDestination, dropSem[Wat2.Name]));

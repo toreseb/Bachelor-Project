@@ -15,6 +15,10 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
+
+    /// <summary>
+    /// The class that holds all the information relevant to the <see cref="Board"/>. This includes all <see cref="TileEntity"/>.
+    /// </summary>
     public class Board
     {
         public Electrode[,] Electrodes  { get; set; }     
@@ -67,6 +71,12 @@ namespace Bachelor_Project.Simulation
             return Information.eCol;
         }
 
+        /// <summary>
+        /// Creates the entire <see cref="Board"/> object from the given <paramref name="json"/>. This uses the <see cref="Newtonsoft.Json.Linq"/> library
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns>The created <see cref="Board"/></returns>
+        /// <exception cref="NotImplementedException"></exception>
         static public Board ImportBoardData(string json)
         {
             JObject jObject = JObject.Parse(json);
@@ -171,7 +181,11 @@ namespace Bachelor_Project.Simulation
             return new Board(inf, eArray, actuators, sensors, iDict, oDict, dDict, unclassified);
         }
 
-        public bool PrintBoardState() // Row and Col are switched, so the board is printed correctly
+        /// <summary>
+        /// Prints the <see cref="Board"/> state is it is, when this function is called. As it is called by the <see cref="Printer"/>, it might lack behind.
+        /// </summary>
+        /// <returns> <see langword="true"/> when it is finished</returns>
+        public bool PrintBoardState()
         {
             List<TileEntity>[][] squares = new List<TileEntity>[Information.eCol][];
             for (int i = 0; i < Information.eCol; i++)
@@ -202,6 +216,12 @@ namespace Bachelor_Project.Simulation
             return true;
         }
 
+        /// <summary>
+        /// Used by <see cref="PrintBoardState"/> to print each line of the board.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="j"></param>
+        /// <returns> The produced line as a <see cref="string"/></returns>
         public string BuildPrintLine(List<TileEntity>[] row, int j)
         {
             

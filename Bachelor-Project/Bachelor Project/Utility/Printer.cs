@@ -9,6 +9,9 @@ using System.Xml.Linq;
 
 namespace Bachelor_Project.Utility
 {
+    /// <summary>
+    /// The <see cref="Printer"/> is an agent that organises and prints for the rest of the program.
+    /// </summary>
     public static class Printer
     {
         private static CancellationTokenSource cancellationTokenSource;
@@ -28,11 +31,18 @@ namespace Bachelor_Project.Utility
             }
         }
 
+        /// <summary>
+        /// The function which starts the <see cref="Printer"/> agent.
+        /// </summary>
         public static async void StartAgent()
         {
             await Task.Run(() => { RunAgent(cancellationTokenSource.Token); });
         }
 
+        /// <summary>
+        /// The function the <see cref="Printer"/> agent runs.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
         private static async void RunAgent(CancellationToken cancellationToken)
         {
             
@@ -82,6 +92,10 @@ namespace Bachelor_Project.Utility
             }
         }
 
+        /// <summary>
+        /// Gives print <see cref="Task"/>s to the <see cref="Printer"/>.
+        /// </summary>
+        /// <param name="task"></param>
         private static void GivePrint(Task<bool> task)
         {
             lock (PrintEnqueue)
@@ -94,21 +108,38 @@ namespace Bachelor_Project.Utility
             
         }
 
+        /// <summary>
+        /// Gives the <see cref="Printer"/> a standard Write <see cref="Task"/>.
+        /// </summary>
+        /// <param name="message"></param>
         public static void Print(object? message)
         {
             GivePrint(new Task<bool>(() => PrintCommand(message)));
         }
 
+        /// <summary>
+        /// Gives the <see cref="Printer"/> a standard WriteLine <see cref="Task"/>.
+        /// </summary>
+        /// <param name="message"></param>
         public static void PrintLine(object? message = null)
         {
             GivePrint(new Task<bool>(() => PrintCommand(message, true)));
         }
-
+        
+        /// <summary>
+        /// Gives the <see cref="Printer"/> a custom printboard <see cref="Task"/>.
+        /// </summary>
         public static void PrintBoard()
         {
             GivePrint(new Task<bool>(Program.C.board.PrintBoardState));
         }
 
+        /// <summary>
+        /// Prints the statements.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="newLine"></param>
+        /// <returns><see langword="true"/> when the <see cref="Task"/> is completed.</returns>
         private static bool PrintCommand(object? message, bool newLine = false)
         {
             if (message == null && newLine == true)
@@ -131,7 +162,10 @@ namespace Bachelor_Project.Utility
         }
 
         
-
+        /// <summary>
+        /// Checks if the <see cref="Printer"/> is currently done, so the <see cref="PrintQueue"/> is empty and <see cref="cTask"/> is either null or completed.
+        /// </summary>
+        /// <returns></returns>
         public static bool CurrentlyDone()
         {
             return (PrintQueue.Count == 0 && cTask == null) || !Settings.Printing;
@@ -139,6 +173,9 @@ namespace Bachelor_Project.Utility
 
         }
 
+        /// <summary>
+        /// Reset the <see cref="PrintQueue"/> of the <see cref="Printer"/>.
+        /// </summary>
         internal static void Reset()
         {
             lock (PrintEnqueue)

@@ -54,7 +54,7 @@ public partial class ProgramParser : Parser {
 
 	private static readonly string[] _LiteralNames = {
 		null, "';'", "'square'", "'Square'", "'circle'", "'Circle'", "' '", "'input'", 
-		"'in'", "'Input'", "'In'", "'output'", "'out'", "'Output'", "'Out'", "'waste'", 
+		"'in'", "'Input'", "'In'", "'output'", "'out'", "'OutputDroplet'", "'Out'", "'waste'", 
 		"'Waste'", "'contam'", "'contaminate'", "'Contam'", "'Contaminate'", "'merge'", 
 		"'Merge'", "'split'", "'Split'", "'mix'", "'Mix'", "'temp'", "'heat'", 
 		"'Temp'", "'Heat'", "'sense'", "'Sense'", "'wait'", "'Wait'"

@@ -14,6 +14,14 @@ namespace Bachelor_Project.Utility
     /// </summary>
     static class LineIntersection
     {
+        /// <summary>
+        /// Finds if some two lines intersect at any point.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="c"></param>
+        /// <param name="d"></param>
+        /// <returns><see cref="bool"/> that determines if they intersect.</returns>
         public static bool IsIntersecting(Point a, Point b, Point c, Point d)
         {
             float denominator = ((b.X - a.X) * (d.Y - c.Y)) - ((b.Y - a.Y) * (d.X - c.X));

@@ -56,7 +56,10 @@
       sensorID: '{{index()}}',
 		type: "RGB_color", // Type of sensor, RGB_color or temperature
 		positionX: 90, // Position of sensor, center of electrode, electrode position + electrodesize/2
-		positionY: 170
+		positionY: 170,
+        "valueRed": 0,
+        "valueGreen": 0,
+        "valueBlue": 0
 	}
     ],
         inputs: [{

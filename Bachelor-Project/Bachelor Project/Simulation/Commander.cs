@@ -15,6 +15,9 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Bachelor_Project.Simulation
 {
+    /// <summary>
+    /// The <see cref="Commander"/> creates the <see cref="Board"/> at uses the <see cref="Command"/>s created by the <see cref="Parser"/> to assign <see cref="Mission_Tasks"/> to <see cref="Droplet"/>s.
+    /// </summary>
     public class Commander
     {
 

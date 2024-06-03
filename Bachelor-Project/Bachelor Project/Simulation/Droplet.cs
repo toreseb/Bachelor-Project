@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
+    /// <summary>
+    /// The class of <see cref="Droplet"/>s which are the agents moving across the <see cref="Board"/>
+    /// </summary>
     public class Droplet: TileEntity
     {
         // In creation of a Droplet, the following is needed:

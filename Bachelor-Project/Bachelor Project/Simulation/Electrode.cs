@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
+    /// <summary>
+    /// The class of <see cref="Electrode"/>s which make up the <see cref="Board"/> itself.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="name"></param>
     public class Electrode(int x, int y, string name = "") : TileEntity(x, y, 20, 20, name)
     {
         public int ElectrodeID { get; set; }

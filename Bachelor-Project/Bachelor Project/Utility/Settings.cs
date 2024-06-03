@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Utility
 {
+    /// <summary>
+    /// Contains settings relavent to how the program runs. These are more input out focused that <see cref="Constants"/>.
+    /// </summary>
     public static class Settings
     {
         public const bool ConnectedToHardware = false;

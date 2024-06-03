@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Simulation
 {
+    /// <summary>
+    /// The <see cref="Information"/> stores relevant information about the board.
+    /// </summary>
     public class Information
     {
         public string platform_name { get; set; }

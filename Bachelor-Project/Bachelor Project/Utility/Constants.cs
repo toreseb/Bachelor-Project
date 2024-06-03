@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bachelor_Project.Utility
 {
+    /// <summary>
+    /// This class contains constants important for our project.
+    /// </summary>
     public static class Constants
     {
         public const int DestBuff = 4;

@@ -26,6 +26,9 @@ namespace Bachelor_Project.Utility
         private static int Inputted = 0;
         private static UsefulSemaphore InputSem = new UsefulSemaphore(1,1);
 
+        /// <summary>
+        /// Sets the desination this <see cref="Command"/>s <see cref="OutputDroplets"/> want to go.
+        /// </summary>
         public void SetDest()
         {
             if (Type == "temp")
@@ -46,6 +49,10 @@ namespace Bachelor_Project.Utility
             }
         }
 
+        /// <summary>
+        /// Assigns this <see cref="Command"/> to the <see cref="Droplet"/>s in <see cref="InputDroplets"/> and <see cref="OutputDroplets"/> as <see cref="Mission_Tasks"/>. 
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
         public void ExecuteCommand()
         {
             Board b = Program.C.board;
@@ -150,11 +157,19 @@ namespace Bachelor_Project.Utility
 
         }
 
+        /// <summary>
+        /// ToString override
+        /// </summary>
+        /// <returns></returns>
         override public string ToString()
         {
             return Type + " " + string.Join(", ", InputDroplets) + " -> " + string.Join(", ", OutputDroplets) + " extra: "+ string.Join(", ", ActionValue);
         }
 
+        /// <summary>
+        /// Used by the <see cref="Commander"/> to traverse the <see cref="Command"/> tree and find a destination if none is set.
+        /// </summary>
+        /// <returns>The found destination as a <see cref="Apparatus"/></returns>
         internal Apparatus? FindDest()
         {
             foreach (Command item in OutputCommands)
@@ -174,6 +189,10 @@ namespace Bachelor_Project.Utility
             }
             return null;
         }
+
+        /// <summary>
+        /// Resets the static command input number, used by tests to reset the environment.
+        /// </summary>
         public static void Reset()
         {
             Inputted = 0;
